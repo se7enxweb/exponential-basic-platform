@@ -186,7 +186,7 @@
           <!-- end #productWrap -->
 		<!-- BEGIN main_image_tpl -->
 		<div class="mainImage">
-		<a href="{www_dir}{index}/imagecatalogue/imageview/{main_image_id}/?RefererURL=/{module}/{module_view}/{product_id}/{category_id}/"><img src="{www_dir}{main_image_uri}" alt="{main_image_caption}" width="{main_image_width}" height="{main_image_height}" /></a></td>
+		<a href="{www_dir}{index}/imagecatalogue/imageview/{main_image_id}/?RefererURL=/{module}/{module_view}/{product_id}/{category_id}/"><img src="{www_dir}{main_image_uri}" alt="{main_image_caption}" width="{main_image_width}" height="{main_image_height}" /></a>
               <div class="row prodRow">
 	     <a href="{www_dir}{index}/imagecatalogue/imageview/{main_image_id}/?RefererURL=/{module}/{module_view}/{product_id}/{category_id}/"> {main_image_caption}</a>
               </div></div>
