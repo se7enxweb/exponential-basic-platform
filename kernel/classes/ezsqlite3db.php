@@ -199,17 +199,17 @@ class eZSQLite3DB
             $result = $this->Database->exec( $sql );
         }
 
-//          eZPBLog::writeNotice( $sql );
+        // eZPBLog::writeNotice( $sql );
+        $ini = eZINI::instance( 'site.ini' );
+        $debug = $ini->variable( 'site', 'DebugOutput' ) == 'enabled' ? true : false;
+        $debugDatabaseTransactions = $ini->variable( 'site', 'DebugDatabaseTransactions' ) == 'enabled' ? true : false;
 
         if ( $result === false )
         {
             $errorNum = $this->Database->lastErrorCode();
             $errorMsg = $this->Database->lastErrorMsg();
             
-            $ini = eZINI::instance( 'site.ini' );
-            $debug = $ini->variable( 'site', 'DebugOutput' ) == 'enabled' ? true : false;
-                
-            if ( $debug )
+            if ( $debugDatabaseTransactions )
             {
                 echo "<hr>";
                 var_dump( $errorNum, $errorMsg );
@@ -222,9 +222,12 @@ class eZSQLite3DB
         {
             $errorNum = 0;
             $errorMsg = '';
-            // echo "<hr> Last: <br>";
-            // echo $sql;
-            // echo "<hr>";
+            if ( $debug && $debugDatabaseTransactions )
+            {
+                echo "<hr> Last: <br>";
+                echo $sql;
+                echo "<hr>";
+            }
         }
 
         if ( $print )
