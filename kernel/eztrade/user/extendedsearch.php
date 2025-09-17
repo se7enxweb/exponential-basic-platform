@@ -36,7 +36,7 @@ $ini =& eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
 $RequireUserLogin = $ini->variable( "eZTradeMain", "RequireUserLogin" ) == "true";
-$ExtendedSearchCategories = $ini->variable( "eZTradeMain", "ExtendedSearchCategories" );
+$ExtendedSearchCategories = $ini->read_array( "eZTradeMain", "ExtendedSearchCategories" );
 $MaxSearchForProducts = $ini->variable( "eZTradeMain", "MaxSearchForProducts" );
 
 $SmallImageWidth = $ini->variable( "eZTradeMain", "SmallImageWidth" );

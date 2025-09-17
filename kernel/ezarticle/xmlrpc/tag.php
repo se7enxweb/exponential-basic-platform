@@ -29,7 +29,7 @@ $ini =& eZINI::instance( 'site.ini' );
 
 $tags = array();
 
-$tagList =& $ini->variable( "eZArticleMain", "CustomTags" );
+$tagList =& $ini->read_array( "eZArticleMain", "CustomTags" );
 foreach ( $tagList as $tag )
 {
     $tags[] = new eZXMLRPCStruct( array( "URL" => createURLStruct( "ezarticle",
