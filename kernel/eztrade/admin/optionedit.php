@@ -32,7 +32,7 @@
 
 $ini =& eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
-$StdHeaders = $ini->read_array( "eZTradeMain", "StandardOptionHeaders" );
+$StdHeaders = $ini->variable( "eZTradeMain", "StandardOptionHeaders" );
 $MinHeaders = $ini->variable( "eZTradeMain", "MinimumOptionHeaders" );
 $MinValues = $ini->variable( "eZTradeMain", "MinimumOptionValues" );
 $SimpleOptionHeaders = $ini->variable( "eZTradeMain", "SimpleOptionHeaders" ) == "true" ? true : false;
@@ -121,9 +121,10 @@ if ( isset( $OK ) )
     $option->removeHeaders();
     $option->addHeader( $OptionValueDescription );
 
-//      $option->removeValues();
+    //$option->removeValues();
     $i = 0;
     $option_ids = array();
+
     foreach ( $OptionValue as $name )
     {
         if ( $name != "" )
@@ -133,6 +134,7 @@ if ( isset( $OK ) )
         }
         $i++;
     }
+
     $optionObject = new eZOptionValue();
     $orig_option_ids = $optionObject->getByOption( $option, false );
     $old_option_ids = array_diff( $orig_option_ids, $option_ids );
@@ -147,17 +149,17 @@ if ( isset( $OK ) )
     {
         if ( $name != "" )
         {
-            if ( is_numeric( $OptionValueID[$i] ) and $OptionValueID[$i] > 0 )
+            if ( !is_null( $OptionValueID[$i] ) and $OptionValueID[$i] > 0 )
                 $value = new eZOptionValue( $OptionValueID[$i] );
             else
                 $value = new eZOptionValue();
             $value->setPrice( $OptionMainPrice[$i] );
-            $value->setOptionID( $option->ID );
+            $value->setOptionID( $option->id() );
             $value->store();
 
             if ( $ShowQuantity )
             {
-                $value->setTotalQuantity( is_numeric( $OptionQuantity[$i] ) ? $OptionQuantity[$i] : false );
+                $value->setTotalQuantity( !is_null( $OptionQuantity[$i] ) ? $OptionQuantity[$i] : false );
             }
 
             $value->removeDescriptions();
@@ -384,7 +386,8 @@ $t->set_var( "option_item", "" );
 $t->set_var( "group_count", $count );
 foreach( $OptionMainPrice as $header )
 {
-    $main_price = $header;
+    if( $header != "" )
+        $main_price[] = $header;
 }
 //$main_price = each( $OptionMainPrice );
 
@@ -397,23 +400,27 @@ foreach ( $OptionValue as $value )
     $t->set_var( "value_item", "" );
     reset( $value );
     $value_item = array();
-    $OptionQuantity = array();
+    // $OptionQuantity = array();
+
     foreach( $value as $header )
     {
-        $value_item = $header;
+        if( $header != "" )
+            $value_item = $header;
     }
+
     // $value_item = each( $value );
     for( $i = 0; $i < max( $MinHeaders, $value_count ); $i++ )
     {
-        if ( isset( $value_item[1] ) )
+        // $value_item = each( $value );
+        if ( isset( $value_item ) && $value_item != array()  )
         {
-            $t->set_var( "option_value", $value_item[1] );
+            $t->set_var( "option_value", $value_item );
         }
         else
         {
             $t->set_var( "option_value", "" );
         }
-        // $t->set_var( "option_value", $value_item[1] );
+
         $t->parse( "value_item", "value_item_tpl", true );
         foreach( $value as $header )
         {
@@ -421,18 +428,21 @@ foreach ( $OptionValue as $value )
         }
         //$value_item = each( $value );
     }
-    $t->set_var( "main_price_value", isset( $main_price[1] ) ? $main_price[1] : false );    
+
+    $t->set_var( "main_price_value", isset( $main_price[$index] ) ? $main_price[$index] : false );
 
     $t->set_var( "option_price_item", "" );
     foreach( $OptionPrice as $header )
     {
-        $option_price = $header;
+        if( $header != "" )
+        $option_price[] = $header;
     }
+
     // $option_price = each( $OptionPrice );
     $i = 0;
     foreach( $groups as $group )
     {
-        $t->set_var( "price_value", isset( $option_price[1][$group] ) ? $option_price[1][$group] : false ); //$option_price[1][$group] );
+        $t->set_var( "price_value", isset( $option_price[$index][$group] ) ? $option_price[$index][$group] : false ); //$option_price[1][$group] );
         $t->set_var( "price_group", $group );
         $t->set_var( "value_index", $i );
         $t->parse( "option_price_item", "option_price_item_tpl", true );
@@ -449,7 +459,7 @@ foreach ( $OptionValue as $value )
     $t->parse( "option_item", "option_item_tpl", true );
     foreach( $OptionMainPrice as $header )
     {
-        $main_price = $header;
+        $main_price[] = $header;
     }
     // $main_price = each( $OptionMainPrice );
     $index++;

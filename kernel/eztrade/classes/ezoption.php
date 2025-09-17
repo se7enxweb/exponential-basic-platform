@@ -350,7 +350,8 @@ class eZOption
         foreach( $qry_array as $row )
         {
             $row_id = $row[$db->fieldName( "ID" )];
-            eZOptionValue::delete( $row_id );
+            $optionValue = new eZOptionValue( $row_id );
+            $optionValue->delete( $row_id );
         }
     }
 

@@ -62,7 +62,7 @@
 
 $ini =& eZINI::instance( 'site.ini' );
 $Language = $ini->variable( $INIGroup, "Language" );
-$Modules = $ini->read_array( $INIGroup, "ModuleList" );
+$Modules = $ini->variable( $INIGroup, "ModuleList" );
 
 if ( !isset( $ClientRoot ) )
 {

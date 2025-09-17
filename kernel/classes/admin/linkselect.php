@@ -54,9 +54,9 @@ if ( isset( $Back ) )
 
 $ini =& eZINI::instance( 'site.ini' );
 $Language = $ini->variable( $INIGroup, "Language" );
-$Modules = $ini->read_array( $INIGroup, "ModuleList" );
+$Modules = $ini->variable( $INIGroup, "ModuleList" );
 $DefaultSection = $ini->variable( $INIGroup, "DefaultSectionName" );
-$DefaultSections = $ini->read_array( $INIGroup, $DefaultSectionsName );
+$DefaultSections = $ini->variable( $INIGroup, $DefaultSectionsName );
 
 if ( isset( $ModuleType ) )
 {

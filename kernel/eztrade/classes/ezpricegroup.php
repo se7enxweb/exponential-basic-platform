@@ -473,6 +473,7 @@ class eZPriceGroup
     {
         $db =& eZDB::globalDatabase();
         $db->begin();
+        $ret = array();
         $query = "INSERT INTO eZTrade_ProductPriceLink
                      ( PriceID,
                        ProductID,
@@ -484,9 +485,10 @@ class eZPriceGroup
                        '$productid',
                        '$price',
                        '$optionid',
-                       '$valueid' )";
+                       '$valueid' );";
 
         $ret[] = $db->query( $query );
+
         eZDB::finish( $ret, $db );
     }
 
