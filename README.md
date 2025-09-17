@@ -10,14 +10,14 @@ This project is led by [7x](https://se7enx.com) and aims to ensure the long-term
 
 ---
 
- * Current release: Version 2.4.0.0 (Stable) [Release](https://github.com/se7enxweb/exponentialbasic/releases/tag/v2.4.0.0)
- * Download: [zip](https://github.com/se7enxweb/exponentialbasic/archive/refs/tags/v2.4.0.0.zip) or [tar.gz](https://github.com/se7enxweb/exponentialbasic/archive/refs/tags/v2.4.0.0.tar.gz)
+ * Current release: Version 2.4.0.1 (Stable) [Release](https://github.com/se7enxweb/exponentialbasic/releases/tag/v2.4.0.1)
+ * Download: [zip](https://github.com/se7enxweb/exponentialbasic/archive/refs/tags/v2.4.0.0.zip) or [tar.gz](https://github.com/se7enxweb/exponentialbasic/archive/refs/tags/v2.4.0.1.tar.gz)
  * LICENSE: [GNU GPLv2 (or later)](COPYRIGHT.md)
  * Website:  [https://basic.exponential.earth](https://basic.exponential.earth)
- * Current unreleased Version In Development: Version 2.4.0.1 (Stable)
+ * Current unreleased Version In Development: Version 2.4.0.2 (Stable)
  * Source Code [https://github.com/se7enxweb/exponentialbasic](https://github.com/se7enxweb/exponentialbasic)
  * Maintainer: [7x](https://se7enx.com)
- * Document Last revised: 2025.08.18
+ * Document Last revised: 2025.09.17
 
 ---
 
