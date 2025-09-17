@@ -130,7 +130,7 @@ Up next default content creation in the admin for your first visitor to see!
 
 # Documentation
 
-Further documentation can be read from the [documentation](https://github.com/se7enxweb/exponentialbasic/tree/master/documentation) directory [README](https://github.com/se7enxweb/exponentialbasic/tree/master/documentation/README).
+Further documentation can be read from the [documentation](https://github.com/se7enxweb/exponentialbasic/tree/master/documentation) directory [Project README](https://github.com/se7enxweb/exponentialbasic/tree/master/documentation/PROJECT.md).
 
 More information can be found at our [project website](https://basic.exponential.earth)
 

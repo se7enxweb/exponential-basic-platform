@@ -1,8 +1,65 @@
 Exponential Basic changelog:
 ---------------------
 
+Changes from 2.4.0.0 to 2.4.0.1
+---------------------------
 
-Changes from 2.3.0 to 2.4.0 (alpha)
+- Added: Added example store site design, 'ecommerce'.
+
+- Added: Added another example store site design, 'hardwarestore'.
+
+- Updated: Replaced default designs provided with responsive versions, see standard, trade, news, intranet, admin
+
+- Replaced: Replaced PHP include_once calls with Exponential 6.x autoload implementation and script to regenerate autoloads `bin/shell/php/ezpgenerateautoloads.php` (composer compatible).
+
+- Added: Added zeta components as required library via composer
+
+- Upgraded: The ezfilemanager, ezforum, ezimagecatalogue, ezmediacatalogue, ezcalendar, ezarticle, eztrade modules were heavily developed beyond the 2.2 series to provide for bulk import features and general stability improvements from past larger project live sites that withstood heavy demand and scaled to meet those needs.
+
+- Replaced: Replaced key index.php front / admin controller kernel implementation to use Exponential 6.x's most simple possible implementation (to start and in theory gain possible platform support with Exponential Platform Legacy implementations customized further on). This results in a very clean index that uses a class to do the work.
+
+- Refactored all kernel modules to perform without fatal or functional errors. This resulted in a lot of smaller bugfixes.
+
+- Added to Kernel and Lib: Exponential 6.x PHP class libraries to replace now deprecated and renamed to prevent conflict yet remain available 2.x kernel php classes. Some community modules may need to refactor their php to use the replacement libraries or the renamed libraries.
+
+Libraries Replaced
+  - Replaced Class: eZLog to eZPBLog
+  - Replaced Class: eZImageFile to eZPBImageFile
+
+Libraries Added:
+  - Lib: eZ INI
+  - Exponential Library Added: ezfile
+  - Exponential Library Added: ezi18n
+  - Exponential Library Added: ezutils
+  - Exponential Library Added: ezsession
+  - Exponential Library Added: eZPublishSDK PHP Class
+  - Class: kernel/classes/ezsiteaccess.php
+  - Class: kernel/classes/ezpostgresqldb.php
+  - Class: kernel/classes/ezpersistentobject.php
+  - Class: kernel/classes/ezpbkerneladmin.php
+  - Class: kernel/classes/ezpbkernelweb.php
+  - Class: kernel/classes/ezpbkernel.php
+  - Class: kernel/classes/ezpbKernelResult.php
+  - Class: kernel/classes/ezmysqldb.php
+  - Class: kernel/classes/ezhttpheader.php
+  - Class: kernel/classes/ezcontentlanguage.php
+  - Class: kernel/classes/ezclusterfilehandler.php
+  - Class: kernel/private kernel private classes (all)
+  - Exponential base settings directory and settings file content settings/*.ini files
+
+- Re: https://github.com/se7enxweb/exponentialbasic/commit/9a8b1203dbda6a0f0eff78ddcd9999ba573a746a
+- Re: https://github.com/se7enxweb/exponentialbasic/commit/e0c8edad5373abac0cde076e9caa9e09c6860aa2
+- Re: https://github.com/se7enxweb/exponentialbasic/commit/97fc7b389a0b4058add666ed569ff0d3d20dbd56
+- Re: https://github.com/se7enxweb/exponentialbasic/commit/bd5d01b3687a0f69b8128a9148b017a17eabacaa
+
+- Added Kernel Module from Community resources: ezgroupeventcalendar
+- Added Kernel Module from Community resources: ezpoll
+- Added Kernel Module from Community resources: ezquiz
+- Added Kernel Module from Community resources: ezsurvey
+- Added Kernel Module from Community resources: eztip
+
+
+Changes from 2.3.0 to 2.4.0
 ---------------------------
 
 - Work to replace register globals functionality in userland custom php temporarily until project is stable enough to consider a new project to replace each module views variables scope and usage.
