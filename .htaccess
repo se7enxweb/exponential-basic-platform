@@ -10,7 +10,7 @@
 
 # These attractive <IfModule> tags allow apache to ignore the rules 
 # if mod_rewrite support is not included or enabled by apache
-#<IfModule mod_rewrite.c>
+<IfModule mod_rewrite.c>
       # mod_rewrite is highly recomended for an Exponential Basic's installation security.    
       # mod_rewrite is not required for operation of Exponential Basic, per say.
       RewriteEngine On
