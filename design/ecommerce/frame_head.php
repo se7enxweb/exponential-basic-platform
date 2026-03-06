@@ -32,10 +32,10 @@
        print( $ini->variable( "site", "SiteTitle" ) );
 ?></title>
 <link rel="stylesheet" type="text/css" 
-href="<? print $GlobalSiteIni->WWWDir; ?>/design/<?
+href="<?php print $GlobalSiteIni->WWWDir; ?>/design/<?php
 print ($GlobalSiteDesign); ?>/css/main.css" />
 <link rel="stylesheet" type="text/css" 
-href="<? print $GlobalSiteIni->WWWDir; ?>/design/<?
+href="<?php print $GlobalSiteIni->WWWDir; ?>/design/<?php
 print ($GlobalSiteDesign); ?>/css/responsive.css" />
 <?php 
 

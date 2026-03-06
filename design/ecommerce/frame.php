@@ -10,14 +10,10 @@
 <div class="body" id="container">
   <div class="all">
     <div id="header">
-
-<? /*
-
+<?php /*
 	<!-- start #container -->
 */ ?>
-<? /*
-
-
+<?php /*
    <!-- start #banner -->
 
 <map name="ezmap1">
@@ -31,7 +27,7 @@
 
 */ ?>
      <div id="banner"><a href="/"><img class="logoImage" src="/design/ecommerce/images/exponential-basic-ecommerce-header-logo.png" usemap="#ezmap1" border="0" style="position: relative; width: 24rem; height: 98%;" /></a></div>
-<? /*
+<?php /*
 
 
     <!-- start #cart -->
@@ -39,7 +35,7 @@
         <div id="cart">
           <div class="row">
             <span class="cartTopRowLeft">
-			<?
+			<?php
 			include_once( "kernel/ezuser/classes/ezuser.php" );
 			$user =& eZUser::currentUser();
 			if ($user) {
@@ -103,29 +99,29 @@
 				
 	}
 	?>
-<? /*
+<?php /*
 
         <!-- end #cart -->
 */ ?>
      </div>
-<? /*
+<?php /*
 
       <!-- end #banner -->
-      <!-- <li id="m-home"><a onmouseover="document.getElementById('home').src='/design/ecommerce/images/home2.gif';" onmouseout="document.getElementById('home').src='/design/ecommerce/images/home.gif';" id="homeHack" href="/<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>"><img id="home" src="<? print $GlobalSiteIni->WWWDir; ?>/design/<? print ($GlobalSiteDesign); ?>/images/home.gif" alt="Full Throttle home" /> </a></li> -->
+      <!-- <li id="m-home"><a onmouseover="document.getElementById('home').src='/design/ecommerce/images/home2.gif';" onmouseout="document.getElementById('home').src='/design/ecommerce/images/home.gif';" id="homeHack" href="/<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>"><img id="home" src="<?php print $GlobalSiteIni->WWWDir; ?>/design/<?php print ($GlobalSiteDesign); ?>/images/home.gif" alt="Full Throttle home" /> </a></li> -->
 */ ?>
    <div id="menuContainer">
      <div id="navcontainer">
        <ul id="navlist">
          <li id="m-home"><a href="/">Home</a></li>
-         <li id="m-reviews"><a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/shop">Shop</a></li>
-         <li id="m-reports"><a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/groupeventcalendar/monthview">Calendar</a></li>
+         <li id="m-reviews"><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/shop">Shop</a></li>
+         <li id="m-reports"><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/groupeventcalendar/monthview">Calendar</a></li>
          
-         <li id="m-gallery"><a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/gallery">Photo Gallery</a></li>
-         <li id="m-install"><a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/contact">Contact Us</a></li>
+         <li id="m-gallery"><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/gallery">Photo Gallery</a></li>
+         <li id="m-install"><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/contact">Contact Us</a></li>
         </ul>
       </div>
      </div>
-<? /*
+<?php /*
      <!-- end #menuContainer -->
      <!-- start #left -->
  */ ?>
@@ -135,25 +131,25 @@
       <div class="menu-left" id="left">
         <div id="wrapper">
           <div class="searchBox">
-          <form action="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/search/" method="get">
+          <form action="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/search/" method="get">
        	    <input type="hidden" name="SectionIDOverride" value="3" />
             Site Search <br />
             <input type="text" name="SearchText"/> <input type="submit" value="GO" id="searchBut" />
           </form>
           </div>
 	  <dl><dt id="dtNone"></dt>
-          <dd><a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/news">News and Updates</a></dd>
-          <dd><a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/reviews">In-Depth Reviews</a></dd>
-          <dd><a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/reports">Trip Reports</a></dd>
+          <dd><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/news">News and Updates</a></dd>
+          <dd><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/reviews">In-Depth Reviews</a></dd>
+          <dd><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/reports">Trip Reports</a></dd>
 
 
-<? /*
-          <dd><a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/wishlists/find">Find A Wishlist</a></dd>
+<?php /*
+          <dd><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/wishlists/find">Find A Wishlist</a></dd>
      
-           <dd><a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/trade/sitemap">Products Sitemap</a></dd>
-           <dd><a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/article/sitemap">Sitemap:Articles</a></dd>
+           <dd><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/trade/sitemap">Products Sitemap</a></dd>
+           <dd><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/article/sitemap">Sitemap:Articles</a></dd>
    */ ?>
-           <?  
+           <?php  
             $CategoryID = 0;
             include( "kernel/eztrade/user/menubox.php" ); 	
             include( "kernel/ezforum/user/menubox.php" );
@@ -169,46 +165,46 @@
         </div>
       </div>
 
-      <? /*
+      <?php /*
          <!-- start #content -->
 	 <!-- Main content view start -->
 */ ?>
 	
          <div id="content">
-         <? /*      <!-- start #menuContainer -->       */ ?>
-         <? /*      <!-- end #left -->   */ ?>
-	 <?
+         <?php /*      <!-- start #menuContainer -->       */ ?>
+         <?php /*      <!-- end #left -->   */ ?>
+	 <?php
               print( $MainContents );
          ?>
 	        </div>
-	 <? /*
+	 <?php /*
 	    <!-- Main content view end -->	
             <!-- end #content -->
 	    */ ?>
 
     </div>
 
-	 <? /*      <!-- start #footer -->    
+	 <?php /*      <!-- start #footer -->    
            <!-- <div id="footer-b1" style="width: 100%; z-index: 2; left: -10px; background-color: #e0e7e9;"> -->
           */ ?>
    </span>
 
 </div>
 <div>
-<?
+<?php
 
     ///////////////////////////////////////////////////////////////////
     /* !-- <span id="footer-b1" style="width: 170px; z-index: -1; left: -10px; background-color: #ffffff;">&nbsp;</span><span id="footer-b1" style="position: relative; left: 160px; background-color: #ffffff;"> --> 
     */
     ///////////////////////////////////////////////////////////////////
 ?>
-<? /* !-- begin #lignt-footer -- */ ?>
-<? 
+<?php /* !-- begin #lignt-footer -- */ ?>
+<?php 
    // Begin : Footer : (Hard Break From Above) 
    ///////////////////////////////////////////////////////////////////
 ?>
 
-<form action="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/bulkmail/singlelist" method="post">
+<form action="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/bulkmail/singlelist" method="post">
 <div id="footerWrap" style="position: relative;">
         <div align="center" style="width: 100%; margin-top: 0px; z-index: 1; padding-top: 0px; padding-bottom: -1px; background-color: #e0e7e9;">
           <span style="padding-bottom: 4px;"><strong>Receive email updates on sales and special offers:</strong></span> 
@@ -229,25 +225,25 @@
           <a href="/forums">Forums</a> |
           <a href="/links">Links</a>
         </div>
-       <? /* !-- end #lignt-footer -- */ ?>
+       <?php /* !-- end #lignt-footer -- */ ?>
 
         <div align="center" style="width: 100%; vertical-align: bottom; margin-top: 0px; padding-top: 4px; padding-bottom: 8px; font-size: 11px; background-color: #c2cfe5;">
-          <div>fullthrottle.com is a <a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/policy/security">secure</a> site that respects your <a href="<? echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/policy/privacy">privacy</a></div>
+          <div>fullthrottle.com is a <a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/policy/security">secure</a> site that respects your <a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/policy/privacy">privacy</a></div>
 
 	  <div class="poweredByLogo">
 	      <div align="center"><a target="" href="/about"><img src="/design/base/images/logo/powered-by-ezpublish-100x35-trans-lgrey.gif" width="90" height="35" border="0" alt="Powered by Exponential Basic"></a></div>
-              <div class="poweredBy">Powered by <a href="https://basic.exponential.earth">Exponential Basic</a> version <a href="/about"><? echo eZPublish::version(); ?></a></div>
+              <div class="poweredBy">Powered by <a href="https://basic.exponential.earth">Exponential Basic</a> version <a href="/about"><?php echo eZPublish::version(); ?></a></div>
 	  </div>
-          <? $SiteCopyright = $ini->variable( "site", "SiteCopyright" ); ?>
-          <div class="copyright"><? echo $SiteCopyright; ?></div>
+          <?php $SiteCopyright = $ini->variable( "site", "SiteCopyright" ); ?>
+          <div class="copyright"><?php echo $SiteCopyright; ?></div>
 
 	</div>
  </div></div>
-	  <? /* <!-- end #footerWrap -- */ ?>
+	  <?php /* <!-- end #footerWrap -- */ ?>
     </form>
 </div>
 </div>
-<?
+<?php
 
 //
 // Store Stats

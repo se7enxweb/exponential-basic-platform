@@ -1,8 +1,8 @@
-<? 
+<?php 
   // Exponential Basic : Application : Page Meta Keywords
   // #############################################################################
 ?>
-<? /* <!-- set the content meta information -->  */ ?>
+<?php /* <!-- set the content meta information -->  */ ?>
 <meta name="author" content="<?php
 
     $SiteAuthor = $ini->variable( "site", "SiteAuthor" );
