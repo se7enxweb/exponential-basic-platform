@@ -25,7 +25,7 @@ if ( isset( $MetaRedirectLocation ) && isset( $MetaRedirectTimer ) )
 
 ?>
 
-<link rel="stylesheet" type="text/css" href="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/standard/style.css" />
+<link rel="stylesheet" type="text/css" href="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/standard/style.css" />
 
 <script language="JavaScript1.2">
 <!--//
@@ -80,7 +80,7 @@ else
 
 <body>
 
-     <?
+     <?php
      print( $MainContents );
      ?>
 

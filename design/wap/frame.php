@@ -9,5 +9,5 @@
 <wml><card id="main_card" title="<?=$SiteTitle; ?>">
 <p><img src="/sitedesign/wap/logo.wbmp" alt="<?=$SiteTitle; ?>" align="middle"/></p>
 
-<? print( $MainContents ); ?>
+<?php print( $MainContents ); ?>
 </card></wml>

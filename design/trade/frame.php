@@ -197,7 +197,7 @@ else
     <!-- Banner start -->
 <!--
     <div align="center">
-        <?
+        <?php
 
 //        $CategoryID = $ini->variable( "eZAdMain", "DefaultCategory" );
 //        $Limit = 1;

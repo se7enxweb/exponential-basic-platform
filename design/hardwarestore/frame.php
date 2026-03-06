@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-<title><?
+<title><?php
 if ( isset( $Title ) )
     print( $Title );
 else
 	print( "AIH" );
     ?></title>
 
-<? 
+<?php 
 /*
 <!--
 	Include "Microsoft Internet Explorer" Favorites Shortcut Icon
@@ -19,9 +19,9 @@ else
 -->
 */ ?>
 <link rel="shortcut icon" href="http://www.aihalaska.com/sitedesign/aih_standard/images/aih_fav.ico" type="image/x-icon" />
-<link rel="stylesheet" type="text/css" href="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/aih_standard/style.css" />
+<link rel="stylesheet" type="text/css" href="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/aih_standard/style.css" />
 
-<? /* <!-- set the content meta information -->
+<?php /* <!-- set the content meta information -->
 */ ?>
 <meta name="author" content="<?php
 
@@ -67,42 +67,42 @@ else
 
 </head>
 
-<body bgcolor="#999999" topmargin="6" marginheight="6" leftmargin="0" rightmargin="0" marginwidth="0" background="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/background_diamond.gif">
+<body bgcolor="#999999" topmargin="6" marginheight="6" leftmargin="0" rightmargin="0" marginwidth="0" background="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/background_diamond.gif">
 <span>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
 	<td>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-	<td width="50%" class="tdmini"><a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/aihlogo3.gif" height="98" width="182" border="0" alt="" /></a></td>
-<td width="48%" class="tdmini" align="center" valign="bottom"><a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/aih_ad_logo.gif" height="174" width="480" border="0" alt="" /></a></td>
+	<td width="50%" class="tdmini"><a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/aihlogo3.gif" height="98" width="182" border="0" alt="" /></a></td>
+<td width="48%" class="tdmini" align="center" valign="bottom"><a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/aih_ad_logo.gif" height="174" width="480" border="0" alt="" /></a></td>
 </tr>
 <tr align="left">
 	<td width="99%" align="left" colspan="2">
 	<table border="0" cellspacing="0" cellpadding="0" align="left">
 	<tr align="left">
-<td width="103" align="left"><a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/archive/8"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/btn-special-events.gif" height="21" width="103" border="0" alt="" /></a></td>
+<td width="103" align="left"><a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/archive/8"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/btn-special-events.gif" height="21" width="103" border="0" alt="" /></a></td>
 
-<? /*
+<?php /*
 <!--
-		<td width="103" align="left"><a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/15"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/btn-locations.gif" height="21" width="103" border="0" alt="" /></a></td>
+		<td width="103" align="left"><a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/15"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/btn-locations.gif" height="21" width="103" border="0" alt="" /></a></td>
 
 -->
 */ ?>
-	<td width="103" align="left"><a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/14"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/btn-history.gif" height="21" width="103" border="0" alt="" /></a></td>
-		<td width="103" align="left"><a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/13"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/btn-affliates.gif" height="21" width="103" border="0" alt="" /></a></td>
-		<td width="103" align="left"><a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/17"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/btn-linecard.gif" height="21" width="103" border="0" alt="" /></a></td>
+	<td width="103" align="left"><a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/14"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/btn-history.gif" height="21" width="103" border="0" alt="" /></a></td>
+		<td width="103" align="left"><a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/13"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/btn-affliates.gif" height="21" width="103" border="0" alt="" /></a></td>
+		<td width="103" align="left"><a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/17"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/btn-linecard.gif" height="21" width="103" border="0" alt="" /></a></td>
    
-<td width="103" align="left"><a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/19"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/btn-employment.gif" height="21" width="103" border="0" alt="" /></a></td>
+<td width="103" align="left"><a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/19"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/btn-employment.gif" height="21" width="103" border="0" alt="" /></a></td>
 
-<td width="103" align="left"><a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/20"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/btn-credit.gif" height="21" width="103" border="0" alt="" /></a></td>
+<td width="103" align="left"><a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/20"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/btn-credit.gif" height="21" width="103" border="0" alt="" /></a></td>
 
-<td width="103" align="left"><a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/22"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/btn-contact.gif" height="21" width="103" border="0" alt="" /></a></td>
+<td width="103" align="left"><a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articlestatic/22"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/btn-contact.gif" height="21" width="103" border="0" alt="" /></a></td>
 
-<? /*
+<?php /*
 
 <!--
-<td width="103" align="left"><a href="mailto:aih@aihalaska.com"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/<? print ($GlobalSiteDesign); ?>/images/btn-contact.gif" height="21" width="103" border="0" alt="" /></a></td>
+<td width="103" align="left"><a href="mailto:aih@aihalaska.com"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/<?php print ($GlobalSiteDesign); ?>/images/btn-contact.gif" height="21" width="103" border="0" alt="" /></a></td>
 -->
 
 */ ?>
@@ -112,38 +112,38 @@ else
 </table><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr valign="top">
      <td width="1%" bgcolor="#ffffff">
-    <? 
+    <?php 
      include( "ezsearch/user/menubox.php" );
     ?>
-    <? /*
+    <?php /*
           $CategoryID=0;
 	  include( "ezarticle/user/menubox.php" );
 	*/ ?>
-	<? /*      */
+	<?php /*      */
          $CategoryID = 0;
          include( "eztrade/user/categorylist.php" ); 
         ?>
-        <?
+        <?php
 	/*	
 	 //include( "eztrade/user/hotdealslist.php" ); 
 	*/
 	?>     
-	<?
+	<?php
         /*
 	<!--
-	<img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="130" height="8" border="0" alt="" /><br />
+	<img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="130" height="8" border="0" alt="" /><br />
 	-->	
 	</td>
 	<!--
-	<td width="1%" bgcolor="#ffffff"><img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="2" height="1" border="0" alt="0" /></td>
+	<td width="1%" bgcolor="#ffffff"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="2" height="1" border="0" alt="0" /></td>
 	-->
 */ ?>
  </td>
     <td width="96%" bgcolor="#ffffff">
-<? /*
+<?php /*
 <!--
     <div align="center">
-        <?
+        <?php
         
         $CategoryID = $ini->variable( "eZAdMain", "DefaultCategory" );
         $Limit = 1; 
@@ -153,21 +153,21 @@ else
     </div><br />
 -->
 */ ?>
-     <?
+     <?php
      print( $MainContents );
      ?>
     <br />
     </td>
-   	<td width="1%" bgcolor="#ffffff"><img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="2" height="1" border="0" alt="0" /></td>
+   	<td width="1%" bgcolor="#ffffff"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="2" height="1" border="0" alt="0" /></td>
 
-<? /*
+<?php /*
    <!-- original bg color
     <td width="1%" bgcolor="#f6f6fa">
     -->
 */ ?>
      <td width="1%" bgcolor="#ffffff">
 
-    <?
+    <?php
        include_once( "classes/ezdate.php" );
 
        $bdate = new ezdate();
@@ -179,14 +179,14 @@ else
 /*
 
 <!--
- <div style="font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 8pt; font-weight: normal; color: rgb(128, 0, 0);"> <? print($now_date); ?> </div>
+ <div style="font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 8pt; font-weight: normal; color: rgb(128, 0, 0);"> <?php print($now_date); ?> </div>
 -->
 */
     ?>
 
- <div style="font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 10pt; font-weight: bold; color: #0D2154;"> <? print($now_date); ?> </div>
+ <div style="font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 10pt; font-weight: bold; color: #0D2154;"> <?php print($now_date); ?> </div>
 
-<?
+<?php
 	include( "ezuser/user/userbox.php" );
 
 	include( "eztrade/user/menubox.php" );
@@ -194,19 +194,19 @@ else
 	include( "eztrade/user/smallcart.php" );    
 ?>
 
-    <?
+    <?php
     // graham@brookinsconsulting.com: commented out existing search box placement
     // include( "ezsearch/user/menubox.php" );
     ?>
-	<img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="130" height="10" border="0" alt="" /><br />
-<? /*
+	<img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="130" height="10" border="0" alt="" /><br />
+<?php /*
    <div align="center"><a class="path" href="?PrintableVersion=enabled">Printable page</a></div><br />
 
 	<div align="center">
-	<a target="_blank" href="http://developer.ez.no"><img src="<? print $GlobalSiteIni->WWWDir; ?>/images/powered-by-ezpublish-100x35-trans-lgrey.gif" width="100" height="35" border="0" alt="Powered by Exponential Basic" /></a>
+	<a target="_blank" href="http://developer.ez.no"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/powered-by-ezpublish-100x35-trans-lgrey.gif" width="100" height="35" border="0" alt="Powered by Exponential Basic" /></a>
 	</div>
 	
-	<img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="130" height="8" border="0" alt="" /><br />
+	<img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="130" height="8" border="0" alt="" /><br />
 */ ?>
 	</td>
   </tr>
@@ -225,7 +225,7 @@ Alaska Industrial Hardware</span>
 </div>
 
 
-<?
+<?php
 // Store the statistics with a callback image.
 // It will be no overhead with this method for storing stats
 //

@@ -2,34 +2,34 @@
 
 	<br />
     </td>
-   	<td width="1%" bgcolor="#ffffff"><img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="2" height="1" border="0" alt="" /></td>
+   	<td width="1%" bgcolor="#ffffff"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="2" height="1" border="0" alt="" /></td>
 
 	<td width="1%" bgcolor="#f0f0f0">
 
    	<!-- Right menu start -->
     
-    <?
+    <?php
     include( "ezuser/user/userbox.php" );
 	?>
 
-    <?
+    <?php
   	$CategoryID = 1;
 //    include( "ezarticle/user/smallarticlelist.php" );
     include( "ezarticle/user/headlines.php" );
     ?>
 
 
-    <?
+    <?php
     include( "ezpoll/user/votebox.php" );
     ?>
 
-    <?
+    <?php
     include( "ezquiz/user/menubox.php" );
     ?>
         
 	<hr noshade="noshade" size="4" />
 	
-    <?
+    <?php
     $session =& eZSession::globalSession();
 
 
@@ -81,25 +81,25 @@ if ( $Design == 3 )
     ?>
 	
 	<h2>Alternative sitedesigns:</h2>
-    <a href="<? print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $REQUEST_URI . "?Design=1"); ?>"><b>Intranet</b></a><br />
-    <a href="<? print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $REQUEST_URI . "?Design=2"); ?>"><b>Trade</b></a><br />
-    <a href="<? print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $REQUEST_URI . "?Design=3"); ?>"><b>News</b></a><br />
+    <a href="<?php print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $REQUEST_URI . "?Design=1"); ?>"><b>Intranet</b></a><br />
+    <a href="<?php print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $REQUEST_URI . "?Design=2"); ?>"><b>Trade</b></a><br />
+    <a href="<?php print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $REQUEST_URI . "?Design=3"); ?>"><b>News</b></a><br />
 
    	<!-- Right menu end -->
 	
-	<img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="130" height="20" border="0" alt="" /><br />
+	<img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="130" height="20" border="0" alt="" /><br />
 	
 	<div align="center">
-	<a target="_blank" href="http://developer.ez.no"><img src="<? print $GlobalSiteIni->WWWDir; ?>/images/powered-by-ezpublish-100x35-trans-lgrey.gif" width="100" height="35" border="0" alt="Powered by Exponential Basic" /></a>
+	<a target="_blank" href="http://developer.ez.no"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/powered-by-ezpublish-100x35-trans-lgrey.gif" width="100" height="35" border="0" alt="Powered by Exponential Basic" /></a>
 	</div>
 	
-	<img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="130" height="8" border="0" alt="" /><br />
+	<img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="130" height="8" border="0" alt="" /><br />
 	 
 	</td>
   </tr>
 </table>
 
-<?
+<?php
 // Store the statistics with a callback image.
 // It will be no overhead with this method for storing stats
 //

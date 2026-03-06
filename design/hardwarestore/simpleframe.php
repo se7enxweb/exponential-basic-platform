@@ -26,7 +26,7 @@ if ( isset( $MetaRedirectLocation ) && isset( $MetaRedirectTimer ) )
 ?>
 
 <link rel="shortcut icon" href="http://aih.secure-shops.net/sitedesign/aih_standard/images/aih_fav.ico" type="image/x-icon" />
-<link rel="stylesheet" type="text/css" href="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/aih_standard/style.css" />
+<link rel="stylesheet" type="text/css" href="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/aih_standard/style.css" />
 
 <script language="JavaScript1.2">
 <!--//
@@ -108,7 +108,7 @@ else
 <body>
      <a href="/"><img src="/sitedesign/aih_standard/images/aihlogo3.gif" height="98" width="182" border="0" alt="" /></a><br />
 
-     <?
+     <?php
      print( $MainContents );
      ?> 
 

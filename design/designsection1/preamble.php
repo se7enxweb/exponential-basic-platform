@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="no" lang="no">
 
 <head>
-<title><?
+<title><?php
 if ( isset( $Title ) )
     print( $Title );
 else
 	print( "Exponential Basic" );
     ?></title>
     
-<link rel="stylesheet" type="text/css" href="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/designsection1/style.css" />
+<link rel="stylesheet" type="text/css" href="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/designsection1/style.css" />
 
 <script language="JavaScript1.2">
 <!--//

@@ -1,25 +1,25 @@
 	<br />
-	<img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="468" height="1" border="0" alt="" /><br />
+	<img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="468" height="1" border="0" alt="" /><br />
 	</td>
-	<td background="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/designsection1/images/menuedge-right.gif" valign="top"><img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/designsection1/images/menuedge-top-right.gif" width="20" height="60" border="0" alt="" /></td>
+	<td background="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/designsection1/images/menuedge-right.gif" valign="top"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/designsection1/images/menuedge-top-right.gif" width="20" height="60" border="0" alt="" /></td>
 	<td bgcolor="#f08c00">
-	<img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="128" height="51" border="0" alt="" />
+	<img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="128" height="51" border="0" alt="" />
 
-	     <?
+	     <?php
           include( "ezuser/user/userbox.php" );
          ?>    
 
 <table width="100%" cellspacing="0" cellpadding="2" border="0">
 <tr>
 	<td>
-	<img src="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/designsection1/images/articles-dummy.gif" width="122" height="17"><br />
-	<img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="1" height="5"><br />
+	<img src="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/designsection1/images/articles-dummy.gif" width="122" height="17"><br />
+	<img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="1" height="5"><br />
 	</td>
 </tr>
 <tr>
 	<td width="100%">
 	<div class="rightmenu">
-	<a href="<? print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articleedit/new/">Dette er en lengre tekst!</a>
+	<a href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/article/articleedit/new/">Dette er en lengre tekst!</a>
 	</div>
 	</td>
 </tr>
@@ -28,11 +28,11 @@
 	</td>
 </tr>
 <tr>
-	<td background="<? print $GlobalSiteIni->WWWDir; ?>/sitedesign/designsection1/images/menuedge-right.gif"><img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="20" height="1" border="0" alt="" /></td>
+	<td background="<?php print $GlobalSiteIni->WWWDir; ?>/sitedesign/designsection1/images/menuedge-right.gif"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="20" height="1" border="0" alt="" /></td>
 	<td bgcolor="#f08c00">
-	<img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="128" height="1" border="0" alt="" />
+	<img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="128" height="1" border="0" alt="" />
 
-<?
+<?php
 // Store the statistics with a callback image.
 // It will be no overhead with this method for storing stats
 //
@@ -51,7 +51,7 @@ if ( $StoreStats == "enabled" )
 	</td>
 </tr>
 <tr>
-	<td colspan="5" bgcolor="#000000"><img src="<? print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="1" height="38" border="0" alt="" /></td>
+	<td colspan="5" bgcolor="#000000"><img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" width="1" height="38" border="0" alt="" /></td>
 </tr>
 </table>
 
