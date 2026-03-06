@@ -1,7 +1,12 @@
 .DS_Store
 .idea
+.htaccess*
 composer.lock
-.htaccess
+config.php
+settings/override/site.ini.php
+g
+clr
+vendor
 bin/logs
 update/generated
 update/captions
