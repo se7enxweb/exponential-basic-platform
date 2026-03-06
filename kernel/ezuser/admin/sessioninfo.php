@@ -47,7 +47,7 @@ if ( isset( $Action ) && (string) $Action == "Delete" && count( $SessionArrayID 
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 
 
@@ -65,7 +65,7 @@ $t->set_block( "user_list_page", "group_item_tpl", "group_item" );
 
 $user = new eZUser();
 
-$userSessionList =& eZUser::currentUsers();
+$userSessionList = eZUser::currentUsers();
 
 $t->set_var( "user_count", count( $userSessionList ) );
 

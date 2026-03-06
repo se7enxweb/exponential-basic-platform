@@ -59,7 +59,7 @@ class eZMBStringMapper
      \static
      \note This function is duplicated in eZTextCodec::eZTextCodec(), remember to update both places.
     */
-    static function &charsetList()
+    static function charsetList()
     {
         $charsets =& $GLOBALS["eZMBCharsetList"];
         if ( !is_array( $charsets ) )

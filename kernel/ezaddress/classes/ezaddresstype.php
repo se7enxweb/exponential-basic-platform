@@ -67,7 +67,7 @@ class eZAddressType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $name = $db->escapeString( $this->Name );
         $db->begin( );
@@ -111,7 +111,7 @@ class eZAddressType
 
     function delete( $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( !$id )
             $id = $this->ID;
 
@@ -127,7 +127,7 @@ class eZAddressType
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $id != "" )
         {
             $db->array_query( $address_type_array, "SELECT * FROM eZAddress_AddressType
@@ -149,7 +149,7 @@ class eZAddressType
     */
     function fill( &$address_type_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $address_type_array[$db->fieldName("ID")];
         $this->Name = $address_type_array[$db->fieldName("Name")];
         $this->ListOrder = $address_type_array[$db->fieldName("ListOrder")];
@@ -159,9 +159,9 @@ class eZAddressType
       \static
       Fetches the addresstype id from the database. And returns a array of eZAddressType objects.
     */
-    static public function &getAll( $as_object = true )
+    static public function getAll( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $online_type_array = 0;
 
         $address_type_array = array();
@@ -222,9 +222,9 @@ class eZAddressType
       Returns the number of external items using this item.
     */
 
-    function &count()
+    function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry, "SELECT COUNT( Ad.ID ) as Count
                                  FROM  eZAddress_Address AS Ad, eZAddress_AddressType AS AT
                                  WHERE Ad.AddressTypeID = AT.ID AND AddressTypeID='$this->ID'" );
@@ -241,7 +241,7 @@ class eZAddressType
     function moveUp()
     {
         
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ID, ListOrder FROM eZAddress_AddressType
                                   WHERE Removed=0 AND ListOrder<'$this->ListOrder' ORDER BY ListOrder DESC", array( "Limit" => "1" ) );
         $listorder = $qry[ $db->fieldName( "ListOrder" ) ];
@@ -259,7 +259,7 @@ class eZAddressType
 
     function moveDown()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ID, ListOrder FROM eZAddress_AddressType
                                   WHERE Removed=0 AND ListOrder>'$this->ListOrder' ORDER BY ListOrder ASC", array( "Limit" => "1" ) );
         $listorder = $qry[$db->fieldName("ListOrder")];

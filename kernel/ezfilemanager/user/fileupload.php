@@ -89,7 +89,7 @@ if ( isset( $Download ) )
     exit();
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user )
 {
@@ -97,7 +97,7 @@ if ( !$user )
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
 
@@ -362,8 +362,8 @@ if ( isset( $Action ) && $Action == "New" || $error )
     $t->set_var( "file_id", "" );
     if ( $FolderID )
     {
-        $readGroupArrayID =& eZObjectPermission::getGroups( $FolderID, "filemanager_folder", "r", false );
-        $writeGroupArrayID =& eZObjectPermission::getGroups( $FolderID, "filemanager_folder", "w", false );
+        $readGroupArrayID = eZObjectPermission::getGroups( $FolderID, "filemanager_folder", "r", false );
+        $writeGroupArrayID = eZObjectPermission::getGroups( $FolderID, "filemanager_folder", "w", false );
     }
     else
     {
@@ -393,8 +393,8 @@ if ( isset( $Action ) && $Action == "Edit" )
     if ( $folder )
         $FolderID = $folder->id();
 
-    $readGroupArrayID =& eZObjectPermission::getGroups( $file->id(), "filemanager_file", "r", false );
-    $writeGroupArrayID =& eZObjectPermission::getGroups( $file->id(), "filemanager_file", "w", false );
+    $readGroupArrayID = eZObjectPermission::getGroups( $file->id(), "filemanager_file", "r", false );
+    $writeGroupArrayID = eZObjectPermission::getGroups( $file->id(), "filemanager_file", "w", false );
 
     $t->set_var( "action_value", "update" );
 }

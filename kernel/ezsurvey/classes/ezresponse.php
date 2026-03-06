@@ -27,7 +27,7 @@
                          WHERE
                            ID = '$id'";
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->array_query( $object_array, $SqlQuery );
             if ( count( $object_array ) > 1 )
@@ -49,7 +49,7 @@
         function store()
         {
             $ret = false;
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             if ( !isSet( $this->ID) )
@@ -89,7 +89,7 @@
 
         function delete()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $res[] = $db->query( "DELETE FROM eZSurvey_Response WHERE ID='$this->ID'" );
@@ -99,7 +99,7 @@
         
         public static function numberOfResponses( $surveyId = "" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             
             // if ( $surveyId == "" )
             // {
@@ -115,11 +115,11 @@
         function sendMail()
         {
             $survey = new eZSurvey( $this->SurveyID );
-            $ini =& eZINI::instance( 'site.ini' );
+            $ini = eZINI::instance( 'site.ini' );
             
             if ( trim($survey->email()) != "" )
             {
-                $question_array =& $survey->surveyQuestions();
+                $question_array = $survey->surveyQuestions();
                 
                 foreach ( $question_array as $questionItem )
                 {

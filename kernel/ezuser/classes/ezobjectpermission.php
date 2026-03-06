@@ -75,7 +75,7 @@ class eZObjectPermission
     static public function hasPermission( $objectID, $moduleTable, $permission, $user = false )
     {
         if ( !is_a( $user, "eZUser" ) )
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
 
         if ( is_object( $user ) && $user->hasRootAccess() )
             return true;
@@ -86,7 +86,7 @@ class eZObjectPermission
         $SQLGroups = "GroupID = '-1'";
         if ( is_a( $user, "eZUser" ) )
         {
-            $groups =& $user->groups( false );
+            $groups = $user->groups( false );
             $first = true;
             if ( count( $groups ) > 0 )
             {
@@ -127,7 +127,7 @@ class eZObjectPermission
         }
 
         $query = "SELECT count( ID ) as ID FROM $tableName WHERE ObjectID='$objectID' AND ( $SQLGroups ) $SQLPermission";
-        $database =& eZDB::globalDatabase();
+        $database = eZDB::globalDatabase();
 
         $database->query_single( $res, $query );
         if ( $res[$database->fieldName( "ID" )] != 0 )
@@ -141,7 +141,7 @@ class eZObjectPermission
     {
         if ( !is_a( $user, "eZUser" ) )
         {
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
         }
 
         if ( is_object( $user ) && $user->hasRootAccess() )
@@ -156,7 +156,7 @@ class eZObjectPermission
         $SQLGroups = "Object.GroupID = '-1' AND Category.GroupID = '-1' ";
         if ( is_a( $user, "eZUser" ) )
         {
-            $groups =& $user->groups( false );
+            $groups = $user->groups( false );
             $first = true;
             if ( count( $groups ) > 0 )
             {
@@ -212,7 +212,7 @@ class eZObjectPermission
 
         $query = "SELECT count( Object.ID ) as ID FROM $tableName WHERE Object.ObjectID='$objectID' AND ( $SQLGroups ) $SQLRead $SQLWrite  AND Object.ObjectID=Definition.ArticleID AND Category.ObjectID=Definition.CategoryID AND Category.ObjectID='$categoryID' GROUP BY Object.ObjectID";
 
-        $database =& eZDB::globalDatabase();
+        $database = eZDB::globalDatabase();
 
         $database->query_single( $res, $query );
 
@@ -271,7 +271,7 @@ class eZObjectPermission
             return false;
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $dbError = false;
         $db->begin( );
 
@@ -350,7 +350,7 @@ class eZObjectPermission
 
         $query = "UPDATE $tableName SET $SQLPermission WHERE ObjectID='$objectID'";
 
-        $database =& eZDB::globalDatabase();
+        $database = eZDB::globalDatabase();
         $database->query( $query );
     }
 
@@ -390,7 +390,7 @@ class eZObjectPermission
 
         $query = "SELECT GroupID FROM $tableName WHERE ObjectID='$objectID' AND $SQLPermission";
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $res, $query );
 
         if ( count( $res ) > 0 )
@@ -427,7 +427,7 @@ class eZObjectPermission
 
         if ( $user == false )
         {
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
         }
 
 
@@ -436,7 +436,7 @@ class eZObjectPermission
         $SQLGroups = "GroupID = '-1'";
         if ( is_a( $user, "eZUser" ) )
         {
-            $groups =& $user->groups( false );
+            $groups = $user->groups( false );
             $first = true;
             if ( count( $groups ) > 0 )
             {
@@ -480,7 +480,7 @@ class eZObjectPermission
             return $ret;
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( is_a( $user, "eZUser" ) and $user->hasRootAccess() )
             $query =  "SELECT $SQLReturn FROM $tableName";
         else

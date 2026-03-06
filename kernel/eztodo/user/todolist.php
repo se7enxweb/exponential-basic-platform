@@ -54,7 +54,7 @@ if ( isset( $New ) )
     exit();
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( $user == false )
 {
@@ -235,7 +235,7 @@ foreach ( $todo_array as $todoItem )
 }
 
 $category = new eZCategory();
-$categoryList =& $category->getAll();
+$categoryList = $category->getAll();
 $t->set_var( "category_selected", $showCategory ? "" : "selected" );
 
 foreach ( $categoryList as $category )
@@ -256,7 +256,7 @@ foreach ( $categoryList as $category )
 }
 
 $status = new eZStatus();
-$statusList =& $status->getAll();
+$statusList = $status->getAll();
 $t->set_var( "all_selected", $showTodo ? "" : "selected" );
 
 foreach ( $statusList as $status )

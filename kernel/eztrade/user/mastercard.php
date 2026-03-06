@@ -30,7 +30,7 @@
 // include_once( "classes/ezhttptool.php" );
 // include_once( "classes/ezcctool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 

@@ -47,7 +47,7 @@ function menuMaker()
     // include_once( "ezarticle/classes/ezarticle.php" );
     // include_once( "ezuser/classes/ezobjectpermission.php" );
     
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
     
     $Language = $ini->variable( "eZArticleMain", "Language" );
     $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
@@ -79,7 +79,7 @@ function menuMaker()
     
     $articleCategory = new eZArticleCategory( $category_id );
     $articleCategory_array = $articleCategory->getByParent( $articleCategory );
-    $article_art_array =& $articleCategory->articles( "absolute_placement", false, true, 0, 50 );
+    $article_art_array = $articleCategory->articles( "absolute_placement", false, true, 0, 50 );
     $i = 0;
 
     if ( count( $article_art_array ) > 0 )
@@ -106,7 +106,7 @@ function menuMaker()
         
 
         $article_cat_array = $categoryItem->getByParent( $categoryItem );
-        $article_art_array =& $categoryItem->articles( "absolute_placement", false, true, 0, 50 );
+        $article_art_array = $categoryItem->articles( "absolute_placement", false, true, 0, 50 );
         
         
         if ( count( $article_cat_array ) > 0 )

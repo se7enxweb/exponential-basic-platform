@@ -26,7 +26,7 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/eztemplate.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 
 // include_once( "ezuser/classes/ezuser.php" );
@@ -57,7 +57,7 @@ $t->set_var( "libxml_error", "" );
 $t->set_var( "qtdom_error", "" );
 $t->set_var( "convert_error", "" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( $user )
 {

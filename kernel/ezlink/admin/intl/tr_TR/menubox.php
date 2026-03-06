@@ -9,11 +9,11 @@
         <img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/<?php echo $SiteDesign; ?>/menu-arrow.gif" width="20" height="10">
            <a class="menu" href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/link/">Ba�lant� listesi</a><br>
         <img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/<?php echo $SiteDesign; ?>/menu-arrow.gif" width="20" height="10">
-          <a class="menu" href="<?php print $GlobalSiteIni->WWWDir$GlobalSiteIni->Index; ?>/link/group/incoming/">Ba�lant� kabul et</a><br>
+          <a class="menu" href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/link/group/incoming/">Ba�lant� kabul et</a><br>
         <img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/<?php echo $SiteDesign; ?>/menu-arrow.gif" width="20" height="10">
-          <a class="menu" href="<?php print $GlobalSiteIni->WWWDir$GlobalSiteIni->Index; ?>/link/groupedit/new//">Yeni kategori</a><br>
+          <a class="menu" href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/link/groupedit/new//">Yeni kategori</a><br>
         <img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/<?php echo $SiteDesign; ?>/menu-arrow.gif" width="20" height="10">
-          <a class="menu" href="<?php print $GlobalSiteIni->WWWDir$GlobalSiteIni->Index; ?>/link/linkedit/new//">Yeni ba�lant�</a><br>
+          <a class="menu" href="<?php print $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index; ?>/link/linkedit/new//">Yeni ba�lant�</a><br>
     </td>
 </tr>
 <tr>

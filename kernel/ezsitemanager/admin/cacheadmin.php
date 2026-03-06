@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZSiteManagerMain", "Language" );
 $Limit = $ini->variable( "eZSiteManagerMain", "AdminListLimit" );
 
@@ -45,7 +45,7 @@ $t->set_var( "cache_results", "" );
 if ( isset( $ClearCache ) )
 {    
     // save the buffer contents
-    $buffer =& ob_get_contents();
+    $buffer = ob_get_contents();
     ob_end_clean();
 
     // fetch the system printout

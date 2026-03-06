@@ -35,7 +35,7 @@
 // include_once( "ezimagecatalogue/classes/ezimagecategory.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZImageCatalogueMain", "Language" );
 $ImageDir = $ini->variable( "eZImageCatalogueMain", "ImageDir" );
@@ -54,7 +54,7 @@ $category = new eZImageCategory( $CategoryID );
 
 $user = eZUser::currentUser();
 // Print out all the categories
-$categoryList =& $category->getByParent( $category );
+$categoryList = $category->getByParent( $category );
 
 foreach ( $categoryList as $categoryItem )
 {

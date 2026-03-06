@@ -70,7 +70,7 @@ if ( $Command == "list" )
         $total += $categoryCount;
         if ( $loc_offset < $categoryCount )
         {
-            $categoryList =& $category->getByParent( $category, $loc_offset, $loc_max );
+            $categoryList = $category->getByParent( $category, $loc_offset, $loc_max );
             $loc_max -= count( $categoryList );
 
             foreach ( $categoryList as $catItem )
@@ -95,7 +95,7 @@ if ( $Command == "list" )
         $total += $imageCount;
         if ( $loc_max > 0 and $loc_offset >= 0 )
         {
-            $imageList =& $category->images( "time", $loc_offset, $loc_max, false, true );
+            $imageList = $category->images( "time", $loc_offset, $loc_max, false, true );
             foreach( $imageList as $imageItem )
             {
                 $cols = array( "Caption" => new eZXMLRPCString( $imageItem->caption( false ) ),
@@ -119,7 +119,7 @@ if ( $Command == "list" )
     $par = array();
     if ( $offset == 0 )
     {
-        $path =& $category->path();
+        $path = $category->path();
         if ( $category->id() != 0 )
         {
             $par[] = createURLStruct( "ezimagecatalogue", "category", 0 );
@@ -180,7 +180,7 @@ if ( $Command == "list" )
 else if ( $Command == "tree" )
 {
     $cat = new eZImageCategory();
-    $tree =& categoryTree( $cat );
+    $tree = categoryTree( $cat );
     $ReturnData = createTreeStruct( $tree, "ezimagecatalogue", "category" );
 }
 else if ( $Command == "search" )
@@ -192,7 +192,7 @@ else if ( $Command == "search" )
         $texts[] = $keyword->value();
     }
     $elements = array();
-    $result =& eZImageCategory::search( $texts, false, "name", $User );
+    $result = eZImageCategory::search( $texts, false, "name", $User );
     foreach( $result as $item )
     {
         $catid = $item->parent( false );
@@ -212,9 +212,9 @@ else if ( $Command == "search" )
     $ReturnData = new eZXMLRPCStruct( $ret );
 }
 
-function &categoryTree( $cat )
+function categoryTree( $cat )
 {
-    $children =& eZImageCategory::getByParent( $cat );
+    $children = eZImageCategory::getByParent( $cat );
     $child_array = array();
     foreach( $children as $child )
     {

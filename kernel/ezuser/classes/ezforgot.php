@@ -75,7 +75,7 @@ class eZForgot
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $this->Hash = md5( microTime() );
 
@@ -116,7 +116,7 @@ class eZForgot
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -133,7 +133,7 @@ class eZForgot
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != -1 )
@@ -162,7 +162,7 @@ class eZForgot
     */
     function check( $hash )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $hash = $db->escapeString( $hash );

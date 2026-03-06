@@ -32,7 +32,7 @@
 
 // include_once( "ezuser/classes/ezauthor.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
@@ -61,8 +61,8 @@ foreach ( $authorArray as $author )
 
 
 $tree = new eZArticleCategory();
-$treeArray =& $tree->getTree();
-$user =& eZUser::currentUser();
+$treeArray = $tree->getTree();
+$user = eZUser::currentUser();
 
 $catCount = count( $treeArray );
 $t->set_var( "num_select_categories", min( $catCount + 1, 10 ) );

@@ -29,7 +29,7 @@
 // include_once( "classes/ezcurrency.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $Limit = $ini->variable( "eZTradeMain", "ProductSearchLimit" );
@@ -64,10 +64,10 @@ $t->set_var( "search_text", $Search );
 
 // products
 $product = new eZProduct();
-$TotalTypes =& $product->activeProductSearchCount( $Search, FALSE );
-$productList =& $product->activeProductSearch( $Search, $Offset, $Limit, FALSE );
+$TotalTypes = $product->activeProductSearchCount( $Search, FALSE );
+$productList = $product->activeProductSearch( $Search, $Offset, $Limit, FALSE );
 // $sortMode="time";
-// $productList =& $product->activeProductSearch( $sortMode, $Search, $Offset, $Limit );
+// $productList = $product->activeProductSearch( $sortMode, $Search, $Offset, $Limit );
 
 $locale = new eZLocale( $Language );
 $i=0;

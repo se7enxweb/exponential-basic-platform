@@ -69,13 +69,13 @@ else if( $Command == "data" ) // return all the data in the category
     {
         $writeGroups = eZObjectPermission::getGroups( $ID, "article_article", 'w', false );
         $readGroups = eZObjectPermission::getGroups( $ID, "article_article", 'r', false );
-        $contentsWriter =& $article->contentsWriter( true );
+        $contentsWriter = $article->contentsWriter( true );
 
         $type_arr = array();
-        $types =& $article->types();
+        $types = $article->types();
         foreach( $types as $type )
         {
-            $attributes =& $type->attributes();
+            $attributes = $type->attributes();
             if ( count( $attributes ) > 0 )
             {
                 $attr_arr = array();
@@ -141,16 +141,16 @@ else if( $Command == "data" ) // return all the data in the category
         $start_date = $article->startDate( false );
         if ( !is_bool( $start_date ) )
             $ret["StartDate"] = createDateTimeStruct( $article->startDate() );
-        $stop_date =& $article->stopDate( false );
+        $stop_date = $article->stopDate( false );
         if ( !is_bool( $stop_date ) )
             $ret["StopDate"] = createDateTimeStruct( $article->stopDate() );
-        $published =& $article->published();
+        $published = $article->published();
         if ( $published->isValid() )
             $ret["PublishedDate"] = createDateTimeStruct( $published );
-        $created =& $article->created();
+        $created = $article->created();
         if ( $created->isValid() )
             $ret["CreatedDate"] = createDateTimeStruct( $created );
-        $modified =& $article->modified();
+        $modified = $article->modified();
         if ( $modified->isValid() )
             $ret["ModifiedDate"] = createDateTimeStruct( $modified );
         $ReturnData = new eZXMLRPCStruct( $ret );
@@ -233,9 +233,9 @@ else if( $Command == "storedata" )
 
     if ( isset( $Data["Category" ] ) && isset( $Data["Categories"] ) )
     {
-        $add_locs =& createURLArray( $add_categories, "ezarticle", "category" );
-        $cur_locs =& createURLArray( $cur_categories, "ezarticle", "category" );
-        $old_locs =& createURLArray( $remove_categories, "ezarticle", "category" );
+        $add_locs = createURLArray( $add_categories, "ezarticle", "category" );
+        $cur_locs = createURLArray( $cur_categories, "ezarticle", "category" );
+        $old_locs = createURLArray( $remove_categories, "ezarticle", "category" );
     }
 
     // images
@@ -284,7 +284,7 @@ else if( $Command == "storedata" )
     {
         $new_files[] = $fl->value();
     }
-    $files =& $article->files( false );
+    $files = $article->files( false );
     $old_files = array_diff( $files, $new_files );
     $added_files = array_diff( $new_files, $files );
     $changed_files = array_intersect( $new_files, $files );
@@ -375,11 +375,11 @@ else if( $Command == "storedata" )
 
     // categories
     $category = new eZArticleCategory( eZArticle::categoryDefinitionStatic( $ID ) );
-    $par =& createPath( $category, "ezarticle", "category" );
+    $par = createPath( $category, "ezarticle", "category" );
 
     $category = $article->categoryDefinition( );
     $CategoryID = $category->id();
-    $CategoryArray =& $article->categories( false );
+    $CategoryArray = $article->categories( false );
     eZArticleTool::deleteCache( $ID, $CategoryID, $CategoryArray );
 
     $cat_def_id = $article->categoryDefinition( false );
@@ -414,7 +414,7 @@ else if( $Command == "delete" )
 {
     $category = eZArticle::categoryDefinitionStatic( $ID );
     $category = new eZArticleCategory( $category );
-    $path =& $category->path();
+    $path = $category->path();
     if ( $category->id() != 0 )
     {
         $par[] = createURLStruct( "ezarticle", "category", 0 );
@@ -439,7 +439,7 @@ else if( $Command == "delete" )
     $article = new eZArticle( $ID );
     $category = $article->categoryDefinition( );
     $CategoryID = $category->id();
-    $CategoryArray =& $article->categories( false );
+    $CategoryArray = $article->categories( false );
     eZArticleTool::deleteCache( $ID, $CategoryID, $CategoryArray );
 
     $article->delete();
@@ -475,10 +475,10 @@ else if ( $Command == "search" )
             $params["PhotographerID"] = $par["PhotographerID"]->value();
     }
     $search_count = 0;
-    $result =& $article->search( $text, "alpha", true, 0, -1, $params, $search_count );
+    $result = $article->search( $text, "alpha", true, 0, -1, $params, $search_count );
     foreach( $result as $item )
     {
-        $cat =& $item->categoryDefinition();
+        $cat = $item->categoryDefinition();
         $itemid = $item->id();
         $catid = $cat->id();
         $elements[] = new eZXMLRPCStruct( array( "Name" => new eZXMLRPCString( $item->name( false ) ),

@@ -36,7 +36,7 @@
 // include_once( "ezimagecatalogue/classes/ezimage.php" );
 // include_once( "ezimagecatalogue/classes/ezimagecategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZImageCatalogueMain", "Language" );
 $ImageDir = $ini->variable( "eZImageCatalogueMain", "ImageDir" );
 
@@ -47,7 +47,7 @@ $t->set_file( "image_list_page_tpl", "unassigned.tpl" );
 
 $t->setAllStrings();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $t->set_block( "image_list_page_tpl", "image_list_tpl", "image_list" );
 
@@ -92,11 +92,11 @@ $t->set_var( "limit", $Limit );
 
 // Print out all the images
 
-$imageList =& eZImage::getUnassigned( $Offset, $Limit );
+$imageList = eZImage::getUnassigned( $Offset, $Limit );
 
 
 if ( $imageList )
-    $imageCount =& eZImage::countUnassigned();
+    $imageCount = eZImage::countUnassigned();
 else
     $imageCount = 0;
 
@@ -116,11 +116,11 @@ if ( !is_null( $imageList ) && count ( $imageList ) > 0 )
         $t->set_var( "image_caption", $image->name() );
         $t->set_var( "image_url", $image->name() );
         
-        $width =& $ini->variable( "eZImageCatalogueMain", "ThumbnailViewWidth" );
+        $width = $ini->variable( "eZImageCatalogueMain", "ThumbnailViewWidth" );
         
-        $height =& $ini->variable( "eZImageCatalogueMain", "ThumbnailViewHight" );
+        $height = $ini->variable( "eZImageCatalogueMain", "ThumbnailViewHight" );
         
-        $variation =& $image->requestImageVariation( $width, $height );
+        $variation = $image->requestImageVariation( $width, $height );
         
         $t->set_var( "image_description",$image->description() ); 
         $t->set_var( "image_alt", $image->name() );
@@ -131,7 +131,7 @@ if ( !is_null( $imageList ) && count ( $imageList ) > 0 )
         
         if ( $image->fileExists( true ) )
         {
-            $imagePath =& $image->filePath( true );
+            $imagePath = $image->filePath( true );
             $size = eZPBFile::filesize( $imagePath );
         }
         else
@@ -200,7 +200,7 @@ else
 }
 
 $category = new eZImageCategory() ;
-$categoryList =& $category->getTree( );
+$categoryList = $category->getTree( );
 
 // Make a category list
 foreach ( $categoryList as $categoryItem )

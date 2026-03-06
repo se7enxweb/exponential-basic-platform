@@ -306,7 +306,7 @@ class eZTime
     */
     function setTimeStamp( $value )
     {
-        $formattedTime =& date('His', $value );
+        $formattedTime = date('His', $value );
 
         if ( preg_match( "/([0-9]{2})([0-9]{2})([0-9]{2})/", $formattedTime, $valueArray ) )
         {

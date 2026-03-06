@@ -26,7 +26,7 @@
 // include_once( "ezuser/classes/ezforgot.php" );
 // include_once( "ezmail/classes/ezmail.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $headersInfo = getallheaders();
 

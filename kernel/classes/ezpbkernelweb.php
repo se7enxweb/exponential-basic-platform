@@ -437,10 +437,10 @@ ini_alter( "session.entropy_file","/dev/urandom" );
 ini_alter( "session.entropy_length", "512" );
 
 global $ini;
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $StoreStats = $ini->variable( "eZStatsMain", "StoreStats" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 // 7x: Convert the following to ini settings
 $GLOBALS["DEBUG"] = false;
@@ -450,7 +450,7 @@ global $GLOBALS;
 
 
 global $GlobalSiteIni;
-$GlobalSiteIni =& $ini;
+$GlobalSiteIni = $ini;
 
 // Set the global nVH variables.
 $GlobalSiteIni->Index = $index;
@@ -469,7 +469,7 @@ global $SiteStyle;
 $SiteStyle = $ini->variable( "site", "SiteDesign" );
 
 global $siteDesign;
-$siteDesign =& $ini->variable( "site", "SiteDesign" );
+$siteDesign = $ini->variable( "site", "SiteDesign" );
 
 // Store the site design in a global variable
 global $GlobalSiteDesign;
@@ -505,9 +505,9 @@ $meta_page = "";
 $content_page = "";
 
 // Check if userlogin is required
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
-$requireUserLogin =& $ini->variable( "eZUserMain", "RequireUserLogin" );
+$requireUserLogin = $ini->variable( "eZUserMain", "RequireUserLogin" );
 
 // Cookie auto login.
 if ( isset( $HTTP_COOKIE_VARS["eZUser_AutoCookieLogin"] ) and $HTTP_COOKIE_VARS["eZUser_AutoCookieLogin"] != false )
@@ -530,6 +530,7 @@ for( $i = $url_array_count; $i <= 25; $i++ )
 try
 {
     // $moduleResult = $this->dispatchLoop();
+    $moduleResult = '';
 
     if ( ( $requireUserLogin == "disabled" ) ||
         ( ( $requireUserLogin == "enabled" ) && ( is_a( $user, "eZUser" ) ) && ( $user->id() != 0 ) ) )
@@ -661,7 +662,7 @@ try
             if ( $SiteCache == "enabled" and file_exists( $SiteCacheFile ) )
             {
                 $timeout = $ini->variable( "site", "SiteCacheTimeout" );
-                $SiteCacheTime = eZFile::filemtime( $SiteCacheFile );
+                $SiteCacheTime = filemtime( $SiteCacheFile );
                 if ( ( time() - $SiteCacheTime ) < ( $timeout * 60 ) )
                 {
                     // print( "valid cache" );
@@ -671,7 +672,7 @@ try
                     $StoreSiteCache = true;
 
                     // delete cache file
-                    eZFile::unlink( $SiteCacheFile );
+                    unlink( $SiteCacheFile );
                     //  print( "time out-clearing cache" );
                 }
             }
@@ -679,7 +680,7 @@ try
 
         if ( $StoreSiteCache || $SiteCache == "disabled" )
         {
-            $buffer =& ob_get_contents();
+            $buffer = ob_get_contents();
             ob_end_clean();
             ob_start();
 
@@ -725,11 +726,11 @@ try
                 $Language = $ini->variable( "eZCalendarMain", "Language" );
             }
             $Locale = new eZLocale( $Language );
-            $iso =& $Locale->languageISO();
+            $iso = $Locale->languageISO();
             if ( $iso != false )
                 header( "Content-type: text/html;charset=$iso" );
 
-            $MainContents =& ob_get_contents();
+            $MainContents = ob_get_contents();
             ob_end_clean();
 
             // fill the buffer with the old values
@@ -752,7 +753,7 @@ try
                 }
 
                 // init the section
-                $sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+                $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
                 $sectionObject->setOverrideVariables();
 
                 if ( $ini->variable( "site", "DebugOutput") == "enabled" )
@@ -795,7 +796,7 @@ try
             {
                 $fp = fopen( $SiteCacheFile, "w+");
 
-                $SiteContents =& ob_get_contents();
+                $SiteContents = ob_get_contents();
                 fwrite( $fp, $SiteContents );
                 fclose( $fp );
             }
@@ -820,7 +821,7 @@ try
             include( $page );
         }
 
-        $MainContents =& ob_get_contents();
+        $MainContents = ob_get_contents();
         // 7x: Refactor
         $moduleResult = $MainContents;
         ob_end_clean();
@@ -831,7 +832,7 @@ try
 
 
     // close the database connection.
-    $db =& eZDB::globalDatabase();
+    $db = eZDB::globalDatabase();
     $db->close();
 
     ob_end_flush();

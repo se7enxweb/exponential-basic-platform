@@ -32,7 +32,7 @@
 
   \code
   // Create a new session, store it to the database and set a cookie.
-  $session =& eZSession::globalSession( );
+  $session = eZSession::globalSession( );
   $session->store();
 
   // get the session from the client
@@ -83,7 +83,7 @@ class eZSession
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $dbError = false;
         $db->begin( );
 
@@ -100,10 +100,10 @@ class eZSession
             $this->Hash = md5( microTime() );
         }
 
-        if ( $GLOBALS["UsePHPSessions"] == true )
+        if ( isset( $GLOBALS["UsePHPSessions"] ) && $GLOBALS["UsePHPSessions"] == true )
         {
             session_register( "eZSession" );
-            $GLOBALS["eZSession"] =& $this->Hash;
+            $GLOBALS["eZSession"] = $this->Hash;
         }
 
         // expire after 40 days
@@ -121,7 +121,7 @@ class eZSession
         {
             $nextID = $db->nextID( "eZSession_Session", "ID" );
             $timestampObject = new eZDateTime();
-            $timeStamp =& $timestampObject->timeStamp( true );
+            $timeStamp = $timestampObject->timeStamp( true );
 
             $res = $db->query( "INSERT INTO eZSession_Session
                                     ( ID, Created, LastAccessed, Hash )
@@ -173,7 +173,7 @@ class eZSession
             return true;
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $session_array = array();
 
@@ -217,12 +217,12 @@ class eZSession
     */
     function fill( $session_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
-        $this->ID =& $session_array[$db->fieldName("ID")];
-        $this->Hash =& $session_array[$db->fieldName("Hash")];
-        $this->LastAccessed =& $session_array[$db->fieldName("LastAccessed")];
-        $this->Created =& $session_array[$db->fieldName( "Created") ];
+        $this->ID = $session_array[$db->fieldName("ID")];
+        $this->Hash = $session_array[$db->fieldName("Hash")];
+        $this->LastAccessed = $session_array[$db->fieldName("LastAccessed")];
+        $this->Created = $session_array[$db->fieldName( "Created") ];
     }
 
     /*!
@@ -238,7 +238,7 @@ class eZSession
 
         if ( $this->IsFetched != true )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $ret = false;
 			
             // prefer cookie
@@ -248,7 +248,7 @@ class eZSession
             }
             else
             {
-                if ( $GLOBALS["UsePHPSessions"] == true )
+                if ( isset( $GLOBALS["UsePHPSessions"] ) && $GLOBALS["UsePHPSessions"] == true )
                 {
                     $hash = $GLOBALS["eZSession"];
                 }
@@ -295,11 +295,11 @@ class eZSession
     {
         if ( !isset( $this->HasRefreshed ) || !$this->HasRefreshed )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $timestampObject = new eZDateTime();
-            $timeStamp =& $timestampObject->timeStamp( true );
+            $timeStamp = $timestampObject->timeStamp( true );
             // update session
             $ret = $db->query( "UPDATE eZSession_Session SET
                                   LastAccessed='$timeStamp'
@@ -322,7 +322,7 @@ class eZSession
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -393,7 +393,7 @@ class eZSession
             return $this->StoredVariables[$group][$name];
         }
         $ret = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( !is_bool( $group ) )
             $group_sql = "GroupName='$group'";
@@ -418,7 +418,7 @@ class eZSession
     function getByVariable( $name )
     {
         $ret = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $value_array, "SELECT eZSession_Session.ID
                                                     FROM eZSession_Session, eZSession_SessionVariable
@@ -427,7 +427,7 @@ class eZSession
 
         foreach ( $value_array as $value )
         {
-            $ret[] =& $value[$db->fieldName("ID")];
+            $ret[] = $value[$db->fieldName("ID")];
         }
 
         return $ret;
@@ -441,12 +441,12 @@ class eZSession
         if ( isset( $this->StoredIdle ) && is_numeric( $this->StoredIdle ) )
             return $this->StoredIdle;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $value_array = array();
 
         $timestampObject = new eZDateTime();
-        $timeStamp =& $timestampObject->timeStamp( true );
+        $timeStamp = $timestampObject->timeStamp( true );
         $db->array_query( $value_array, "SELECT ( $timeStamp - LastAccessed ) AS Idle
                                                     FROM eZSession_Session WHERE ID='$this->ID'" );
         $ret = false;
@@ -469,7 +469,7 @@ class eZSession
     */
     function cleanup( $maxIdle=48 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $value_array = array();
         $timeStamp = (new eZDateTime())->timeStamp( true );
@@ -493,7 +493,7 @@ class eZSession
     {
 //          print( "setvar: " . (is_bool( $group ) ? ($group ? "true" : "false") : $group ) . "<br>" );
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $dbError = false;
         $value_array = array();
@@ -610,7 +610,7 @@ class eZSession
 
       Do not call this method unless you want to fetch the global session variable.
     */
-    static public function &globalSession( $id="", $fetch=true )
+    static public function globalSession( $id="", $fetch=true )
     {
         $session =& $GLOBALS["eZSessionObject"];
         if ( !is_a( $session, "eZSession" ) )

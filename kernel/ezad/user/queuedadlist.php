@@ -35,7 +35,7 @@
 $category = new eZAdCategory( $CategoryID );
 
 // fetch the user if any
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 // if adList not have been set before.
 if ( !$queuedAdListCheck )
@@ -46,7 +46,7 @@ if ( !$queuedAdListCheck )
         $Offset = 0;
     
     // ads
-    $adList =& $category->ads( "count", false, $Offset, $Limit );
+    $adList = $category->ads( "count", false, $Offset, $Limit );
     $queuedAdListCheck = 1;
 }
 
@@ -56,14 +56,14 @@ if ( $ad )
 {
     $adID = $ad->id();
 
-    $image =& $ad->image();
+    $image = $ad->image();
     
     // ad image
     if ( $image )
     {
-        $imgSRC =& $image->filePath();
-        $imgWidth =& $image->width();
-        $imgHeight =& $image->height();
+        $imgSRC = $image->filePath();
+        $imgWidth = $image->width();
+        $imgHeight = $image->height();
     }
     
     $ad->addPageView();

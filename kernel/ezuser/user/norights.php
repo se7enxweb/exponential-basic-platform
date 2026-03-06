@@ -26,7 +26,7 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $DOC_ROOT = $ini->variable( "eZUserMain", "DocumentRoot" );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $errorIni = new eZINI( "kernel/ezuser/user/intl/" . $Language . "/norights.php.ini", false );

@@ -41,7 +41,7 @@ class eZArticleGenerator
     {
         if ( $generatorType == "" )
         {
-            $ini =& eZINI::instance( 'site.ini' );
+            $ini = eZINI::instance( 'site.ini' );
 
             $Generator = $ini->variable( "eZArticleMain", "Generator" );
             $generatorType = $Generator;
@@ -90,13 +90,13 @@ class eZArticleGenerator
       This function will parse the contents array and return valid
       XML data for insertion in the database.
     */
-    function &generateXML( &$contents )
+    function generateXML( &$contents )
     {
         // include_once( "ezarticle/classes/" . $this->GeneratorFile );
 
         $generator = new $this->GeneratorClass( $contents );
 
-        $ret =& $generator->generateXML();
+        $ret = $generator->generateXML();
 
         $this->PageCount = $generator->pageCount();
              
@@ -116,7 +116,7 @@ class eZArticleGenerator
       This function will return an array containing the original state
       of the article so it can be used in a edit form.
     */
-    function &decodeXML( &$contents )
+    function decodeXML( &$contents )
     {
         // find the generator used
         if ( preg_match("/<generator>(.*)<\/generator>/", substr( $contents, 0, 200 ), $regs ) )

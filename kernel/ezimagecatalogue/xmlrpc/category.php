@@ -139,7 +139,7 @@ else if( $Command == "storedata" ) // save the category data!
         foreach( $Data["UploadGroups"]->value() as $uploadGroup )
             eZObjectPermission::setPermission( $uploadGroup->value(), $ID, "imagecatalogue_category", 'u' );
 
-        $par =& createPath( $category, "ezimagecatalogue", "category", false );
+        $par = createPath( $category, "ezimagecatalogue", "category", false );
 
         $add_categories = array();
         $cur_categories = array();
@@ -148,9 +148,9 @@ else if( $Command == "storedata" ) // save the category data!
         $remove_categories = array_diff( array( $old_category_id ), array( $parent_id ) );
         $cur_categories = array_intersect( array( $parent->id() ), array( $old_category_id ) );
 
-        $add_locs =& createURLArray( $add_categories, "ezimagecatalogue", "category" );
-        $cur_locs =& createURLArray( $cur_categories, "ezimagecatalogue", "category" );
-        $old_locs =& createURLArray( $remove_categories, "ezimagecatalogue", "category" );
+        $add_locs = createURLArray( $add_categories, "ezimagecatalogue", "category" );
+        $cur_locs = createURLArray( $cur_categories, "ezimagecatalogue", "category" );
+        $old_locs = createURLArray( $remove_categories, "ezimagecatalogue", "category" );
 
         $ReturnData = new eZXMLRPCStruct( array( "Location" => createURLStruct( "ezimagecatalogue", "category", $ID ),
                                                  "Name" => new eZXMLRPCString( $category->name( false ) ),
@@ -174,7 +174,7 @@ else if( $Command == "delete" )
     $category = new eZImageCategory();
     if ( $category->get( $ID ) )
     {
-        $par =& createPath( $category, "ezimagecatalogue", "category", false );
+        $par = createPath( $category, "ezimagecatalogue", "category", false );
 
         $ReturnData = new eZXMLRPCStruct( array( "Location" => createURLStruct( "ezimagecatalogue", "category", $ID ),
                                                  "Path" => new eZXMLRPCArray( $par ),

@@ -28,7 +28,7 @@
 
 $types = array();
 
-$typeList =& eZArticleType::getAll();
+$typeList = eZArticleType::getAll();
 foreach ( $typeList as $type )
 {
     $types[] = new eZXMLRPCStruct( array( "URL" => createURLStruct( "ezarticle",

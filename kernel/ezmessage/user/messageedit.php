@@ -68,7 +68,7 @@ $Receiver = substr( trim( $Receiver ) , 0, strlen( trim( $Receiver ) ) -1 );
             $toUser = eZUser::getUser( $user );
             $message->setToUser( $toUser );
 
-            $fromUser =& eZUser::currentUser();
+            $fromUser = eZUser::currentUser();
             
             $message->setFromUser( $fromUser );
 
@@ -92,7 +92,7 @@ $messageDefinition->store();
     }    
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMessageMain", "Language" );
 $t = new eZTemplate( "kernel/ezmessage/user/" . $ini->variable( "eZMessageMain", "TemplateDir" ),
                      "kernel/ezmessage/user/intl", $Language, "messageedit.php" );
@@ -180,7 +180,7 @@ $Receiver = substr( trim( $Receiver ) , 0, strlen( trim( $Receiver ) ) -1 );
     
     if ( $usersValid == true )
     {
-    	//$fromUser =& eZUser::currentUser();
+    	//$fromUser = eZUser::currentUser();
     	//print_r($fromUser);
         foreach ( $users as $user )
         {

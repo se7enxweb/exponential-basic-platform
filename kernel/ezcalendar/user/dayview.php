@@ -32,7 +32,7 @@
 
 // include_once( "ezcalendar/classes/ezappointment.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZCalendarMain", "Language" );
 $StartTimeStr = $ini->variable( "eZCalendarMain", "DayStartTime" );
@@ -41,8 +41,8 @@ $IntervalStr = $ini->variable( "eZCalendarMain", "DayInterval" );
 
 $Locale = new eZLocale( $Language );
 
-$user =& eZUser::currentUser();
-$session =& eZSession::globalSession();
+$user = eZUser::currentUser();
+$session = eZSession::globalSession();
 $session->fetch();
 
 if ( $user == false )
@@ -132,7 +132,7 @@ else
     $tmpAppointment = new eZAppointment();
 
     // fetch the appointments for the selected day
-    $appointments =& $tmpAppointment->getByDate( $tmpDate, $tmpUser, false );
+    $appointments = $tmpAppointment->getByDate( $tmpDate, $tmpUser, false );
 
     // set start/stop and interval times
     $startTime = new eZTime();
@@ -182,8 +182,8 @@ else
     {
         if ( !$appointment->allDay() )
         {
-            $appStartTime =& $appointment->startTime();
-            $appStopTime =& $appointment->stopTime();
+            $appStartTime = $appointment->startTime();
+            $appStopTime = $appointment->stopTime();
 
             if ( $appStartTime->isGreater( $firstInterval ) )
                 $startTime = $midNight;
@@ -206,8 +206,8 @@ else
         }
         else
         {
-            $appStartTime =& $appointment->startTime();
-            $appStopTime =& $appointment->stopTime();
+            $appStartTime = $appointment->startTime();
+            $appStopTime = $appointment->stopTime();
 
             if ( $appStartTime->isGreater( $firstInterval ) )
                 $startTime = $midNight;
@@ -491,7 +491,7 @@ else
 
 
     // User list
-    $user_array =& eZUser::getAll();
+    $user_array = eZUser::getAll();
 
     foreach ( $user_array as $userItem )
     {
@@ -640,7 +640,7 @@ function appointmentRowSpan( &$appointment, &$startTime, &$interval )
     $ret = 1;
     $tmpTime = new eZTime();
     $tmpTime->setSecondsElapsed( $startTime->secondsElapsed() );
-    $aStop =& $appointment->stopTime();
+    $aStop = $appointment->stopTime();
 
 
     while ( $tmpTime->isGreater( $aStop ) )
@@ -664,8 +664,8 @@ function appointmentRowSpan( &$appointment, &$startTime, &$interval )
 function intersects( &$app, &$startTime, &$stopTime )
 {
     $ret = false;
-    $appStartTime =& $app->startTime();
-    $appStopTime =& $app->stopTime();
+    $appStartTime = $app->startTime();
+    $appStopTime = $app->stopTime();
 
     // appstart is between start and stop
     if ( $startTime->isGreater( $appStartTime, true ) == true &&

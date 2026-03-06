@@ -240,7 +240,7 @@ class eZDateTime
       Returns the date component of the date time object
       as an eZDate object.
     */
-    function &date()
+    function date()
     {
         return $this->Date;
     }
@@ -249,7 +249,7 @@ class eZDateTime
       Returns the time component of the date time object
       as an eZTime object.
     */
-    function &time()
+    function time()
     {
         return $this->Time;
     }

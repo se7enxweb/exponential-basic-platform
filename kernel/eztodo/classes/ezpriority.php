@@ -52,7 +52,7 @@ class eZPriority
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         if ( !isset ( $this->ID ) )
@@ -82,7 +82,7 @@ class eZPriority
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $res[] = $db->query( "DELETE FROM eZTodo_Priority WHERE ID='$this->ID'" );
         eZDB::finish( $res, $db );
     }
@@ -93,7 +93,7 @@ class eZPriority
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $id != "" )
         {
             $db->array_query( $priority_array, "SELECT * FROM eZTodo_Priority WHERE ID='$id'" );
@@ -119,7 +119,7 @@ class eZPriority
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $priority_array = 0;
 
         $return_array = array();

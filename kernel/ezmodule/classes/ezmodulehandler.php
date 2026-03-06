@@ -36,7 +36,7 @@
 
   \code
   // Returning the active modules
-  $modules =& eZModuleHandler::active();
+  $modules = eZModuleHandler::active();
   foreach( $modules as $module )
   {
       print( "$module is active" );
@@ -79,7 +79,7 @@ class eZModuleHandler
     */
     static public function hasTab()
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $module_tab = $ini->variable( "site", "ModuleTab" ) == "enabled";
         return $module_tab;
     }
@@ -120,9 +120,9 @@ class eZModuleHandler
     static public function all()
     {
         $return_array = array();
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $allModules = explode(";", $ini->variable( "site", "EnabledModules" ) );
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         foreach ( $allModules as $moduleItem )
         {
             if ( eZPermission::checkPermission( $user, $moduleItem, "ModuleEdit" ) )
@@ -137,12 +137,12 @@ class eZModuleHandler
     */
     static public function active()
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $preferences = new eZPreferences();
         if ( !eZModuleHandler::activeTab() )
         {
-            $modules =& $preferences->variableArray( "EnabledModules" );
-            $site_modules =& eZModuleHandler::all();
+            $modules = $preferences->variableArray( "EnabledModules" );
+            $site_modules = eZModuleHandler::all();
             if ( $modules )
             {
                 $modules = array_intersect( $modules, $site_modules );
@@ -169,7 +169,7 @@ class eZModuleHandler
     static public function isOpen( $module )
     {
         $preferences = new eZPreferences();
-        $menuStatus =& $preferences->variable( strtolower( $module ) . "_status" );
+        $menuStatus = $preferences->variable( strtolower( $module ) . "_status" );
         return $menuStatus == "open" || empty( $menuStatus );
     }
 
@@ -239,7 +239,7 @@ class eZModuleHandler
         $moved_module = false;
         foreach( $modules as $key => $module_name )
         {
-            $module_low =& strtolower( $module_name );
+            $module_low = strtolower( $module_name );
             if ( !empty( $module_name ) and $module == $module_low )
             {
                 $pos = $i;
@@ -278,7 +278,7 @@ class eZModuleHandler
         $moved_module = false;
         foreach( $modules as $key => $module_name )
         {
-            $module_low =& strtolower( $module_name );
+            $module_low = strtolower( $module_name );
             if ( !empty( $module_name ) and $module == $module_low )
             {
                 $pos = $i;

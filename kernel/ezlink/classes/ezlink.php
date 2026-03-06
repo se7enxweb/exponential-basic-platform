@@ -80,7 +80,7 @@ class eZLink
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
 
@@ -151,7 +151,7 @@ class eZLink
     {
         if ( is_a( $type, "eZLinkType" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->begin();
 
@@ -190,7 +190,7 @@ class eZLink
     */
     function type()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $res, "SELECT TypeID FROM
                                  eZLink_TypeLink WHERE LinkID='$this->ID'" );
@@ -210,7 +210,7 @@ class eZLink
     */
     function removeType()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         // delete values
         $db->query( "DELETE FROM eZLink_AttributeValue WHERE LinkID='$this->ID'" );
@@ -224,7 +224,7 @@ class eZLink
     */
     function update()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -260,7 +260,7 @@ class eZLink
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
 
@@ -282,7 +282,7 @@ class eZLink
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -311,9 +311,9 @@ class eZLink
     /*!
       Fetchs out the links where the linkcategory=$id. Fetchs only accepted links.
     */
-    function &getByCategory( $id )
+    function getByCategory( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $link_array = array();
         $return_array = array();
@@ -334,9 +334,9 @@ class eZLink
 
       Default limit is set to 30.
     */
-    function &getNotAccepted( $offset = 0, $limit = 30 )
+    function getNotAccepted( $offset = 0, $limit = 30 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $link_array = array();
         $return_array = array();
@@ -358,7 +358,7 @@ class eZLink
     */
     function unAcceptedCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $query = "SELECT count( ID ) AS Count
                   FROM eZLink_Link WHERE Accepted='0'";
@@ -372,9 +372,9 @@ class eZLink
     /*!
       Fetches out the last teen accpeted links.
     */
-    function &getLastTenDate( $limit, $offset )
+    function getLastTenDate( $limit, $offset )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $link_array = array();
         $return_array = array();
@@ -393,9 +393,9 @@ class eZLink
     /*!
       Fetches out the last teen accpeted links.
     */
-    function &getLastTen( $limit, $offset )
+    function getLastTen( $limit, $offset )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $link_array = 0;
 
         $db->array_query( $link_array,
@@ -410,9 +410,9 @@ class eZLink
 
       Default limit is set to 25.
     */
-    function &getQuery( $query, $limit, $offset )
+    function getQuery( $query, $limit, $offset )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $link_array = array();
         $return_array = array();
 
@@ -438,9 +438,9 @@ class eZLink
     /*!
       Returns the total count of a query.
     */
-    function &getQueryCount( $query  )
+    function getQueryCount( $query  )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $link_array = 0;
 
         $query = new eZQuery( array( "KeyWords", "Name", "Description" ), $query );
@@ -462,9 +462,9 @@ class eZLink
     /*!
       Fetches all the links.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $category_array = 0;
 
         $db->array_query( $category_array, "SELECT * FROM eZLink_Link ORDER BY Name" );
@@ -475,9 +475,9 @@ class eZLink
     /*!
       Check if the url exists.
     */
-    function &checkUrl( $url )
+    function checkUrl( $url )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $url_array, "SELECT url FROM eZLink_Link WHERE url='$url'" );
 
@@ -497,7 +497,7 @@ class eZLink
         else
             return false;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res[] = $db->query( "DELETE FROM eZLink_LinkCategoryDefinition
@@ -517,7 +517,7 @@ class eZLink
     */
     function categoryDefinition( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $res, "SELECT CategoryID FROM
                             eZLink_LinkCategoryDefinition
@@ -545,7 +545,7 @@ class eZLink
      */
     function categories( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = array();
         $category_array = array();
@@ -615,7 +615,7 @@ class eZLink
     /*!
       Returns the link name.
     */
-    function &name()
+    function name()
     {
 		    $this->Name = stripslashes( $this->Name );
         return htmlspecialchars( $this->Name );
@@ -625,7 +625,7 @@ class eZLink
     /*!
       Returns the link description.
     */
-    function &description()
+    function description()
     {
 		$this->Description = stripslashes( $this->Description );
 		$this->Description = htmlspecialchars( $this->Description );
@@ -635,7 +635,7 @@ class eZLink
     /*!
       Returns the link keywords.
     */
-    function &keyWords()
+    function keyWords()
     {
         if( !is_null( $this->KeyWords ) )
         {    		
@@ -649,7 +649,7 @@ class eZLink
     /*!
       Returns the date when the link was created.
     */
-    function &created()
+    function created()
     {
         return $this->Created;
     }
@@ -657,7 +657,7 @@ class eZLink
     /*!
       Returns the date when the link was modified.
     */
-    function &modified()
+    function modified()
     {
         return $this->Modified;
     }
@@ -676,7 +676,7 @@ class eZLink
     /*!
       Retruns the url of the link.
     */
-    function &url()
+    function url()
     {
         return $this->Url;
     }
@@ -709,7 +709,7 @@ class eZLink
 
       false is returned if no link is assigned to the link.
     */
-    function &image( )
+    function image( )
     {
         $ret = false;
         if ( $this->ImageID != 0 )
@@ -725,7 +725,7 @@ class eZLink
     */
     function deleteImage()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $result, "SELECT ImageID FROM eZLink_Link WHERE ID='$this->ID'" );
 

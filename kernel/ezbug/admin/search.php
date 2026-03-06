@@ -68,8 +68,8 @@ foreach ( $bugList as $bug )
     $t->set_var( "bug_id", $bug->id() );
     $t->set_var( "bug_name", $bug->name() );
 
-    $pri =& $bug->priority();
-    $status =& $bug->status();
+    $pri = $bug->priority();
+    $status = $bug->status();
     
     if ( $pri )
     {    

@@ -114,7 +114,7 @@ class eZPermission
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $dbError = false;
         $ret = false;
         $value_array = array();
@@ -167,7 +167,7 @@ class eZPermission
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -186,7 +186,7 @@ class eZPermission
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
 
@@ -221,7 +221,7 @@ class eZPermission
     {
         if ( is_a( $module, "eZModule" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $moduleID = $module->id();
 
@@ -248,7 +248,7 @@ class eZPermission
     */
     function getAll( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $permission_array = array();
@@ -339,7 +339,7 @@ class eZPermission
 
        if ( is_a( $group, "eZUserGroup" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
            $dbError = false;
            $db->begin( );
 
@@ -403,7 +403,7 @@ class eZPermission
        $ret = false;
        if ( is_a( $group, "eZUserGroup" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
 
            $groupID = $group->id();
 
@@ -442,7 +442,7 @@ class eZPermission
 
         if ( $module )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $moduleID = $module->id();
 

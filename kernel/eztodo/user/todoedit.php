@@ -70,7 +70,7 @@ if ( isset( $Cancel ) )
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTodoMain", "Language" );
 $NotDoneID = $ini->variable( "eZTodoMain", "NotDoneID" );
@@ -95,7 +95,7 @@ $iniLanguage = new eZINI( "kernel/eztodo/user/intl/" . $Language . "/todoedit.ph
 
 $locale = new eZLocale( $Language );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $redirect = true;
 
 if ( isset( $AddLog ) )
@@ -666,7 +666,7 @@ for ( $i = 0; $i < count( $status_array ); $i++ )
 
 // User selector.
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $user_array = $user->getAll();
 
 foreach ( $user_array as $userItem )

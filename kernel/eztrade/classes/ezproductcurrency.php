@@ -56,7 +56,7 @@ class eZProductCurrency
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->Name = $db->escapeString( $this->Name );
@@ -69,7 +69,7 @@ class eZProductCurrency
         
         if ( !isset( $this->ID ) )
         {
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
             $db->lock( "eZTrade_AlternativeCurrency" );
             $nextID = $db->nextID( "eZTrade_AlternativeCurrency", "ID" );
                         
@@ -110,7 +110,7 @@ class eZProductCurrency
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( $id != -1  )
         {
@@ -134,9 +134,9 @@ class eZProductCurrency
     /*!
       Retrieves all the alternative currencies from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $return_array = array();
         $currency_array = array();
@@ -156,7 +156,7 @@ class eZProductCurrency
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res[] = $db->query( "DELETE FROM eZTrade_AlternativeCurrency WHERE ID='$this->ID'" );
@@ -223,7 +223,7 @@ class eZProductCurrency
     function setValue( $value )
     {
         $newValue = number_format( $value, 4, ".", "" );
-        $value = (double) $newValue;
+        $value = (float) $newValue;
         $this->Value = $value;
     }
 

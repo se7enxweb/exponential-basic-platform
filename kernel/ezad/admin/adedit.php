@@ -141,7 +141,7 @@ if ( $Action == "Insert" )
     {
         $adID = $ad->id();
         
-        $session =& eZSession::globalSession();
+        $session = eZSession::globalSession();
         $session->setVariable( "SelectImages", "single" );
         $session->setVariable( "ImageListReturnTo", "/ad/ad/edit/$adID/" );
         $session->setVariable( "NameInBrowse", $ad->name() );
@@ -240,7 +240,7 @@ if ( $Action == "Update" )
     {
         $adID = $ad->id();
         
-        $session =& eZSession::globalSession();
+        $session = eZSession::globalSession();
         $session->setVariable( "SelectImages", "single" );
         $session->setVariable( "ImageListReturnTo", "/ad/ad/edit/$adID/" );
         $session->setVariable( "NameInBrowse", $ad->name() );
@@ -285,7 +285,7 @@ if ( $Action == "DeleteAds" )
 }
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZAdMain", "Language" );
 $ImageDir = $ini->variable( "eZAdMain", "ImageDir" );
 

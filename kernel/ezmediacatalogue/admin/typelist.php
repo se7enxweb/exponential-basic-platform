@@ -28,7 +28,7 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMediaCatalogueMain", "Language" );
 
 // include_once( "ezmediacatalogue/classes/ezmediacategory.php" );

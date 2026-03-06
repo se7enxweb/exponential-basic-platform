@@ -55,7 +55,7 @@ class eZBoxType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->Name = $db->escapeString( $this->Name );
@@ -97,7 +97,7 @@ class eZBoxType
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( $id != -1  )
         {
@@ -121,9 +121,9 @@ class eZBoxType
     /*!
       Retrieves all the box types from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $return_array = array();
         $box_array = array();
@@ -143,7 +143,7 @@ class eZBoxType
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $ret[] = $db->query( "DELETE FROM eZTrade_BoxType WHERE ID='$this->ID'" );
         eZDB::finish( $ret, $db );

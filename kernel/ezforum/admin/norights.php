@@ -24,7 +24,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $DOC_ROOT = $ini->variable( "eZForumMain", "DocumentRoot" );
 $Language = $ini->variable( "eZForumMain", "Language" );

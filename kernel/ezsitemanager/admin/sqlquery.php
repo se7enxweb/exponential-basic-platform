@@ -54,7 +54,7 @@ $t->setAllStrings();
 $preferences = new eZPreferences();
     	  
 // get the preferences
-$QueryPref =& $preferences->variableArray( "QueryPref" );
+$QueryPref = $preferences->variableArray( "QueryPref" );
 
 if ( isset( $Run2 ) )
 {
@@ -75,7 +75,7 @@ if ( $QueryPref )
 }
 
 
-$db =& eZDB::globalDatabase();
+$db = eZDB::globalDatabase();
 
 $QueryRes   = '';
 $QueryError = '';

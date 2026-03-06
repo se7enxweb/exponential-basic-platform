@@ -51,7 +51,7 @@ class eZCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -83,7 +83,7 @@ class eZCategory
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZTodo_Category WHERE ID='$this->ID'" );
         eZDB::finish( $res, $db );
@@ -95,7 +95,7 @@ class eZCategory
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         
         if ( $id != "" )
@@ -122,7 +122,7 @@ class eZCategory
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $category_array = 0;
 

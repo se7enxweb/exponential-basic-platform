@@ -37,7 +37,7 @@
 // include_once( "ezimagecatalogue/classes/ezimagecategory.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZImageCatalogueMain", "Language" );
 $ImageDir = $ini->variable( "eZImageCatalogueMain", "ImageDir" );
@@ -49,20 +49,20 @@ $t->set_file( "image_list_page_tpl", "imagelist.tpl" );
 
 $t->setAllStrings();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 // Set detail or normal mode
 if ( isset( $DetailView ) )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->setVariable( "ImageViewMode", "Detail" );
 }
 if ( isset( $NormalView ) )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->setVariable( "ImageViewMode", "Normal" );
 }
 
-$checkMode =& eZSession::globalSession();
+$checkMode = eZSession::globalSession();
 
 if ( $checkMode->variable( "ImageViewMode" ) == "Detail" )
 {
@@ -136,7 +136,7 @@ if ( !$GlobalSectionID )
     $GlobalSectionID = $ini->variable( "eZImageCatalogueMain", "DefaultSection" );
 
 // init the section 
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 // Check if user have permission to the current category
@@ -180,7 +180,7 @@ foreach ( $pathArray as $path )
 
 
 // Print out all the categories
-$categoryList =& $category->getByParent( $category );
+$categoryList = $category->getByParent( $category );
 
 $i = 0;
 foreach ( $categoryList as $categoryItem )
@@ -228,8 +228,8 @@ $limit = $ini->variable( "eZImageCatalogueMain", "ListImagesPerPage" );
 // Print out all the images
 if ( isset( $SearchText ) )
 {
-    $imageList =& eZImage::search( $SearchText );
-    $count =& eZImage::searchCount( $SearchText );
+    $imageList = eZImage::search( $SearchText );
+    $count = eZImage::searchCount( $SearchText );
     
     $URL = "search/?SearchText=$SearchText";
 
@@ -239,8 +239,8 @@ if ( isset( $SearchText ) )
 }
 else
 {
-    $imageList =& $category->images( "time", $Offset, $limit );
-    $count =& $category->imageCount();
+    $imageList = $category->images( "time", $Offset, $limit );
+    $count = $category->imageCount();
     
     $URL = "image/list/$CategoryID/$Offset";
    
@@ -268,10 +268,10 @@ foreach ( $imageList as $image )
     $t->set_var( "image_caption", $image->name() );
     $t->set_var( "image_url", $image->name() );
 
-    $width =& $ini->variable( "eZImageCatalogueMain", "ThumbnailViewWidth" );
-    $height =& $ini->variable( "eZImageCatalogueMain", "ThumbnailViewHight" );
+    $width = $ini->variable( "eZImageCatalogueMain", "ThumbnailViewWidth" );
+    $height = $ini->variable( "eZImageCatalogueMain", "ThumbnailViewHight" );
     
-    $variation =& $image->requestImageVariation( $width, $height );
+    $variation = $image->requestImageVariation( $width, $height );
     
     $t->set_var( "image_description",$image->description() ); 
     $t->set_var( "image_alt", $image->name() );
@@ -282,7 +282,7 @@ foreach ( $imageList as $image )
 
     if ( $image->fileExists( true ) )
     {
-        $imagePath =& $image->filePath( true );
+        $imagePath = $image->filePath( true );
         $size = eZPBFile::filesize( $imagePath );
     }
     else

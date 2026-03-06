@@ -29,7 +29,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlocale.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZGroupEventCalendarMain", "Language" );
 /*
 include_once( "ezgroupeventcalendar/classes/ezgroupevent.php" );

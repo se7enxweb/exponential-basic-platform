@@ -30,7 +30,7 @@
 
 $textfield = new eZExample( );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZExampleMain", "Language" );
 $tpl = new eZTemplate( "kernel/ezexample/admin/" . $ini->variable( "eZExampleMain", "AdminTemplateDir" ),
                        "kernel/ezexample/admin/" . "intl", $Language, "page4.php" );
@@ -61,7 +61,7 @@ if ( isset( $Delete ) )
 
 // get all fields from the database.
 
-$textfieldArray =& $textfield->getAll();
+$textfieldArray = $textfield->getAll();
 
 // parse the template.
 

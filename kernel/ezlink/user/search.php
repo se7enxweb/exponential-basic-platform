@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZLinkMain", "Language" );
 $UserLimit = $ini->variable( "eZLinkMain", "UserSearchLimit" );
 
@@ -65,7 +65,7 @@ if ( isset( $SearchText ) and !isset( $QueryString ) )
 
 if ( $QueryString != "" )
 {
-    $link_array =& $link->getQuery( $QueryString, $UserLimit, $Offset );    
+    $link_array = $link->getQuery( $QueryString, $UserLimit, $Offset );    
     $total_count = $link->getQueryCount( $QueryString );
 
     $t->set_var( "query_string", urlencode( $QueryString ) );

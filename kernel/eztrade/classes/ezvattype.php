@@ -56,14 +56,14 @@ class eZVATType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->Name = $db->escapeString( $this->Name );
         
         if ( !isset( $this->ID ) )
         {
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
             $db->lock( "eZTrade_VATType" );
             $nextID = $db->nextID( "eZTrade_VATType", "ID" );
             $ret[] = $db->query( "INSERT INTO eZTrade_VATType
@@ -96,7 +96,7 @@ class eZVATType
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( $id != -1  )
         {
@@ -118,9 +118,9 @@ class eZVATType
     /*!
       Retrieves all the VAT types from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $return_array = array();
         $vat_array = array();
@@ -140,7 +140,7 @@ class eZVATType
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $ret[] = $db->query( "DELETE FROM eZTrade_VATType WHERE ID='$this->ID'" );
         eZDB::finish( $ret, $db );
@@ -166,7 +166,7 @@ class eZVATType
     /*!
       Returns the vat value of the vat type.
     */
-    function &value()
+    function value()
     {
         return $this->VATValue;
     }

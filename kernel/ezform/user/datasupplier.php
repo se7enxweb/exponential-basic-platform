@@ -31,10 +31,10 @@ $eZFormOperation = $url_array[2];
 $eZFormName = $url_array[3];
 $eZFormAction = $url_array[3];
 
-function &errorPage( $PrimaryName, $PrimaryURL, $type )
+function errorPage( $PrimaryName, $PrimaryURL, $type )
 {
-//    $ini =& eZINI::instance( 'site.ini' );
-    $ini =& eZINI::instance( 'site.ini' );
+//    $ini = eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
     
 
     $t = new eZTemplate( "kernel/ezform/admin/" . $ini->variable( "eZFormMain", "TemplateDir" ),
@@ -52,8 +52,8 @@ function &errorPage( $PrimaryName, $PrimaryURL, $type )
     $t->setAllStrings();
 
     $error = $t->parse( "error", "page" );
-    $Info =& stripslashes( $error );
-    $error =& urlencode( $Info );
+    $Info = stripslashes( $error );
+    $error = urlencode( $Info );
     return $error;
 }
 

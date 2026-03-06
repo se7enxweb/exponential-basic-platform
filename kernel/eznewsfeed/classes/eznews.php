@@ -84,7 +84,7 @@ class eZNews
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $timeStamp = (new eZDateTime())->timeStamp( true );
@@ -184,7 +184,7 @@ class eZNews
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -217,7 +217,7 @@ class eZNews
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -247,7 +247,7 @@ class eZNews
     /*!
       Returns the news name / title.
     */
-    function &name()
+    function name()
     {
        return htmlspecialchars( $this->Name );
     }
@@ -255,7 +255,7 @@ class eZNews
     /*!
       Returns the news contents.
     */
-    function &intro()
+    function intro()
     {
        return $this->Intro;
     }
@@ -263,7 +263,7 @@ class eZNews
     /*!
       Returns the url to the news.
     */
-    function &url()
+    function url()
     {
        return $this->URL;
     }
@@ -273,7 +273,7 @@ class eZNews
 
       The time is returned as a eZDateTime object.
     */
-    function &publishingDate()
+    function publishingDate()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->PublishingDate );
@@ -286,7 +286,7 @@ class eZNews
 
       The time is returned as a eZDateTime object.
     */
-    function &originalPublishingDate()
+    function originalPublishingDate()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->OriginalPublishingDate );
@@ -402,7 +402,7 @@ class eZNews
     */
     function categories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = array();
         $db->array_query( $category_array, "SELECT * FROM eZNewsFeed_NewsCategoryLink WHERE NewsID='$this->ID'" );
@@ -420,7 +420,7 @@ class eZNews
     */
     function removeFromCategories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
         $ret[] = $db->query( "DELETE FROM eZNewsFeed_NewsCategoryLink WHERE NewsID='$this->ID'" );
@@ -438,7 +438,7 @@ class eZNews
        $ret = false;
        if ( is_a( $category, "eZNewsCategory" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
            $catID = $category->id();
 
            $db->array_query( $ret_array, "SELECT ID FROM eZNewsFeed_NewsCategoryLink
@@ -456,9 +456,9 @@ class eZNews
       Does a search in the news archive and returns the result as an array
       of eZNews objects.
     */
-    function &search( $queryText, $fetchNonPublished=false, $offset=0, $limit=20 )
+    function search( $queryText, $fetchNonPublished=false, $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $fetchNonPublished == true )
         {
@@ -493,9 +493,9 @@ class eZNews
     /*!
       Does a search in the news archive and returns the number of hits.
     */
-    function &searchCount( $queryText, $fetchNonPublished=false )
+    function searchCount( $queryText, $fetchNonPublished=false )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        if ( $fetchNonPublished == true )
        {
@@ -531,7 +531,7 @@ class eZNews
                        $offset=0,
                        $limit=25 )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $OrderBy = "eZNewsFeed_News.PublishingDate DESC";
        switch( $sortMode )

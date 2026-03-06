@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/ezhttptool.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 
 // include_once( "classes/eztemplate.php" );
@@ -33,7 +33,7 @@ $Language = $ini->variable( "eZContactMain", "Language" );
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( !is_a( $user, "eZUser" ) )
 {
     // include_once( "classes/ezhttptool.php" );
@@ -102,7 +102,7 @@ else
     $t->set_var( "person_table_item", "" );
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user )
 {

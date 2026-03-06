@@ -36,7 +36,7 @@
 // include_once( "ezforum/classes/ezforumcategory.php" );
 // include_once( "ezforum/classes/ezforum.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
 $SimpleUserList = $ini->variable( "eZForumMain", "SimpleUserList" );
@@ -65,14 +65,14 @@ $locale = new eZLocale( $Language );
 if ( !isset($Offset) )
     $Offset = 0;
 
-$messageList =& $forum->messageTree( $Offset, $SimpleUserList );
-$messageCount =& $forum->messageCount();
+$messageList = $forum->messageTree( $Offset, $SimpleUserList );
+$messageCount = $forum->messageCount();
 $t->set_var( "total_posts", $messageCount );
 
 if ( !$messageList )
 {
     $errorIni = new eZINI( "kernel/ezforum/user/intl/" . $Language . "/messagesimplelist.php.ini", false );
-    $noitem =& $errorIni->variable( "strings", "noitem" );
+    $noitem = $errorIni->variable( "strings", "noitem" );
 
     $t->set_var( "message_list", $noitem );
 }
@@ -96,11 +96,11 @@ else
             
         $t->set_var( "topic", htmlspecialchars( $message->topic() ) );
         $t->set_var( "body", eZTextTool::nl2br( $message->body() ) );
-        $time =& $message->postingTime();
+        $time = $message->postingTime();
         $t->set_var( "postingtime", $locale->format( $time ) );
         $t->set_var( "message_id", $message->id() );
         
-        $muser =& $message->user();
+        $muser = $message->user();
 /*
 		echo "<pre>";
 		print_r ($muser);
@@ -126,7 +126,7 @@ else
         $t->set_var( "user", $MessageAuthor );
 		
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $t->set_var( "private_message", "" );
 
 

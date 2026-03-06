@@ -29,7 +29,7 @@
 // include_once( "classes/ezhttptool.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $wwwDir = $ini->WWWDir;
 $ForceSSL = $ini->variable( "eZTradeMain", "ForceSSL" );
 

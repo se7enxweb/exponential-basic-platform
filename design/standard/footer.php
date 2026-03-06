@@ -30,12 +30,12 @@
 	<hr noshade="noshade" size="4" />
 	
     <?php
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
 
 
 if ( $session->fetch() == false )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->store();    
 }
 

@@ -31,7 +31,7 @@
 // include_once( "ezarticle/classes/ezarticle.php" );
 // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Title = htmlspecialchars($ini->variable( "eZArticleRSS", "Title" ));
 $Link = $ini->variable( "eZArticleRSS", "Link" );
 $Description = htmlspecialchars($ini->variable( "eZArticleRSS", "Description" ));

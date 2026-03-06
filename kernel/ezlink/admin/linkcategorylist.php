@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZLinkMain", "Language" );
 $AdminLimit = $ini->variable( "eZLinkMain", "AdminLinkLimit" );
@@ -102,7 +102,7 @@ foreach ( $pathArray as $path )
     $t->parse( "path_item", "path_item_tpl", true );
 }
 
-$linkCategoryList =& $linkCategory->getByParent( $LinkCategoryID );
+$linkCategoryList = $linkCategory->getByParent( $LinkCategoryID );
 
 if ( $LinkCategoryID == "incoming" )
 {
@@ -139,21 +139,21 @@ else
 
         $t->set_var( "document_root", $DOC_ROOT );
 
-        $image =& $linkCategoryItem->image();
+        $image = $linkCategoryItem->image();
 
         $t->set_var( "image_item", "" );
 
         if ( is_a( $image, "eZImage" ) )
         {
-            $imageWidth =& $ini->variable( "eZLinkMain", "CategoryImageWidth" );
-            $imageHeight =& $ini->variable( "eZLinkMain", "CategoryImageHeight" );
+            $imageWidth = $ini->variable( "eZLinkMain", "CategoryImageWidth" );
+            $imageHeight = $ini->variable( "eZLinkMain", "CategoryImageHeight" );
 
-            $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+            $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
             $imageURL = "/" . $variation->imagePath();
-            $imageWidth =& $variation->width();
-            $imageHeight =& $variation->height();
-            $imageCaption =& $image->caption();
+            $imageWidth = $variation->width();
+            $imageHeight = $variation->height();
+            $imageCaption = $image->caption();
 
             $t->set_var( "image_width", $imageWidth );
             $t->set_var( "image_height", $imageHeight );
@@ -180,13 +180,13 @@ else
 $link = new eZLinkCategory();
 if ( $LinkCategoryID == "incoming" )
 {
-    $linkList =& $link->links( $Offset, $AdminLimit, true );
-    $linkCount =& $link->linkCount( true );
+    $linkList = $link->links( $Offset, $AdminLimit, true );
+    $linkCount = $link->linkCount( true );
 }
 else
 {
-    $linkList =& $linkCategory->links( $Offset, $AdminLimit );
-    $linkCount =& $linkCategory->linkCount();
+    $linkList = $linkCategory->links( $Offset, $AdminLimit );
+    $linkCount = $linkCategory->linkCount();
 }
 
 if ( !$linkList )
@@ -213,21 +213,21 @@ else
         $t->set_var( "link_accepted", $linkItem->id() );
         $t->set_var( "link_url", $linkItem->url() );
 
-        $image =& $linkItem->image();
+        $image = $linkItem->image();
 
         $t->set_var( "image_item", "" );
 
         if ( $image )
         {
-            $imageWidth =& $ini->variable( "eZLinkMain", "LinkImageWidth" );
-            $imageHeight =& $ini->variable( "eZLinkMain", "LinkImageHeight" );
+            $imageWidth = $ini->variable( "eZLinkMain", "LinkImageWidth" );
+            $imageHeight = $ini->variable( "eZLinkMain", "LinkImageHeight" );
 
-            $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+            $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
             $imageURL = "/" . $variation->imagePath();
-            $imageWidth =& $variation->width();
-            $imageHeight =& $variation->height();
-            $imageCaption =& $image->caption();
+            $imageWidth = $variation->width();
+            $imageHeight = $variation->height();
+            $imageCaption = $image->caption();
 
             $t->set_var( "image_width", $imageWidth );
             $t->set_var( "image_height", $imageHeight );

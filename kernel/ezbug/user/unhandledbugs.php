@@ -33,7 +33,7 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language= $ini->variable("eZBugMain","Language");
 $t = new eZTemplate( "kernel/ezbug/user/" . $ini->variable( "eZBugMain", "TemplateDir" ),
                      "kernel/ezbug/user/intl", $Language, "unhandledbugs.php" );
@@ -51,7 +51,7 @@ $t->set_var( "site_style", $GlobalSiteDesign );
 
 $bug = new eZBug();
 
-$unhandleBugs =& $bug->getUnhandled();
+$unhandleBugs = $bug->getUnhandled();
 
 $t->set_var( "bug", "" );
 

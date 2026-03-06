@@ -58,7 +58,7 @@ class eZBugLog
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $description = $db->escapeString( $this->Description );
 
         $db->begin();
@@ -96,7 +96,7 @@ class eZBugLog
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( isset( $this->ID ) )
@@ -112,7 +112,7 @@ class eZBugLog
     */
     function get( $id = "" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $id != "" )
         {
             $db->array_query( $module_array, "SELECT * FROM eZBug_Log WHERE ID='$id'" );
@@ -138,7 +138,7 @@ class eZBugLog
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $module_array = array();
@@ -161,7 +161,7 @@ class eZBugLog
     */
     static public function getByBug( $bug )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $module_array = array();
@@ -205,7 +205,7 @@ class eZBugLog
 
       The time is returned as a eZDateTime object.
     */
-    function &created()
+    function created()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->Created );
@@ -215,7 +215,7 @@ class eZBugLog
     /*!
       Returns the user as a eZUser object.
     */
-    function &user()
+    function user()
     {
        $user = new eZUser( $this->UserID );
        return $user;
@@ -224,7 +224,7 @@ class eZBugLog
     /*!
       Returns the bug as a eZBug object.
     */
-    function &bug()
+    function bug()
     {
        $bug = new eZBug( $this->BugID );
        return $bug;

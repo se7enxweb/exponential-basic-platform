@@ -104,7 +104,7 @@ class eZPBImageFile extends eZPBFile
       "image-type" - The image type, for instance: image/jpeg, image/png or image/gif
       "support" - True if the image type is supported.
     */
-    static public function &information( $file, $use_default = false )
+    static public function information( $file, $use_default = false )
     {
         $ret = array();
         if ( preg_match( '/\.([a-zA-Z]+)$/', $file, $regs ) )
@@ -148,7 +148,7 @@ class eZPBImageFile extends eZPBFile
       Returns the default image info structure, which uses the jpeg format.
       This is used for returning a standard info structure if the file format is unsupported.
     */
-    static public function &defaultInformation()
+    static public function defaultInformation()
     {
         $ret = array( "suffix" => "jpg",
                       "dot-suffix" => ".jpg",
@@ -182,7 +182,7 @@ class eZPBImageFile extends eZPBFile
             return "locked";
         }
         touch( $lock_file );
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $image_prog = "convert";
         if ( $ini->hasVariable( "classes", "ImageConversionProgram" ) )
             $image_prog = $ini->variable( "classes", "ImageConversionProgram" );
@@ -319,7 +319,7 @@ class eZPBImageFile extends eZPBFile
     function convertCopy( $dest )
     {
         $ret = false;
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $image_prog = "convert";
         if ( $ini->hasVariable( "classes", "ImageConversionProgram" ) )
             $image_prog = $ini->variable( "classes", "ImageConversionProgram" );

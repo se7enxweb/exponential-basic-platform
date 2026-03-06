@@ -30,7 +30,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $UserWithAddress = $ini->variable( "eZUserMain", "UserWithAddress" );
 
@@ -40,7 +40,7 @@ $UserWithAddress = $ini->variable( "eZUserMain", "UserWithAddress" );
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "ezsession/classes/ezsession.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user ) 
 {
@@ -196,7 +196,7 @@ else
     //$user = new eZUser();
     //$user->currentUser();
     $locale = new eZLocale( $Language );
-    $messageArray =& $message->messagesToUser( $user );
+    $messageArray = $message->messagesToUser( $user );
     $i = 0;
     
     foreach ( $messageArray as $message )

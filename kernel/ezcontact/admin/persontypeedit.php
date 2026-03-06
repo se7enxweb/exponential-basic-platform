@@ -30,7 +30,7 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZContactMain", "DocumentRoot" );
 

@@ -68,9 +68,9 @@ class eZQuizScore
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
-        $name =& $db->escapeString( $this->Name );
+        $name = $db->escapeString( $this->Name );
         $userID = $this->User->id();
         $gameID = $this->Game->id();
 
@@ -107,7 +107,7 @@ class eZQuizScore
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res[] = $db->query( "DELETE FROM eZQuiz_Score WHERE ID='$catID'" );
@@ -121,7 +121,7 @@ class eZQuizScore
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -131,7 +131,7 @@ class eZQuizScore
 
             if ( count( $scoreArray ) == 1 )
             {
-                $this->fill( &$scoreArray[0] );
+                $this->fill( $scoreArray[0] );
                 $ret = true;
             }
             elseif ( count( $scoreArray ) == 0 )
@@ -157,7 +157,7 @@ class eZQuizScore
         if ( is_a( $game, "eZQuizGame" ) )
             $gameID = $game->id();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $gameID != "" && $userID != "" )
@@ -167,7 +167,7 @@ class eZQuizScore
 
             if ( count( $scoreArray ) == 1 )
             {
-                $this->fill( &$scoreArray[0] );
+                $this->fill( $scoreArray[0] );
                 $ret = true;
             }
             elseif ( count( $scoreArray ) == 0 )
@@ -184,10 +184,10 @@ class eZQuizScore
     */
     function fill( &$scoreArray )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID =& $scoreArray[$db->fieldName( "ID" )];
-        $this->User =& new eZUser( $scoreArray[$db->fieldName( "UserID" )] );
-        $this->Game =& new eZQuizGame( $scoreArray[$db->fieldName( "GameID" )] );
+        $this->User = new eZUser( $scoreArray[$db->fieldName( "UserID" )] );
+        $this->Game = new eZQuizGame( $scoreArray[$db->fieldName( "GameID" )] );
         $this->TotalScore = $scoreArray[$db->fieldName( "TotalScore" )];
         $this->LastQuestion = $scoreArray[$db->fieldName( "LastQuestion" )];
         $this->FinishedGame = $scoreArray[$db->fieldName( "FinishedGame" )];
@@ -200,7 +200,7 @@ class eZQuizScore
     */
     function getAll( $offset = 0, $limit = 20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $scoreArray = array();
@@ -221,7 +221,7 @@ class eZQuizScore
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count FROM eZQuiz_Score" );
@@ -356,7 +356,7 @@ class eZQuizScore
      */
     function scores( &$game )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( is_a( $game, "eZQuizGame" ) )
             $gameID = $game->id();
@@ -380,7 +380,7 @@ class eZQuizScore
      */
     function highScore( &$game )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( is_a( $game, "eZQuizGame" ) )
             $gameID = $game->id();
@@ -400,7 +400,7 @@ class eZQuizScore
     */
     function getAllByGame( &$game, $offset = 0, $limit = 20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $scoreArray = array();
@@ -426,7 +426,7 @@ class eZQuizScore
     */
     function countAllByGame( &$game )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $scoreArray = array();
 
@@ -448,7 +448,7 @@ class eZQuizScore
     */
     function getAllByUser( &$user, $offset = 0, $limit = 20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $scoreArray = array();
@@ -473,7 +473,7 @@ class eZQuizScore
     */
     function countAllByUser( &$user )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $scoreArray = array();
 
@@ -494,7 +494,7 @@ class eZQuizScore
     */
     function getAllSavedByUser( &$user, $offset = 0, $limit = 20, $latestOnly = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
         $returnArray = array();
         $scoreArray = array();
@@ -527,7 +527,7 @@ class eZQuizScore
     */
     function countAllSavedByUser( &$user, $latestOnly = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
         $scoreArray = array();
 

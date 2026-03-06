@@ -31,7 +31,7 @@
 // include_once( "classes/ezhttptool.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
@@ -55,7 +55,7 @@ if ( isset ( $SearchButton ) )
     $Action = "SearchButton";
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $t = new eZTemplate( "kernel/eztrade/user/" . $ini->variable( "eZTradeMain", "TemplateDir" ) ,
                      "kernel/eztrade/user/intl/", $Language, "extendedsearch.php" );
@@ -120,7 +120,7 @@ if ( $Action == "SearchButton" )
             list($key,$main) = each( $mains );
         }
 
-        $productList =& $product->extendedSearch( $PriceLower, $PriceHigher, $Text, $Offset, $Limit, $catIDArray );
+        $productList = $product->extendedSearch( $PriceLower, $PriceHigher, $Text, $Offset, $Limit, $catIDArray );
         $totalCount = $product->extendedSearchCount( $PriceLower, $PriceHigher, $Text, $catIDArray );
     }
     else
@@ -140,7 +140,7 @@ if ( $Action == "SearchButton" )
             $categories = array();
             foreach( $cats as $cat )
             {
-                $tree =& eZProductCategory::getTree( $cat == 0 ? $main : $cat );
+                $tree = eZProductCategory::getTree( $cat == 0 ? $main : $cat );
                 foreach( $tree as $category_item )
                 {
                     $categories[] = $category_item[0]->id();
@@ -152,7 +152,7 @@ if ( $Action == "SearchButton" )
             $catIDArray[] = $cat_array;
         }
 
-        $productList =& $product->extendedSearch( $PriceLower, $PriceHigher, $Text, $Offset, $Limit, $catIDArray );
+        $productList = $product->extendedSearch( $PriceLower, $PriceHigher, $Text, $Offset, $Limit, $catIDArray );
         $totalCount = $product->extendedSearchCount( $PriceLower, $PriceHigher, $Text, $catIDArray );
     }
 
@@ -217,7 +217,7 @@ if ( count ( $productList ) > 0 )
         $thumbnailImage = $product->thumbnailImage();
         if ( $thumbnailImage )
         {
-            $variation =& $thumbnailImage->requestImageVariation( $SmallImageWidth, $SmallImageHeight );
+            $variation = $thumbnailImage->requestImageVariation( $SmallImageWidth, $SmallImageHeight );
 
             $t->set_var( "thumbnail_image_uri", "/" . $variation->imagePath() );
             $t->set_var( "thumbnail_image_width", $variation->width() );
@@ -281,7 +281,7 @@ eZList::drawNavigator( $t, $totalCount, $Limit, $Offset, "extended_search_tpl" )
 
 $category = new eZProductCategory();
 
-//$categoryList =& $category->getTree();
+//$categoryList = $category->getTree();
 $categoryList = array();
 foreach( $ExtendedSearchCategories as $category )
 {

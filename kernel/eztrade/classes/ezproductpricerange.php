@@ -70,14 +70,14 @@ class eZProductPriceRange
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( !isset( $this->ID ) )
         {
             $db->lock( "eZTrade_ProductPriceRange" );
             $nextID = $db->nextID( "eZTrade_ProductPriceRange", "ID" );            
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
             $password = md5( $this->Password );
 
             $res = $db->query( "INSERT INTO eZTrade_ProductPriceRange
@@ -117,7 +117,7 @@ class eZProductPriceRange
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         
         $res = $db->query( "DELETE FROM eZTrade_ProductPriceRange WHERE ID='$this->ID'" );
@@ -135,7 +135,7 @@ class eZProductPriceRange
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -160,7 +160,7 @@ class eZProductPriceRange
     */
     function fill( &$productArray )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $productArray[$db->fieldName( "ID" )];
         $this->Min = $productArray[$db->fieldName( "Min" )];
         $this->Max = $productArray[$db->fieldName( "Max" )];
@@ -172,9 +172,9 @@ class eZProductPriceRange
 
       The categories are returned as an array of eZProductPriceRange objects.
     */
-    function &getAll( $offset=0, $limit=20 )
+    function getAll( $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $returnArray = array();
         $productArray = array();
@@ -206,7 +206,7 @@ class eZProductPriceRange
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -226,7 +226,7 @@ class eZProductPriceRange
     /*!
       Returns the minimin price of the prince range.
     */
-    function &min()
+    function min()
     {
         return $this->Min;
     }
@@ -234,7 +234,7 @@ class eZProductPriceRange
     /*!
       Returns the maximum price of the prince range.
     */
-    function &max()
+    function max()
     {
         return $this->Max;
     }

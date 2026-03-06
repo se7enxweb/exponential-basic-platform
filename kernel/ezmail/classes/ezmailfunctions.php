@@ -205,7 +205,7 @@ function addAttachment( &$mail, &$data , $fileName )
 /*!
   Decodes a value encoded with enctype. Returns the decoded value.
  */
-function &decode( $enctype, &$value )
+function decode( $enctype, &$value )
 {
     $ret = "";
     switch ($enctype)

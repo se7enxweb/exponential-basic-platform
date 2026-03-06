@@ -38,7 +38,7 @@ if ( isset( $Cancel ) )
 // include_once( "ezcontact/classes/ezcompany.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
 
@@ -74,7 +74,7 @@ if ( $Action == "newstatus" )
     $status->setComment( $StatusComment );
     $status->setOrderID( $OrderID );
 
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
 
     $status->setAdmin( $user );
 
@@ -236,7 +236,7 @@ if ( $user )
     }
 
     // print out the addresses
-    $shippingAddress =& $order->shippingAddress();
+    $shippingAddress = $order->shippingAddress();
 
     $t->set_var( "shipping_street1", $shippingAddress->street1() );
     $t->set_var( "shipping_street2", $shippingAddress->street2() );
@@ -291,7 +291,7 @@ if ( $user )
         $t->set_var( "shipping_region", "" );
     }
 	
-    $billingAddress =& $order->billingAddress();
+    $billingAddress = $order->billingAddress();
 
     $t->set_var( "billing_street1", $billingAddress->street1() );
     $t->set_var( "billing_street2", $billingAddress->street2() );
@@ -386,7 +386,7 @@ foreach ( $items as $item )
     $t->set_var( "td_class", ( $j % 2 ) == 0 ? "bglight" : "bgdark" );
     $j++;  
     $t->set_var( "cart_item_id", $item->id() );
-    $product =& $item->product();
+    $product = $item->product();
     $vatPercentage = $product->vatPercentage();
     $productHasVAT = $product->priceIncVAT();
     
@@ -402,7 +402,7 @@ foreach ( $items as $item )
 
     $numberOfOptions = 0;
     
-    $optionValues =& $item->optionValues();
+    $optionValues = $item->optionValues();
 
     $t->set_var( "cart_item_option", "" );
     $t->set_var( "cart_item_basis", "" );
@@ -578,7 +578,7 @@ if($total["shiptax"]){
     }
 }
 
-$usedVouchers =& $order->usedVouchers();
+$usedVouchers = $order->usedVouchers();
 $t->set_var("user-comment-str", "Comment:");
 $t->set_var("user-comment", $order->comment());
 $t->set_var( "voucher_item_list", "" );
@@ -593,7 +593,7 @@ if ( count ( $usedVouchers ) > 0 )
         $t->set_var( "td_class", ( $j % 2 ) == 0 ? "bglight" : "bgdark" );
         $j++;  
 
-        $voucher =& $voucherUsed->voucher();
+        $voucher = $voucherUsed->voucher();
         $t->set_var( "voucher_number", $voucher->keyNumber() );
 
         eZOrder::voucherTotal( $tax, $total, $voucherUsed );
@@ -663,7 +663,7 @@ foreach ( $historyArray as $status )
 }
 
 $checkout = new eZCheckout();
-$instance =& $checkout->instance();
+$instance = $checkout->instance();
 $paymentMethod = $instance->paymentName( $order->paymentMethod() );
 
 $t->set_var( "payment_method", $paymentMethod );

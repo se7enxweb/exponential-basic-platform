@@ -101,7 +101,7 @@ function laddZero( $value )
 
  foreach( $eventList as $events )
  {
-   // $events =& $event->getAll();
+   // $events = $event->getAll();
    // print( "event: " .  $event->name()."\n" );
 
    $events->notification(true);

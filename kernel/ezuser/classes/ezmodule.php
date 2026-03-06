@@ -73,7 +73,7 @@ class eZModule
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $dbError = false;
         $db->begin( );
@@ -120,7 +120,7 @@ class eZModule
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
         
@@ -143,7 +143,7 @@ class eZModule
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -171,7 +171,7 @@ class eZModule
     */
     function getAll( $returnOnlyActive=false)
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $module_array = array();
@@ -212,7 +212,7 @@ class eZModule
     */
     function exists( $name )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $ret = false;
         

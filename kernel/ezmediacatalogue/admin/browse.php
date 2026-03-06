@@ -36,7 +36,7 @@
 // include_once( "ezmediacatalogue/classes/ezmediacategory.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZMediaCatalogueMain", "Language" );
 
@@ -49,10 +49,10 @@ $t->set_file( "media_list_page_tpl", "browse.tpl" );
 
 $t->setAllStrings();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 $returnUrl = $session->variable( "MediaListReturnTo" );
 
@@ -133,7 +133,7 @@ foreach ( $pathArray as $path )
 
 
 // Print out all the categories
-$categoryList =& $category->getByParent( $category );
+$categoryList = $category->getByParent( $category );
 
 $i=0;
 foreach ( $categoryList as $categoryItem )
@@ -167,7 +167,7 @@ else
 }
 
 // Print out all the media
-$mediaList =& $category->media();
+$mediaList = $category->media();
 
 $selectMedia = $session->variable( "SelectMedia" );
 if( !$selectMedia )

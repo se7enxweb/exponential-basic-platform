@@ -33,7 +33,7 @@
 // include_once( "eztrade/classes/ezpricegroup.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $hotDealColumns  = $ini->variable( "eZTradeMain", "HotDealColumns" );
@@ -56,7 +56,7 @@ $ShowPrice = $RequireUser ? get_class( $user ) == "ezuser" : true;
 $GenerateStaticPage = true;
 $PriceGroup = 0;
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !isset( $Limit ) or !is_numeric( $Limit ) )
     $Limit = 10;
@@ -132,7 +132,7 @@ if ( isset( $HotDealColumns ) )
 $t->set_var( "hotdeal_columns", $hotDealColumns );
 
 // products
-$productList =& $product->hotDealProducts( $MaxHotDeals );
+$productList = $product->hotDealProducts( $MaxHotDeals );
 
 $locale = new eZLocale( $Language );
 $i=0;
@@ -184,7 +184,7 @@ foreach ( $productList as $product )
 
         if ( $thumbnailImage )
         {
-            $variation =& $thumbnailImage->requestImageVariation( $ThumbnailImageWidth, $ThumbnailImageHeight );
+            $variation = $thumbnailImage->requestImageVariation( $ThumbnailImageWidth, $ThumbnailImageHeight );
 
             $t->set_var( "product_image_uri", "/" . $variation->imagePath() );
             $t->set_var( "product_image_width", $variation->width() );
@@ -207,7 +207,7 @@ foreach ( $productList as $product )
 
         // show alternative currencies
         $currency = new eZProductCurrency( );
-        $currencies =& $currency->getAll();
+        $currencies = $currency->getAll();
         $t->set_var( "currency_count", count( $currencies ) );
         $t->set_var( "value_price_header_item", "" );
         $t->set_var( "value_currency_header_item", "" );
@@ -355,13 +355,13 @@ foreach ( $productList as $product )
         else
         {
             $priceArray = "";
-            $options =& $product->options();
+            $options = $product->options();
             if ( count( $options ) == 1 )
             {
                 $option = $options[0];
                 if ( get_class( $option ) == "ezoption" )
                 {
-                    $optionValues =& $option->values();
+                    $optionValues = $option->values();
                     if ( count( $optionValues ) > 1 )
                     {
                         $i=0;
@@ -442,8 +442,8 @@ foreach ( $productList as $product )
 
     if  ( $image )
     {
-        $thumbnail =& $image->requestImageVariation( $hotDealImageWidth, $hotDealImageHeight );
-//        $thumbnail =& $image->requestImageVariation( 109, 109 );
+        $thumbnail = $image->requestImageVariation( $hotDealImageWidth, $hotDealImageHeight );
+//        $thumbnail = $image->requestImageVariation( 109, 109 );
         
         if ( $thumbnail )
         {

@@ -26,7 +26,7 @@
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if( eZPermission::checkPermission( $user, "eZPoll", "ModuleEdit" ) == false )
 {
     eZHTTPTool::header( "Location: /error/403" );

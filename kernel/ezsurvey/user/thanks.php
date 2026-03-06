@@ -4,7 +4,7 @@
     // include_once( "classes/eztemplate.php" );
     // include_once( "ezsurvey/classes/ezsurvey.php" );
     
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
     $Language = $ini->variable( "eZSurveyMain", "Language" );
     
     $t = new eZTemplate( "kernel/ezsurvey/user/" . $ini->variable( "eZSurveyMain", "AdminTemplateDir" ),

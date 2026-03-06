@@ -29,7 +29,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 
 // include_once( "ezuser/classes/ezusergroup.php" );
@@ -64,7 +64,7 @@ if ( isset( $new_consultation ) )
     exit();
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( !is_a( $user, "eZUser" ) )
 {
     // include_once( "classes/ezhttptool.php" );
@@ -287,7 +287,7 @@ else
     $Action = "formdata";
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user )
 {

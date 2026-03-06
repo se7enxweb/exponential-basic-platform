@@ -60,7 +60,7 @@ function ezxmlrpcErrorHandler ($errno, $errstr, $errfile, $errline)
 			return true;
 		break;
 	}
-    $payload =& $ret->payload();
+    $payload = $ret->payload();
     Header( "Server: eZ xmlrpc server" );
     Header( "Content-type: text/xml" );
     Header( "Content-Length: " . strlen( $payload ) );

@@ -73,11 +73,11 @@ class eZXMLRPCResponse
         // coose XML parser
         if ( function_exists( "xmltree" ) )
         {
-            $domTree =& xmltree( $stream );
+            $domTree = xmltree( $stream );
         }
         else if ( function_exists( "qdom_tree" ) )
         {
-            $domTree =& qdom_tree( $stream );
+            $domTree = qdom_tree( $stream );
         }
         else
         {
@@ -88,7 +88,7 @@ class eZXMLRPCResponse
         }
         */
 
-        $domTree =& eZXML::domTree( $stream, array( "TrimWhiteSpace" => true ) );
+        $domTree = eZXML::domTree( $stream, array( "TrimWhiteSpace" => true ) );
 
         foreach ( $domTree->children as $response )
         {
@@ -108,7 +108,7 @@ class eZXMLRPCResponse
                                 {
                                     if ( $value->name == "value" )
                                     {
-                                        $this->Result =& $decoder->decodeDataTypes( $value );
+                                        $this->Result = $decoder->decodeDataTypes( $value );
                                     }
                                 }
                             }
@@ -122,7 +122,7 @@ class eZXMLRPCResponse
                             if ( $param->name == "value" )
                             {
                                 $this->IsFault = true;
-                                $this->Error =& $decoder->decodeDataTypes( $param );
+                                $this->Error = $decoder->decodeDataTypes( $param );
                             }
                         }
                     }
@@ -192,7 +192,7 @@ class eZXMLRPCResponse
       Returns the response payload. This is the response encoded
       as an XML-RPC call.
     */
-    function &payload( )
+    function payload( )
     {
         $payload = "<?xml version=\"1.0\"?>";
 
@@ -217,7 +217,7 @@ class eZXMLRPCResponse
       \private
       Strips the header information from the HTTP raw response.
     */
-    function &stripHTTPHeader( $data )
+    function stripHTTPHeader( $data )
     {
         $start = strpos( $data, "<?xml version=\"1.0\"?>" );
         $data = substr( $data, $start, strlen( $data ) - $start );

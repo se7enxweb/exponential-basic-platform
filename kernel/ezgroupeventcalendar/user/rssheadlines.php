@@ -38,7 +38,7 @@ include_once( "classes/ezdatetime.php" );
 include_once( "classes/ezvardump.php" );
 
 // get ini variables
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Title = htmlspecialchars($ini->variable( "eZGroupEventCalendarRSS", "Title" ));
 $Link = $ini->variable( "eZGroupEventCalendarRSS", "Link" );
 $Description = htmlspecialchars($ini->variable( "eZGroupEventCalendarRSS", "Description" ));

@@ -29,7 +29,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 
 // include_once( "classes/eztemplate.php" );
@@ -62,7 +62,7 @@ function unlinkWild( $dir, $rege )
     }
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( isset( $CompanyEdit ) && $CompanyEdit )
 {
@@ -193,7 +193,7 @@ if ( isset( $Action ) && $Action == "delete" )
 
     if ( $CompanyEdit )
     {
-        $categories =& (new eZCompany())->categories( $CompanyID, false, 1 );
+        $categories = (new eZCompany())->categories( $CompanyID, false, 1 );
         $id =& $categories[0];
         $item_type = "company";
         foreach ( $ContactArrayID as $contactItem )
@@ -808,12 +808,12 @@ if ( !$confirm )
                 $BirthDay = 1;
             }
             $Comment = $person->comment();
-            $image =& $person->image( $person->id() );
+            $image = $person->image( $person->id() );
             if ( get_class( $image ) == "ezimage" && $image->id() != 0 )
             {
-                $imageWidth =& $ini->variable( "eZContactMain", "PersonImageWidth" );
-     	        $imageHeight =& $ini->variable( "eZContactMain", "PersonImageHeight" );
-                $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+                $imageWidth = $ini->variable( "eZContactMain", "PersonImageWidth" );
+     	        $imageHeight = $ini->variable( "eZContactMain", "PersonImageHeight" );
+                $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
                 $imageURL = "/" . $variation->imagePath();
                 $imageWidth = $variation->width();
                 $imageHeight = $variation->height();
@@ -917,16 +917,16 @@ if ( !$confirm )
             if ( $Action != "new" )
             {
                 if ( !isset( $CompanyCategoryID ) )
-                    $categoryList =& (new eZCompany())->categories( $CompanyID, false );
+                    $categoryList = (new eZCompany())->categories( $CompanyID, false );
                 else
                     $categoryList = array( $CompanyCategoryID );
             }
             if ( isset( $NewCompanyCategory ) and !is_numeric( $NewCompanyCategory ) )
                 $NewCompanyCategory = 0;
             if ( isset( $NewCompanyCategory ) and is_numeric( $NewCompanyCategory ) )
-                $categoryList =& array_unique( array_merge( array( $NewCompanyCategory ), $categoryList ) );
+                $categoryList = array_unique( array_merge( array( $NewCompanyCategory ), $categoryList ) );
             if ( isset( $CompanyCategoryID ) )
-                $categoryList =& array_unique( array_merge( array( $CompanyCategoryID ), $categoryList ) );
+                $categoryList = array_unique( array_merge( array( $CompanyCategoryID ), $categoryList ) );
             if ( isset( $categoryList ) && count( $categoryList ) > 0 )
                 $category_values = array_values( $categoryList );
             else
@@ -1032,10 +1032,10 @@ if ( !$confirm )
             $t->parse( "person_item", "person_item_tpl" );
         }
 
-        $phone_types =& eZPhoneType::getAll();
-        $online_types =& eZOnlineType::getAll();
-        $address_types =& eZAddressType::getAll();
-        $countries =& eZCountry::getAllArray();
+        $phone_types = eZPhoneType::getAll();
+        $online_types = eZOnlineType::getAll();
+        $address_types = eZAddressType::getAll();
+        $countries = eZCountry::getAllArray();
         if ( !isset( $PhoneDelete ) )
         {
             $PhoneDelete = array();
@@ -1076,7 +1076,7 @@ if ( !$confirm )
             $Zip = array();
         }
         $item = 0;
-        $AddressDeleteValues =& array_values( $AddressDelete );
+        $AddressDeleteValues = array_values( $AddressDelete );
         $last_id = 0;
         for ( $i = 0; $i < $count || $item < $AddressMinimum; $i++ )
         {
@@ -1159,7 +1159,7 @@ if ( !$confirm )
         }
         $item = 0;
         $last_id = 0;
-        $PhoneDeleteValues =& array_values( $PhoneDelete );
+        $PhoneDeleteValues = array_values( $PhoneDelete );
         for ( $i = 0; $i < $count || $item < $PhoneMinimum; $i++ )
         {
             if ( ( $item % $PhoneWidth == 0 ) && $item > 0 )
@@ -1219,7 +1219,7 @@ if ( !$confirm )
         }
         $item = 0;
         $last_id = 0;
-        $OnlineDeleteValues =& array_values( $OnlineDelete );
+        $OnlineDeleteValues = array_values( $OnlineDelete );
         for ( $i = 0; $i < $count || $item < $OnlineMinimum; $i++ )
         {
             if ( ( $item % $OnlineWidth == 0 ) && $item > 0 )
@@ -1266,7 +1266,7 @@ if ( !$confirm )
         }
         $t->parse( "online_table_item", "online_table_item_tpl", true );
 
-        $groups =& eZUserGroup::getAll();
+        $groups = eZUserGroup::getAll();
         foreach ( $groups as $group )
         {
             $t->set_var( "type_id", $group->id() );
@@ -1288,11 +1288,11 @@ if ( !$confirm )
             $users = array();
             if ( isset( $ContactGroupID ) && $ContactGroupID == -1 )
             {
-                $users =& eZUser::getAll( "name", true, $UserSearch );
+                $users = eZUser::getAll( "name", true, $UserSearch );
             }
             else if ( isset( $ContactGroupID ) && $ContactGroupID == -3 )
             {
-                $users =& eZPerson::getAll( $UserSearch, 0, -1 );
+                $users = eZPerson::getAll( $UserSearch, 0, -1 );
             }
             else if ( isset( $ContactGroupID ) && $ContactGroupID < 1 )
             {
@@ -1308,7 +1308,7 @@ if ( !$confirm )
             else
             {
                 $group = new eZUserGroup();
-                $users =& $group->users( isset( $ContactGroupID ) ? $ContactGroupID : false, "name", isset( $UserSearch ) ? $UserSearch : false );
+                $users = $group->users( isset( $ContactGroupID ) ? $ContactGroupID : false, "name", isset( $UserSearch ) ? $UserSearch : false );
             }
             foreach ( $users as $contact )
             {
@@ -1349,7 +1349,7 @@ if ( !$confirm )
         }
 
         $t->set_var( "project_item_select", "" );
-        $project_types =& eZProjectType::findTypes();
+        $project_types = eZProjectType::findTypes();
         foreach ( $project_types as $project_type )
         {
             $t->set_var( "type_id", $project_type->id() );

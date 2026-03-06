@@ -37,7 +37,7 @@
 // include_once( "ezmediacatalogue/classes/ezmediacategory.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZMediaCatalogueMain", "Language" );
 $SyncDir = $ini->variable( "eZMediaCatalogueMain", "SyncDir" );
@@ -50,7 +50,7 @@ $t->set_file( "media_list_page_tpl", "medialist.tpl" );
 
 $t->setAllStrings();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $t->set_block( "media_list_page_tpl", "current_category_tpl", "current_category" );
 
@@ -146,7 +146,7 @@ function syncDir( $root, $category )
 	  if ( filetype( $root . $entry ) == "dir" )
 	    {
 	      // check if category exists if not create it:
-	      $subCategoryArray =& $category->getByParent( $category );
+	      $subCategoryArray = $category->getByParent( $category );
 	      $sub = false;
 	      foreach ( $subCategoryArray as $subCategory )
 		{
@@ -230,7 +230,7 @@ $t->set_var( "sync_dir", $SyncMediaDir );
 // ###################################################
 
 // Print out all the categories
-$categoryList =& $category->getByParent( $category );
+$categoryList = $category->getByParent( $category );
 
 $i=0;
 foreach ( $categoryList as $categoryItem )
@@ -290,7 +290,7 @@ else
 $limit = $ini->variable( "eZMediaCatalogueMain", "ListMediaPerPage" );
 
 // Print out all the media
-$mediaList =& $category->media( "time", $Offset, $limit );
+$mediaList = $category->media( "time", $Offset, $limit );
 
 $i = 0;
 $j = 0;
@@ -319,7 +319,7 @@ foreach ( $mediaList as $media )
 
     if ( $media->fileExists( true ) )
     {
-        $mediaPath =& $media->filePath( true );
+        $mediaPath = $media->filePath( true );
         $size = eZPBFile::filesize( $mediaPath );
     }
     else

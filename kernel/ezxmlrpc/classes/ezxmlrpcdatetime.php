@@ -65,7 +65,7 @@ class eZXMLRPCDatetime
     /*!
       This function will encode the datetime into a valid XML-RPC value.
     */
-    function &serialize( )
+    function serialize( )
     {
         $year = $this->year();
         $month = $this->addZero( $this->month() );

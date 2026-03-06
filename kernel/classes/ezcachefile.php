@@ -67,7 +67,7 @@ class eZCacheFile
     /*!
       Returns the filename of the cache file. If $with_root is true the root dir is prepended.
     */
-    function &filename( $with_root = false )
+    function filename( $with_root = false )
     {
         if ( empty( $this->Filename ) )
         {            
@@ -98,7 +98,7 @@ class eZCacheFile
     */
     function exists()
     {
-        $file =& $this->filename( true );
+        $file = $this->filename( true );
         return file_exists( $file );
     }
 
@@ -129,7 +129,7 @@ class eZCacheFile
     /*!
       Returns an eZDateTime object describing when the file was last modified.
     */
-    function &lastModified()
+    function lastModified()
     {
         if ( $this->exists() )
         {
@@ -151,7 +151,7 @@ class eZCacheFile
     /*!
       Returns the content of the file if it exists and can be read.
     */
-    function &contents()
+    function contents()
     {
         if ( !$this->exists() )
             print( "<br><b>Cache: File \"" . $this->filename( true ) . "\" does not exist</b><br>" );
@@ -162,7 +162,7 @@ class eZCacheFile
             {
 		        $fileSize = eZPBFile::filesize( $this->filename( true ) );
 		        if( $fileSize != 0 )
-                    $content =& fread( $file, $fileSize );
+                    $content = fread( $file, $fileSize );
                 fclose( $file );
             }
             else

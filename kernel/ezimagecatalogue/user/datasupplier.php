@@ -30,13 +30,13 @@
 // include_once( "ezimagecatalogue/classes/ezimagecategory.php" );
 // include_once( "ezimagecatalogue/classes/ezimage.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZImageCatalogueMain", "DefaultSection" );
 $UserComments = $ini->variable( "eZImageCatalogueMain", "UserComments" );
 
 function writeAtAll()
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if( eZObjectPermission::getObjects( "imagecatalogue_category", 'w', true ) < 1
         && eZObjectPermission::getObjects( "imagecatalogue_category", 'u', true ) < 1
         && !eZPermission::checkPermission( $user, "eZImageCatalogue", "WriteToRoot" ) )
@@ -49,7 +49,7 @@ function writeAtAll()
     return true;
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 switch ( $url_array[2] )
 {
     case "customimage" :

@@ -25,7 +25,7 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZBulkmailMain", "DefaultSection" );
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 
@@ -50,7 +50,7 @@ switch ( $url_array[2] )
     {
         if ( $ini->variable( "eZBulkMailMain", "UseEZUser" ) == "enabled" )
         {
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
             if ( $user )
             {
                 include( "kernel/ezbulkmail/user/subscriptionlist.php" );

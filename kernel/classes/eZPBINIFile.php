@@ -324,7 +324,7 @@ class eZPBINIFile
     function group_exists( $group_name )
     {
         $group_name = strtolower( $group_name );
-        $group =& $this->GROUPS[ $group_name ];
+        $group = $this->GROUPS[ $group_name ];
         if ( empty( $group ) ) return false;
         else return true;
     }
@@ -335,7 +335,7 @@ class eZPBINIFile
     function read_group( $group_name )
     {
         $group_name = strtolower( $group_name );
-        $group_array =& $this->GROUPS[ $group_name ];
+        $group_array = $this->GROUPS[ $group_name ];
         if(! empty( $group_array ) )
             return $group_array;
         else
@@ -395,7 +395,7 @@ class eZPBINIFile
 //	    global $Language;
 //
 //	    include_once( "kernel/ezsession/classes/ezsession.php" );
-//            $session =& eZSession::globalSession();
+//            $session = eZSession::globalSession();
 //            $session->fetch();
 //
 //	    if ( isset ( $Language ))
@@ -403,7 +403,7 @@ class eZPBINIFile
 //		$session->setVariable( "AdminSiteLanguage", $Language );
 //	    }
 //
-//            $Language =& $session->variable( "AdminSiteLanguage" );
+//            $Language = $session->variable( "AdminSiteLanguage" );
 //	}
 //
 //        if ( $Language <> "" )
@@ -431,7 +431,7 @@ class eZPBINIFile
     {
         if ( $this->hasVariable( $group_name, $var_name ) )
         {
-            $var_value =& $this->variable( $group_name, $var_name );
+            $var_value = $this->variable( $group_name, $var_name );
             if ( $var_value != "" )
             {
                 $var_array = explode( ";", $var_value );
@@ -478,7 +478,7 @@ class eZPBINIFile
       loaded from the site.ini file. This can be overidden by supplying $type and $file.
       If the ini-file object does not exist it is created before returning.
     */
-    static public function &globalINI( $type = "SiteIni", $file = "settings/site.ini" )
+    static public function globalINI( $type = "SiteIni", $file = "settings/site.ini" )
     {
         $ini =& $GLOBALS["INI_$type"];
 

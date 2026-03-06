@@ -77,12 +77,13 @@ switch ( $url_array[2] )
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
         $user = eZUser::currentUser();
+        $userID = $user->ID;
         $groupstr = "";
         $cacheFile = false;
 
         if ( $user && get_class( $user ) == "eZUser" )
         {
-            $groupIDArray =& $user->groups( false );
+            $groupIDArray = $user->groups( false );
             sort( $groupIDArray );
             $first = true;
             foreach ( $groupIDArray as $groupID )
@@ -91,8 +92,10 @@ switch ( $url_array[2] )
                 $first = false;
             }
         }
-        else
-            $user = 0;
+        //else
+         //   $user = 0;
+
+        //$userID = ( $user && is_object( $user ) ) ? $user->id() : null;
 
         if ( $PageCaching == "enabled" )
         {
@@ -102,7 +105,7 @@ switch ( $url_array[2] )
 
             $cachedFile = $file->filename( true );
 
-            if ( $file->exists() && $userID !== null)
+            if ( $file->exists() && ( /* isset( $userID ) && */ $userID !== null ) )
             {
                 include( $cachedFile );
             }
@@ -128,11 +131,11 @@ switch ( $url_array[2] )
 
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $groupstr = "";
         if ( is_a( $user, "eZUser" ) )
         {
-            $groupIDArray =& $user->groups( false );
+            $groupIDArray = $user->groups( false );
             sort( $groupIDArray );
             $first = true;
             foreach ( $groupIDArray as $groupID )
@@ -226,7 +229,7 @@ switch ( $url_array[2] )
 
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $groupstr = "";
         if ( is_a( $user, "eZUser" ) )
         {
@@ -324,7 +327,7 @@ switch ( $url_array[2] )
     {
         $CurrentIndex = urldecode( isset($url_array[3])?$url_array[3]:'' );
 
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $groupstr = "";
         if ( is_a( $user, "eZUser" ) )
         {
@@ -395,11 +398,11 @@ switch ( $url_array[2] )
 
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $groupstr = "";
         if ( is_a( $user, "eZUser" ) )
         {
-            $groupIDArray =& $user->groups( false );
+            $groupIDArray = $user->groups( false );
             sort( $groupIDArray );
             $first = true;
             foreach ( $groupIDArray as $groupID )
@@ -478,7 +481,7 @@ switch ( $url_array[2] )
         $PageNumber= $url_array[4];
         $CategoryID = $url_array[5];
 
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
 
         $article = new eZArticle( $ArticleID );
         $definition = $article->categoryDefinition( false );
@@ -506,7 +509,7 @@ switch ( $url_array[2] )
 
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $groupstr = "";
         if ( is_a( $user, "eZUser" ) )
         {
@@ -571,7 +574,7 @@ switch ( $url_array[2] )
 
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $groupstr = "";
         if ( is_a( $user, "eZUser" ) )
         {

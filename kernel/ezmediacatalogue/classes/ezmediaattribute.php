@@ -64,7 +64,7 @@ class eZMediaAttribute
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
         $db->lock( "eZMediaCatalogue_Attribute" );
@@ -80,7 +80,7 @@ class eZMediaAttribute
                 $place++;
             }
 
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
 
 			$this->ID = $db->nextID( "eZMediaCatalogue_Attribute", "ID" );
             $res = $db->query( "INSERT INTO eZMediaCatalogue_Attribute
@@ -127,7 +127,7 @@ class eZMediaAttribute
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != -1  )
         {
@@ -152,9 +152,9 @@ class eZMediaAttribute
     /*!
       Retrieves every option from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $attribute_array = array();
@@ -174,7 +174,7 @@ class eZMediaAttribute
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZMediaCatalogue_AttributeValue WHERE AttributeID='$this->ID'" );
@@ -196,7 +196,7 @@ class eZMediaAttribute
     /*!
       Returns the name of the attribute.
     */
-    function &name()
+    function name()
     {
         $this->Name = stripslashes($this->Name);
         return $this->Name;
@@ -205,7 +205,7 @@ class eZMediaAttribute
     /*!
       Returns the devault value of the attribute.
     */
-    function &defaultValue()
+    function defaultValue()
     {
         return $this->DefaultValue;
     }
@@ -213,7 +213,7 @@ class eZMediaAttribute
     /*!
       Returns the measuring unit of the attribute.
     */
-    function &unit()
+    function unit()
     {
         return $this->Unit;
     }
@@ -221,7 +221,7 @@ class eZMediaAttribute
     /*!
       Returns the type of the attribute.
     */
-    function &type()
+    function type()
     {
         $type = new eZMediaType( $this->TypeID );
         return $type;
@@ -268,7 +268,7 @@ class eZMediaAttribute
     */
     function setValue( &$media, &$value )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( is_a( $media, "eZMedia" ) )
         {
@@ -310,9 +310,9 @@ class eZMediaAttribute
     /*!
       Returns the attribute value to the given media.
     */
-    function &value( &$media )
+    function value( &$media )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = "";
         if ( is_a( $media, "eZMedia" ) )
         {
@@ -336,7 +336,7 @@ class eZMediaAttribute
     */
     function moveUp()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ID, Placement FROM eZMediaCatalogue_Attribute
                                   WHERE Placement<'$this->Placement' ORDER BY Placement DESC",
                                   array( "Limit" => 1 ) );
@@ -359,7 +359,7 @@ class eZMediaAttribute
     */
     function moveDown()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ID, Placement FROM eZMediaCatalogue_Attribute
                                   WHERE Placement>'$this->Placement' ORDER BY Placement ASC",
                                   array( "Limit" => 1 ) );

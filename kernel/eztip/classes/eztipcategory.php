@@ -63,7 +63,7 @@ class eZTipCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -119,7 +119,7 @@ class eZTipCategory
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -150,7 +150,7 @@ class eZTipCategory
     function get( $id=-1 )
     {
         $ret = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( $id != "" )
         {
@@ -182,7 +182,7 @@ class eZTipCategory
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $return_array = array();
         $category_array = array();
@@ -206,7 +206,7 @@ class eZTipCategory
     {
         if ( get_class( $parent ) == "eZTipCategory" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
         
             $return_array = array();
             $category_array = array();
@@ -445,7 +445,7 @@ class eZTipCategory
     {
        if ( get_class( $value ) == "eZTip" )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
 
             $db->begin( );
 
@@ -478,12 +478,12 @@ class eZTipCategory
 
       It does not return unactive tips unless $fetchUnActive is set to true.
     */
-    function &tiplist( $sortMode="name",
+    function tiplist( $sortMode="name",
                    $fetchUnActive=false,
                    $offset=0,
                    $limit=50 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $tip_array = array();
@@ -515,14 +515,14 @@ class eZTipCategory
 
       It does not return unactive tips unless $fetchUnActive is set to true.
     */
-    function &tips( $sortMode="name",
+    function tips( $sortMode="name",
                    $fetchUnActive=false,
                    $offset=0,
                    $limit=50,
 				   $tipLocationID=0 )
        {
 	   global $GlobalSectionID;
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
 	   // section selector
 	   $section = new eZSection();

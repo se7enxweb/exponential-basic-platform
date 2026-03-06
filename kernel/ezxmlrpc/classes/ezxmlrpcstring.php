@@ -45,7 +45,7 @@ class eZXMLRPCString
     /*!
       This function will encode the sting into a valid XML-RPC value.
     */
-    function &serialize( )
+    function serialize( )
     {
         $ret = "<value>";
         $ret .= "<string>";
@@ -67,11 +67,11 @@ class eZXMLRPCString
     /*!
       Returns an encoded string. Where <, > and & are converted to &lt;, &gt; and &amp;
     */
-    function &encode( $string )
+    function encode( $string )
     {
-        $string =& ereg_replace ( "&", "&amp;", $string );
-        $string =& ereg_replace ( "<", "&lt;", $string );
-        $string =& ereg_replace ( ">", "&gt;", $string );
+        $string = ereg_replace ( "&", "&amp;", $string );
+        $string = ereg_replace ( "<", "&lt;", $string );
+        $string = ereg_replace ( ">", "&gt;", $string );
         
         return $string;
     }
@@ -81,9 +81,9 @@ class eZXMLRPCString
     */
     function decode( $string )
     {
-        $string =& ereg_replace ( "&amp;", "&", $string );
-        $string =& ereg_replace ( "&lt;", "<", $string );
-        $string =& ereg_replace ( "&gt;", ">", $string );
+        $string = ereg_replace ( "&amp;", "&", $string );
+        $string = ereg_replace ( "&lt;", "<", $string );
+        $string = ereg_replace ( "&gt;", ">", $string );
 
         $this->Value =& $string;                
     }

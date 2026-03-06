@@ -72,7 +72,7 @@ class eZArticleCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -139,7 +139,7 @@ class eZArticleCategory
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
 
         $category = new eZArticleCategory( $catID );
@@ -174,7 +174,7 @@ class eZArticleCategory
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -209,7 +209,7 @@ class eZArticleCategory
 
     function fill( $category_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $category_array[$db->fieldName( "ID" )];
         $this->Name = $category_array[$db->fieldName( "Name" )];
         $this->Description = $category_array[$db->fieldName( "Description" )];
@@ -231,7 +231,7 @@ class eZArticleCategory
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_array = array();
         $category_array = array();
 
@@ -251,9 +251,9 @@ class eZArticleCategory
 
         Returns an object of eZArticleCategory.
      */
-    function &getByName( $name )
+    function getByName( $name )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $category = false;
         $name = $db->escapeString( $name );
 
@@ -278,9 +278,9 @@ class eZArticleCategory
 
         Returns an array of eZArticleCategory.
     */
-    function &search( $name, $showAll = false, $sortby='placement', $user = false )
+    function search( $name, $showAll = false, $sortby='placement', $user = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $topic = array();
 
         if ( is_array( $name ) )
@@ -313,7 +313,7 @@ class eZArticleCategory
         }
 
         if ( is_a( $user, "eZUser" ) )
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
 
         $show_str = "";
         $usePermission = true;
@@ -322,7 +322,7 @@ class eZArticleCategory
 
         if ( $user )
         {
-            $groups =& $user->groups( false );
+            $groups = $user->groups( false );
 
             $i = 0;
             foreach ( $groups as $group )
@@ -377,9 +377,9 @@ class eZArticleCategory
         	$perm_str = '';
         	$PermGroupBy = '';
         	
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             if ( !is_a( $user, "eZUser" ) )
-                $user =& eZUser::currentUser();
+                $user = eZUser::currentUser();
 
             $sortbySQL = "Name";
             switch ( $sortby )
@@ -402,7 +402,7 @@ class eZArticleCategory
 				$groupSQL = "";
             if ( $user )
             {
-                $groups =& $user->groups( false );
+                $groups = $user->groups( false );
 
                 $i = 0;
                 foreach ( $groups as $group )
@@ -476,9 +476,9 @@ class eZArticleCategory
     {
         if ( is_a( $parent, "eZArticleCategory" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             if ( !is_a( $user, "eZUser" ) )
-                $user =& eZUser::currentUser();
+                $user = eZUser::currentUser();
 
             $return_array = array();
             $category_array = array();
@@ -493,7 +493,7 @@ class eZArticleCategory
 
             if ( $user )
             {
-                $groups =& $user->groups( false );
+                $groups = $user->groups( false );
 
                 $i = 0;
                 foreach ( $groups as $group )
@@ -660,7 +660,7 @@ class eZArticleCategory
     */
     static public function sectionIDStatic($categoryID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $res = array();
 
         $db->query_single( $res, "SELECT SectionID from eZArticle_Category WHERE ID='$categoryID'");
@@ -679,7 +679,7 @@ class eZArticleCategory
     /*!
       Returns the Image ID.
     */
-    function &image( $AsObject = true )
+    function image( $AsObject = true )
     {
         if ( $AsObject )
             $image = new eZImage( $this->ImageID );
@@ -826,7 +826,7 @@ class eZArticleCategory
         if ( !is_a( $user, "eZUser" ) )
             return false;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT OwnerID from eZArticle_Category WHERE ID='$categoryID'");
         
         if ( !$res )
@@ -1062,7 +1062,7 @@ class eZArticleCategory
             // $categoryid = false;
             // //this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $query = "DELETE FROM eZArticle_ArticleCategoryLink
                   WHERE CategoryID='$categoryid' AND
                         ArticleID='$articleID'";
@@ -1077,7 +1077,7 @@ class eZArticleCategory
     */
     static public function addArticle( $value, $categoryid = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( is_a( $value, "eZArticle" ) )
             $articleID = $value->id();
@@ -1163,7 +1163,7 @@ class eZArticleCategory
 
       If $check_write is true then the result will only contain articles which has read AND write permissions.
     */
-    public function &articles( $sortMode="time",
+    public function articles( $sortMode="time",
                         $fetchAll=true,
                         $fetchPublished=true,
                         $offset=0,
@@ -1176,7 +1176,7 @@ class eZArticleCategory
         else
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $offset == false )
             $offset = 0;
@@ -1228,7 +1228,7 @@ class eZArticleCategory
        $return_array = array();
        $article_array = array();
 
-       $user =& eZUser::currentUser();
+       $user = eZUser::currentUser();
 
        $loggedInSQL = "";
        $groupSQL = "";
@@ -1369,12 +1369,12 @@ class eZArticleCategory
     */
     function articleCount( $fetchAll=true, $fetchPublished=true, $check_write = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $article_array = array();
 
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
 
         $loggedInSQL = "";
         $groupSQL = "";
@@ -1383,7 +1383,7 @@ class eZArticleCategory
         $having_str = '';
         if ( $user )
         {
-            $groups =& $user->groups( false );
+            $groups = $user->groups( false );
 
             foreach ( $groups as $group )
             {
@@ -1477,7 +1477,7 @@ class eZArticleCategory
     */
     function moveUp( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query_single( $qry, "SELECT * FROM eZArticle_ArticleCategoryLink
                                   WHERE ArticleID='$id' AND CategoryID='$this->ID'" );
@@ -1512,7 +1512,7 @@ class eZArticleCategory
     */
     function moveDown( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query_single( $qry, "SELECT * FROM eZArticle_ArticleCategoryLink
                                   WHERE ArticleID='$id' AND CategoryID='$this->ID'" );
@@ -1546,7 +1546,7 @@ class eZArticleCategory
      */
     function moveCategoryUp()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $query = "SELECT ID, Placement FROM eZArticle_Category
                  WHERE Placement<'$this->Placement' AND ParentID='$this->ParentID' ORDER BY Placement DESC";
@@ -1588,7 +1588,7 @@ class eZArticleCategory
      */
     function moveCategoryDown( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $query = "SELECT ID, Placement FROM eZArticle_Category
                  WHERE Placement>'$this->Placement' AND ParentID='$this->ParentID' ORDER BY Placement ASC";
 
@@ -1632,7 +1632,7 @@ class eZArticleCategory
         if ( is_a( $value, "eZBulkMailCategory" ) )
             $value = $value->id();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query( "DELETE FROM eZArticle_BulkMailCategoryLink WHERE ArticleCategoryID='$this->ID'" );
 
         if ( $value != false )
@@ -1644,7 +1644,7 @@ class eZArticleCategory
      */
     function bulkMailCategory( $asObject = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $result_array = array();
         $result = false;
         $db->array_query( $result_array, "SELECT BulkMailCategoryID FROM eZArticle_BulkMailCategoryLink WHERE ArticleCategoryID='$this->ID'" );

@@ -48,7 +48,7 @@ class eZLinkType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( !isset( $this->ID ) )
         {
@@ -80,7 +80,7 @@ class eZLinkType
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != -1  )
@@ -105,9 +105,9 @@ class eZLinkType
     /*!
       Retrieves every option from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $return_array = array();
         $type_array = array();
@@ -127,7 +127,7 @@ class eZLinkType
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         // delete all attributes and values
         $attributes = $this->attributes();
@@ -186,7 +186,7 @@ class eZLinkType
     */
     function attributes( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
        
         $return_array = array();
         $attribute_array = array();

@@ -57,7 +57,7 @@ class eZForumCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
 
@@ -106,7 +106,7 @@ class eZForumCategory
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $forumList = $this->forums();
 
@@ -127,7 +127,7 @@ class eZForumCategory
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $category_array = array();
 
@@ -162,7 +162,7 @@ class eZForumCategory
     {
         $ret = array();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $category_array, "SELECT ID FROM eZForum_Category" );
 
         $ret = array();
@@ -179,7 +179,7 @@ class eZForumCategory
     */
     function forums( $offset = 0, $limit = -1 )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $forum_array = array();
        $ret = array();
     
@@ -207,7 +207,7 @@ class eZForumCategory
     */
     function forumCount( )
     {
-      $db =& eZDB::globalDatabase();
+      $db = eZDB::globalDatabase();
 
       if ( $this->ID == 1 && $this->ID == 3 ) {
           $forumQuery = "SELECT ForumID FROM eZForum_ForumCategoryLink WHERE CategoryID='$this->ID'";
@@ -228,7 +228,7 @@ class eZForumCategory
     {
        if ( is_a( $forum, "eZForum" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
 
            $forumID = $forum->id();
            $db->begin( );
@@ -258,7 +258,7 @@ class eZForumCategory
     */
     function getAllCategories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ini = eZINI::instance( 'site.ini' );
         $ExcludeFeatureForums = $ini->variable( "eZForumMain", "ExcludeFeatureForums" );
         // $ExcludeFeatureForums = $ini->variable( "eZForumMain", "ExcludeFeatureForums" ); 
@@ -318,7 +318,7 @@ class eZForumCategory
     */
     static public function sectionIDStatic( $categoryID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT SectionID from eZForum_Category WHERE ID='$categoryID'");
 
         if( is_array( $res ) && count( $res ) > 0 )

@@ -111,7 +111,7 @@ class eZProductCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $name = $db->escapeString( $this->Name );
@@ -170,7 +170,7 @@ class eZProductCategory
     */
     function delete( $catID=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $catID == -1 )
             $catID = $this->ID;
@@ -211,7 +211,7 @@ class eZProductCategory
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $category_array = array();
         $ret = false;
 
@@ -246,9 +246,9 @@ class eZProductCategory
 
       The categories are returned as an array of eZProductCategory objects.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $category_array = array();
@@ -268,11 +268,11 @@ class eZProductCategory
 
       The categories are returned as an array of eZProductCategory objects.
     */
-    function &getByParent( $parent, $sortby='name' )
+    function getByParent( $parent, $sortby='name' )
     {
         if ( is_a( $parent, "eZProductCategory" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $return_array = array();
             $category_array = array();
@@ -301,7 +301,7 @@ class eZProductCategory
 
       See detailed description for an example of usage.
     */
-    function &path( $categoryID=0 )
+    function path( $categoryID=0 )
     {
         if ( $categoryID == 0 )
         {
@@ -331,7 +331,7 @@ class eZProductCategory
     /*!
       \static
     */
-    static public function &getTree( $parentID=0, $level=0 )
+    static public function getTree( $parentID=0, $level=0 )
     {
         $category = new eZProductCategory( $parentID );
 
@@ -364,7 +364,7 @@ class eZProductCategory
     /*!
       Returns the name of the category.
     */
-    function &name()
+    function name()
     {
         $ret = stripslashes( $this->Name );
         return htmlspecialchars( $ret );
@@ -392,7 +392,7 @@ class eZProductCategory
     */
     static public function sectionIDStatic( $categoryID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT SectionID from eZTrade_Category WHERE ID='$categoryID'");
 
         if ( is_array( $res ) )
@@ -409,7 +409,7 @@ class eZProductCategory
     /*!
       Returns the group description.
     */
-    function &description()
+    function description()
     {
         if( $this->Description != null )
             $description = stripslashes( $this->Description );
@@ -422,7 +422,7 @@ class eZProductCategory
     /*!
       Returns the parent if one exist. If not 0 is returned.
     */
-    function &parent()
+    function parent()
     {
        if ( is_a($this->Parent, 'eZProductCategory'))
        {
@@ -442,7 +442,7 @@ class eZProductCategory
       3 - alphabetic desc
       4 - absolute placement
     */
-    function &sortMode()
+    function sortMode()
     {
        switch( $this->SortMode )
        {
@@ -556,7 +556,7 @@ class eZProductCategory
         if ( !$categoryid )
             $categoryid = 1;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $qry, "SELECT Placement FROM eZTrade_ProductCategoryLink
                                              ORDER BY Placement DESC", array( "Limit" => 1 ) );
@@ -597,7 +597,7 @@ class eZProductCategory
         if ( !$categoryid )
             $categoryid = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $query = "DELETE FROM eZTrade_ProductCategoryLink
@@ -619,7 +619,7 @@ class eZProductCategory
                             $fetchDiscontinued=false,
                             $categoryID=false)
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $categoryID != false )
             $catID = $categoryID;
@@ -684,7 +684,7 @@ class eZProductCategory
     /*!
       Returns every product to a category as a array of eZProduct objects.
     */
-    static public function &products( $sortMode="time",
+    static public function products( $sortMode="time",
                         $fetchNonActive=false,
                         $offset=0,
                         $limit=50,
@@ -696,7 +696,7 @@ class eZProductCategory
         else
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
        switch( $sortMode )
        {
@@ -738,7 +738,7 @@ class eZProductCategory
        $permissionTableSQL = $permissionSQLArray["TableSQL"];
        $permissionSQL = $permissionSQLArray["SQL"];
 
-       $user =& eZUser::currentUser();
+       $user = eZUser::currentUser();
        if ( $user )
        {
            $groups = $user->groups();
@@ -789,7 +789,7 @@ class eZProductCategory
     {
         $catID = $categoryID;
 
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $hasRootAccess = false;
         if ( $user )
         {
@@ -808,7 +808,7 @@ class eZProductCategory
             $categoryGroupSQL = " AND (PCP.GroupID='-1'";
             if ( $user )
             {
-                $groups =& $user->groups( false );
+                $groups = $user->groups( false );
                 $first = true;
 
                 foreach ( $groups as $group )
@@ -841,7 +841,7 @@ class eZProductCategory
     /*!
       Returns every active product to a category as a array of eZProduct objects.
     */
-    function &activeProducts( $sortMode="time",
+    function activeProducts( $sortMode="time",
                               $offset=0,
                               $limit=50,
                               $categoryID=false )
@@ -857,7 +857,7 @@ class eZProductCategory
     {
         if ( is_a( $value, "eZOption" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $optionID = $value->id();
@@ -885,9 +885,9 @@ class eZProductCategory
     /*!
       Returns every option to a category as a array of eZOption objects.
     */
-    function &options()
+    function options()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
        $return_array = array();
        $option_array = array();
@@ -907,7 +907,7 @@ class eZProductCategory
     */
     function moveUp( $id )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $db->query_single( $qry, "SELECT * FROM eZTrade_ProductCategoryLink
                                   WHERE ProductID='$id' AND CategoryID='$this->ID'" );
@@ -944,7 +944,7 @@ class eZProductCategory
     */
     function moveDown( $id )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $db->query_single( $qry, "SELECT * FROM eZTrade_ProductCategoryLink
                                   WHERE ProductID='$id' AND CategoryID='$this->ID'" );
@@ -980,7 +980,7 @@ class eZProductCategory
     */
     function getByRemoteID( $id, $parent=false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $category = false;
 
@@ -1044,7 +1044,7 @@ class eZProductCategory
     /*!
       Returns the Image ID.
     */
-    function &image( $AsObject = true )
+    function image( $AsObject = true )
     {
         if ( $AsObject )
             $image = new eZImage( $this->ImageID );

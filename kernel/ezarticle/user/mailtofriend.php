@@ -30,7 +30,7 @@
 // include_once( "ezarticle/classes/ezarticle.php" );
 // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $Sender = $ini->variable( "ezArticleMain", "MailToFriendSender" );
 
@@ -51,7 +51,7 @@ if ( ($CategoryID != 0) )
 }
 	
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 $tpl = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
@@ -156,7 +156,7 @@ function sendmail ( $article_id, $CategoryID, $tpl, $sendmail_tpl, $real_name, $
     // $server_name = $_SERVER["SERVER_NAME"];
     // $server_name = $GLOBALS["HTTP_HOST"];
 
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
 	$server_name = $ini->variable( "site", "SiteURL" );
     
 // Build up the mail to send from the template.

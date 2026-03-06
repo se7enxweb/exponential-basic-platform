@@ -34,7 +34,7 @@
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
 
@@ -69,8 +69,8 @@ if ( isset( $Update ) )
 }
 
 // Print out the files.
-$fileList =& eZVirtualFile::getUnAssigned();
-// $fileCount =& eZFileManager::countUnAssigned();
+$fileList = eZVirtualFile::getUnAssigned();
+// $fileCount = eZFileManager::countUnAssigned();
 if ( !is_null( $fileList ) && count( $fileList ) > 0 )
 {
     foreach ( $fileList as $file )
@@ -100,7 +100,7 @@ else
 $t->set_var( "file_list", "" );
 
 $folder = new eZVirtualFolder() ;
-$folderList =& $folder->getTree( );
+$folderList = $folder->getTree( );
 
 // Make a folder list
 foreach ( $folderList as $folderItem )

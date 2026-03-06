@@ -97,7 +97,7 @@ class eZEzRenderer
     /*!
       Returns the XHTML contents of the introduction of the article.
     */
-    function &renderIntro()
+    function renderIntro()
     {
         $xml = xmltree( $this->Article->contents() );
 
@@ -129,7 +129,7 @@ class eZEzRenderer
     /*!
       Returns the XHTML article of the article.
     */
-    function &renderPage( $pageNumber=0 )
+    function renderPage( $pageNumber=0 )
     {
         $xml = xmltree( $this->Article->contents() );
 
@@ -382,25 +382,25 @@ class eZEzRenderer
                         // add image if a valid image was found, else report an error in the log.
                         if ( is_a( $image, "eZImage" ) )
                         {
-                            $ini =& eZINI::instance( 'site.ini' );
+                            $ini = eZINI::instance( 'site.ini' );
 
                             switch ( $imageSize )
                             {
                                 case "small" :
                                 {
-                                    $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "SmallImageWidth" ),
+                                    $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "SmallImageWidth" ),
                                     $ini->variable( "eZArticleMain", "SmallImageHeight" ) );
                                 }
                                 break;
                                 case "medium" :
                                 {
-                                    $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "MediumImageWidth" ),
+                                    $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "MediumImageWidth" ),
                                     $ini->variable( "eZArticleMain", "MediumImageHeight" ) );
                                 }
                                 break;
                                 case "large" :
                                 {
-                                    $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "LargeImageWidth" ),
+                                    $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "LargeImageWidth" ),
                                     $ini->variable( "eZArticleMain", "LargeImageHeight" ) );
                                 }
                                 break;
@@ -463,7 +463,7 @@ class eZEzRenderer
     /*!
       Returns the XHTML contents of the introduction of the article.
     */
-    function &renderIntro()
+    function renderIntro()
     {
         $xml = xmltree( $this->Article->contents() );
 

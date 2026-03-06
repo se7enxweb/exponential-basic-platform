@@ -34,7 +34,7 @@
 // include_once( "ezmail/classes/ezmail.php" );
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $ForceCategoryDefinition = $ini->variable( "eZArticleMain", "ForceCategoryDefinition" );
@@ -63,7 +63,7 @@ if ( $ForceCategoryDefinition == "enabled" )
 $GlobalSectionID = eZArticleCategory::sectionIDStatic( $CategoryID );
 
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 $templateDirTmp = $sectionObject->templateStyle();
@@ -162,17 +162,17 @@ $ListImageWidth = $ini->variable( "eZArticleMain", "ListImageWidth" );
 $ListImageHeight = $ini->variable( "eZArticleMain", "ListImageHeight" );
 
 // Make the manual keywords available in the articleview template
-$ManualKeywords =& $article->manualKeywords();
+$ManualKeywords = $article->manualKeywords();
 $t->set_var( "article_keywords", $ManualKeywords );
 
 
-$listImageWidthOverride =& $t->get_user_variable( "article_view_page_tpl",  "ListImageWidth" );
+$listImageWidthOverride = $t->get_user_variable( "article_view_page_tpl",  "ListImageWidth" );
 if ( $listImageWidthOverride )
 {
     $ListImageWidth = $listImageWidthOverride;
 }
 
-$listImageHeightOverride =& $t->get_user_variable( "article_view_page_tpl",  "ListImageHeight" );
+$listImageHeightOverride = $t->get_user_variable( "article_view_page_tpl",  "ListImageHeight" );
 if ( $listImageHeightOverride )
 {
     $ListImageHeight = $listImageHeightOverride;
@@ -205,7 +205,7 @@ if ( $article->get( $ArticleID ) )
         exit();
     }
 
-    $categories =& $article->categories( false );
+    $categories = $article->categories( false );
 
     // path
     if ( !in_array( $CategoryID, $categories ) )
@@ -218,21 +218,21 @@ if ( $article->get( $ArticleID ) )
     }
 
     // current category image
-    $image =& $category->image();
+    $image = $category->image();
 
     $t->set_var( "current_category_image_item", "" );
 
     if ( is_a( $image, "eZImage" ) && ( $image->id() != 0 ) )
     {
-        $imageWidth =& $ini->variable( "eZArticleMain", "CategoryImageWidth" );
-        $imageHeight =& $ini->variable( "eZArticleMain", "CategoryImageHeight" );
+        $imageWidth = $ini->variable( "eZArticleMain", "CategoryImageWidth" );
+        $imageHeight = $ini->variable( "eZArticleMain", "CategoryImageHeight" );
 
-        $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+        $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
         $imageURL = "/" . $variation->imagePath();
-        $imageWidth =& $variation->width();
-        $imageHeight =& $variation->height();
-        $imageCaption =& $image->caption();
+        $imageWidth = $variation->width();
+        $imageHeight = $variation->height();
+        $imageCaption = $image->caption();
 
         $t->set_var( "current_category_image_width", $imageWidth );
         $t->set_var( "current_category_image_height", $imageHeight );
@@ -245,7 +245,7 @@ if ( $article->get( $ArticleID ) )
         $t->set_var( "current_category_image_item", "" );
     }
 
-    $pathArray =& $category->path();
+    $pathArray = $category->path();
 
     $t->set_var( "path_item", "" );
     foreach ( $pathArray as $path )
@@ -267,14 +267,14 @@ if ( $article->get( $ArticleID ) )
 
 // link list
 $module_link = new eZModuleLink( "eZArticle", "Article", $article->id() );
-$sections =& $module_link->sections();
+$sections = $module_link->sections();
 $t->set_var( "section_item", "" );
 foreach ( $sections as $section )
 {
     $t->set_var( "link_item", "" );
     $t->set_var( "section_name", $section->name() );
     $t->set_var( "section_id", $section->id() );
-    $links =& $section->links();
+    $links = $section->links();
     $i = 0;
     foreach ( $links as $link )
     {
@@ -316,7 +316,7 @@ foreach ( $sections as $section )
     $t->set_var( "author_id", $article->contentsWriter( false ) );
 
     // check for topic
-    $topic =& $article->topic();
+    $topic = $article->topic();
 
     if ( is_a( $topic, "eZTopic" ) && $topic->name() != "" )
     {
@@ -338,7 +338,7 @@ foreach ( $sections as $section )
         $ShowHeader = "hide";
     }
 
-    $categoryDef =& $article->categoryDefinition();
+    $categoryDef = $article->categoryDefinition();
 
     $t->set_var( "category_definition_name", $categoryDef->name() );
 
@@ -376,8 +376,8 @@ foreach ( $sections as $section )
     $locale = new eZLocale( $Language );
     $published = $article->published();
 
-    $publishedDateValue =& $published->date();
-    $publishedTimeValue =& $published->time();
+    $publishedDateValue = $published->date();
+    $publishedTimeValue = $published->time();
 
     $t->set_var( "article_datevalue", $locale->format( $publishedDateValue ) );
     $t->set_var( "article_timevalue", $locale->format( $publishedTimeValue ) );
@@ -387,7 +387,7 @@ foreach ( $sections as $section )
     // image list
 
     $usedImages = $renderer->usedImageList();
-    $images =& $article->images();
+    $images = $article->images();
     $imageNumber = 0;
     {
         $i=0;
@@ -426,7 +426,7 @@ foreach ( $sections as $section )
                 $t->set_var( "image_id", $image->id() );
                 $t->set_var( "article_id", $ArticleID );
 
-                $variation =& $image->requestImageVariation( $ListImageWidth, $ListImageHeight );
+                $variation = $image->requestImageVariation( $ListImageWidth, $ListImageHeight );
                 if( is_object( $variation ) )
                 {
                     $t->set_var( "image_url", "/" .$variation->imagePath() );
@@ -630,7 +630,7 @@ else
 // PBo Mod
 // If the current logged in user matches the author, show an edit link or button 
 // as defined in the corresponding template block article_edit_tpl
-$currentuser =& eZUser::currentUser(); 
+$currentuser = eZUser::currentUser(); 
 $t->set_block( "article_view_page_tpl", "article_edit_tpl", "article_edit" ); 
 $editOwnArticle=$ini->variable( "eZArticleMain", "UserEditOwnArticle" );
 

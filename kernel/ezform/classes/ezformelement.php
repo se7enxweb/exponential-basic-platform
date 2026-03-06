@@ -70,12 +70,12 @@ class eZFormElement
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-        $name =& $db->escapeString( $this->Name );
-        $size =& $db->escapeString( $this->Size );
-        $required =& $this->Required;
+        $name = $db->escapeString( $this->Name );
+        $size = $db->escapeString( $this->Size );
+        $required = $this->Required;
 
         if ( is_a( $this->ElementType, "eZFormElementType" ) )
         {
@@ -125,7 +125,7 @@ class eZFormElement
         if ( $elementID == -1 )
             $elementID = $this->ID;
 
-        $fixedValues =& $this->fixedValues();
+        $fixedValues = $this->fixedValues();
         if ( $fixedValues )
         {
             foreach ( $fixedValues as $value )
@@ -134,7 +134,7 @@ class eZFormElement
             }
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $deleteFormElementQuery = "DELETE FROM eZForm_FormElement WHERE ID='$elementID'";
@@ -153,7 +153,7 @@ class eZFormElement
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -178,7 +178,7 @@ class eZFormElement
     */
     function fill( &$formArray )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $this->ID = $formArray[$db->fieldName( "ID" )];
         $this->Name = $formArray[$db->fieldName( "Name" )];
@@ -193,9 +193,9 @@ class eZFormElement
 
       The objects are returned as an array of eZFormElement objects.
     */
-    function &getAll( $offset=0, $limit=20 )
+    function getAll( $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $formArray = array();
@@ -229,7 +229,7 @@ class eZFormElement
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -249,7 +249,7 @@ class eZFormElement
     /*!
       Returns the name of the object.
     */
-    function &name()
+    function name()
     {
         if( !is_null( $this->Name ) )
             return htmlspecialchars( $this->Name );
@@ -302,7 +302,7 @@ class eZFormElement
     /*!
       Returns the ElementType of the object.
     */
-    function &elementType()
+    function elementType()
     {
         return $this->ElementType;
     }
@@ -370,12 +370,12 @@ class eZFormElement
       Returns every form of this form element is associated with.
       The form elements are returned as an array of eZForm objects.
     */
-    function &forms()
+    function forms()
     {
         $returnArray = array();
         $formArray = array();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $formArray, "SELECT FormID FROM eZForm_FormElementDict WHERE ElementID='$this->ID'" );
 
         for ( $i = 0; $i < count( $formArray ); $i++ )
@@ -389,9 +389,9 @@ class eZFormElement
     /*!
       Returns the number of forms this element belongs to
     */
-    function &numberOfForms()
+    function numberOfForms()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ElementID) as Count
@@ -404,9 +404,9 @@ class eZFormElement
     /*!
       Returns the number of types which exists
     */
-    function &numberOfTypes()
+    function numberOfTypes()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -421,7 +421,7 @@ class eZFormElement
     */
     function addValue( &$value )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( is_object( $value ) )
@@ -441,12 +441,12 @@ class eZFormElement
     /*!
       Returns true if this type has fixed values.
     */
-    function &fixedValues()
+    function fixedValues()
     {
         $returnArray = array();
         $formArray = array();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $formArray, "SELECT FixedValueID FROM eZForm_FormElementFixedValueLink WHERE ElementID='$this->ID'" );
 
         for ( $i = 0; $i < count( $formArray ); $i++ )

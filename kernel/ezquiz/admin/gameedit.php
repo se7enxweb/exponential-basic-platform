@@ -100,7 +100,7 @@ elseif ( isset( $Action ) && $Action != "Insert" )
     $game = false;
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZQuizMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezquiz/admin/" . $ini->variable( "eZQuizMain", "AdminTemplateDir" ),
@@ -189,13 +189,13 @@ if ( isset( $Action ) && $Action == "Insert" )
 
     if ( $checkDate )
     {
-        $stillOpen =& eZQuizGame::endedInPeriod( $startDate, $stopDate );
+        $stillOpen = eZQuizGame::endedInPeriod( $startDate, $stopDate );
         $numberOfStillOpen = count( $stillOpen );
 
-        $willOpen =& eZQuizGame::startedInPeriod( $startDate, $stopDate );
+        $willOpen = eZQuizGame::startedInPeriod( $startDate, $stopDate );
         $numberOfwillOpen = count( $willOpen );
 
-        $embracing =& eZQuizGame::embracingPeriod( $startDate, $stopDate );
+        $embracing = eZQuizGame::embracingPeriod( $startDate, $stopDate );
         $numberOfEmbracing = count( $embracing );
         if ( $numberOfEmbracing > 0 )
         {
@@ -203,8 +203,8 @@ if ( isset( $Action ) && $Action == "Insert" )
             {
                 if ( $GameID != $checkItem->id() )
                 {
-                    $stopDateCheck =& $checkItem->stopDate();
-                    $startDateCheck =& $checkItem->startDate();
+                    $stopDateCheck = $checkItem->stopDate();
+                    $startDateCheck = $checkItem->startDate();
 
                     $t->set_var( "error_game_start_day", $startDateCheck->day() );
                     $t->set_var( "error_game_start_month", $startDateCheck->month() );
@@ -227,10 +227,10 @@ if ( isset( $Action ) && $Action == "Insert" )
             {
                 if ( $GameID != $checkItem->id() )
                 {
-                    $stopDateCheck =& $checkItem->stopDate();
+                    $stopDateCheck = $checkItem->stopDate();
                     if ( $startDate->isGreater( $stopDateCheck, true ) )
                     {
-                        $startDateCheck =& $checkItem->startDate();
+                        $startDateCheck = $checkItem->startDate();
 
                         $t->set_var( "error_game_start_day", $startDateCheck->day() );
                         $t->set_var( "error_game_start_month", $startDateCheck->month() );
@@ -254,10 +254,10 @@ if ( isset( $Action ) && $Action == "Insert" )
             {
                 if ( $GameID != $checkItem->id() )
                 {
-                    $startDateCheck =& $checkItem->startDate();
+                    $startDateCheck = $checkItem->startDate();
                     if ( $startDate->isGreater( $startDateCheck, true ) )
                     {
-                        $stopDateCheck =& $checkItem->stopDate();
+                        $stopDateCheck = $checkItem->stopDate();
 
                         $t->set_var( "error_game_start_day", $startDateCheck->day() );
                         $t->set_var( "error_game_start_month", $startDateCheck->month() );
@@ -343,8 +343,8 @@ if ( is_numeric( $GameID ) && !isset( $OK ) && !isset( $NewQuestion ) )
     $t->set_var( "game_name", $game->name() );
     $t->set_var( "game_description", $game->description() );
 
-    $startDate =& $game->startDate();
-    $stopDate =& $game->stopDate();
+    $startDate = $game->startDate();
+    $stopDate = $game->stopDate();
 
     $t->set_var( "start_day", $startDate->day() );
     $t->set_var( "start_month", $startDate->month() );
@@ -354,7 +354,7 @@ if ( is_numeric( $GameID ) && !isset( $OK ) && !isset( $NewQuestion ) )
     $t->set_var( "stop_month", $stopDate->month() );
     $t->set_var( "stop_year", $stopDate->year() );
 
-    $questionList =& $game->questions();
+    $questionList = $game->questions();
 }
 
 if ( isset( $questionList ) && count( $questionList ) > 0 )

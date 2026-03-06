@@ -28,7 +28,7 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
@@ -52,7 +52,7 @@ $t->set_var( "site_style", $SiteDesign );
 
 $product = new eZProduct( $ProductID );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->setVariable( "ImageListReturnTo", $REQUEST_URI );
 $session->setVariable( "SelectImages", "multi" );
 $session->setVariable( "NameInBrowse", $product->name() );

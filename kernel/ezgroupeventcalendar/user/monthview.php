@@ -52,7 +52,7 @@ function shortenText($text, $chars=25) {
   return $text;
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 $Language   = $ini->variable( "eZGroupEventCalendarMain", "Language" );
@@ -66,7 +66,7 @@ $GlobalSectionID = $ini->variable( "eZGroupEventCalendarMain", "DefaultSection" 
 $Locale     = new eZLocale( $Language );
 
 $user = eZUser::currentUser();
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->fetch();
 
 $URL = explode( "/", $_SERVER['REQUEST_URI']);
@@ -144,7 +144,7 @@ $zMonth = addZero($Month);
 $isMyCalendar = ( $groupID && $groupID == $GetByGroupID )? "-private" :"";
 
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 $templateDirTmp = $sectionObject->templateStyle();
@@ -338,16 +338,16 @@ else {
 
 		    // Fetch all the appointments
 		    if( $eventGroup->id() == 0 && $type->id() == 0)  {// die('getAllByDate');
-		      $appointments =& $tmpGroupEvent->getAllByDate( $tmpDate, true ); }
+		      $appointments = $tmpGroupEvent->getAllByDate( $tmpDate, true ); }
 		    // Fetch all appointments by type
 		    elseif( $eventGroup->id() == 0 && $type->id() != 0 ) {// die('getAllByType');
-		      $appointments =& $tmpGroupEvent->getAllByType( $tmpDate, $type, true ); }
+		      $appointments = $tmpGroupEvent->getAllByType( $tmpDate, $type, true ); }
 		    // Fetch all appointments by Group and Type
 		    elseif( $eventGroup->id() != 0 && $type->id() != 0 ) {// die('getByGroupType');
-		      $appointments =& $tmpGroupEvent->getByGroupType( $tmpDate, $eventGroup, $type, true ); }
+		      $appointments = $tmpGroupEvent->getByGroupType( $tmpDate, $eventGroup, $type, true ); }
 		    // Fetch all appointments by Group
 		    else {// die('getByDate');
-		      $appointments =& $tmpGroupEvent->getByDate( $tmpDate, $eventGroup, true ); }
+		      $appointments = $tmpGroupEvent->getByDate( $tmpDate, $eventGroup, true ); }
 		    
                     $t->set_var( "public_appointment", "" );
                     $t->set_var( "private_appointment", "" );
@@ -548,7 +548,7 @@ else {
 
     // group list
     $group = new eZUserGroup();
-    $group_array =& $group->getAll();
+    $group_array = $group->getAll();
 
     $t->set_var( "selected_group_id", 0 );
 

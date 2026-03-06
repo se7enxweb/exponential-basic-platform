@@ -55,7 +55,7 @@ class eZTodo
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -119,7 +119,7 @@ class eZTodo
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZTodo_Todo WHERE ID='$this->ID'" );
         eZDB::finish( $res, $db );
@@ -132,7 +132,7 @@ class eZTodo
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -169,7 +169,7 @@ class eZTodo
     */
     static public function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $todo_array = array();
@@ -191,7 +191,7 @@ class eZTodo
     */
     static public function getByUserID( $id, $statusID = 0, $categoryID = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $todo_array = 0;
 
         $return_array = array();
@@ -227,7 +227,7 @@ class eZTodo
     */
     function getByOthers( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $todo_array = 0;
 
         $return_array = array();
@@ -258,7 +258,7 @@ class eZTodo
     */
     function getByLimit( $id, $limit = 5, $status = 0, $except = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $todo_array = 0;
 
         $return_array = array();
@@ -285,11 +285,11 @@ class eZTodo
       \static
       Gets all todos for one spesific date
     */
-    static public function &getByDate( $user, $date )
+    static public function getByDate( $user, $date )
     {
         if ( is_a( $date, "eZDate" ) )
         {
-            $currentUser =& eZUser::currentUser();
+            $currentUser = eZUser::currentUser();
             if ( is_numeric( $user ) )
                 $userid = $user;
             else
@@ -301,7 +301,7 @@ class eZTodo
             $return_array = array();
             $enddate = new eZDate();
             $enddate->setTimeStamp( $date->timeStamp() + 86400 );
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
     	    $db->array_query( $todo_array, "SELECT ID FROM eZTodo_Todo WHERE Due>='" . $date->timeStamp() . "' AND Due<'" . $enddate->timeStamp() . "' AND UserID='" . $userid . "' $public_string ORDER BY Priority" );
             for ( $i = 0; $i < count( $todo_array ); $i++ )
             {
@@ -520,7 +520,7 @@ class eZTodo
     */
     function logs()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $returnArray = array();
 
         $db->array_query( $logsArray, "SELECT LogID from eZTodo_TodoLogLink where TodoID='$this->ID'" );
@@ -542,7 +542,7 @@ class eZTodo
     {
         if ( is_a( $value, "eZTodoLog" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $logID = $value->id();

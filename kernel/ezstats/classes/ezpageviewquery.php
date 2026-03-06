@@ -54,7 +54,7 @@ class eZPageViewQuery
     */
     static public function totalPageViews()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $pageview, "SELECT SUM(Count) AS Count FROM eZStats_Archive_PageView" );
         $ret = $pageview[0][$db->fieldName( "Count" )];
@@ -71,7 +71,7 @@ class eZPageViewQuery
     */
     static public function totalPageViewsDay( $dayObject )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = 0;
 
         if ( is_a( $dayObject, "eZDate" ) )
@@ -117,7 +117,7 @@ class eZPageViewQuery
     */
     static public function totalPageViewsMonth( $dayObject )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = 0;
 
         if ( is_a( $dayObject, "eZDate" ) )
@@ -157,9 +157,9 @@ class eZPageViewQuery
       \static
       Return the sum of Count BrowserType
     */
-    static public function &sumBrowserTypeCount()
+    static public function sumBrowserTypeCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $pageview_array,
         "SELECT Count FROM eZStats_Archive_BrowserType" );
 
@@ -178,9 +178,9 @@ class eZPageViewQuery
 
       The files are returned as an array of eZPageView objects.
     */
-    static public function &latest( $limit = 20, $offset = 0 )
+    static public function latest( $limit = 20, $offset = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
 
@@ -201,9 +201,9 @@ class eZPageViewQuery
       \static
       Returns the latest pageview count.
     */
-    static public function &latestCount()
+    static public function latestCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $pageview_array,
         "SELECT COUNT(ID) AS Count FROM eZStats_PageView" );
@@ -222,9 +222,9 @@ class eZPageViewQuery
       The files are returned as an assiciative array of
       array( ID => $id, IP => $ip, HostName => $hostName, Count => $count ).
     */
-    static public function &topVisitors( $limit = 20, $offset = 0 )
+    static public function topVisitors( $limit = 20, $offset = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $db->array_query( $visitor_array, "SELECT * FROM eZStats_Archive_RemoteHost ORDER BY Count DESC",
@@ -245,7 +245,7 @@ class eZPageViewQuery
                 if ( $ip )
                 {
                     $sendIP = $ip;
-                    $hostName =& eZPageView::getHostByAddr( $sendIP );
+                    $hostName = eZPageView::getHostByAddr( $sendIP );
                     $result = $db->query( "UPDATE eZStats_Archive_RemoteHost SET HostName='$hostName'
                                          WHERE ID='$id'" );
                     if ( $result == false )
@@ -269,9 +269,9 @@ class eZPageViewQuery
     /*!
       Returns the number of visitors which has viewed most pages.
     */
-    static public function &topVisitorsCount()
+    static public function topVisitorsCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $db->array_query( $visitor_array,
@@ -286,9 +286,9 @@ class eZPageViewQuery
       The files are returned as an assiciative array of
       array( Domain => $domain, URI => $uri, Count => $count ).
     */
-    static public function &topReferers( $limit = 40, $excludeDomain = "", $offset = 0 )
+    static public function topReferers( $limit = 40, $excludeDomain = "", $offset = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $visitor_array = array();
@@ -321,9 +321,9 @@ class eZPageViewQuery
     /*!
       Returns the number of referers which are most frequent.
     */
-    static public function &topReferersCount( $excludeDomain = "")
+    static public function topReferersCount( $excludeDomain = "")
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $search_text = "";
         $excludeTableName = "";
@@ -351,9 +351,9 @@ class eZPageViewQuery
       The files are returned as an assiciative array of
       array( ID => $id, Name => $name, Count => $count ).
     */
-    static public function &topBrowsers( $limit = 25, $offset = 0 )
+    static public function topBrowsers( $limit = 25, $offset = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
 
@@ -378,9 +378,9 @@ class eZPageViewQuery
     /*!
       Returns the number of browsers which are most frequent.
     */
-    static public function &topBrowsersCount()
+    static public function topBrowsersCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
 
@@ -396,9 +396,9 @@ class eZPageViewQuery
       The files are returned as an assiciative array of
       array( ID => $id, URI => $uri, Count => $count ).
     */
-    static public function &topRequests( $limit = 20, $offset = 0 )
+    static public function topRequests( $limit = 20, $offset = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $db->array_query( $visitor_array,
@@ -421,9 +421,9 @@ class eZPageViewQuery
     /*!
       Returns the number of requests which are most frequent.
     */
-    static public function &topRequestsCount()
+    static public function topRequestsCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $visitor_array,
         "SELECT count(ID) AS Count
@@ -436,9 +436,9 @@ class eZPageViewQuery
     /*!
       Returns the most frequent viewed products.
     */
-    static public function &topProductRequests( $limit=20, $offset=0 )
+    static public function topProductRequests( $limit=20, $offset=0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $visitor_array = array();
@@ -466,9 +466,9 @@ class eZPageViewQuery
     /*!
       Returns the most frequent products added to the cart.
     */
-    static public function &topProductAddToCart( $limit=20, $offset=0 )
+    static public function topProductAddToCart( $limit=20, $offset=0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $visitor_array = array();
@@ -495,9 +495,9 @@ class eZPageViewQuery
     /*!
       Returns the most frequent products added to the wishlist.
     */
-    static public function &topProductAddToWishlist( $limit=20, $offset=0 )
+    static public function topProductAddToWishlist( $limit=20, $offset=0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $visitor_array = array();
@@ -528,9 +528,9 @@ class eZPageViewQuery
       Returns an array of months with the statistics as an associative array:
       array( "Months" => array( "Count" => $count )
     */
-    static public function &yearStats( $year )
+    static public function yearStats( $year )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $visitor_array = array();
@@ -567,9 +567,9 @@ class eZPageViewQuery
       Returns an array of days with the statistics as an associative array:
       array( "Days" => array( "Count" => $count )
     */
-    static public function &monthStats( $year, $month )
+    static public function monthStats( $year, $month )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $visitor_array = array();
@@ -624,9 +624,9 @@ class eZPageViewQuery
       Returns an array of hours with the statistics as an associative array:
       array( "Hours" => array( "Count" => $count )
     */
-    static public function &dayStats( $year, $month, $day )
+    static public function dayStats( $year, $month, $day )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $visitor_array = array();
@@ -664,9 +664,9 @@ class eZPageViewQuery
     /*!
       Returns the top exit pages.
     */
-    static public function &topExitPage( $month, $year )
+    static public function topExitPage( $month, $year )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $visitor_array = array();
@@ -692,9 +692,9 @@ class eZPageViewQuery
     /*!
       Returns the top entry pages.
     */
-    static public function &topEntryPage( $month, $year )
+    static public function topEntryPage( $month, $year )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $visitor_array = array();

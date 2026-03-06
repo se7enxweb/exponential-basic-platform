@@ -29,7 +29,7 @@
 // include_once( "classes/ezcurrency.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
@@ -50,7 +50,7 @@ $t->set_block( "image_list_tpl", "image_tpl", "image" );
 
 $article = new eZArticle( $ArticleID );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->setVariable( "ImageListReturnTo", $_SERVER['REQUEST_URI'] );
 $session->setVariable( "SelectImages", "multi" );
 $session->setVariable( "NameInBrowse", $article->name() );
@@ -133,7 +133,7 @@ else
         $t->set_var( "image_id", $image->id() );
         $t->set_var( "article_id", $ArticleID );
 
-        $variation =& $image->requestImageVariation( 150, 150 );
+        $variation = $image->requestImageVariation( 150, 150 );
 
         $t->set_var( "image_url", "/" .$variation->imagePath() );
         $t->set_var( "image_width", $variation->width() );

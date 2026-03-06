@@ -32,7 +32,7 @@
 
 function writeAtAll()
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if( eZObjectPermission::getObjects( "imagecatalogue_category", 'w', true ) < 1
         && !eZPermission::checkPermission( $user, "eZImageCatalogue", "WriteToRoot" ) )
     {

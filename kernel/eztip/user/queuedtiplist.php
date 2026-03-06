@@ -35,7 +35,7 @@ include_once( "eztip/classes/eztipcategory.php" );
 $category = new eZTipCategory( $CategoryID );
 
 // fetch the user if any
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 // if adList not have been set before.
 if ( !$queuedTipListCheck )
@@ -46,7 +46,7 @@ if ( !$queuedTipListCheck )
         $Offset = 0;
     
     // tips
-    $tipList =& $category->tips( "count", false, $Offset, $Limit );
+    $tipList = $category->tips( "count", false, $Offset, $Limit );
     $queuedTipListCheck = 1;
 }
 
@@ -56,14 +56,14 @@ if ( $tip )
 {
     $tipID = $tip->id();
 
-    $image =& $tip->image();
+    $image = $tip->image();
     
     // ad image
     if ( $image )
     {
-        $imgSRC =& $image->filePath();
-        $imgWidth =& $image->width();
-        $imgHeight =& $image->height();
+        $imgSRC = $image->filePath();
+        $imgWidth = $image->width();
+        $imgHeight = $image->height();
     }
     
     $tip->addPageView();

@@ -107,7 +107,7 @@ $t->set_var( "first_name", $owner->firstName() );
 $t->set_var( "last_name", $owner->lastName() );
 
 $category = new eZCategory();
-$category_array =& $category->getAll();
+$category_array = $category->getAll();
 
 for ( $i = 0; $i < count( $category_array ); $i++ )
 { 
@@ -123,7 +123,7 @@ for ( $i = 0; $i < count( $category_array ); $i++ )
 }
 
 $priority = new eZPriority();
-$priority_array =& $priority->getAll();
+$priority_array = $priority->getAll();
 
 for ( $i = 0; $i < count( $priority_array ); $i++ )
 { 
@@ -139,7 +139,7 @@ for ( $i = 0; $i < count( $priority_array ); $i++ )
 }
 
 $status = new eZStatus();
-$status_array =& $status->getAll();
+$status_array = $status->getAll();
 
 for ( $i = 0; $i < count( $status_array ); $i++ )
 { 

@@ -46,11 +46,11 @@ if ( $CategoryID != 0 )
 }
 
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $Limit = $ini->variable( "eZTradeMain", "ProductLimit" );
@@ -138,9 +138,9 @@ foreach ( $pathArray as $path )
     $SiteTitleAppend .= $path[1] . " - ";
 }
 
-$categoryList =& $category->getByParent( $category );
+$categoryList = $category->getByParent( $category );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 // categories
 $i = 0;
@@ -193,8 +193,8 @@ if ( !isset( $Offset ) or !is_numeric( $Offset ) )
     $Offset = 0;
 
 // products
-$TotalTypes =& $category->productCount( $category->sortMode(), false );
-$productList =& $category->activeProducts( $category->sortMode(), $Offset, $Limit, $category->id() );
+$TotalTypes = $category->productCount( $category->sortMode(), false );
+$productList = $category->activeProducts( $category->sortMode(), $Offset, $Limit, $category->id() );
 
 $locale = new eZLocale( $Language );
 $i = 0;
@@ -210,7 +210,7 @@ foreach ( $productList as $product )
         
         if ( $thumbnailImage )
         {
-            $variation =& $thumbnailImage->requestImageVariation( $ThumbnailImageWidth, $ThumbnailImageHeight );
+            $variation = $thumbnailImage->requestImageVariation( $ThumbnailImageWidth, $ThumbnailImageHeight );
         
             $t->set_var( "thumbnail_image_uri", "/" . $variation->imagePath() );
             $t->set_var( "thumbnail_image_width", $variation->width() );
@@ -233,7 +233,7 @@ foreach ( $productList as $product )
 
         // show alternative currencies
         $currency = new eZProductCurrency( );
-        $currencies =& $currency->getAll();
+        $currencies = $currency->getAll();
         $t->set_var( "currency_count", count( $currencies ) );
         $t->set_var( "value_price_header_item", "" );
         $t->set_var( "value_currency_header_item", "" );
@@ -381,13 +381,13 @@ foreach ( $productList as $product )
         else
         {
             $priceArray = "";
-            $options =& $product->options();
+            $options = $product->options();
             if ( count( $options ) == 1 )
             {
                 $option = $options[0];
                 if ( get_class( $option ) == "ezoption" )
                 {
-                    $optionValues =& $option->values();
+                    $optionValues = $option->values();
                     if ( count( $optionValues ) > 1 )
                     {
                         $i=0;
@@ -443,7 +443,7 @@ eZList::drawNavigator( $t, $TotalTypes, $Limit, $Offset, "product_list_page_tpl"
 if ( isset( $GenerateStaticPage ) && $GenerateStaticPage == "true" )
 {
     // if ( $user ) {
-    //     $CategoryArray =& $user->groups( false );
+    //     $CategoryArray = $user->groups( false );
     // } 
     // else
     // {

@@ -61,7 +61,7 @@ class eZArticleType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -101,7 +101,7 @@ class eZArticleType
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != -1  )
@@ -129,9 +129,9 @@ class eZArticleType
 
       Returns an article type object.
     */
-    function &getByName( $name )
+    function getByName( $name )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $type = new eZArticleType();
 
@@ -153,9 +153,9 @@ class eZArticleType
     /*!
       Retrieves every option from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $type_array = array();
@@ -175,7 +175,7 @@ class eZArticleType
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         // delete all attributes and values
         $attributes = $this->attributes();
@@ -218,7 +218,7 @@ class eZArticleType
     */
     function attributes( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $attribute_array = array();
@@ -245,7 +245,7 @@ class eZArticleType
 
         if ( is_a( $article, "eZArticle" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $articleID = $article->id();
 

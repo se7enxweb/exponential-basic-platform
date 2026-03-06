@@ -71,7 +71,7 @@ class eZVoucherUsed
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         
        
@@ -79,7 +79,7 @@ class eZVoucherUsed
         {
             $db->lock( "eZTrade_VoucherUsed" );
             $nextID = $db->nextID( "eZTrade_VoucherUsed", "ID" );            
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
             $password = md5( $this->Password );
 
             $res = $db->query( "INSERT INTO eZTrade_VoucherUsed
@@ -123,7 +123,7 @@ class eZVoucherUsed
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         
         $res = $db->query( "DELETE FROM eZTrade_VoucherUsed WHERE ID='$this->ID'" );
@@ -141,7 +141,7 @@ class eZVoucherUsed
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -166,7 +166,7 @@ class eZVoucherUsed
     */
     function fill( $voucherArray )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $voucherArray[$db->fieldName( "ID" )];
         $this->Used = $voucherArray[$db->fieldName( "Used" )];
         $this->Price = $voucherArray[$db->fieldName( "Price" )];
@@ -180,9 +180,9 @@ class eZVoucherUsed
 
       The categories are returned as an array of eZVoucherUsed objects.
     */
-    function &getAll( $offset=0, $limit=20 )
+    function getAll( $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $returnArray = array();
         $voucherArray = array();
@@ -213,7 +213,7 @@ class eZVoucherUsed
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -233,7 +233,7 @@ class eZVoucherUsed
     /*!
       Returns the time when this voucher was used.
     */
-    function &used()
+    function used()
     {
         $dateTime = new eZDateTime();
         $dateTime->setTimeStamp( $this->Used );
@@ -294,7 +294,7 @@ class eZVoucherUsed
     /*!
       Returns the voucher of this object.
     */
-    function &voucher( $asObject=true )
+    function voucher( $asObject=true )
     {
         if ( $asObject )
         {
@@ -310,7 +310,7 @@ class eZVoucherUsed
     /*!
       Returns the order of this object.
     */
-    function &order( $asObject=true )
+    function order( $asObject=true )
     {
         if ( $asObject )
         {
@@ -326,7 +326,7 @@ class eZVoucherUsed
     /*!
       Returns the user of this object.
     */
-    function &user( $asObject=true )
+    function user( $asObject=true )
     {
         if ( $asObject )
         {
@@ -342,7 +342,7 @@ class eZVoucherUsed
     /*!
       Returns the price of the voucher.
     */
-    function &price( )
+    function price( )
     {
         return $this->Price;
     }
@@ -351,25 +351,25 @@ class eZVoucherUsed
       Returns the correct price of the voucher based on the logged in user, and the
       VAT status and use.
     */
-    function &correctPrice( $calcVAT )
+    function correctPrice( $calcVAT )
     {
-        $voucher =& $this->voucher();
-        $product =& $voucher->product();
+        $voucher = $this->voucher();
+        $product = $voucher->product();
         
         $price = $this->Price;
         
-        $vatType =& $product->vatType();
+        $vatType = $product->vatType();
         
         if ( $calcVAT == true )
         {
             if ( $product->excludedVAT() )
             {
-                $vatType =& $product->vatType();
+                $vatType = $product->vatType();
                 $vat = 0;
        
                 if ( $vatType )
                 {
-                    $vat =& $vatType->value();
+                    $vat = $vatType->value();
                 }
                 
                 $price = ( $price * $vat / 100 ) + $price;
@@ -379,12 +379,12 @@ class eZVoucherUsed
         {
             if ( $product->includesVAT() )
             {
-                $vatType =& $product->vatType();
+                $vatType = $product->vatType();
                 $vat = 0;
                 
                 if ( $vatType )
                 {
-                    $vat =& $vatType->value();
+                    $vat = $vatType->value();
                 }
                 
                 $price = $price - ( $price / ( 100 + $vat ) ) * $vat;
@@ -400,7 +400,7 @@ class eZVoucherUsed
     */
     function getByUser( &$user )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = array();
 
         $userID = $user->id();

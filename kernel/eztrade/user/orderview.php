@@ -38,7 +38,7 @@ if ( isset( $Cancel ) )
 // include_once( "ezuser/classes/ezuser.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
 $TinyImageWidth = $ini->variable( "eZImageCatalogueMain", "TinyImageWidth" );
@@ -131,7 +131,7 @@ if ( $localUser )
     }
 
     // print out the addresses
-    $shippingAddress =& $order->shippingAddress();
+    $shippingAddress = $order->shippingAddress();
 
     $t->set_var( "shipping_street1", $shippingAddress->street1() );
     $t->set_var( "shipping_street2", $shippingAddress->street2() );
@@ -183,7 +183,7 @@ if ( $localUser )
     {
         $t->set_var( "shipping_country", "" );
     }
-    $billingAddress =& $order->billingAddress();
+    $billingAddress = $order->billingAddress();
 
     $t->set_var( "billing_street1", $billingAddress->street1() );
     $t->set_var( "billing_street2", $billingAddress->street2() );
@@ -228,13 +228,13 @@ $t->set_var( "product_image_caption", "" );
 
 foreach ( $items as $item )
 {
-    $product =& $item->product();
+    $product = $item->product();
 
     $image = $product->thumbnailImage();
     
     if ( $image )
     {
-        $thumbnail =& $image->requestImageVariation( $TinyImageWidth, $TinyImageHeight );
+        $thumbnail = $image->requestImageVariation( $TinyImageWidth, $TinyImageHeight );
         
         $t->set_var( "product_image_path", "/" . $thumbnail->imagePath() );
         $t->set_var( "product_image_width", $thumbnail->width() );
@@ -259,7 +259,7 @@ foreach ( $items as $item )
     else
         $t->set_var( "td_class", "bgdark" );
 
-    $optionValues =& $item->optionValues();
+    $optionValues = $item->optionValues();
 
     $t->set_var( "order_item_option", "" );
     foreach ( $optionValues as $optionValue )
@@ -353,7 +353,7 @@ foreach ( $historyArray as $status )
 
 
 $checkout = new eZCheckout();
-$instance =& $checkout->instance();
+$instance = $checkout->instance();
 $paymentMethod = $instance->paymentName( $order->paymentMethod() );
 
 $t->set_var( "payment_method", $paymentMethod );

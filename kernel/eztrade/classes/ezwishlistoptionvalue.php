@@ -63,7 +63,7 @@ class eZWishListOptionValue
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( !isset( $this->ID ) )
@@ -100,7 +100,7 @@ class eZWishListOptionValue
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -134,7 +134,7 @@ class eZWishListOptionValue
     /*!
       Returns the wishlist item object.
     */
-    function &wishlistItem()
+    function wishlistItem()
     {
        return new eZWishListItem( $this->WishListItemID );
     }
@@ -142,7 +142,7 @@ class eZWishListOptionValue
     /*!
       Returns the option object.
     */
-    function &option()
+    function option()
     {
        return new eZOption( $this->OptionID );
     }
@@ -150,7 +150,7 @@ class eZWishListOptionValue
     /*!
       Returns the option value object.
     */
-    function &optionValue()
+    function optionValue()
     {
        return new eZOptionValue( $this->OptionValueID );
     }

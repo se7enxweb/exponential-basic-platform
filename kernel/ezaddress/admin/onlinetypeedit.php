@@ -38,7 +38,7 @@ if ( isset( $ItemArrayID ) and is_array( $ItemArrayID ) )
 
 $page_path = "/address/onlinetype";
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZAddressMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZAddressMain", "DocumentRoot" );
 

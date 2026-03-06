@@ -25,11 +25,11 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $tags = array();
 
-$tagList =& $ini->read_array( "eZArticleMain", "CustomTags" );
+$tagList = $ini->read_array( "eZArticleMain", "CustomTags" );
 foreach ( $tagList as $tag )
 {
     $tags[] = new eZXMLRPCStruct( array( "URL" => createURLStruct( "ezarticle",

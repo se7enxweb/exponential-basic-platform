@@ -54,7 +54,7 @@ class eZURLTranslator
     {
         $ret = false;
         $url_array = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         // Hack to delete a trailing slash
         $url = preg_replace("'/$'", "", $url);
@@ -77,7 +77,7 @@ class eZURLTranslator
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -86,7 +86,7 @@ class eZURLTranslator
             $db->lock( "eZURLTranslator_URL" );
 
             $nextID = $db->nextID( "eZURLTranslator_URL", "ID" );
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
 
             $res = $db->query( "INSERT INTO eZURLTranslator_URL
                          ( ID, Source, Dest, Created ) VALUES
@@ -121,7 +121,7 @@ class eZURLTranslator
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != -1  )
         {
@@ -147,7 +147,7 @@ class eZURLTranslator
     */
     function getbydest( $dest = '' )
     {
-	$db =& eZDB::globalDatabase();
+	$db = eZDB::globalDatabase();
 
 	if ( $dest != '' )
 	{
@@ -162,9 +162,9 @@ class eZURLTranslator
     /*!
       Retrieves all the URL translations from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $url_array = array();
@@ -184,7 +184,7 @@ class eZURLTranslator
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 

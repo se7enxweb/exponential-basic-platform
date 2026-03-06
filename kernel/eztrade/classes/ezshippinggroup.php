@@ -58,14 +58,14 @@ class eZShippingGroup
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->Name = $db->escapeString( $this->Name );
 
         if ( !isset( $this->ID ) )
         {
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
             $db->lock( "eZTrade_ShippingGroup" );
             $nextID = $db->nextID( "eZTrade_ShippingGroup", "ID" );
             $res[] = $db->query( "INSERT INTO eZTrade_ShippingGroup
@@ -96,7 +96,7 @@ class eZShippingGroup
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != -1  )
         {
@@ -117,9 +117,9 @@ class eZShippingGroup
     /*!
       Retrieves all the VAT groups from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $shipping_array = array();
@@ -138,7 +138,7 @@ class eZShippingGroup
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res[] = $db->query( "DELETE FROM eZTrade_ShippingValue WHERE ShippingGroupID='$this->ID'" );
@@ -171,7 +171,7 @@ class eZShippingGroup
     {
         if ( is_a( $type, "eZShippingType" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $typeID = $type->id();
 
             $value_array = array();
@@ -215,13 +215,13 @@ class eZShippingGroup
 
       An empty array is returned if not found.
     */
-    function &startAddValue( $type )
+    function startAddValue( $type )
     {
         $ret = array();
 
         if ( is_a( $type, "eZShippingType" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $typeID = $type->id();
 
             $value_array = array();

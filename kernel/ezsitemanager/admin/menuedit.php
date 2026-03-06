@@ -43,7 +43,7 @@ if ( isset ( $Cancel ) )
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZSiteManagerMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezsitemanager/admin/" . $ini->variable( "eZSiteManagerMain", "AdminTemplateDir" ),
@@ -113,7 +113,7 @@ else
     $t->set_var( "menu_id", '');
 }
 
-$menuList =& eZMenu::getAll();
+$menuList = eZMenu::getAll();
 
 foreach( $menuList as $menuItem )
 {

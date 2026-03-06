@@ -42,7 +42,7 @@ if ( isset ($SectionIDOverride) )
     $GlobalSectionID = $SectionIDOverride;
     // include_once( "ezsitemanager/classes/ezsection.php" );
 
-    $sectionObject =& eZSection::globalSectionObject( $SectionIDOverride );
+    $sectionObject = eZSection::globalSectionObject( $SectionIDOverride );
     $sectionObject->setOverrideVariables();
 }
 else

@@ -83,18 +83,18 @@ class eZVoucherInformation
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-        $description =& $db->escapeString( $this->Description );
-        $toName =& $db->escapeString( $this->ToName );
-        $fromName =& $db->escapeString( $this->FromName );
+        $description = $db->escapeString( $this->Description );
+        $toName = $db->escapeString( $this->ToName );
+        $fromName = $db->escapeString( $this->FromName );
 
         if ( !isset( $this->ID ) )
         {
             $db->lock( "eZTrade_VoucherInformation" );
             $nextID = $db->nextID( "eZTrade_VoucherInformation", "ID" );
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
 
             $res = $db->query( "INSERT INTO eZTrade_VoucherInformation
                       ( ID, VoucherID, OnlineID, ToAddressID, FromAddressID, Description, PreOrderID, MailMethod, FromName, ToName, FromOnlineID, Price, ProductID )
@@ -152,7 +152,7 @@ class eZVoucherInformation
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res = $db->query( "DELETE FROM eZTrade_VoucherInformation WHERE ID='$this->ID'" );
@@ -170,7 +170,7 @@ class eZVoucherInformation
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -195,7 +195,7 @@ class eZVoucherInformation
     */
     function fill( $value )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $value[$db->fieldName( "ID" )];
         $this->Description = $value[$db->fieldName( "Description" )];
         $this->OnlineID = $value[$db->fieldName( "OnlineID" )];
@@ -215,9 +215,9 @@ class eZVoucherInformation
 
       The categories are returned as an array of eZVoucherInformation objects.
     */
-    function &getAll( $offset=0, $limit=20 )
+    function getAll( $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $quizArray = array();
@@ -241,7 +241,7 @@ class eZVoucherInformation
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -261,7 +261,7 @@ class eZVoucherInformation
     /*!
       Returns the description of the voucher smail.
     */
-    function &description()
+    function description()
     {
         return htmlspecialchars( $this->Description );
     }
@@ -277,7 +277,7 @@ class eZVoucherInformation
     /*!
       Returns the price of the voucher smail.
     */
-    function &price()
+    function price()
     {
         return $this->Price;
     }
@@ -285,7 +285,7 @@ class eZVoucherInformation
     /*!
       Returns the to name of the voucher smail.
     */
-    function &toName()
+    function toName()
     {
         return $this->ToName;
     }
@@ -293,7 +293,7 @@ class eZVoucherInformation
     /*!
       Returns the from name of the voucher smail.
     */
-    function &fromName()
+    function fromName()
     {
         return $this->FromName;
     }
@@ -302,24 +302,24 @@ class eZVoucherInformation
       Returns the correct price of the product based on the logged in user, and the
       VAT status and use.
     */
-    function &correctPrice( $calcVAT, &$product )
+    function correctPrice( $calcVAT, &$product )
     {
-        $inUser =& eZUser::currentUser();
+        $inUser = eZUser::currentUser();
 
         $price = $this->Price;
 
-        $vatType =& $product->vatType();
+        $vatType = $product->vatType();
 
         if ( $calcVAT == true )
         {
             if ( $product->excludedVAT() )
             {
-                $vatType =& $product->vatType();
+                $vatType = $product->vatType();
                 $vat = 0;
 
                 if ( $vatType )
                 {
-                    $vat =& $vatType->value();
+                    $vat = $vatType->value();
                 }
 
                 $price = ( $price * $vat / 100 ) + $price;
@@ -329,12 +329,12 @@ class eZVoucherInformation
         {
             if ( $product->includesVAT() )
             {
-                $vatType =& $product->vatType();
+                $vatType = $product->vatType();
                 $vat = 0;
 
                 if ( $vatType )
                 {
-                    $vat =& $vatType->value();
+                    $vat = $vatType->value();
                 }
 
                 $price = $price - ( $price / ( 100 + $vat ) ) * $vat;
@@ -571,11 +571,11 @@ class eZVoucherInformation
     */
     function sendEMail()
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 
-        $voucher =& $this->voucher();
+        $voucher = $this->voucher();
 
-        $fromUser =& $this->fromEmail();
+        $fromUser = $this->fromEmail();
 
         $Language = $ini->variable( "eZTradeMain", "Language" );
 

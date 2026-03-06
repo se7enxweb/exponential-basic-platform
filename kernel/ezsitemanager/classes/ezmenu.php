@@ -67,11 +67,11 @@ class eZMenu
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-        $name =& $db->escapeString( $this->Name );
-        $link =& $db->escapeString( $this->Link );
+        $name = $db->escapeString( $this->Name );
+        $link = $db->escapeString( $this->Link );
 
         if ( !isset( $this->ID ) )
         {
@@ -120,7 +120,7 @@ class eZMenu
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $ret = $db->query( "DELETE FROM eZSiteManager_Menu WHERE ID='$this->ID'" );
@@ -138,7 +138,7 @@ class eZMenu
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -163,7 +163,7 @@ class eZMenu
     */
     function fill( &$value )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID =& $value[$db->fieldName( "ID" )];
         $this->Name =& $value[$db->fieldName( "Name" )];
         $this->Link =& $value[$db->fieldName( "Link" )];
@@ -176,9 +176,9 @@ class eZMenu
 
       The categories are returned as an array of ezmenu objects.
     */
-    static public function &getAll( $offset=0, $limit=20 )
+    static public function getAll( $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $quizArray = array();
@@ -202,10 +202,10 @@ class eZMenu
 
       The categories are returned as an array of ezmenu objects.
     */
-    static public function &getByParent( $parent=0, $offset=0, $limit=20 )
+    static public function getByParent( $parent=0, $offset=0, $limit=20 )
     {
         $parentID = 0;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $quizArray = array();
@@ -235,7 +235,7 @@ class eZMenu
     static public function count( $parent=0 )
     {
         $parentID = 0;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( is_a( $parent, "eZMenu" ) )
@@ -256,7 +256,7 @@ class eZMenu
 
       See detailed description for an example of usage.
     */
-    function &path( $menuID=0 )
+    function path( $menuID=0 )
     {
         if ( $menuID == 0 )
         {
@@ -296,7 +296,7 @@ class eZMenu
     /*!
       Returns the name of the menu.
     */
-    function &name()
+    function name()
     {
         return $this->Name;
     }
@@ -312,7 +312,7 @@ class eZMenu
     /*!
       Returns the url link of the menu.
     */
-    function &link()
+    function link()
     {
         return $this->Link;
     }

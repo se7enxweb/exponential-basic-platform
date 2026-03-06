@@ -55,7 +55,7 @@ class eZImageVariationGroup
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -79,7 +79,7 @@ class eZImageVariationGroup
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( $id != "" )
         {
@@ -102,7 +102,7 @@ class eZImageVariationGroup
     */
     function groupExists( $width, $height )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $ret = false;
         
@@ -159,6 +159,7 @@ class eZImageVariationGroup
     }
 
     var $ID;
+    var $ImageVariationGroup;
     var $Width;
     var $Height;
 }

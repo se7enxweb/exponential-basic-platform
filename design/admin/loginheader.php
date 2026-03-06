@@ -27,8 +27,8 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezpublish.php" );
 
-$ini =& eZINI::instance('site.ini');
-$Language =& $ini->variable( "eZUserMain", "Language" );
+$ini = eZINI::instance('site.ini');
+$Language = $ini->variable( "eZUserMain", "Language" );
 $Locale = new eZLocale( $Language );
 $iso = $Locale->languageISO();
 
@@ -39,7 +39,7 @@ $t->set_file( array(
     "header_tpl" => "loginheader.tpl"
     ) );
 
-$SiteURL =& $ini->variable( "site", "SiteURL" );
+$SiteURL = $ini->variable( "site", "SiteURL" );
 
 $t->set_var( "site_url", $SiteURL );
 $t->set_var( "site_style", $SiteDesign );

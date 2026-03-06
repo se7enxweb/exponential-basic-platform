@@ -37,7 +37,7 @@ if ( !is_a( $GlobalPageView, "eZPageView" ) )
 }
 
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $ad = new eZAd( $AdID );
 

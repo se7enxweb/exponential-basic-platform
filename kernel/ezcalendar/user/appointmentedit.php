@@ -33,7 +33,7 @@ if ( isset( $GoDay ) )
 {
     // include_once( "classes/ezdate.php" );
 
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->fetch();
 
     $year = $session->variable( "Year" );
@@ -49,7 +49,7 @@ if ( isset( $GoDay ) )
 }
 else if ( isset( $GoMonth ) )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->fetch();
 
     $year = $session->variable( "Year" );
@@ -60,7 +60,7 @@ else if ( isset( $GoMonth ) )
 }
 else if ( isset( $GoYear ) )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->fetch();
 
     $year = $session->variable( "Year" );
@@ -91,7 +91,7 @@ else if ( isset( $GoToday ) )
 // include_once( "ezcalendar/classes/ezappointment.php" );
 // include_once( "ezcalendar/classes/ezappointmenttype.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZCalendarMain", "Language" );
 $StartTimeStr = $ini->variable( "eZCalendarMain", "DayStartTime" );
@@ -113,7 +113,7 @@ if ( isset( $TrusteeUser ) )
     }
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( $user == false )
     $userID = false;
 else
@@ -278,7 +278,7 @@ if ( $Action == "Insert" || $Action == "Update" )
         }
     }
     if ( !isset( $user ) )
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
 
     foreach ( $trusteelist as $trusteduser )
     {
@@ -440,7 +440,7 @@ if ( $Action == "Insert" || $Action == "Update" )
     }
     else
     {
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $userID = $user->ID();
         $t->set_var( "name_value", $appointment->name() );
         $t->set_var( "description_value", $appointment->description() );
@@ -450,8 +450,8 @@ if ( $Action == "Insert" || $Action == "Update" )
         else
             $t->set_var( "is_private", "" );
 
-        $appStartTime =& $appointment->startTime();
-        $appStopTime =& $appointment->stopTime();
+        $appStartTime = $appointment->startTime();
+        $appStopTime = $appointment->stopTime();
 
 
         if ( $appStartTime )
@@ -563,11 +563,11 @@ if ( $Action == "Edit" )
 
     $type = $appointment->type();
     $typeID = $type->id();
-    $startTime =& $appointment->startTime();
+    $startTime = $appointment->startTime();
     $startHour = addZero( $startTime->hour() );
     $startMinute = addZero( $startTime->minute() );
 
-    $stopTime =& $appointment->stopTime();
+    $stopTime = $appointment->stopTime();
     $stopHour = addZero( $stopTime->hour() );
     $stopMinute = addZero( $stopTime->minute() );
 
@@ -595,7 +595,7 @@ if ( $Action == "Edit" )
     else if ( $appointment->priority() == 2 )
         $t->set_var( "2_selected", "selected" );
 
-    $dt =& $appointment->dateTime();
+    $dt = $appointment->dateTime();
 
     $t->set_var( "year_value", $dt->year() );
 
@@ -772,7 +772,7 @@ if ( $Action == "New" )
 
 // print the appointment types
 $type = new eZAppointmentType();
-$typeList =& $type->getTree();
+$typeList = $type->getTree();
 
 foreach ( $typeList as $type )
 {

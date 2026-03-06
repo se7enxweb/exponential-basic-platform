@@ -46,7 +46,7 @@ class eZXMLRPCDataTypeDecoder
       Decodes the datatypes from the XML-RPC stream and returns the appropriate value as
       an eZXMLRPC datatype object.
      */
-    function &decodeDataTypes( $value )
+    function decodeDataTypes( $value )
     {
         $result = 0;
         // check the type
@@ -59,50 +59,50 @@ class eZXMLRPCDataTypeDecoder
                 case "text" :
                 case "string" :
                 {                                    
-                    $result =& $this->decodeString( $type );
+                    $result = $this->decodeString( $type );
                 }
                 break;
 
                 case "i4" :
                 case "int" :
                 {
-                    $result =& $this->decodeInt( $type );
+                    $result = $this->decodeInt( $type );
                 }
                 break;
 
                 case "double" : 
                 {
-                    $result =& $this->decodeDouble( $type );
+                    $result = $this->decodeDouble( $type );
                 }
                 break;
                                 
                 case "boolean" :
                 {
-                    $result =& $this->decodeBoolean( $type );
+                    $result = $this->decodeBoolean( $type );
                 }
                 break;
 
                 case "base64" :
                 {
-                    $result =& $this->decodeBase64( $type );
+                    $result = $this->decodeBase64( $type );
                 }
                 break;
 
                 case "dateTime.iso8601" :
                 {
-                    $result =& $this->decodeDateTime( $type );
+                    $result = $this->decodeDateTime( $type );
                 }
                 break;
 
                 case "array" :
                 {
-                    $result =& $this->decodeArray( $type );
+                    $result = $this->decodeArray( $type );
                 }
                 break;
 
                 case "struct" :
                 {
-                    $result =& $this->decodeStruct( $type );
+                    $result = $this->decodeStruct( $type );
                 }
                 break;
             }
@@ -115,7 +115,7 @@ class eZXMLRPCDataTypeDecoder
     /*!
       \private
     */
-    function &decodeString( $type )
+    function decodeString( $type )
     {
         $result = 0;
         if ( count( $type->children ) > 0 )
@@ -139,7 +139,7 @@ class eZXMLRPCDataTypeDecoder
     /*!
       \private
     */
-    function &decodeInt( $type )
+    function decodeInt( $type )
     {
         $result = 0;
         foreach ( $type->children as $content )
@@ -155,7 +155,7 @@ class eZXMLRPCDataTypeDecoder
     /*!
       \private
     */
-    function &decodeDouble( $type )
+    function decodeDouble( $type )
     {
         $result = 0;
         foreach ( $type->children as $content )

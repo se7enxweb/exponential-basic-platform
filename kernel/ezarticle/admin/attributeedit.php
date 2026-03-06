@@ -57,7 +57,7 @@ if( isset( $OK ) )
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
@@ -77,13 +77,13 @@ $t->set_block( "attribute_edit_page_tpl", "no_selected_type_item_tpl", "no_selec
 
 $ActionValue = "insert";
 
-$types =& $thisType->getAll();
+$types = $thisType->getAll();
 
 $typeCount = count( $types );
 
 if( $thisType->id() > 0 )
 {
-    $attributes =& $thisType->attributes();
+    $attributes = $thisType->attributes();
     
     $attributeCount = count( $attributes );
     

@@ -35,7 +35,7 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
 
@@ -71,7 +71,7 @@ if ( $FileID != 0 )
     $t->set_var( "file_id", $file->id() );
     $t->set_var( "file_description", $file->description() );
 
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
 
     // sections
     // include_once( "ezsitemanager/classes/ezsection.php" );
@@ -95,7 +95,7 @@ if ( $FileID != 0 )
     }
 
     // init the section
-    $sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+    $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
     $sectionObject->setOverrideVariables();
 
     if ( eZObjectPermission::hasPermission( $file->id(), "filemanager_file", "r", $user ) &&
@@ -116,7 +116,7 @@ if ( $FileID != 0 )
         $t->parse( "edit", "edit_tpl" );
     }
 
-    $filePath =& $file->filePath( true );
+    $filePath = $file->filePath( true );
 
     $size = $file->siFileSize();
     $t->set_var( "file_size", $size["size-string"] );
@@ -139,7 +139,7 @@ if ( $FileID != 0 )
 
 $folder = new eZVirtualFolder( $FolderID );
 
-$folderList =& $folder->getByParent( $folder );
+$folderList = $folder->getByParent( $folder );
 
 foreach ( $folderList as $folder )
 {

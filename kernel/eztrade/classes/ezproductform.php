@@ -67,7 +67,7 @@ class eZProductForm
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if( is_a( $this->Form, "eZForm" ) )
         {
@@ -105,7 +105,7 @@ class eZProductForm
         if ( $formID == -1 )
             $formID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query( "DELETE FROM eZTrade_ProductFormDict WHERE ID=$formID" );
     }
@@ -117,7 +117,7 @@ class eZProductForm
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -126,7 +126,7 @@ class eZProductForm
                               0, 1 );
             if( count( $formArray ) == 1 )
             {
-                $this->fill( &$formArray[0] );
+                $this->fill( $formArray[0] );
                 $ret = true;
             }
             elseif( count( $formArray ) != 1 )
@@ -144,8 +144,8 @@ class eZProductForm
     {
         $this->ID =& $formArray[ "ID" ];
 
-        $this->Product =& new eZProduct( $formArray[ "ProductID" ] );
-        $this->Form =& new eZForm( $formArray[ "FormID" ] );
+        $this->Product = new eZProduct( $formArray[ "ProductID" ] );
+        $this->Form = new eZForm( $formArray[ "FormID" ] );
     }
 
     /*!
@@ -154,9 +154,9 @@ class eZProductForm
 
       The objects are returned as an array of eZProductForm objects.
     */
-    function &getAll( $offset=0, $limit=20 )
+    function getAll( $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $formArray = array();
@@ -189,7 +189,7 @@ class eZProductForm
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -209,7 +209,7 @@ class eZProductForm
     /*!
       Returns the form of the object.
     */
-    function &form()
+    function form()
     {
         return $this->Form;
     }
@@ -217,7 +217,7 @@ class eZProductForm
     /*!
       Returns the product of the object.
     */
-    function &receiver()
+    function receiver()
     {
         return $this->Product;
     }
@@ -251,7 +251,7 @@ class eZProductForm
         The product is sent in as an eZProduct object.
         The form is returned as an eZForm object.
     */
-    function &productHasForm( &$object )
+    function productHasForm( &$object )
     {
         $returnArray = array();
         $formArray = array();
@@ -261,10 +261,10 @@ class eZProductForm
             $ProductID = $object->id();
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT FormID FROM eZTrade_ProductFormDict WHERE ProductID='$ProductID'" );
 
-        $ret =& new eZForm( $qry["FormID"] );
+        $ret = new eZForm( $qry["FormID"] );
 
         return $ret;
     }
@@ -276,7 +276,7 @@ class eZProductForm
         The form is sent in as an eZForm object.
         The product is returned as an eZProduct object.
     */
-    function &formHasProduct( &$object )
+    function formHasProduct( &$object )
     {
         $returnArray = array();
         $formArray = array();
@@ -286,10 +286,10 @@ class eZProductForm
             $FormID = $object->id();
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ProductID FROM eZTrade_ProductFormDict WHERE FormID='$FormID'" );
 
-        $ret =& eZProduct( $qry["ProductID"] );
+        $ret = eZProduct( $qry["ProductID"] );
 
         return $ret;
     }

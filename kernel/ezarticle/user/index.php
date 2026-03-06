@@ -31,7 +31,7 @@
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
 // include_once( "ezarticle/classes/ezarticle.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
@@ -48,7 +48,7 @@ $t->set_block( "index_tpl", "letter_item_tpl", "letter_item" );
 
 $t->set_var( "index_item", "" );
 
-$letterArray =& eZArticle::keywordFirstLetters();
+$letterArray = eZArticle::keywordFirstLetters();
 
 if (  !in_array( $CurrentIndex, $letterArray ) )
 {
@@ -65,12 +65,12 @@ foreach ( $letterArray as $letter )
 }
 
 
-$indexes =& eZArticle::manualKeywordIndex( $CurrentIndex );
+$indexes = eZArticle::manualKeywordIndex( $CurrentIndex );
 foreach( $indexes as $indexKeyword )
 {
     $t->set_var( "article_item", "" );
     $t->set_var( "index_name", $indexKeyword );
-    $articles =& eZArticle::searchByShortContent( "", array( $indexKeyword ) );
+    $articles = eZArticle::searchByShortContent( "", array( $indexKeyword ) );
     $i = 0;
     foreach( $articles as $article )
     {

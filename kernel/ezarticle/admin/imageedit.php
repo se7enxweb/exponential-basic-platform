@@ -31,7 +31,7 @@
 
 // include_once( "ezimagecatalogue/classes/ezimage.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
@@ -117,7 +117,7 @@ if ( $Action == "Update" )
         $article = new eZArticle( $ArticleID );
 
 
-        $variations =& $image->variations();
+        $variations = $image->variations();
 
         if( $image->checkImage( $file ) && $image->setImage( $file ) )
         {

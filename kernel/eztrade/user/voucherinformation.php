@@ -29,7 +29,7 @@
 // include_once( "classes/ezcurrency.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $locale = new eZLocale( $Language );
@@ -72,7 +72,7 @@ $t->set_var( "smail", "" );
 $t->set_var( "email", "" );
 $t->set_var( "from_email", "" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $product = new eZProduct( $ProductID );
 
@@ -122,7 +122,7 @@ if ( $product && isset( $OK ) )
 
     if ( $Price == 0 )
     {
-        $priceRange =& $product->priceRange();
+        $priceRange = $product->priceRange();
         $voucherInfo->setPrice( $priceRange->min() );
     }
     else
@@ -179,7 +179,7 @@ else if ( $product )
     
     if ( $PriceRange == 0 )
     {
-        $priceRange =& $product->priceRange();
+        $priceRange = $product->priceRange();
         $currency->setValue( $priceRange->min() );
         $t->set_var( "product_price", $locale->format( $currency ) );
         $t->set_var( "price_range", $priceRange->min() );

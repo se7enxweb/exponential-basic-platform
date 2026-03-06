@@ -67,7 +67,7 @@ class eZPhoneType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         if ( !isset( $this->ID ) )
@@ -106,7 +106,7 @@ class eZPhoneType
     */
     function delete( $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( !$id )
             $id = $this->ID;
 
@@ -126,7 +126,7 @@ class eZPhoneType
     */  
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $id != "" )
         {
             $db->array_query( $phone_type_array, "SELECT * FROM eZAddress_PhoneType WHERE ID='$id'",
@@ -147,7 +147,7 @@ class eZPhoneType
     */
     function fill( &$phone_type_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $phone_type_array[$db->fieldName("ID")];
         $this->Name = $phone_type_array[$db->fieldName("Name")];
         $this->ListOrder = $phone_type_array[$db->fieldName("ListOrder")];
@@ -159,7 +159,7 @@ class eZPhoneType
     */
     static public function getAllCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $phone_type_array,
                           "SELECT Count( ID ) AS Count FROM eZAddress_PhoneType" );
         return $phone_type_array[$db->fieldName("Count")];
@@ -171,7 +171,7 @@ class eZPhoneType
     */
     static public function getAll( $as_object = true, $offset = 0, $max = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $phone_type_edit = array();
         $limit = array();
@@ -238,9 +238,9 @@ class eZPhoneType
     /*!
       Returns the number of external items using this item.
     */
-    function &count()
+    function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry,  "SELECT COUNT( Ph.ID ) as Count
                                          FROM eZAddress_Phone AS Ph, eZAddress_PhoneType AS PT
                                          WHERE Ph.PhoneTypeID = PT.ID AND PhoneTypeID='$this->ID'" );
@@ -255,7 +255,7 @@ class eZPhoneType
     */
     function moveUp()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ID, ListOrder FROM eZAddress_PhoneType
                                   WHERE Removed=0 AND ListOrder<'$this->ListOrder' ORDER BY ListOrder DESC", array( "Limit" => "1" ) );
         $listorder = $qry[$db->fieldName("ListOrder")];
@@ -273,7 +273,7 @@ class eZPhoneType
 
     function moveDown()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ID, ListOrder FROM eZAddress_PhoneType
                                   WHERE Removed=0 AND ListOrder>'$this->ListOrder' ORDER BY ListOrder ASC", array( "Limit" => "1" ) );
         $listorder = $qry[$db->fieldName("ListOrder")];

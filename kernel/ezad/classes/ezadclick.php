@@ -61,7 +61,7 @@ class eZAdClick
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if ( !isset( $this->ID ) )
         {
@@ -100,7 +100,7 @@ class eZAdClick
     function get( $id="" )
     {
         $ret = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -126,7 +126,7 @@ class eZAdClick
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( isset( $this->ID ) )
@@ -150,7 +150,7 @@ class eZAdClick
     /*!
       Returns the click price.
     */
-    function &price()
+    function price()
     {
        return $this->Price;
     }
@@ -158,7 +158,7 @@ class eZAdClick
     /*!
       Returns the click date and time as a eZDateTime object.
     */
-    function &clickTime()
+    function clickTime()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->ClickTime );

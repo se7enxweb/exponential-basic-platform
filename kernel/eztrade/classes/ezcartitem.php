@@ -80,7 +80,7 @@ class eZCartItem
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( !isset( $this->ID ) )
@@ -127,7 +127,7 @@ class eZCartItem
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -157,7 +157,7 @@ class eZCartItem
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res[] = $db->query( "DELETE FROM eZTrade_CartOptionValue WHERE CartItemID='$this->ID'" );
@@ -184,7 +184,7 @@ class eZCartItem
       Returns the product to the cart item as an eZProduct object.
 
     */
-    function &product()
+    function product()
     {
        $ret = false;
 
@@ -226,7 +226,7 @@ class eZCartItem
     */
     function localePrice( $calcCount=true, $withOptions=true, $calcVAT = false, $withPriceGroups=true )
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $inLanguage = $ini->variable( "eZTradeMain", "Language" );
 
         $locale = new eZLocale( $inLanguage );
@@ -244,16 +244,16 @@ class eZCartItem
     */
     function correctPrice( $calcCount=true, $withOptions=true, $calcVAT = false, $withPriceGroups=true )
     {
-        $optionValues =& $this->optionValues();
-        $product =& $this->product();
+        $optionValues = $this->optionValues();
+        $product = $this->product();
 
         $optionPrice = 0.0;
         if ( $withOptions )
         {
             foreach ( $optionValues as $optionValue )
             {
-                $option =& $optionValue->option();
-                $value =& $optionValue->optionValue();
+                $option = $optionValue->option();
+                $value = $optionValue->optionValue();
 
                 $price = $value->correctPrice( $calcVAT, $product, $withPriceGroups );
 
@@ -273,7 +273,7 @@ class eZCartItem
             $price = ( $product->correctPrice( $calcVAT, $withPriceGroups ) + $optionPrice );
         }
 
-        $voucherInfo =& $this->voucherInformation();
+        $voucherInfo = $this->voucherInformation();
 
         if ( $voucherInfo )
         {
@@ -295,7 +295,7 @@ class eZCartItem
     */
     function localeSavings( $calcCount=true, $withOptions=true, $calcVAT = false )
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $inLanguage = $ini->variable( "eZTradeMain", "Language" );
 
         $locale = new eZLocale( $inLanguage );
@@ -313,16 +313,16 @@ class eZCartItem
     */
     function correctSavings( $calcCount=true, $withOptions=true, $calcVAT = false )
     {
-        $optionValues =& $this->optionValues();
-        $product =& $this->product();
+        $optionValues = $this->optionValues();
+        $product = $this->product();
 
         $optionPrice = 0.0;
         if ( $withOptions )
         {
             foreach ( $optionValues as $optionValue )
             {
-                $option =& $optionValue->option();
-                $value =& $optionValue->optionValue();
+                $option = $optionValue->option();
+                $value = $optionValue->optionValue();
 
                 $price = $value->correctSavings( $calcVAT, $product );
 
@@ -352,16 +352,16 @@ class eZCartItem
     */
     function price( $calcCount=true, $withOptions=true )
     {
-        $optionValues =& $this->optionValues();
-        $product =& $this->product();
+        $optionValues = $this->optionValues();
+        $product = $this->product();
 
         $optionPrice = 0.0;
         if ( $withOptions )
         {
             foreach ( $optionValues as $optionValue )
             {
-                $option =& $optionValue->option();
-                $value =& $optionValue->optionValue();
+                $option = $optionValue->option();
+                $value = $optionValue->optionValue();
 
                 // the pricegroup is set in the datasupplier
 
@@ -488,7 +488,7 @@ class eZCartItem
     /*!
       Returns the wishlist item as a eZWishListItem object. 0 if the
     */
-    function &wishListItem()
+    function wishListItem()
     {
        $ret = false;
 
@@ -503,7 +503,7 @@ class eZCartItem
     /*!
       Returns the voucher information.
     */
-    function &voucherInformation()
+    function voucherInformation()
     {
        $ret = false;
 
@@ -520,10 +520,10 @@ class eZCartItem
 
       An empty array is returned if none exists.
     */
-    function &optionValues( )
+    function optionValues( )
     {
        $return_array = array();
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $db->array_query( $res_array, "SELECT ID FROM eZTrade_CartOptionValue
                                      WHERE

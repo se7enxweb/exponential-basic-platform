@@ -37,7 +37,7 @@
   reading and writing extra information not available from the standard template.
 */
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZAddressMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZAddressMain", "DocumentRoot" );
 

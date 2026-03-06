@@ -26,7 +26,7 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
 $error = new eZINI( "kernel/ezforum/admin/intl/" . $Language . "/forumedit.php.ini", false );
@@ -291,7 +291,7 @@ if ( $Action == "edit" )
             $t->set_var( "forum_is_anonymous", "" );
         }
 
-        $groupUser =& $forum->group();
+        $groupUser = $forum->group();
 
         $action_value = "update";
 
@@ -383,7 +383,7 @@ foreach ( $groupList as $groupItem )
 }
 
 $group = new eZUserGroup();
-$groupList =& $group->getAll();
+$groupList = $group->getAll();
 
 foreach ( $groupList as $group )
 {

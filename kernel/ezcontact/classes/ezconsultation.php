@@ -79,7 +79,7 @@ class eZConsultation
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $date = $this->Date->timeStamp();
         $shortdesc = $db->escapeString( $this->ShortDesc );
@@ -124,7 +124,7 @@ class eZConsultation
             $id = $this->ID;
         if ( isset( $id ) && is_numeric( $id ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             $res[] = $db->query( "DELETE FROM eZContact_Consultation WHERE ID='$id'" );
             $db->array_query( $qry_array, "SELECT ConsultationID FROM eZContact_ConsultationPersonUserDict WHERE ConsultationID='$id'" );
@@ -152,7 +152,7 @@ class eZConsultation
 
         if ( $id != -1 )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query_single( $consult_array, "SELECT * FROM eZContact_Consultation WHERE ID='$id'" );
 
             if( is_array( $consult_array ) && count( $consult_array ) > 0 )
@@ -205,7 +205,7 @@ class eZConsultation
             $groupid = $group->id();
         else
             $groupid = $group;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res = $db->query( "INSERT INTO eZContact_ConsultationGroupsDict
                             (ConsultationID, GroupID)
@@ -226,7 +226,7 @@ class eZConsultation
     */
     function removeGroups()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZContact_ConsultationGroupsDict
                             WHERE ConsultationID='$this->ID'" );
@@ -302,7 +302,7 @@ class eZConsultation
     */
     function groupList()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array, "SELECT GroupID FROM eZContact_ConsultationGroupsDict
                                        WHERE ConsultationID='$this->ID'" );
         $ret_array = array();
@@ -319,7 +319,7 @@ class eZConsultation
     */
     function groupIDList()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array, "SELECT GroupID FROM eZContact_ConsultationGroupsDict
                                        WHERE ConsultationID='$this->ID'" );
         $ret_array = array();
@@ -380,7 +380,7 @@ class eZConsultation
     {
         if ( is_a( $user, "eZUser" ) )
             $user = $user->id();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         // Check company
         $db->array_query( $qry_array, "SELECT C.ID FROM eZContact_Consultation AS C,
                                                       eZContact_ConsultationCompanyUserDict AS CCUD
@@ -411,7 +411,7 @@ class eZConsultation
         else
             $userString = "WHERE UserID='$user'";
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array, "SELECT CompanyID FROM eZContact_ConsultationCompanyUserDict
                                        $userString
                                        GROUP BY CompanyID" );
@@ -437,7 +437,7 @@ class eZConsultation
             $userString = "";
 
         $qry_array = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array, "SELECT PersonID FROM eZContact_ConsultationPersonUserDict
                                        $userString
                                        GROUP BY PersonID" );
@@ -470,7 +470,7 @@ class eZConsultation
         }
 
         $qry_array = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array, "SELECT CPUD.ConsultationID
                                        FROM
                                        eZContact_ConsultationPersonUserDict AS CPUD,
@@ -552,7 +552,7 @@ class eZConsultation
 
         $relationString = "";
         $qry_array = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $is_person )
         {
             $db->array_query( $qry_array, "SELECT CPUD.ConsultationID
@@ -652,7 +652,7 @@ class eZConsultation
             $userString2 = "CPCD.UserID='$user' AND ";
         }
         $qry_array = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array, "SELECT C.Date, C.ID
                                        FROM
                                        eZContact_ConsultationPersonUserDict AS CPUD,
@@ -691,7 +691,7 @@ class eZConsultation
             $userString = "";
         else
             $userString = "AND UserID='$user'";
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT count( ConsultationID ) as Count FROM eZContact_ConsultationCompanyUserDict
                                   WHERE CompanyID='$company' $userString" );
         return $qry[$db->fieldName( "Count" )];
@@ -707,7 +707,7 @@ class eZConsultation
             $userString = "";
         else
             $userString = "AND UserID='$user'";
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT count( ConsultationID ) as Count FROM eZContact_ConsultationPersonUserDict
                                   WHERE PersonID='$person' $userString" );
         return $qry[$db->fieldName( "Count" )];
@@ -731,7 +731,7 @@ class eZConsultation
             $userString = "";
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array, "SELECT CompanyID FROM eZContact_ConsultationCompanyUserDict
                                        WHERE ConsultationID='$this->ID' $userString" );
         if ( count( $qry_array ) == 1 )
@@ -762,7 +762,7 @@ class eZConsultation
             $userString = "";
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array, "SELECT PersonID FROM eZContact_ConsultationPersonUserDict
                                        WHERE ConsultationID='$this->ID' $userString" );
         if ( count( $qry_array ) == 1 )
@@ -781,7 +781,7 @@ class eZConsultation
     {
         if ( is_a( $user, "eZUser" ) )
             $user = $user->id();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZContact_ConsultationPersonUserDict" );
         $db->query( "INSERT INTO eZContact_ConsultationPersonUserDict
@@ -798,7 +798,7 @@ class eZConsultation
     {
         if ( is_a( $user, "eZUser" ) )
             $user = $user->id();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "INSERT INTO eZContact_ConsultationCompanyUserDict
                               (ConsultationID, CompanyID, UserID)
@@ -813,7 +813,7 @@ class eZConsultation
     {
         if ( is_a( $user, "eZUser" ) )
             $user = $user->id();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $res[] = $db->query( "DELETE FROM eZContact_ConsultationPersonUserDict
                               WHERE ConsultationID='$this->ID' AND PersonID='$person' AND UserID='$user'" );
         eZDB::finish( $res, $db );
@@ -825,7 +825,7 @@ class eZConsultation
     {
         if ( is_a( $user, "eZUser" ) )
             $user = $user->id();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $res[] = $db->query( "DELETE FROM eZContact_ConsultationCompanyUserDict
                               WHERE ConsultationID='$this->ID' AND CompanyID='$company' AND UserID='$user'" );
         eZDB::finish( $res, $db );
@@ -843,7 +843,7 @@ class eZConsultation
         else
             $table = "eZContact_ConsultationCompanyUserDict";
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $res, "SELECT UserID FROM $table WHERE ConsultationID='$id'" );
         return $res[0][$db->fieldName( "UserID" )];
     }
@@ -854,7 +854,7 @@ class eZConsultation
     */
     static public function stateName( $state )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $state_row, "SELECT Name FROM eZContact_ConsultationType WHERE ID='$state'" );
         return $state_row[$db->fieldName( "Name" )];
     }

@@ -39,7 +39,7 @@ class eZFSFileHandler implements eZClusterFileHandlerInterface
      */
     function _exclusiveLock( $fname = false )
     {
-        $mutex =& $this->_mutex();
+        $mutex = $this->_mutex();
         while ( true )
         {
             $timestamp  = $mutex->lockTS(); // Note: This does not lock, only checks what the timestamp is.
@@ -84,7 +84,7 @@ class eZFSFileHandler implements eZClusterFileHandlerInterface
      */
     function _freeExclusiveLock( $fname = false )
     {
-        $mutex =& $this->_mutex();
+        $mutex = $this->_mutex();
         $mutex->unlock();
     }
 
@@ -92,7 +92,7 @@ class eZFSFileHandler implements eZClusterFileHandlerInterface
      \private
      Returns the mutex object for the current file.
      */
-    function &_mutex()
+    function _mutex()
     {
         if ( $this->Mutex !== null )
             return $this->Mutex;

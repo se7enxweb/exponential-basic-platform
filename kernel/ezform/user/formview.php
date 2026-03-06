@@ -33,7 +33,7 @@
 // include_once( "ezform/classes/ezformrenderer.php" );
 // include_once( "ezmail/classes/ezmail.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 if( strstr( $_SERVER['HTTP_REFERER'], $ini->variable( "eZFormMain", "FromURL" )) || strstr($_SERVER['HTTP_REFERER'], $ini->variable( "eZFormMain", "FromURL" )) || strstr($HTTP_REFERER, $ini->variable( "eZFormMain", "FromURL2" )) )
 {
@@ -74,7 +74,7 @@ if ( isset( $SectionIDOverride ) )
 {
     // include_once( "ezsitemanager/classes/ezsection.php" );
     
-    $sectionObject =& eZSection::globalSectionObject( $SectionIDOverride );
+    $sectionObject = eZSection::globalSectionObject( $SectionIDOverride );
     $sectionObject->setOverrideVariables();
 }
 
@@ -96,7 +96,7 @@ $t->set_var( "form_completed_page", $form->completedPage() );
 $t->set_var( "form_instruction_page", $form->instructionPage() );
 
 $renderer = new eZFormRenderer( $form );
-$output =& $renderer->renderForm( $form );
+$output = $renderer->renderForm( $form );
 $t->set_var( "form", $output );
 
 if ( isset( $OK ) )

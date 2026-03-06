@@ -48,7 +48,7 @@ $t->set_var( "site_style", $SiteDesign );
 
 $bug = new eZBug();
 
-$unhandleBugs =& $bug->getUnhandled();
+$unhandleBugs = $bug->getUnhandled();
 
 $t->set_var( "bug", "" );
 

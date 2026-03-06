@@ -30,7 +30,7 @@
 
 $single_module = $preferences->variable( "SingleModule" ) == "enabled";
 
-$ini =& eZINI::instance('site.ini');
+$ini = eZINI::instance('site.ini');
 $Language = $ini->variable( $moduleSettingsGroupName, "Language" );
 
 $t = new eZTemplate( "design/admin/templates/" . $siteDesign,

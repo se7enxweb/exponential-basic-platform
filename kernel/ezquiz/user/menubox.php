@@ -77,7 +77,7 @@ function createQuizMenu()
 
         $t->parse( "my_quiz_item", "my_quiz_item_tpl" );
         $userMenuUp = true;
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
     }
 
     if ( true )

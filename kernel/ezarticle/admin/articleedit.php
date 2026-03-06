@@ -47,7 +47,7 @@
 
 // include_once( "ezxml/classes/ezxml.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $CategoryID = isset($_POST["CategoryID"]) ? $_POST["CategoryID"] : false;
 
@@ -62,7 +62,7 @@ if ( isset( $PublishArticle ) )
         $article->store();
     }
 
-    $category =& $article->categoryDefinition( );
+    $category = $article->categoryDefinition( );
 
     if ( $category )
     {
@@ -103,7 +103,7 @@ if ( isset( $Action ) && $Action == "Update" || ( isset( $Action ) && $Action ==
         elseif ( isset( $Action ) && $Action == "Insert" )
         {
             $article = new eZArticle( );
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
             $article->setAuthor( $user );
         }
 
@@ -174,7 +174,7 @@ if ( isset( $Action ) && $Action == "Update" || ( isset( $Action ) && $Action ==
 
             // Calculate new and unused categories
             $old_maincategory = $article->categoryDefinition();
-            $old_categories =& array_unique( array_merge( array( $old_maincategory->id() ),
+            $old_categories = array_unique( array_merge( array( $old_maincategory->id() ),
                                                           $article->categories( false ) ) );
 
             $new_categories = array_unique( array_merge( array( $CategoryID ), $CategoryArray ) );
@@ -308,7 +308,7 @@ if ( isset( $Action ) && $Action == "Update" || ( isset( $Action ) && $Action ==
             // generate keywords
             $contents = strip_tags( $contents );
             $contents = preg_replace( "#\n#", "", $contents );
-            $contents_array =& preg_split( "/ /", $contents );
+            $contents_array = preg_split( "/ /", $contents );
             $contents_array = array_unique( $contents_array );
 
             $keywords = "";
@@ -582,7 +582,7 @@ $readGroupsID = array();
 
 if ( $Action == "New" )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     $t->set_var( "author_text", $user->firstName() . " " . $user->lastName() );
     $article = new eZArticle();
 }
@@ -600,7 +600,7 @@ if ( isset( $Action ) && $Action == "Edit" || $Action == "Insert" )
         exit();
     }
 
-    $definition =& $article->categoryDefinition();
+    $definition = $article->categoryDefinition();
 
 
     $t->set_var( "article_id", $ArticleID );
@@ -630,8 +630,8 @@ if ( isset( $Action ) && $Action == "Edit" || $Action == "Insert" )
         $t->set_var( "discuss_article", "" );
     }
 
-    $startDate =& $article->startDate();
-    $stopDate =& $article->stopDate();
+    $startDate = $article->startDate();
+    $stopDate = $article->stopDate();
 
     if ( $article->startDate( false ) != 0 )
     {
@@ -747,9 +747,9 @@ if ( isset( $Action ) && $Action == "Edit" || $Action == "Insert" )
     if( $readGroupsID[0] != -1 )
         $t->set_var( "all_selected", "" );
     // dates
-    $published =& $article->published();
-    $created =& $article->created();
-    $modified =& $article->modified();
+    $published = $article->published();
+    $created = $article->created();
+    $modified = $article->modified();
     $t->set_var( "published_date", $Locale->format( $published ) );
     $t->set_var( "created_date", $Locale->format( $created ) );
     $t->set_var( "modified_date", $Locale->format( $modified ) );
@@ -871,8 +871,8 @@ $categoryArray = $category->getAll( );
 
 
 $tree = new eZArticleCategory();
-$treeArray =& $tree->getTree();
-$user =& eZUser::currentUser();
+$treeArray = $tree->getTree();
+$user = eZUser::currentUser();
 
 $catCount = count( $treeArray );
 $t->set_var( "num_select_categories", min( $catCount, 10 ) );

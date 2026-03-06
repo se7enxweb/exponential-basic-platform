@@ -64,7 +64,7 @@ class eZPageView
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( !isset( $this->ID ) )
         {
@@ -119,7 +119,7 @@ class eZPageView
             
             if ( count( $remote_host_array ) == 0 )
             {
-                $remoteHostName =& gethostbyaddr( $remoteIP );
+                $remoteHostName = gethostbyaddr( $remoteIP );
 
                 $result = $db->query( "INSERT INTO eZStats_RemoteHost
                                     ( ID, IP, HostName )
@@ -236,7 +236,7 @@ class eZPageView
             else
                 $db->commit();
 
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
             if ( $user )
             {                
                 $this->UserID = $user->id();
@@ -301,7 +301,7 @@ class eZPageView
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -337,7 +337,7 @@ class eZPageView
                 {
                     $db->begin();
                     $db->lock( "eZStats_RemoteHost" );
-                    $this->RemoteHostName =& gethostbyaddr( $this->RemoteIP );
+                    $this->RemoteHostName = gethostbyaddr( $this->RemoteIP );
 
                     $result = $db->query( "UPDATE eZStats_RemoteHost SET HostName='$this->RemoteHostName' WHERE ID='$this->RemoteHostID'" );
 
@@ -393,7 +393,7 @@ class eZPageView
     /*!
       Returns the time as a eZ time object.
     */
-    function &dateTime()
+    function dateTime()
     {
         $time = new eZDateTime();
         $time->setTimeStamp( $this->Date );
@@ -423,7 +423,7 @@ class eZPageView
     */
     function requestPageByID( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         // fetch the requested page
         $db->array_query( $pageview_array,
@@ -437,7 +437,7 @@ class eZPageView
     */
     static public function getHostByAddr( $remoteIP )
     {
-        $remoteHostName =& gethostbyaddr( $remoteIP );
+        $remoteHostName = gethostbyaddr( $remoteIP );
         return $remoteHostName;
     }
 

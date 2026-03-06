@@ -20,7 +20,7 @@ include_once( "eztrade/classes/ezcheckout.php" );
 include_once( "eztrade/classes/ezproduct.php" );
 include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $wwwDir = $ini->WWWDir;
 $indexFile = $ini->Index;
 
@@ -168,7 +168,7 @@ switch ( $setifunction )
 			// print email address
 			echo $emailAddress."\t";
 			// print bill to address1
-			$billingAddress =& $eachOrder->billingAddress();
+			$billingAddress = $eachOrder->billingAddress();
 			echo $billingAddress->street1()."\t";
 			// print bill to address2
 			if ( $billingAddress->street2() )
@@ -202,7 +202,7 @@ switch ( $setifunction )
 				echo $customer->name()."\t";
 			else echo "\t";		
 			//print ship to address1
-		    $shippingAddress =& $eachOrder->shippingAddress();			
+		    $shippingAddress = $eachOrder->shippingAddress();			
 			echo $shippingAddress->street1()."\t";
 			// print ship to address2
 			if ($shippingAddress->street2())
@@ -237,7 +237,7 @@ switch ( $setifunction )
 			else echo "\t";
 			// print payment type
 			$checkout = new eZCheckout();
-			$instance =& $checkout->instance();
+			$instance = $checkout->instance();
 			echo $instance->paymentName( $eachOrder->paymentMethod() )."\t";
 			// print credit card acct number
 			echo "\t";
@@ -330,7 +330,7 @@ switch ( $setifunction )
 			foreach ($items as $item)
 				{
 				// print out each line item
-				$product =& $item->product();
+				$product = $item->product();
 				// print line item header
 				echo "BEGIN_ITEM"."\t";
 				// print item SKU
@@ -343,7 +343,7 @@ switch ( $setifunction )
 				echo $item->count()."\t";
 				// print options
 				$numberOfOptions = 0;
-    			$optionValues =& $item->optionValues();
+    			$optionValues = $item->optionValues();
 				foreach ( $optionValues as $optionValue )
 					echo $optionValue->optionName()."=".$optionValue->valueName()."\t";
 				// print end of line item
@@ -360,7 +360,7 @@ switch ( $setifunction )
 	case "downloadcustomers":
 	{
 	// return customers	
-	$customers =& eZOrder::customers();
+	$customers = eZOrder::customers();
 	echo "SETICustomers\n";
 	foreach ($customers as $customer)
 	{

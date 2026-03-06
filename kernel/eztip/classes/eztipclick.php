@@ -61,7 +61,7 @@ class eZTipClick
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if ( !isset( $this->ID ) )
         {
@@ -97,7 +97,7 @@ class eZTipClick
     function get( $id="" )
     {
         $ret = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( $id != "" )
         {
@@ -123,7 +123,7 @@ class eZTipClick
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( isset( $this->ID ) )
@@ -147,7 +147,7 @@ class eZTipClick
     /*!
       Returns the click date and time as a eZDateTime object.
     */
-    function &clickTime()
+    function clickTime()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->ClickTime );

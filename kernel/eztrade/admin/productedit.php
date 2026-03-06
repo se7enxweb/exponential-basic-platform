@@ -39,8 +39,8 @@ function deleteCache( $ProductID, $CategoryID, $CategoryArray, $Hotdeal )
     $product = new eZProduct( $ProductID );
     if ( is_a( $product, "eZProduct" ) )
     {
-        $CategoryID =& $product->categoryDefinition( false );
-        $CategoryArray =& $product->categories( false );
+        $CategoryID = $product->categoryDefinition( false );
+        $CategoryArray = $product->categories( false );
         $Hotdeal = $product->isHotDeal();
         $ProductID = $product->id();
     }
@@ -69,7 +69,7 @@ function deleteCache( $ProductID, $CategoryID, $CategoryArray, $Hotdeal )
             $file->delete();
         }
     }
-    $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+    $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                   array( "articlefrontpage",
                                          NULL,
                                          NULL),
@@ -81,7 +81,7 @@ function deleteCache( $ProductID, $CategoryID, $CategoryArray, $Hotdeal )
 
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
@@ -152,7 +152,7 @@ if ( isset($CSVImport) )
     			if ( $item->name() != $row[0] )
 					$item->setName( $row[0] );
 
-				$contentsArray =& $generator->decodeXML( $item->contents() );
+				$contentsArray = $generator->decodeXML( $item->contents() );
 
 				if ( $contentsArray[0] != $row[3] )
 					$item->setBrief( $row[3] );
@@ -162,7 +162,7 @@ if ( isset($CSVImport) )
 				if ( ($contentsArray[0] != $row[3]) || ($contentsArray[1] != $row[4]) )
 				{
 					$Contents = array( $row[3], $row[4] );
-				    $contents =& $generator->generateXML( $Contents );
+				    $contents = $generator->generateXML( $Contents );
 					$item->setContents( $contents );
 				}
 				
@@ -286,7 +286,7 @@ if ( isset($CSVImport) )
 		{	
 			$Contents = array( $row[3], $row[4] );
 //    	$generator = new eZArticleGenerator();
-    		$contents =& $generator->generateXML( $Contents );
+    		$contents = $generator->generateXML( $Contents );
 
 	   		if ( eZXML::domTree( $contents ) )
     		{
@@ -428,7 +428,7 @@ if ( isSet( $UpdateProducts ) )
 //		{
 			$Contents = array( $Brief[$i], $Description[$i] );
 	    	$generator = new eZArticleGenerator();
-    		$contents =& $generator->generateXML( $Contents );
+    		$contents = $generator->generateXML( $Contents );
 //		}
 		
 	    if ( $contents && eZXML::domTree( $contents ) )
@@ -445,7 +445,7 @@ if ( isSet( $UpdateProducts ) )
 			if ( $ExternalLink[$i] != $product->externalLink() )
         		$product->setExternalLink( $ExternalLink[$i] );
 		
-			$VatType =& $product->vatType();
+			$VatType = $product->vatType();
 		
 			if ( $VATTypeID[$i] and $VATTypeID[$i] != $VatType->id() )
 			{
@@ -472,7 +472,7 @@ if ( isSet( $UpdateProducts ) )
 			}
 
 			$product->setFlatCombine( $FlatCombine[$i] == "on" );
-//			$BoxType =& $product->boxType();
+//			$BoxType = $product->boxType();
 		
 //			if ( $BoxTypeID[$i] > 0 && $BoxTypeID[$i] != $BoxType->id() )
 			if ( $BoxTypeID[$i] > 0 )
@@ -483,7 +483,7 @@ if ( isSet( $UpdateProducts ) )
 			elseif ( $BoxTypeID[$i] == 0 )
         		$product->setBoxType( "" );
 		
-			$ShippingGroup =& $product->shippingGroup();
+			$ShippingGroup = $product->shippingGroup();
 		
 			if ( $ShippingGroupID[$i] and $ShippingGroupID[$i] != $ShippingGroup->id() )
 			{
@@ -609,7 +609,7 @@ if ( isset( $Action ) && $Action == "Update"  or isset( $Action ) && $Action == 
     $product->setName( $Name );
 
     $generator = new eZArticleGenerator();
-    $contents =& $generator->generateXML( $Contents );
+    $contents = $generator->generateXML( $Contents );
 
     if ( eZXML::domTree( $contents ) )
     {
@@ -713,7 +713,7 @@ if ( isset( $Action ) && $Action == "Update"  or isset( $Action ) && $Action == 
 
         if ( $product->productType() == 2 )
         {
-            $range =& $product->priceRange();
+            $range = $product->priceRange();
             if ( !$range )
                 $range = new eZProductPriceRange();
             $range->setMin( $MinPrice );
@@ -1095,7 +1095,7 @@ if ( isset( $Action ) && $Action == "Edit" )
 
     if( $product->contents() !== "" )
     {
-        $contentsArray =& $generator->decodeXML( $product->contents() );             
+        $contentsArray = $generator->decodeXML( $product->contents() );             
     }
     else
     {
@@ -1156,9 +1156,9 @@ if ( isset( $Action ) && $Action == "Edit" )
 	if ($product->FlatCombine())
 		$t->set_var( "flat_combine_checked", 'checked' );	
 
-    $VatType =& $product->vatType();
+    $VatType = $product->vatType();
 	
-    $BoxType =& $product->BoxType();
+    $BoxType = $product->BoxType();
 
     $Quantity = $product->totalQuantity();
 
@@ -1235,14 +1235,14 @@ if ( isset( $Action ) && $Action == "Edit" )
 
     if ( isset( $UseVoucher ) && $UseVoucher )
     {
-        $priceRange =& $product->priceRange();
+        $priceRange = $product->priceRange();
     }
 
     $writeGroupsID = eZObjectPermission::getGroups( $ProductID, "trade_product", 'w' , false );
     $readGroupsID = eZObjectPermission::getGroups( $ProductID, "trade_product", 'r', false );
 
-//    $VatType =& $product->vatType();    
-    $ShippingGroup =& $product->shippingGroup();
+//    $VatType = $product->vatType();    
+    $ShippingGroup = $product->shippingGroup();
 }
 
 if ( isset( $UseVoucher ) && $UseVoucher )
@@ -1376,7 +1376,7 @@ foreach ( $boxTypes as $type )
 
 $group = new eZShippingGroup();
 
-$groups =& $group->getAll();
+$groups = $group->getAll();
 
 foreach ( $groups as $group )
 {

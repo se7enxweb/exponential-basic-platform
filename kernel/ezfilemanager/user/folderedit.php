@@ -37,7 +37,7 @@
 // include_once( "ezfilemanager/classes/ezvirtualfile.php" );
 // include_once( "ezfilemanager/classes/ezvirtualfolder.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( isset( $NewFolder ) )
 {
@@ -73,7 +73,7 @@ if ( isset( $Cancel ) )
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
 
@@ -318,9 +318,9 @@ if ( $Action == "Edit" )
     if ( $parent )
         $parentID = $parent->id();
 
-    $readGroupArrayID =& eZObjectPermission::getGroups( $folder->id(), "filemanager_folder", "r", false );
-    $writeGroupArrayID =& eZObjectPermission::getGroups( $folder->id(), "filemanager_folder", "w", false );
-    $uploadGroupArrayID =& eZObjectPermission::getGroups( $folder->id(), "filemanager_folder", "u", false );
+    $readGroupArrayID = eZObjectPermission::getGroups( $folder->id(), "filemanager_folder", "r", false );
+    $writeGroupArrayID = eZObjectPermission::getGroups( $folder->id(), "filemanager_folder", "w", false );
+    $uploadGroupArrayID = eZObjectPermission::getGroups( $folder->id(), "filemanager_folder", "u", false );
     $t->set_var( "action_value", "update" );
 }
 
@@ -385,7 +385,7 @@ foreach ( $groups as $group )
     $t->parse( "upload_group_item", "upload_group_item_tpl", true );
 }
 
-$sectionList =& eZSection::getAll();
+$sectionList = eZSection::getAll();
 
 if ( count( $sectionList ) > 0 )
 {

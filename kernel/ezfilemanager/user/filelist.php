@@ -34,7 +34,7 @@
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $wwwDir = $ini->WWWDir;
 $indexFile = $ini->Index;
 
@@ -90,7 +90,7 @@ print_r ($t);
 echo "</pre>";
 exit();
 */
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( isSet ( $FileUpload ) )
 {
@@ -108,7 +108,7 @@ if ( $FolderID == 0 )
 else
     $GlobalSectionID = eZVirtualFolder::sectionIDstatic ( $FolderID );
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 $error = true;
@@ -156,7 +156,7 @@ else
 }
 
 // path
-$pathArray =& $folder->path();
+$pathArray = $folder->path();
 
 $t->set_var( "path_item", "" );
 $lastPath = array();
@@ -179,7 +179,7 @@ else
 }
 
 // Print out the folders.
-$folderList =& $folder->getByParent( $folder );
+$folderList = $folder->getByParent( $folder );
 
 $i = ( $folder->id() && $ShowUpFolder ) ? 1 : 0;
 $deleteFolders = false;
@@ -225,7 +225,7 @@ else
 
 // Print out the files.
 
-$fileList =& $folder->files( "name", $Offset, $Limit );
+$fileList = $folder->files( "name", $Offset, $Limit );
 
   //for debugging
 /*
@@ -254,7 +254,7 @@ foreach ( $fileList as $file )
     $t->set_var( "file_url", $filename );
     $t->set_var( "file_description", $file->description() );
 
-    $fileOwner =& $file->user();
+    $fileOwner = $file->user();
     if ( $fileOwner )
         $t->set_var( "file_owner", $fileOwner->firstName() . " " . $fileOwner->lastName() );
     
@@ -389,7 +389,7 @@ function syncDir( $root, $category )
             if ( filetype( $root . $entry ) == "dir" )
             {
                 // check if category exists if not create it:
-                $subCategoryArray =& $category->getByParent( $category );
+                $subCategoryArray = $category->getByParent( $category );
 
                 $sub = false;
                 foreach ( $subCategoryArray as $subCategory )

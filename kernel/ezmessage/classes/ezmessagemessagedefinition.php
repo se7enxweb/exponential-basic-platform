@@ -22,7 +22,7 @@ class eZMessageDefinition
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( !isset( $this->ID ) )
@@ -59,7 +59,7 @@ class eZMessageDefinition
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( isset( $this->ID ) )
@@ -77,9 +77,9 @@ class eZMessageDefinition
       True is retuned if successful, false (0) if not.
     */
     
-    function &getMessageID( $id=-1 )
+    function getMessageID( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $message_array = array();
@@ -101,7 +101,7 @@ class eZMessageDefinition
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -127,9 +127,9 @@ class eZMessageDefinition
     /*!
       Fetches the user id from the database. And returns a array of eZMessageDefinition objects.
     */
-    function &getAll(  )
+    function getAll(  )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $message_array = array();
@@ -148,10 +148,10 @@ class eZMessageDefinition
     /*!
       Fetches the messages for a user.
     */
-    function &messagesToUser( $user )
+    function messagesToUser( $user )
     {
         $userID = $user->id();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $message_array = array();
@@ -215,7 +215,7 @@ class eZMessageDefinition
     /*!
       Returns the to user as an eZUser object.
     */
-    function &toUserID()
+    function toUserID()
     {
         $ret = new eZUser( $this->ToUserID );
         return $ret;

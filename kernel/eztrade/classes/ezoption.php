@@ -97,7 +97,7 @@ class eZOption
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->Name = $db->escapeString( $this->Name );
@@ -137,7 +137,7 @@ class eZOption
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != -1  )
         {
@@ -160,9 +160,9 @@ class eZOption
     /*!
       Retrieves every option from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $option_array = array();
@@ -182,7 +182,7 @@ class eZOption
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $option_array = array();
         $db->begin();
 
@@ -240,7 +240,7 @@ class eZOption
 
       The values are returned as an array of eZOptionValue objects.
     */
-    function &values( )
+    function values( )
     {
         $value = new eZOptionValue();
         return $value->getByOption( $this );
@@ -271,9 +271,9 @@ class eZOption
     }
 
 
-    function &descriptionHeaders( $id = false )
+    function descriptionHeaders( $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( !$id )
             $id = $this->ID;
         $db->array_query( $qry_array,
@@ -289,7 +289,7 @@ class eZOption
 
     function removeHeaders( $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( !$id )
@@ -301,7 +301,7 @@ class eZOption
 
     function addHeader( $header, $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
 
@@ -345,7 +345,7 @@ class eZOption
     {
         if ( !$id )
             $id = $this->ID;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array, "SELECT ID FROM eZTrade_OptionValue WHERE OptionID='$id'" );
         foreach( $qry_array as $row )
         {
@@ -381,7 +381,7 @@ class eZOption
 
     function getByRemoteID( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $value = false;
 

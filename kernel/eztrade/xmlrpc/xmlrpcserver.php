@@ -75,14 +75,14 @@ function version( )
 //
 // Returns all the new orders and sets them to exported.
 //
-function &newOrders( $args )
+function newOrders( $args )
 {
     $user = new eZUser();
     $user = $user->validateUser( $args[0]->value(), $args[1]->value() );
 
     if ( ( is_a( $user, "eZUser" ) ) and eZPermission::checkPermission( $user, "eZUser", "AdminLogin" ) )
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 
         $Language = $ini->variable( "eZTradeMain", "Language" );
         $locale = new eZLocale( $Language );
@@ -93,7 +93,7 @@ function &newOrders( $args )
         $order = new eZOrder();
 
         // perform search
-        $orderArray =& $order->getNew( );
+        $orderArray = $order->getNew( );
 
         foreach ( $orderArray as $orderItem )
         {
@@ -104,23 +104,23 @@ function &newOrders( $args )
             $orderItem->setIsExported( true );
             $orderItem->store();
 
-            $datetime =& $orderItem->date();
+            $datetime = $orderItem->date();
 
             $date = $datetime->date();
             $time = $datetime->time();
 
-            $user =& $orderItem->user();
+            $user = $orderItem->user();
 
             if ( $user )
             {
-                $shippingAddress =& $orderItem->shippingAddress();
-                $shippingCountry =& $shippingAddress->country();
+                $shippingAddress = $orderItem->shippingAddress();
+                $shippingCountry = $shippingAddress->country();
 
-                $billingAddress =& $orderItem->billingAddress();
-                $billingCountry =& $billingAddress->country();
+                $billingAddress = $orderItem->billingAddress();
+                $billingCountry = $billingAddress->country();
 
                 $checkout = new eZCheckout();
-                $instance =& $checkout->instance();
+                $instance = $checkout->instance();
                 $paymentMethod = $instance->paymentName( $orderItem->paymentMethod() );
 
                 $itemArray = array();
@@ -133,7 +133,7 @@ function &newOrders( $args )
                 {
                     $product = $item->product();
 
-                    $optionValues =& $item->optionValues();
+                    $optionValues = $item->optionValues();
 
                     foreach ( $optionValues as $optionValue )
                     {

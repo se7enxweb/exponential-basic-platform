@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZStatsMain", "Language" );
 
@@ -48,7 +48,7 @@ $t->set_block( "request_list_tpl", "request_tpl", "request" );
 if ( !isset( $Offset ) or !is_numeric( $Offset ) )
     $Offset = 0;
 
-$latest =& eZPageViewQuery::topRequests( $ViewLimit, $Offset );
+$latest = eZPageViewQuery::topRequests( $ViewLimit, $Offset );
 $ItemCount = eZPageViewQuery::topRequestsCount();
 
 $t->set_var( "item_start", $Offset + 1 );

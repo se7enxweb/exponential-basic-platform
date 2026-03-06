@@ -58,7 +58,7 @@ class eZVirtualFile
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -106,7 +106,7 @@ class eZVirtualFile
     function delete()
     {
         // Delete from the database
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -140,7 +140,7 @@ class eZVirtualFile
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -171,9 +171,9 @@ class eZVirtualFile
 
       The files are returned as an array of eZVirtualFile objects.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $category_array = array();
@@ -193,15 +193,15 @@ class eZVirtualFile
 
       Default limit is set to 30.
      */
-    function &search( &$queryText, $offset = 0, $limit = 30, $userID = -1 )
+    function search( &$queryText, $offset = 0, $limit = 30, $userID = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $returnArray = array();
         if ( $userID > -1 )
             $user = new eZUser( $userID );
         else
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
         $groupString = "AND f.ID=p.ObjectID AND fo.ID=ffl.FolderID AND ffl.FileID=f.ID AND fp.ObjectID=fo.ID AND fp.ReadPermission='1' AND ( ( ( (p.GroupID='-1' AND fp.GroupID='-1')";
         if ( $user )
         {
@@ -242,13 +242,13 @@ class eZVirtualFile
      */
     function searchCount( &$queryText, $userID = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $returnArray = array();
         if ( $userID > -1 )
             $user = new eZUser( $userID );
         else
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
         $groupString = "AND f.ID=p.ObjectID AND fo.ID=ffl.FolderID AND ffl.FileID=f.ID AND fp.ObjectID=fo.ID AND fp.ReadPermission='1' AND ( ( ( (p.GroupID='-1' AND fp.GroupID='-1')";
         if ( $user )
         {
@@ -286,9 +286,9 @@ class eZVirtualFile
 
       The images are returned as an array of eZVirtualFile objects.
      */
-    static public function &getUnassigned()
+    static public function getUnassigned()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $fileArray, "SELECT File.ID, Link.FileID
                                         FROM eZFileManager_File AS File
@@ -315,7 +315,7 @@ class eZVirtualFile
     /*!
       Returns the name of the virtual file.
     */
-    function &name( $html = true )
+    function name( $html = true )
     {
 		$this->Name = stripslashes($this->Name);
         if ( $html )
@@ -327,7 +327,7 @@ class eZVirtualFile
     /*!
       Returns the description of the virtual file.
     */
-    function &description( $html = true )
+    function description( $html = true )
     {
 		$this->Description = stripslashes( $this->Description );
         if ( $html )
@@ -339,7 +339,7 @@ class eZVirtualFile
     /*!
       Returns the filename of the virtual file.
     */
-    function &fileName()
+    function fileName()
     {
         return $this->FileName;
     }
@@ -347,7 +347,7 @@ class eZVirtualFile
     /*!
       Returns the original file name of the virtual file.
     */
-    function &originalFileName()
+    function originalFileName()
     {
         return $this->OriginalFileName;
     }
@@ -356,7 +356,7 @@ class eZVirtualFile
     /*!
       Returns a eZUser object.
     */
-    function &user( $as_object = true )
+    function user( $as_object = true )
     {
         if ( $this->UserID != 0 )
         {
@@ -377,7 +377,7 @@ class eZVirtualFile
         if ( !is_a( $user, "eZUser" ) )
             return false;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT UserID from eZFileManager_File WHERE ID='$file'");
         $userID = $res[$db->fieldName( "UserID" )];
         if ( $userID == $user->id() )
@@ -393,7 +393,7 @@ class eZVirtualFile
       If $relative is set to true the path is returned relative.
       Absolute is default.
     */
-    function &filePath( $relative = false )
+    function filePath( $relative = false )
     {
         if ( $relative == true )
         {
@@ -411,9 +411,9 @@ class eZVirtualFile
       Returns the size of the file.
     */
 
-    function &fileSize()
+    function fileSize()
     {
-        $filepath =& $this->filePath( true );
+        $filepath = $this->filePath( true );
         $size = eZPBFile::filesize( $filepath );
 
         return $size;
@@ -428,7 +428,7 @@ class eZVirtualFile
       "unit" - The unit for the shortened size, either B, KB, MB or GB
     */
 
-    function &siFileSize()
+    function siFileSize()
     {
         $size = $this->fileSize();
         return eZPBFile::siFileSize( $size );
@@ -514,9 +514,9 @@ class eZVirtualFile
     /*!
       Retuns the folder for this eZVirtualFile object.
     */
-    function &folder( $as_object = true )
+    function folder( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $result = array();
 
         $query = ( "SELECT FolderID FROM eZFileManager_FileFolderLink WHERE FileID='$this->ID'" );
@@ -534,7 +534,7 @@ class eZVirtualFile
     */
     function removeFolders()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $query = ( "DELETE FROM eZFileManager_FileFolderLink WHERE FileID='$this->ID'" );
         $db->query( $query );
@@ -547,7 +547,7 @@ class eZVirtualFile
     {
         if ( is_a( $pageView, "eZPageView" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $pageViewID = $pageView->id();
 

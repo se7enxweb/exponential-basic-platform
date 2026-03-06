@@ -34,7 +34,7 @@ if ( $image->get( $ImageID ) )
 {
     if ( is_numeric( $ImageWidth ) and  is_numeric( $ImageHeight ) )
     {
-        $variation =& $image->requestImageVariation( $ImageWidth, $ImageHeight );
+        $variation = $image->requestImageVariation( $ImageWidth, $ImageHeight );
 
         $fp = fopen( $variation->imagePath(), "r");
 

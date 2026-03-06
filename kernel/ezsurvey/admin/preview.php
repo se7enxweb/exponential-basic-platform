@@ -5,7 +5,7 @@
     // include_once( "ezsurvey/classes/ezsurvey.php" );
     // include_once( "ezsurvey/classes/ezquestion.php" );
     
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
     $Language = $ini->variable( "eZSurveyMain", "Language" );
     
     $SurveyID = $url_array[3];

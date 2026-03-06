@@ -28,7 +28,7 @@
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZLinkMain", "Language" );
 $error = new eZINI( "kernel/ezlink/user/intl/" . $Language . "/suggestlink.php.ini", false );
@@ -153,7 +153,7 @@ if ( isset( $Action ) && $Action == "update" )
         // Calculate new and unused categories
 
         $old_maincategory = $link->categoryDefinition();
-        $old_categories =& array_unique( array_merge( $old_maincategory->id(),
+        $old_categories = array_unique( array_merge( $old_maincategory->id(),
                                          $link->categories( false ) ) );
 
         $new_categories = array_unique( array_merge( $CategoryID, $CategoryArray ) );
@@ -367,7 +367,7 @@ $headline = $languageIni->variable( "strings", "headline_insert" );
 
 $linkselect = new eZLinkCategory();
 
-$linkCategoryList =& $linkselect->getTree();
+$linkCategoryList = $linkselect->getTree();
 
 // Template variables.
 $action_value = "update";

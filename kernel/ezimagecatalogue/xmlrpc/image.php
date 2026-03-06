@@ -97,7 +97,7 @@ else if( $Command == "data" ) // Dump image info!
             $size = 0;
             if ( $image->fileExists( true ) )
             {
-                $imagePath =& $image->filePath( true );
+                $imagePath = $image->filePath( true );
                 $size = eZPBFile::filesize( $imagePath );
                 $user = $image->user();
                 $user_id = is_a( $user, "eZUser" ) ? $user->id() : 0;
@@ -210,7 +210,7 @@ else if ( $Command == "storedata" )
                 $image->setCategoryDefinition( $category );
 
                 // categories...
-                $old_categories =& $image->categories();
+                $old_categories = $image->categories();
                 if ( is_bool( $old_categories ) )
                     $old_categories = array();
                 $new_categories = array();
@@ -247,11 +247,11 @@ else if ( $Command == "storedata" )
 
                 $par = array();
 
-                $par =& createPath( $category, "ezimagecatalogue", "category" );
+                $par = createPath( $category, "ezimagecatalogue", "category" );
 
-                $add_locs =& createURLArray( $add_categories, "ezimagecatalogue", "category" );
-                $cur_locs =& createURLArray( $cur_categories, "ezimagecatalogue", "category" );
-                $old_locs =& createURLArray( $remove_categories, "ezimagecatalogue", "category" );
+                $add_locs = createURLArray( $add_categories, "ezimagecatalogue", "category" );
+                $cur_locs = createURLArray( $cur_categories, "ezimagecatalogue", "category" );
+                $old_locs = createURLArray( $remove_categories, "ezimagecatalogue", "category" );
 
                 $ReturnData = new eZXMLRPCStruct( array( "Location" => createURLStruct( "ezimagecatalogue", "image", $ID ),
                                                          "Name" => new eZXMLRPCString( $image->name( false ) ),
@@ -280,13 +280,13 @@ else if ( $Command == "search" )
         $texts[] = $keyword->value();
     }
     $elements = array();
-    $result =& eZImage::search( $texts, true );
+    $result = eZImage::search( $texts, true );
     foreach( $result as $item )
     {
-        $cat =& $item->categoryDefinition();
+        $cat = $item->categoryDefinition();
         if ( is_a( $cat, "eZImageCategory" ) )
         {
-            $cats =& $item->categories();
+            $cats = $item->categories();
             if ( is_array( $cats ) and count( $cats ) > 0 )
             {
                 $cat = new eZImageCategory( $cats[0] );
@@ -315,7 +315,7 @@ else if( $Command == "delete" )
     if ( $image->get( $ID ) )
     {
         $category = $image->categoryDefinition();
-        $par =& createPath( $category, "ezimagecatalogue", "category" );
+        $par = createPath( $category, "ezimagecatalogue", "category" );
 
         $ReturnData = new eZXMLRPCStruct( array( "Location" => createURLStruct( "ezimagecatalogue", "image", $ID ),
                                                  "Path" => new eZXMLRPCArray( $par ),

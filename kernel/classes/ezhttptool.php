@@ -41,7 +41,7 @@ class eZHTTPTool
       */
     function __construct()
     {
-        $this->url_array =& explode( "/", $_SERVER['REQUEST_URI'] );
+        $this->url_array = explode( "/", $_SERVER['REQUEST_URI'] );
         $this->url_array_length = count( $this->url_array );
     }
 
@@ -120,7 +120,7 @@ class eZHTTPTool
       \static
       Returns a url with the variable added to the url.
     */
-    static public function &addVariable( $url, $variable, $value )
+    static public function addVariable( $url, $variable, $value )
     {
         $pos = strpos( $url, "?" );
 
@@ -140,7 +140,7 @@ class eZHTTPTool
       \static
       Returns a url with the variable removed from the url.
     */
-    static public function &removeVariable( $url, $variable, $value = "" )
+    static public function removeVariable( $url, $variable, $value = "" )
     {
         $pos = strpos( $url, "?" );
 
@@ -170,7 +170,7 @@ class eZHTTPTool
     static public function assignDate( $start, $prefix = "", $postfix = "" )
     {
         $url_array_length = $this->url_array_length;
-        $url_array =& $this->url_array;
+        $url_array = $this->url_array;
 
         $variableName = $prefix . "Year" . $postfix;
         if( is_numeric( $url_array[ $start ] ) )
@@ -252,7 +252,7 @@ class eZHTTPTool
     function assignValues( $position, $prefix = "", $postfix = "" )
     {
         $url_array_length = $this->url_array_length;
-        $url_array =& $this->url_array;
+        $url_array = $this->url_array;
 
         $i = $position;
         $j = $i + 1;

@@ -32,7 +32,7 @@
 // include_once( "eztrade/classes/ezorder.php" );
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
@@ -50,10 +50,10 @@ $t->set_var( "customer_item", "" );
 if ( isset( $SearchText) && $SearchText != "" )
 	{
 		$SearchText = addslashes (trim ($SearchText) );
-		$customers =& eZOrder::customers( $SearchText );
+		$customers = eZOrder::customers( $SearchText );
 	}
 else
-$customers =& eZOrder::customers();
+$customers = eZOrder::customers();
 
 $i=0;
 foreach ( $customers as $customer )

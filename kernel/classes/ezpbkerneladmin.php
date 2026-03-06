@@ -378,9 +378,9 @@ class ezpbKernelAdmin implements ezpWebBasedKernelHandler
     ini_alter("session.cache_expire", "172800");
 
     global $ini;
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
 
-    $siteDesign =& $ini->variable( "site", "SiteStyle" );
+    $siteDesign = $ini->variable( "site", "SiteStyle" );
     $SiteDesign =& $siteDesign;
     $GlobalSiteDesign = $siteDesign;
 
@@ -494,7 +494,7 @@ try
     if ( $moduleName == "" )
         $moduleName = "user";
 
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( $user )
     {
         if ( $url_array[1] == "help" )
@@ -525,7 +525,7 @@ try
 
             $site_modules = $ini->variable( "site", "EnabledModules" );
             $admin_modules = explode( ";", $ini->variable( "site", "EnabledAdminModules" ) );
-            $modules =& eZModuleHandler::active();
+            $modules = eZModuleHandler::active();
 
             $uri = $_SERVER["REQUEST_URI"];
 
@@ -681,7 +681,7 @@ try
 
                 $single_module = $preferences->variable( "SingleModule" ) == "enabled";
 
-                $ini =& eZINI::instance('site.ini');
+                $ini = eZINI::instance('site.ini');
     
                 $Language = $ini->variable( $moduleSettingsGroupName, "Language" );
        
@@ -804,7 +804,7 @@ try
         if ( $_SERVER['REQUEST_URI'] == "/" )
         {
             $_SERVER['REQUEST_URI'] = "/user/login";
-            $url_array =& explode( "/", $_SERVER['REQUEST_URI'] );
+            $url_array = explode( "/", $_SERVER['REQUEST_URI'] );
         }
 
         // parse the URI
@@ -821,7 +821,7 @@ try
         // html footer
         include( "design/admin/loginfooter.php" );
 
-        $moduleResult =& ob_get_contents();
+        $moduleResult = ob_get_contents();
 
         ob_end_clean();
         ob_start();
@@ -830,7 +830,7 @@ try
 
 
     // close the database connection.
-    $db =& eZDB::globalDatabase();
+    $db = eZDB::globalDatabase();
     $db->close();
 
     ob_end_flush();

@@ -75,7 +75,7 @@ class eZBulkMailForgot
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->Hash = md5( microTime() );
@@ -118,7 +118,7 @@ class eZBulkMailForgot
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( isset( $this->ID ) )
         {
@@ -138,7 +138,7 @@ class eZBulkMailForgot
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -166,7 +166,7 @@ class eZBulkMailForgot
      */
     public static function getByEmail( $email )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $email = addslashes( $email );
         $db->array_query( $forgot_array, "SELECT ID FROM eZBulkMail_Forgot WHERE Mail='$email'" );
 
@@ -196,7 +196,7 @@ class eZBulkMailForgot
     */
     function check( $hash )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $hash = $db->escapeString( $hash );
         $db->array_query( $forgot_array, "SELECT ID FROM eZBulkMail_Forgot WHERE Hash='$hash'" );

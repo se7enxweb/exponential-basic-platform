@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZLinkMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZLinkMain", "DocumentRoot" );
@@ -72,7 +72,7 @@ else
         $t->set_var( "link_id", $linkItem->id() );
         $t->set_var( "link_title", $linkItem->name() );
         $t->set_var( "link_description", $linkItem->description() );
-        $category =& $linkItem->categoryDefinition();
+        $category = $linkItem->categoryDefinition();
         $t->set_var( "link_categoryid", $category->id() );
         $t->set_var( "link_keywords", $linkItem->keywords() );
         $t->set_var( "link_created", $linkItem->created() );

@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZPollMain", "Language" );
 
 // include_once( "ezpoll/classes/ezpoll.php" );

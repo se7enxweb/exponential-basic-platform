@@ -23,8 +23,8 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-$ini =& eZINI::instance( 'site.ini' );
-$PageCaching =& $ini->variable( "eZTradeMain", "PageCaching");
+$ini = eZINI::instance( 'site.ini' );
+$PageCaching = $ini->variable( "eZTradeMain", "PageCaching");
 
 $PureStatic = "false";
 
@@ -59,7 +59,7 @@ if ( $PureStatic != "true" )
     // include_once( "ezuser/classes/ezpermission.php" );
     // include_once( "ezuser/classes/ezobjectpermission.php" );
     
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
     $Language = $ini->variable( "eZTradeMain", "Language" );
 
     // include_once( "eztrade/classes/ezproduct.php" );
@@ -78,11 +78,11 @@ if ( $PureStatic != "true" )
 
     $category = new eZProductCategory( $CategoryID );
 
-    $productList =& $category->activeProducts( $category->sortMode(), 0, $Limit, $CategoryID );
+    $productList = $category->activeProducts( $category->sortMode(), 0, $Limit, $CategoryID );
     $t->set_var( "sitedesign", $GlobalSiteDesign );
     $t->set_var( "category_id", $CategoryID );
     $t->set_var( "category_name", $category->name() );
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
 
     // categories
     $i=0;

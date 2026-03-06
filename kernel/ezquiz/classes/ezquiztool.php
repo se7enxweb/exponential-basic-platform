@@ -40,9 +40,9 @@ class eZQuizTool
     */
     static public function deleteCache()
     {
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
 
-        $files =& eZCacheFile::files( "kernel/ezquiz/cache/",
+        $files = eZCacheFile::files( "kernel/ezquiz/cache/",
                                       array( "quizlist", "quizfuture", "quizpast", "quizopen", "quizscore", "quizscores", NULL ), "cache", "," );
         foreach ( $files as $file )
         {

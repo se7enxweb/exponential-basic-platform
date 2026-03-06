@@ -75,7 +75,7 @@ class eZBugModule
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
         $db->begin();
@@ -118,7 +118,7 @@ class eZBugModule
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if ( isset( $this->ID ) )
         {
@@ -155,7 +155,7 @@ class eZBugModule
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -182,7 +182,7 @@ class eZBugModule
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $module_array = array();
@@ -204,7 +204,7 @@ class eZBugModule
     */
     function getByParent( $parent, $sortby="name", $recursive=false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $module_array = array();
@@ -386,7 +386,7 @@ class eZBugModule
     {
         if ( is_a( $value, "eZBug" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $bugID = $value->id();
 
@@ -414,13 +414,13 @@ class eZBugModule
       If $fetchUnhandled is set to true the bugs which is not yet handled are
       also returned.
     */
-    function &bugs( $sortMode="time",
+    function bugs( $sortMode="time",
                        $fetchUnhandled=true,
                        $withPrivate=false,
                        $offset=0,
                        $limit=50)
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $OrderBy = "eZBug_Bug.Created DESC";
         switch( $sortMode )
@@ -479,7 +479,7 @@ class eZBugModule
     */
     function countBugs( $countUnhandled=true, $excludeClosed=false, $recursive=false, $withPrivate=false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $unhandledSQL = "";
         if ( $countUnhandled == false )
@@ -541,7 +541,7 @@ class eZBugModule
     function isChild( $moduleID, $check_for_self = false )
     {
         $return_value = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( is_a( $moduleID, "eZBugModule" ) )
             $moduleID = $moduleID->id();

@@ -43,17 +43,17 @@
 // include_once( "ezbulkmail/classes/ezbulkmail.php" );
 // include_once( "ezbulkmail/classes/ezbulkmailcategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $PublishNoticeReceiver = $ini->variable( "eZArticleMain", "PublishNoticeReceiver" );
 $PublishNoticeSender = $ini->variable( "eZArticleMain", "PublishNoticeSender" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 // insert a new article in the database
 if ( ( $Action == "Insert" ) || ( $Action == "Update" ) )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
         
     $article = new eZArticle( $ArticleID );
     $article->setName( $Name );
@@ -111,7 +111,7 @@ if ( ( $Action == "Insert" ) || ( $Action == "Update" ) )
         // generate keywords
         $contents = strip_tags( $contents );
         $contents = preg_replace( "#\n#", "", $contents );
-        $contents_array =& preg_split( "/ /", $contents );
+        $contents_array = preg_split( "/ /", $contents );
         $contents_array = array_unique( $contents_array );
 
         $keywords = "";
@@ -199,7 +199,7 @@ if ( isset ($SectionIDOverride) )
 {
     // include_once( "ezsitemanager/classes/ezsection.php" );
     
-    $sectionObject =& eZSection::globalSectionObject( $SectionIDOverride );
+    $sectionObject = eZSection::globalSectionObject( $SectionIDOverride );
     $sectionObject->setOverrideVariables();
 }
 
@@ -227,7 +227,7 @@ else
 
 if ( $Action == "New" )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     $t->set_var( "author_text", $user->firstName() . " " . $user->lastName());
     $catDefID = false;
     $Name = false;
@@ -259,7 +259,7 @@ $t->set_var( "action_value", "insert" );
 
 if ( $Action == "New" )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     $t->set_var( "author_text", $user->firstName() . " " . $user->lastName());    
 }
 
@@ -276,10 +276,10 @@ if ( $Action == "Edit" )
     
     $contentsArray = $generator->decodeXML( $article->contents() );
 
-    $catDef =& $article->categoryDefinition();
+    $catDef = $article->categoryDefinition();
     $catDefID = $catDef->id();
 
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
 
     //PBo modification
     //Check if the id of the author matches the current logged in user

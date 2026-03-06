@@ -27,7 +27,7 @@
 // this just shuts of the hundreds of thousands of error log entries (performance)
 $DefaultLinkText = "";
 
-$ArticlePageCaching =& $ini->variable( "eZArticleMain", "PageCaching");
+$ArticlePageCaching = $ini->variable( "eZArticleMain", "PageCaching");
 $PageCaching = "disabled";
 
 $PureStatic = "false";
@@ -63,7 +63,7 @@ if ( $PureStatic != "true" )
     // include_once( "ezarticle/classes/ezarticle.php" );
     // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
     $Language = $ini->variable( "eZArticleMain", "Language" );
     $ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
 
@@ -91,7 +91,7 @@ if ( $PureStatic != "true" )
     $t->set_var( "current_category_name", $category_name_no_whitespace );
     $t->set_var( "current_category_description", $category->description() );
 
-    $articleList =& $category->articles( $category->sortMode(), false, true );
+    $articleList = $category->articles( $category->sortMode(), false, true );
 
     $locale = new eZLocale( $Language );
     $i=0;
@@ -100,7 +100,7 @@ if ( $PureStatic != "true" )
     {
         $t->set_var( "article_id", $article->id() );
         $t->set_var( "article_name", $article->name() );
-        $catDef =& $article->categoryDefinition();
+        $catDef = $article->categoryDefinition();
         
         $t->set_var( "article_category_id", $catDef->id() );
 

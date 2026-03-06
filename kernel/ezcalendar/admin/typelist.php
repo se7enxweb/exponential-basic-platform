@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlocale.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZCalendarMain", "Language" );
 
 // include_once( "ezcalendar/classes/ezappointment.php" );

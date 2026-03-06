@@ -47,7 +47,7 @@ class eZPriceGroup
     {
         if ( !$id )
             $id = $this->ID;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $array, "SELECT ID, Name, Description, Placement FROM eZTrade_PriceGroup
                                     WHERE ID='$id'" );
         $this->fill( $array );
@@ -55,7 +55,7 @@ class eZPriceGroup
 
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->Name = $db->escapeString( $this->Name );
@@ -103,7 +103,7 @@ class eZPriceGroup
         if ( !$id )
             $id = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $ret[] = $db->query( "DELETE FROM eZTrade_ProductPriceLink WHERE PriceID='$id'" );
         $ret[] = $db->query( "DELETE FROM eZTrade_GroupPriceLink WHERE PriceID='$id'" );
@@ -113,7 +113,7 @@ class eZPriceGroup
 
     function fill( $array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $array[$db->fieldName("ID")];
         $this->Name = $array[$db->fieldName("Name")];
         $this->Description = $array[$db->fieldName("Description")];
@@ -123,9 +123,9 @@ class eZPriceGroup
     /*!
       Returns all product groups from db.
     */
-    static public function &getAll( $as_object = true )
+    static public function getAll( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $array, "SELECT ID FROM eZTrade_PriceGroup
                                    ORDER BY Placement" );
         $ret = array();
@@ -139,11 +139,11 @@ class eZPriceGroup
     /*!
       Returns all user groups which are connected to a specific price group.
     */
-    function &userGroups( $id = false, $as_object = true )
+    function userGroups( $id = false, $as_object = true )
     {
         if ( !$id )
             $id = $this->ID;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $array, "SELECT GroupID AS ID FROM eZTrade_GroupPriceLink
                                    WHERE PriceID='$id'" );
         $ret = array();
@@ -157,7 +157,7 @@ class eZPriceGroup
     /*!
       Returns all price groups which are connected to a user through the user's user groups.
     */
-    static public function &priceGroups( $inUser, $as_object = true )
+    static public function priceGroups( $inUser, $as_object = true )
     {
         $group_string = false;
         if ( is_a( $inUser, "eZUser" ) )
@@ -187,7 +187,7 @@ class eZPriceGroup
         $ret = array();
         if ( $group_string != "" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->array_query( $array, "SELECT PriceID AS ID FROM eZTrade_GroupPriceLink
                                    WHERE $group_string" );
             foreach( $array as $row )
@@ -208,7 +208,7 @@ class eZPriceGroup
         if ( is_a( $group_id, "eZUserGroup" ) )
             $group_id = $group_id->id();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $ret[] = $db->query( "INSERT INTO eZTrade_GroupPriceLink
                    ( GroupID,
@@ -227,7 +227,7 @@ class eZPriceGroup
         if ( !$id )
             $id = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $ret[] = $db->query( "DELETE FROM eZTrade_GroupPriceLink WHERE PriceID='$id'" );
         eZDB::finish( $ret, $db );
@@ -238,7 +238,7 @@ class eZPriceGroup
     */
     static public function correctPriceGroup( $group_id, $debug=false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( is_array( $group_id ) )
         {
             $first = true;
@@ -271,9 +271,9 @@ class eZPriceGroup
      */
     static public function lowestPrice( $productid, $priceid, $optionid )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $ret = false;
         $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true" ? true : false;
 
@@ -340,9 +340,9 @@ class eZPriceGroup
      */
     static public function highestPrice( $productid, $priceid, $optionid )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $ret = false;
         $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true" ? true : false;
 
@@ -412,9 +412,9 @@ class eZPriceGroup
     */
     static public function correctPrice( $productid, $priceid, $optionid = 0, $valueid = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true" ? true : false;
         $group_text = false;
         if ( $ShowPriceGroups == true )
@@ -459,7 +459,7 @@ class eZPriceGroup
     */
     static public function prices( $productid, $optionid = 0, $valueid = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $array, "SELECT PriceID, Price FROM eZTrade_ProductPriceLink
                                    WHERE ProductID='$productid' AND OptionID='$optionid'
                                          AND ValueID='$valueid'" );
@@ -471,7 +471,7 @@ class eZPriceGroup
     */
     function addPrice( $productid, $priceid, $price, $optionid = 0, $valueid = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $ret = array();
         $query = "INSERT INTO eZTrade_ProductPriceLink

@@ -41,7 +41,7 @@ class eZDOMNode
     /*!
       Returns a XML string of the DOM Node and subnodes
     */
-    function &toString()
+    function toString()
     {
         $ret = "";
         switch ( $this->name )
@@ -50,11 +50,11 @@ class eZDOMNode
             {
                 $tagContent = $this->content;
                 
-                $tagContent =& str_replace( "&", "&amp;", $tagContent );
-                $tagContent =& str_replace( ">", "&gt;", $tagContent );
-                $tagContent =& str_replace( "<", "&lt;", $tagContent );
-                $tagContent =& str_replace( "'", "&apos;", $tagContent );
-                $tagContent =& str_replace( '"', "&quot;", $tagContent );
+                $tagContent = str_replace( "&", "&amp;", $tagContent );
+                $tagContent = str_replace( ">", "&gt;", $tagContent );
+                $tagContent = str_replace( "<", "&lt;", $tagContent );
+                $tagContent = str_replace( "'", "&apos;", $tagContent );
+                $tagContent = str_replace( '"', "&quot;", $tagContent );
                 
                 $ret =& $tagContent;
             }break;

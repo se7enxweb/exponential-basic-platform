@@ -33,7 +33,7 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
 
@@ -45,7 +45,7 @@ if ( !is_numeric( $CategoryID ) )
 
 $GlobalSectionID = eZArticleCategory::sectionIDStatic( $CategoryID );
 
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
@@ -151,7 +151,7 @@ foreach ( $articleList as $article )
 {
     if ( eZObjectPermission::hasPermission( $article->id(), "article_article", 'r' ) )
     {
-        $catDef =& $article->categoryDefinition();
+        $catDef = $article->categoryDefinition();
         $t->set_var( "category_id", $catDef->id() );
 
         $t->set_var( "article_id", $article->id() );

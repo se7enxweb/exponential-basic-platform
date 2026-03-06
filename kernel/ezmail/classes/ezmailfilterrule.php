@@ -78,7 +78,7 @@ class eZMailFilterRule
     */
     function delete( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if( $id == -1 )
             $id = $this->ID;
 
@@ -91,7 +91,7 @@ class eZMailFilterRule
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $match = $db->escapeString( $this->Match );
 
         if ( !isset( $this->ID ) )
@@ -141,7 +141,7 @@ class eZMailFilterRule
         $ret = false;
         if ( $id != "" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->array_query( $mail_array, "SELECT * FROM eZMail_FilterRule WHERE ID='$id'" );
             if ( count( $mail_array ) > 1 )
             {
@@ -281,7 +281,7 @@ class eZMailFilterRule
         if( !is_string( $user ) && get_class( $user ) == "ezuser" )
             $user = $user->id();
 
-        $database =& eZDB::globalDatabase();
+        $database = eZDB::globalDatabase();
 
         $return_array = array();
         $account_array = array();
@@ -308,7 +308,7 @@ class eZMailFilterRule
     function applyFilter( &$mail )
     {
         // Get the array of elements to search in
-        $searchArray =& $this->buildSearchArray( $mail );
+        $searchArray = $this->buildSearchArray( $mail );
         // Loop through the elements and run the required tests. Exit at once when we find a match.
         // This is not good coding practice, but it's the best way to do it here
         switch( $this->CheckType )
@@ -383,62 +383,62 @@ class eZMailFilterRule
       Builds an array of data that is to be checked by the apply filter function.
       This function only uses referenced copying of data, to speed things up. (No actuall copy)
     */
-    function &buildSearchArray( &$mail )
+    function buildSearchArray( &$mail )
     {
         $searchArray = array();
         switch( $this->HeaderType )
         {
             case FILTER_MESSAGE :
             {
-                $searchArray[] =& $mail->body();
-                $searchArray[] =& $mail->to();
-                $searchArray[] =& $mail->cc();
-                $searchArray[] =& $mail->bcc();
-                $searchArray[] =& $mail->from();
-                $searchArray[] =& $mail->fromName();
-                $searchArray[] =& $mail->subject();
+                $searchArray[] = $mail->body();
+                $searchArray[] = $mail->to();
+                $searchArray[] = $mail->cc();
+                $searchArray[] = $mail->bcc();
+                $searchArray[] = $mail->from();
+                $searchArray[] = $mail->fromName();
+                $searchArray[] = $mail->subject();
             }
             break;
             case FILTER_BODY :
             {
-                $searchArray[] =& $mail->body();
+                $searchArray[] = $mail->body();
             }
             break;
             case FILTER_ANY :
             {
-                $searchArray[] =& $mail->to();
-                $searchArray[] =& $mail->cc();
-                $searchArray[] =& $mail->bcc();
-                $searchArray[] =& $mail->from();
-                $searchArray[] =& $mail->fromName();
-                $searchArray[] =& $mail->subject();
+                $searchArray[] = $mail->to();
+                $searchArray[] = $mail->cc();
+                $searchArray[] = $mail->bcc();
+                $searchArray[] = $mail->from();
+                $searchArray[] = $mail->fromName();
+                $searchArray[] = $mail->subject();
             }
             break;
             case FILTER_TOCC :
             {
-                $searchArray[] =& $mail->to();
-                $searchArray[] =& $mail->cc();
+                $searchArray[] = $mail->to();
+                $searchArray[] = $mail->cc();
             }
             break;
             case FILTER_SUBJECT :
             {
-                $searchArray[] =& $mail->subject();
+                $searchArray[] = $mail->subject();
             }
             break;
             case FILTER_FROM :
             {
-                $searchArray[] =& $mail->from();
-                $searchArray[] =& $mail->fromName();
+                $searchArray[] = $mail->from();
+                $searchArray[] = $mail->fromName();
             }
             break;
             case FILTER_TO :
             {
-                $searchArray[] =& $mail->to();
+                $searchArray[] = $mail->to();
             }
             break;
             case FILTER_CC :
             {
-                $searchArray[] =& $mail->cc();
+                $searchArray[] = $mail->cc();
             }
             break;
         }
@@ -493,7 +493,7 @@ class eZMailFilter
     {
         if ( $userID == false )
         {
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
             $userID = $user->id();
         }
         $this->Filters = eZMailFilterRule::getByUser( $userID );

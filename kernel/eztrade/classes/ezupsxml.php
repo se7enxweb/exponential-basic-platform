@@ -186,7 +186,7 @@ class upsRate
 
     function construct_request_xml(){
       include_once( "classes/INIFile.php" );
-      $ini =& eZINI::instance( 'site.ini' );
+      $ini = eZINI::instance( 'site.ini' );
 
       $xml="<?xml version=\"1.0\"?>
 <AccessRequest xml:lang=\"en-US\">
@@ -313,7 +313,7 @@ $xml .=
      	// echo $y;
 
 	include_once( "classes/INIFile.php" );
-	$ini =& eZINI::instance( 'site.ini' );
+	$ini = eZINI::instance( 'site.ini' );
 
         $ch = curl_init(); 
 

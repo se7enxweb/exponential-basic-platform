@@ -43,7 +43,7 @@
 // include_once( "ezforum/classes/ezforum.php" );
 // include_once( "ezforum/classes/ezforumcategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 $Language = $ini->variable( "eZGroupEventCalendarMain", "Language" );
@@ -94,7 +94,7 @@ $t->set_var("month_cur", $curDate->month());
 $t->set_var("year_cur", $curDate->year());
 
 $user = eZUser::currentUser();
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->fetch();
 
 $tmpGroup = new eZUserGroup( $session->variable( "ShowOtherCalenderGroups" ) );

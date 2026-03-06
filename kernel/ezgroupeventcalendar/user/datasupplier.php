@@ -1,7 +1,7 @@
 <?php
 include_once( "kernel/ezgroupeventcalendar/classes/ezgroupevent.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZGroupEventCalendarMain", "DefaultSection" );
 $UserComments = $ini->variable( "eZGroupEventCalendarMain", "UserComments" );
 

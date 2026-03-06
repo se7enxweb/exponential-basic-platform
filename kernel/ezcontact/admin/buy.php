@@ -24,7 +24,7 @@
 
 // include_once( "eztrade/classes/ezcart.php" );
 $cart = new eZCart();
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $cart->setSession( $session );
 $cart->setCompanyID( $CompanyID );
 $cart->setPersonID( $PersonID );

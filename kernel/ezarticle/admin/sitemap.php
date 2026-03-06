@@ -50,8 +50,8 @@ $t->set_block( "article_sitemap_page_tpl", "article_value_tpl", "article_value" 
 $t->set_block( "article_sitemap_page_tpl", "value_tpl", "value" );
 
 $tree = new eZArticleCategory();
-$treeArray =& $tree->getTree();
-$user =& eZUser::currentUser();
+$treeArray = $tree->getTree();
+$user = eZUser::currentUser();
 
 $t->set_var( "category_value", "" );
 $t->set_var( "article_value", "" );
@@ -74,7 +74,7 @@ foreach ( $treeArray as $index => $catItem )
 
         $category = new eZArticleCategory( $catItem[0]->id() );
 
-        $articleList =& $category->articles( "time", false, true, 0, 50, $catItem[0]->id() );
+        $articleList = $category->articles( "time", false, true, 0, 50, $catItem[0]->id() );
 
         foreach ( $articleList as $article )
         {

@@ -24,7 +24,7 @@
 //
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 if ( isset( $GlobalSectionIDOverride ) )
 {
     $GlobalSectionID = $GlobalSectionIDOverride;
@@ -285,7 +285,7 @@ switch ( $url_array[2] )
 
     case "passwordchange" :
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $DemoSite = $ini->variable( "site", "DemoSite" );
 
         if ( $DemoSite == "enabled" ) {

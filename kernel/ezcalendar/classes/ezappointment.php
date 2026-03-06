@@ -63,7 +63,7 @@ class eZAppointment
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( !isset( $this->ID ) )
@@ -122,7 +122,7 @@ class eZAppointment
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( isset( $this->ID ) )
@@ -138,7 +138,7 @@ class eZAppointment
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -168,9 +168,9 @@ class eZAppointment
 
       The appointments are returned as an array of eZAppointment objects.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $appointment_array = array();
@@ -190,9 +190,9 @@ class eZAppointment
 
       The appointments are returned as an array of eZAppointment objects.
     */
-    function &getAllByOthers()
+    function getAllByOthers()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $appointment_array = array();
@@ -214,13 +214,13 @@ class eZAppointment
 
       The appointments are returned as an array of eZAppointment objects.
     */
-    function &getByDate( $date, $user, $showPrivate = false )
+    function getByDate( $date, $user, $showPrivate = false )
     {
         $ret = array();
 
         if ( is_a( $date, "eZDate" ) && is_a( $user, "eZUser" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $userID = $user->ID();
             $return_array = array();
             $appointment_array = array();
@@ -262,13 +262,13 @@ class eZAppointment
 
       The appointments are returned as an array of eZAppointment objects.
     */
-    function &getByUser( $user, $showPrivate=false )
+    function getByUser( $user, $showPrivate=false )
     {
         $ret = array();
 
         if ( is_a( $user, "eZUser" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $return_array = array();
             $appointment_array = array();
@@ -360,7 +360,7 @@ class eZAppointment
     /*!
       Returns the start time of the appointment.
     */
-    function &startTime()
+    function startTime()
     {
         $date = new eZDateTime();
         $date->setTimeStamp( $this->Date );
@@ -376,7 +376,7 @@ class eZAppointment
     /*!
       Returns the end time of the appointment.
     */
-    function &stopTime()
+    function stopTime()
     {
        $date = new eZDateTime();
        $date->setTimeStamp( $this->Date );
@@ -429,7 +429,7 @@ class eZAppointment
     /*!
       Returns true if the appointment is private.
     */
-    function &isPrivate()
+    function isPrivate()
     {
        if ( $this->IsPrivate == 0 )
            $ret = false;

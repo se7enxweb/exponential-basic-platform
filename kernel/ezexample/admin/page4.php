@@ -28,7 +28,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "ezexample/classes/ezexample.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZExampleMain", "Language" );
 
 $tpl = new eZTemplate( "kernel/ezexample/admin/" . $ini->variable( "eZExampleMain", "AdminTemplateDir" ),
@@ -61,7 +61,7 @@ if ( isset( $Delete ) )
 // get all fields from the database.
 
 $textfield = new eZExample( );
-$textfieldArray =& $textfield->getAll();
+$textfieldArray = $textfield->getAll();
 
 $tpl->set_file( "page4_tpl", "page4.tpl" );
 $tpl->set_block( "page4_tpl", "row_tpl", "row" );

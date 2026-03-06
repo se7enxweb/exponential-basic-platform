@@ -45,11 +45,11 @@ if ( $CategoryID != 0 )
 }
 
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $Limit = $ini->variable( "eZTradeMain", "ProductGalleryLimit" );
@@ -118,7 +118,7 @@ foreach ( $pathArray as $path )
     $SiteTitleAppend .= $path[1] . " - ";
 }
 
-$categoryList =& $category->getByParent( $category );
+$categoryList = $category->getByParent( $category );
 
 // categories
 $i = 0;
@@ -171,9 +171,9 @@ if ( !isSet( $Offset ) or !is_numeric( $Offset ) )
 // products
 //$category->setSortMode(2);
 $category->setSortMode(5);
-$TotalTypes =& $category->productCount( $category->sortMode(), false );
-//$productgallery =& $category->activeProducts( $category->sortMode(), $Offset, $Limit );
-$productgallery =& $category->activeProducts( "alphanumeric_asc", $Offset, $Limit, $category->id() );
+$TotalTypes = $category->productCount( $category->sortMode(), false );
+//$productgallery = $category->activeProducts( $category->sortMode(), $Offset, $Limit );
+$productgallery = $category->activeProducts( "alphanumeric_asc", $Offset, $Limit, $category->id() );
 
 $locale = new eZLocale( $Language );
 $i = 0;
@@ -188,7 +188,7 @@ foreach ( $productgallery as $product )
     
     if ( $thumbnailImage )
     {
-        $variation =& $thumbnailImage->requestImageVariation( $ThumbnailImageWidth, $ThumbnailImageHeight );
+        $variation = $thumbnailImage->requestImageVariation( $ThumbnailImageWidth, $ThumbnailImageHeight );
     
         $t->set_var( "thumbnail_image_uri", "/" . $variation->imagePath() );
         $t->set_var( "thumbnail_image_width", $variation->width() );
@@ -244,13 +244,13 @@ foreach ( $productgallery as $product )
     else
     {
         $priceArray = "";
-        $options =& $product->options();
+        $options = $product->options();
         if ( count( $options ) == 1 )
         {
             $option = $options[0];
             if ( get_class( $option ) == "ezoption" )
             {
-                $optionValues =& $option->values();
+                $optionValues = $option->values();
                 if ( count( $optionValues ) > 1 )
                 {
                     $i=0;
@@ -341,7 +341,7 @@ eZList::drawNavigator( $t, $TotalTypes, $Limit, $Offset, "product_gallery_page_t
 if ( $GenerateStaticPage == true )
 {
     if ( $user )
-        $CategoryArray =& $user->groups( false );
+        $CategoryArray = $user->groups( false );
     $cache = new eZCacheFile( "kernel/eztrade/cache/", array( "productgallery", $CategoryArray, $Offset, $PriceGroup ),
                               "cache", "," );
 

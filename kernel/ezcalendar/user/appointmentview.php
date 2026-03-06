@@ -34,7 +34,7 @@
 // include_once( "ezcalendar/classes/ezappointment.php" );
 // include_once( "ezcalendar/classes/ezappointmenttype.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZCalendarMain", "Language" );
 $locale = new eZLocale( $Language );
@@ -54,8 +54,8 @@ $t->set_block( "view_tpl", "low_tpl", "low" );
 $t->set_block( "view_tpl", "normal_tpl", "normal" );
 $t->set_block( "view_tpl", "high_tpl", "high" );
 
-$user =& eZUser::currentUser();
-$session =& eZSession::globalSession();
+$user = eZUser::currentUser();
+$session = eZSession::globalSession();
 $session->fetch();
 
 $t->set_var( "view", "" );

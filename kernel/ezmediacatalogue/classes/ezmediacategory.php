@@ -73,7 +73,7 @@ class eZMediaCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -135,7 +135,7 @@ class eZMediaCategory
 
         $categoryID = $category->id();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -154,7 +154,7 @@ class eZMediaCategory
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -181,7 +181,7 @@ class eZMediaCategory
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $category_array = array();
@@ -200,12 +200,12 @@ class eZMediaCategory
       \Static
       Returns all media in a category
     */
-    function &getMedia( &$user, $category=false )
+    function getMedia( &$user, $category=false )
     {
         if ( !$category )
             $category = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $media_array = array();
@@ -230,7 +230,7 @@ class eZMediaCategory
     {
         if ( is_a( $parent, "eZMediaCategory" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $parentID = $parent->id();
 
@@ -253,11 +253,11 @@ class eZMediaCategory
 
       The categories are returned as an array of eZMediaCategory objects.
     */
-    function &getByParent( &$parent, $offset = 0, $max = -1 )
+    function getByParent( &$parent, $offset = 0, $max = -1 )
     {
         if ( is_a( $parent, "eZMediaCategory" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $return_array = array();
             $category_array = array();
@@ -288,9 +288,9 @@ class eZMediaCategory
 
         Returns an object of eZMediaCategory.
      */
-    function &getByName( &$name )
+    function getByName( &$name )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $topic = new eZMediaCategory();
 
@@ -348,7 +348,7 @@ class eZMediaCategory
     /*!
       Recursive function that returns an array containing an int (tree position) and an array ( all items on that level )
      */
-    function &getTree( $parentID=0, $level=0 )
+    function getTree( $parentID=0, $level=0 )
     {
         $category = new eZMediaCategory( $parentID );
 
@@ -383,7 +383,7 @@ class eZMediaCategory
     /*!
       Returns the name of the category.
     */
-    function &name( $html = true )
+    function name( $html = true )
     {
        $this->Name = stripslashes($this->Name);
        if( $html )
@@ -395,7 +395,7 @@ class eZMediaCategory
     /*!
       Returns the group description.
     */
-    function &description( $html = true )
+    function description( $html = true )
     {
        $this->Description = stripslashes($this->Description);
        if( $html )
@@ -408,7 +408,7 @@ class eZMediaCategory
     /*!
       Returns the parent if one exist. If not 0 is returned.
     */
-    function &parent()
+    function parent()
     {
        if ( $this->ParentID != 0 )
        {
@@ -424,7 +424,7 @@ class eZMediaCategory
     /*!
       Returns a eZUser object.
     */
-    function &user()
+    function user()
     {
         if ( $this->UserID != 0 )
         {
@@ -445,7 +445,7 @@ class eZMediaCategory
         if( !is_a( $user, "eZUser" ) )
             return false;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT UserID from eZMediaCatalogue_Category WHERE ID='$mediacategory'");
         $userID = $res[$db->fieldName("UserID")];
         if(  $userID == $user->id() )
@@ -512,7 +512,7 @@ class eZMediaCategory
        if ( !$categoryid )
            $categoryid = $this->ID;
 
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $mediaID = $value->id();
 
@@ -556,7 +556,7 @@ class eZMediaCategory
         if ( !$categoryid )
             $categoryid = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $query = "DELETE FROM eZMediaCatalogue_MediaCategoryLink
                   WHERE CategoryID='$categoryid' AND
                         MediaID='$mediaID'";
@@ -579,11 +579,11 @@ class eZMediaCategory
     {
         if ( !isset($limit) || isset($limit) && $limit == 0 )
         {
-            $ini =& eZINI::instance( 'site.ini' );
+            $ini = eZINI::instance( 'site.ini' );
             $limit = $ini->variable( "eZMediaCatalogueMain", "ListMediaPerPage" );
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query_single( $count, "
                 SELECT count( DISTINCT eZMediaCatalogue_Media.ID ) AS Count
@@ -601,9 +601,9 @@ class eZMediaCategory
     /*!
       Returns every media in a category as a array of eZMedia objects.
     */
-    function &media( $sortMode = "time", $offset = 0, $limit = -1 )
+    function media( $sortMode = "time", $offset = 0, $limit = -1 )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $return_array = array();
        $article_array = array();

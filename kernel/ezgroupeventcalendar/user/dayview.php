@@ -154,7 +154,7 @@ $isMyCalendar = $user && $userID == $GetByUserID ? "-private" : "";
 
 
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 $templateDirTmp = $sectionObject->templateStyle();
@@ -999,7 +999,7 @@ function eventRowSpan(&$event)
     /*    $ret = 0;
     $tmpTime = new eZTime();
     $tmpTime->setSecondsElapsed( $startTime->secondsElapsed() );
-    $aStop =& $event->stopTime();
+    $aStop = $event->stopTime();
 
     while ( $tmpTime->isGreater( $aStop ) )
     {

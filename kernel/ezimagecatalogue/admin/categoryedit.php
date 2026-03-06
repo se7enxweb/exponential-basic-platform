@@ -66,7 +66,7 @@ if ( isset ( $Cancel ) )
     exit();
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user )
 {
@@ -74,7 +74,7 @@ if ( !$user )
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
@@ -288,22 +288,22 @@ if ( isset( $Action ) && $Action == "Edit" )
     $t->set_var( "category_id", $category->id() );
     $t->set_var( "category_description", $category->description() );
 
-    $parent =& $category->parent();
+    $parent = $category->parent();
     $sectionID = $category->sectionID();
     if ( $parent )
         $CurrentCategoryID = $parent->id();
 
     $t->set_var( "action_value", "update" );
 
-    $readGroupArrayID =& eZObjectPermission::getGroups( $category->id(), "imagecatalogue_category", "r", false );
+    $readGroupArrayID = eZObjectPermission::getGroups( $category->id(), "imagecatalogue_category", "r", false );
 
-    $writeGroupArrayID =& eZObjectPermission::getGroups( $category->id(), "imagecatalogue_category", "w", false );
-    $uploadGroupArrayID =& eZObjectPermission::getGroups( $category->id(), "imagecatalogue_category", "u", false );
+    $writeGroupArrayID = eZObjectPermission::getGroups( $category->id(), "imagecatalogue_category", "w", false );
+    $uploadGroupArrayID = eZObjectPermission::getGroups( $category->id(), "imagecatalogue_category", "u", false );
 }
 
 // Print the sections.
 
-$sectionList =& eZSection::getAll();
+$sectionList = eZSection::getAll();
 
 if ( count( $sectionList ) > 0 )
 {
@@ -381,7 +381,7 @@ foreach ( $groups as $group )
 
 $category = new eZImageCategory() ;
 
-$categoryList =& $category->getTree( );
+$categoryList = $category->getTree( );
 
 if ( count ( $categoryList ) == 0 )
 {

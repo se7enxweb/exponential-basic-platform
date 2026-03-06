@@ -72,7 +72,7 @@ class eZOrderConfirmation
             $this->OrderID = $id;
         }
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 
         $this->Language = $ini->variable( "eZTradeMain", "Language" );
         $this->OrderSenderEmail = $ini->variable( "eZTradeMain", "OrderSenderEmail" );
@@ -113,7 +113,7 @@ class eZOrderConfirmation
     {
         $session = new eZSession( $sessionID, true );
         $preOrderID = $session->variable( "PreOrderID" );
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 
         // Set some variables to defaults.
         $ShowCart = false;
@@ -321,7 +321,7 @@ class eZOrderConfirmation
                 $mailTemplate->set_var( "td_class", ( $i % 2 ) == 0 ? "bglight" : "bgdark" );
                 $i++;
                 $mailTemplate->set_var( "cart_item_id", $item->id() );
-                $product =& $item->product();
+                $product = $item->product();
                 $vatPercentage = $product->vatPercentage();
                 $productHasVAT = $product->priceIncVAT();
 
@@ -346,7 +346,7 @@ class eZOrderConfirmation
 
                 $numberOfOptions = 0;
 
-                $optionValues =& $item->optionValues();
+                $optionValues = $item->optionValues();
 
                 foreach ( $optionValues as $optionValue )
                 {
@@ -652,7 +652,7 @@ if($total["shiptax"] == 0){
         $mailSubject = $subjectINI->variable( "strings", "mail_subject_admin" ) . " " . $this->SiteURL;
 
         $checkout = new eZCheckout();
-        $instance =& $checkout->instance();
+        $instance = $checkout->instance();
         $paymentMethod = $instance->paymentName( $order->paymentMethod() );
 
         $mailTemplate->set_var( "payment_method", $paymentMethod );
@@ -797,7 +797,7 @@ $mailTemplate->set_var( "shipping_type",$service_name);
 
             // get the payment method
             $checkout = new eZCheckout();
-            $instance =& $checkout->instance();
+            $instance = $checkout->instance();
             $paymentMethod = $instance->paymentName( $order->paymentMethod() );
 
             // get the cart or create it
@@ -818,17 +818,17 @@ $mailTemplate->set_var( "shipping_type",$service_name);
             }
 
             // Decrease product/option quantity
-            $items =& $cart->items();
+            $items = $cart->items();
             foreach ( $items as $item )
             {
-                $product =& $item->product();
+                $product = $item->product();
                 $count = $item->count();
                 $quantity = $product->totalQuantity();
-                $values =& $item->optionValues();
+                $values = $item->optionValues();
                 $selected_values = array();
                 foreach ( $values as $value )
                 {
-                    $option_value =& $value->optionValue();
+                    $option_value = $value->optionValue();
                     $selected_values[] = $option_value->id();
                 }
 
@@ -842,13 +842,13 @@ $mailTemplate->set_var( "shipping_type",$service_name);
                     $product->store();
                     $changed_quantity = true;
                 }
-                $options =& $product->options();
+                $options = $product->options();
                 $change_discontinuity = false;
                 $max_max_value = 0;
                 $has_value = false;
                 foreach( $options as $option )
                 {
-                    $option_values =& $option->values();
+                    $option_values = $option->values();
                     foreach( $option_values as $option_value )
                     {
                         if ( in_array( $option_value->id(), $selected_values ) )
@@ -885,7 +885,7 @@ $mailTemplate->set_var( "shipping_type",$service_name);
                 for( $i=0; $i < $count; $i++ )
                 {
                     // Create vouchers
-                    $voucherInfo =& $item->voucherInformation();
+                    $voucherInfo = $item->voucherInformation();
                     if ( $item->voucherInformation() )
                     {
                         $voucher = new eZVoucher( );
@@ -974,8 +974,8 @@ $mailTemplate->set_var( "shipping_type",$service_name);
     {
         if ( is_a( $ProductID, "eZProduct" ) )
         {
-            $CategoryID =& $ProductID->categoryDefinition( false );
-            $CategoryArray =& $ProductID->categories( false );
+            $CategoryID = $ProductID->categoryDefinition( false );
+            $CategoryArray = $ProductID->categories( false );
             $Hotdeal = $ProductID->isHotDeal();
             $ProductID = $ProductID->id();
         }

@@ -35,7 +35,7 @@
 // include_once( "eztip/classes/eztipcategory.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTipMain", "Language" );
 $ImageDir = $ini->variable( "eZTipMain", "ImageDir" );

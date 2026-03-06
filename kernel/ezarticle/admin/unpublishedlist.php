@@ -34,7 +34,7 @@
 // include_once( "classes/ezcachefile.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $Locale = new eZLocale( $Language );
@@ -110,7 +110,7 @@ if ( !isset( $Limit ) )
 // articles
 $article = new eZArticle();
 
-$articleList =& $article->articles( "time", "only",  $Offset, $Limit );
+$articleList = $article->articles( "time", "only",  $Offset, $Limit );
 $articleCount = $article->articleCount( "only" );
 
 $i=0;

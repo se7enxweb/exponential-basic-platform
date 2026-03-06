@@ -28,7 +28,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
@@ -77,7 +77,7 @@ $t->set_block( "vat_types_tpl", "vat_item_tpl", "vat_item" );
 
 $type = new eZVATType();
 
-$types =& $type->getAll();
+$types = $type->getAll();
 
 $i=0;
 foreach ( $types as $item )

@@ -67,7 +67,7 @@ class eZArticleForm
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if( is_a( $this->Form, "eZForm" ) )
         {
@@ -105,7 +105,7 @@ class eZArticleForm
         if ( $formID == -1 )
             $formID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query( "DELETE FROM eZArticle_ArticleFormDict WHERE ID=$formID" );
     }
@@ -117,7 +117,7 @@ class eZArticleForm
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -154,9 +154,9 @@ class eZArticleForm
 
       The objects are returned as an array of eZArticleForm objects.
     */
-    function &getAll( $offset=0, $limit=20 )
+    function getAll( $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $formArray = array();
@@ -189,7 +189,7 @@ class eZArticleForm
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -209,7 +209,7 @@ class eZArticleForm
     /*!
       Returns the form of the object.
     */
-    function &form()
+    function form()
     {
         return $this->Form;
     }
@@ -217,7 +217,7 @@ class eZArticleForm
     /*!
       Returns the article of the object.
     */
-    function &receiver()
+    function receiver()
     {
         return $this->Article;
     }
@@ -251,7 +251,7 @@ class eZArticleForm
         The article is sent in as an eZArticle object.
         The form is returned as an eZForm object.
     */
-    function &articleHasForm( &$object )
+    function articleHasForm( &$object )
     {
         $returnArray = array();
         $formArray = array();
@@ -280,7 +280,7 @@ class eZArticleForm
         The form is sent in as an eZForm object.
         The article is returned as an eZArticle object.
     */
-    function &formHasArticle( &$object )
+    function formHasArticle( &$object )
     {
         $returnArray = array();
         $formArray = array();
@@ -290,10 +290,10 @@ class eZArticleForm
             $FormID = $object->id();
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ArticleID FROM eZArticle_ArticleFormDict WHERE FormID='$FormID'" );
 
-        $ret =& eZArticle( $qry["ArticleID"] );
+        $ret = eZArticle( $qry["ArticleID"] );
 
         return $ret;
     }

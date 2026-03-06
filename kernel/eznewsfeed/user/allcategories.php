@@ -64,7 +64,7 @@ foreach ( $categories as $category )
     
 
     // fetch the n next news items
-    $newsList =& $category->newsList( "time", "no", 0, 10 );
+    $newsList = $category->newsList( "time", "no", 0, 10 );
 
     $locale = new eZLocale( $Language );
 

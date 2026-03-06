@@ -58,7 +58,7 @@ class eZBulkMailSubscriptionAddress
         $password = md5( $this->Password );
         else
             $password = '';
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if ( !isset( $this->ID ) )
         {
@@ -97,7 +97,7 @@ class eZBulkMailSubscriptionAddress
     */
     function delete( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if( $id == -1 )
             $id = $this->ID;
 
@@ -124,7 +124,7 @@ class eZBulkMailSubscriptionAddress
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "-1" )
         {
@@ -148,7 +148,7 @@ class eZBulkMailSubscriptionAddress
      */
     function getByEmail( $email )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $email = $db->escapeString( $email );
         $db->array_query( $address_array, "SELECT ID FROM eZBulkMail_SubscriptionAddress WHERE EMail='$email'" );
 
@@ -181,7 +181,7 @@ class eZBulkMailSubscriptionAddress
      */
     function addressExists( $email )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $email = addslashes( $email );
         $db->array_query( $address_array, "SELECT ID FROM eZBulkMail_SubscriptionAddress WHERE EMail='$email'" );
 
@@ -254,7 +254,7 @@ class eZBulkMailSubscriptionAddress
      */
     function subscriptions( $asObjects = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $final_result = array();
         $db->array_query( $result_array, "SELECT CategoryID FROM eZBulkMail_SubscriptionLink WHERE AddressID='$this->ID'" );
         if( count( $result_array ) > 0 )
@@ -273,7 +273,7 @@ class eZBulkMailSubscriptionAddress
         if( is_a( $categoryID, "eZBulkMailCategory" ) )
             $categoryID = $categoryID->id();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZBulkMail_SubscriptionLink" );
         $db->array_query( $check, "SELECT AddressID
@@ -306,7 +306,7 @@ class eZBulkMailSubscriptionAddress
      */
     function unsubscribe( $category )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if( is_a( $category, "eZBulkMailCategory" ) )
         {
             $categoryID = $category->id();
@@ -323,7 +323,7 @@ class eZBulkMailSubscriptionAddress
      */
     function addDelay( $category, $delay )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZBulkMail_SubscriptionCategorySettings" );
 
@@ -343,7 +343,7 @@ class eZBulkMailSubscriptionAddress
     */
     static public function validate( $email, $password )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $md5 = md5( $password );
         $db->array_query( $subscription_array, "SELECT * FROM eZBulkMail_SubscriptionAddress

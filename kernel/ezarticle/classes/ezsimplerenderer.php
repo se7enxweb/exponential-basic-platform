@@ -47,7 +47,7 @@ class eZSimpleRenderer
     /*!
       Returns the XHTML contents of the introduction of the article.
     */
-    function &renderIntro()
+    function renderIntro()
     {
         $xml = xmltree( $this->Article->contents() );
 
@@ -78,7 +78,7 @@ class eZSimpleRenderer
     /*!
       Returns the XHTML article of the article.
     */
-    function &renderPage( $page=0 )
+    function renderPage( $page=0 )
     {
         $xml = xmltree( $this->Article->contents() );
 

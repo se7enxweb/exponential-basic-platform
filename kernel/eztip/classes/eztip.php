@@ -73,7 +73,7 @@ class eZTip
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
         $res = $db->query( "UPDATE eZTip_View
@@ -145,7 +145,7 @@ class eZTip
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         
@@ -178,7 +178,7 @@ class eZTip
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -203,7 +203,7 @@ class eZTip
     /*!
       Returns the ad's name.
     */
-    function &name()
+    function name()
     {
        return htmlspecialchars( $this->Name );
     }
@@ -211,7 +211,7 @@ class eZTip
     /*!
       Returns the ad's description.
     */
-    function &description()
+    function description()
     {
        return htmlspecialchars( $this->Description );
     }
@@ -219,7 +219,7 @@ class eZTip
     /*!
       Returns the ad's url.
     */
-    function &url()
+    function url()
     {
        return $this->URL;
     }
@@ -227,7 +227,7 @@ class eZTip
     /*!
       Returns the ad's click price.
     */
-    function &clickPrice()
+    function clickPrice()
     {
        return $this->ClickPrice;
     }
@@ -235,7 +235,7 @@ class eZTip
     /*!
       Returns the ad's view price.
     */
-    function &viewPrice()
+    function viewPrice()
     {
        return $this->ViewPrice;
     }
@@ -271,7 +271,7 @@ class eZTip
     /*!
       Returns the ad's HTML banner.
     */
-    function &htmlBanner()
+    function htmlBanner()
     {
         return $this->HTMLBanner;
     }    
@@ -279,7 +279,7 @@ class eZTip
     /*!
       Returns the view start date.
     */
-    function &viewStartDate()
+    function viewStartDate()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->ViewStartDate );
@@ -290,7 +290,7 @@ class eZTip
     /*!
       Returns the view stop date.
     */
-    function &viewStopDate()
+    function viewStopDate()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->ViewStopDate );
@@ -366,9 +366,9 @@ class eZTip
 
       The categories are returned as an array of eZTipCategory objects.
     */
-    function &categories()
+    function categories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = array();
         $db->array_query( $category_array, "SELECT * FROM
@@ -387,7 +387,7 @@ class eZTip
     */
     function removeFromCategories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query( "DELETE FROM eZTip_TipCategoryLink
                                 WHERE TipID='$this->ID'" );        
@@ -400,7 +400,7 @@ class eZTip
     {
         if ( get_class( $value ) == "ezimage" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $this->ImageID = $value->id();
         }
@@ -415,7 +415,7 @@ class eZTip
     {        
         if ( get_class( $value ) == "ezimage" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $imageID = $value->id();
 
@@ -429,7 +429,7 @@ class eZTip
     */
     function image()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
        
         $ret = false;
         $img = new eZImage( );
@@ -447,7 +447,7 @@ class eZTip
     */
     function addPageView( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
  
@@ -522,7 +522,7 @@ class eZTip
     */
     function viewCount( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $view_result, "SELECT sum(ViewCount) as ViewCount FROM
                                          eZTip_View
@@ -536,7 +536,7 @@ class eZTip
     */
     function clickCount( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $click_result, "SELECT count(*) AS Count FROM
                                                        eZTip_Click

@@ -77,7 +77,7 @@ class eZBulkMailUserSubscripter
      */
     function subscriptions( $asObjects = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $final_result = array();
         $userID = $this->User->id();
         $db->array_query( $result_array, "SELECT CategoryID FROM eZBulkMail_UserCategoryLink WHERE UserID='$userID'" );
@@ -98,7 +98,7 @@ class eZBulkMailUserSubscripter
             $categoryID = $categoryID->id();
 
         $userID = $this->User->id();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZBulkMail_UserCategoryLink" );
         $db->array_query( $check, "SELECT UserID
@@ -132,7 +132,7 @@ class eZBulkMailUserSubscripter
      */
     function unsubscribe( $category )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $userID = $this->User->id();
         if( is_a( $category, "eZBulkMailCategory" ) )
         {
@@ -163,7 +163,7 @@ class eZBulkMailUserSubscripter
      */
     function addDelay( $category, $delay )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZBulkMail_UserCategorySettings" );
         $userID = $this->User->id();

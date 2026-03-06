@@ -56,7 +56,7 @@ class eZLinkItem
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $table_name = $this->Module . "_Link";
         $db->query_single( $row, "SELECT ID, Name, URL, Placement, ModuleType FROM $table_name WHERE ID='$id'" );
         $this->fill( $row );
@@ -68,7 +68,7 @@ class eZLinkItem
     function store()
     {
         $table_name = $this->Module . "_Link";
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         if ( is_numeric( $this->ID ) and $this->ID > 0 )
@@ -117,7 +117,7 @@ class eZLinkItem
         if ( !$module )
             $module = $this->Module;
         $table_name = $module . "_Link";
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res = $db->query( "DELETE FROM $table_name WHERE ID='$id'" );
         if ( $res == false )
@@ -131,7 +131,7 @@ class eZLinkItem
     */
     function fill( $row )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $row[$db->fieldName( "ID" )];
         $this->Name = $row[$db->fieldName( "Name" )];
         $this->URL = $row[$db->fieldName( "URL" )];
@@ -207,7 +207,7 @@ class eZLinkItem
         }
         else
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query_single( $row, "SELECT Module, Type FROM eZModule_LinkModuleType
                                       WHERE ID='$this->ModuleType'" );
             return $row;
@@ -221,7 +221,7 @@ class eZLinkItem
     */
     function setType( $module, $type )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $rows, "SELECT ID FROM eZModule_LinkModuleType
                                   WHERE Module='$module' AND Type='$type'", 0, 1, "ID" );
         if ( count( $rows ) == 0 )
@@ -250,7 +250,7 @@ class eZLinkItem
     */
     function moveUp( $sectionid, $id, $module )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $table_name = $module . "_Link";
         $db->query_single( $placement, "SELECT Placement FROM $table_name
@@ -289,7 +289,7 @@ class eZLinkItem
     */
     function moveDown( $sectionid, $id, $module )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $table_name = $module . "_Link";
         $db->query_single( $placement, "SELECT Placement FROM $table_name

@@ -40,7 +40,7 @@ class eZArticleSupplier
     /*!
       Returns an array of available types.
     */
-    function &urlTypes()
+    function urlTypes()
     {
         return $this->UrlTypes;
     }
@@ -56,9 +56,9 @@ class eZArticleSupplier
     /*!
       Returns a list of categories and/or contacts.
     */
-    function &urlList( $type, $category = 0, $offset = 0 )
+    function urlList( $type, $category = 0, $offset = 0 )
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $ret = false;
         switch( $type )
         {
@@ -113,7 +113,7 @@ class eZArticleSupplier
         return $ret;
     }
 
-    function &item( $type, $id, $is_category )
+    function item( $type, $id, $is_category )
     {
         $ret = false;
         switch( $type )

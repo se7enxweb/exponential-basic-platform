@@ -31,7 +31,7 @@
 // include_once( "classes/ezdatetime.php" );
 // include_once( "classes/ezcachefile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZCalendarMain", "Language" );
 $Locale = new eZLocale( $Language );
@@ -50,7 +50,7 @@ if ( $t->hasCache() )
 {
 //    print( "cached<br />" );
     $file = new eZCacheFile( "kernel/ezcalendar/user/cache", array( "yearview.tpl", "default", $Language, $Year ), "cache", "-" );
-    $dt =& $file->lastModified();
+    $dt = $file->lastModified();
     if ( $Year == $today->year() && $dt->day() != $today->day() )
     {
         $file->delete();
@@ -76,7 +76,7 @@ if ( $build == true )
     $t->set_block( "week_tpl", "day_tpl", "day" );
     $t->set_block( "week_tpl", "empty_day_tpl", "empty_day" );
 
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->fetch();
 
     $date = new eZDate();

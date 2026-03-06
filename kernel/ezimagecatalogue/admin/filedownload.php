@@ -36,7 +36,7 @@ $fileName = $file->name();
 $originalFileName = $file->originalFileName();
 $filePath = $file->filePath( true );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $image = new eZImage( $ImageID );
 if ( eZObjectPermission::hasPermission( $image->id(), "imagecatalogue_image", "r", $user ) == false )
 {
@@ -49,7 +49,7 @@ if ( eZObjectPermission::hasPermission( $image->id(), "imagecatalogue_image", "r
 //  # the file may be a local file with full path. 
 $fileSize = eZPBFile::filesize( $filePath );
 $fp = eZPBFile::fopen( $filePath, "r" );
-$content =& fread( $fp, $fileSize );
+$content = fread( $fp, $fileSize );
 
 Header("Content-type: application/oct-stream"); 
 Header("Content-length: $fileSize"); 

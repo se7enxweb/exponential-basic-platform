@@ -28,7 +28,7 @@
 // include_once( "classes/ezhttptool.php" );
 // include_once( "ezarticle/classes/ezimagemap.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
 $map = new eZImageMap( $ImageID );

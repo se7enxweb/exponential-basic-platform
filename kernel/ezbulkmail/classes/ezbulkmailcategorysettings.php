@@ -57,7 +57,7 @@ class eZBulkMailCategorySettings
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -97,7 +97,7 @@ class eZBulkMailCategorySettings
     */
     function delete( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if( $id == -1 )
@@ -116,7 +116,7 @@ class eZBulkMailCategorySettings
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {

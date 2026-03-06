@@ -27,11 +27,11 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance('site.ini');
-$Language =& $ini->variable( "eZUserMain", "Language" );
+$ini = eZINI::instance('site.ini');
+$Language = $ini->variable( "eZUserMain", "Language" );
 $Locale = new eZLocale( $Language );
 $iso = $Locale->languageISO();
-$SiteURL =& $ini->variable( "site", "SiteURL" );
+$SiteURL = $ini->variable( "site", "SiteURL" );
 
 $t = new eZTemplate( "design/admin/templates/" . $SiteDesign,
                      "design/admin/intl/", $Language, "print_header.php" );
@@ -40,7 +40,7 @@ $t->set_file( array(
     "print_header_tpl" => "print_header.tpl"
     ) );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( $user )
 {

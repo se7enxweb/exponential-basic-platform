@@ -77,7 +77,7 @@ if ( $Command == "list" )
         $total += $categoryCount;
         if ( $loc_offset < $categoryCount )
         {
-            $categoryList =& $category->getByParent( $category, true, "placement", $loc_offset, $loc_max, $User, true );
+            $categoryList = $category->getByParent( $category, true, "placement", $loc_offset, $loc_max, $User, true );
             $loc_max -= count( $categoryList );
 
             foreach ( $categoryList as $catItem )
@@ -100,10 +100,10 @@ if ( $Command == "list" )
         $total += $articleCount;
         if ( $loc_max > 0 and $loc_offset >= 0 )
         {
-            $articleList =& $category->articles( "alpha", true, true, $loc_offset, $loc_max, 0, true );
+            $articleList = $category->articles( "alpha", true, true, $loc_offset, $loc_max, 0, true );
             foreach( $articleList as $artItem )
             {
-                $topic =& $artItem->topic();
+                $topic = $artItem->topic();
                 $cols = array( "Publish date" => createDateTimeStruct( $artItem->published() ),
                                "Modification date" => createDateTimeStruct( $artItem->modified() ),
                                "Author" => new eZXMLRPCString( $artItem->authorText( false ) ),
@@ -125,7 +125,7 @@ if ( $Command == "list" )
     $par = array();
     if ( $offset == 0 )
     {
-        $path =& $category->path();
+        $path = $category->path();
         if ( $category->id() != 0 )
         {
             $par[] = createURLStruct( "ezarticle", "category", 0 );
@@ -205,7 +205,7 @@ else if ( $Command == "tree" )
 {
     $cat = new eZArticleCategory();
 //      $cat->setName( "test" );
-    $tree =& categoryTree( $cat, $User );
+    $tree = categoryTree( $cat, $User );
     $ReturnData = createTreeStruct( $tree, "ezarticle", "category" );
 }
 else if ( $Command == "search" )
@@ -217,7 +217,7 @@ else if ( $Command == "search" )
         $texts[] = $keyword->value();
     }
     $elements = array();
-    $result =& eZArticleCategory::search( $texts, true, "name", $User );
+    $result = eZArticleCategory::search( $texts, true, "name", $User );
     foreach( $result as $item )
     {
         $itemid = $item->id();
@@ -238,9 +238,9 @@ else if ( $Command == "search" )
     $ReturnData = new eZXMLRPCStruct( $ret );
 }
 
-function &categoryTree( $cat, &$User )
+function categoryTree( $cat, &$User )
 {
-    $children =& eZArticleCategory::getByParent( $cat, true, 'placement', 0, -1, $User, true );
+    $children = eZArticleCategory::getByParent( $cat, true, 'placement', 0, -1, $User, true );
     $child_array = array();
     foreach( $children as $child )
     {

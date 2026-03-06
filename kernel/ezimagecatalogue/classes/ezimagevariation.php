@@ -62,7 +62,7 @@ class eZImageVariation
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $db->lock( "eZImageCatalogue_ImageVariation" );
@@ -73,6 +73,7 @@ class eZImageVariation
         // if ( $ret == true )
         // $db->query( "DELETE FROM eZImageCatalogue_ImageVariation WHERE ID='$this->ID'" );
 
+        $res = false;
         if( $ret == false )
         {
             $query = "INSERT INTO eZImageCatalogue_ImageVariation
@@ -101,7 +102,7 @@ class eZImageVariation
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -130,7 +131,7 @@ class eZImageVariation
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -150,7 +151,7 @@ class eZImageVariation
     */
     function getByGroupAndImage( $groupID, $imageID, $modification )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $groupID != "" )

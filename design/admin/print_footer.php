@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance('site.ini');
+$ini = eZINI::instance('site.ini');
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
 //kracker: is this resource template.inc still required / used?

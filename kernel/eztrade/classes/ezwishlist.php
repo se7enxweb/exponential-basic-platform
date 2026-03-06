@@ -84,7 +84,7 @@ class eZWishList
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( !isset( $this->ID ) )
@@ -123,7 +123,7 @@ class eZWishList
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -150,7 +150,7 @@ class eZWishList
     */
     function getByUser( $user  )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( is_a( $user, "eZUser" ) )
@@ -175,7 +175,7 @@ class eZWishList
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $items = $this->items();
@@ -211,7 +211,7 @@ class eZWishList
     /*!
       Returns the owner of the wishlist as an eZUser object.
     */
-    function &user()
+    function user()
     {
        $user = new eZUser( $this->UserID );
 
@@ -262,11 +262,11 @@ class eZWishList
 
       An array of eZWishListItem objects are retunred if successful, an empty array.
     */
-    function &items( )
+    function items( )
     {
        $ret = array();
 
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $db->array_query( $wishlist_array, "SELECT * FROM
                                                     eZTrade_WishListItem
@@ -289,7 +289,7 @@ class eZWishList
     */
     function clear()
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $db->begin();
 
        $items = $this->items();
@@ -322,7 +322,7 @@ class eZWishList
     {
        $ret = array();
 
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $db->array_query( $wishlist_array,
        "SELECT eZTrade_WishList.ID AS ID FROM eZTrade_WishList, eZUser_User

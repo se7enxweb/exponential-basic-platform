@@ -50,13 +50,13 @@ if ( is_numeric( $linkCategory->sectionID() ) )
 {
     $GlobalSectionID = $linkCategory->sectionID();
     // init the section
-    $sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+    $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
     $sectionObject->setOverrideVariables();
 }
 
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZLinkMain", "Language" );
 $UserLimit = $ini->variable( "eZLinkMain", "UserLinkLimit" );
 $languageIni = new eZINI( "kernel/ezlink/user/intl/". $Language . "/linkcategorylist.php.ini", false );
@@ -136,16 +136,16 @@ else
         $t->set_var( "linkcategory_description", $categoryItem->description() );
         $t->set_var( "linkcategory_parent", $categoryItem->parent() );
 
-        $image =& $categoryItem->image();
+        $image = $categoryItem->image();
 
         $t->set_var( "image_item" , "" );
         
         if ( $image )
         {
-            $imageWidth =& $ini->variable( "eZLinkMain", "CategoryImageWidth" );
-            $imageHeight =& $ini->variable( "eZLinkMain", "CategoryImageHeight" );
+            $imageWidth = $ini->variable( "eZLinkMain", "CategoryImageWidth" );
+            $imageHeight = $ini->variable( "eZLinkMain", "CategoryImageHeight" );
 
-            $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+            $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
             
             $imageURL = "/" . $variation->imagePath();
             $imageWidth = $variation->width();
@@ -214,16 +214,16 @@ else
         $t->set_var( "link_accepted", $linkItem->accepted() );
         $t->set_var( "link_url", $linkItem->url() );
 
-        $image =& $linkItem->image();
+        $image = $linkItem->image();
 
         $t->set_var( "link_image_item", "" );
         
         if ( $image )
         {
-            $imageWidth =& $ini->variable( "eZLinkMain", "LinkImageWidth" );
-            $imageHeight =& $ini->variable( "eZLinkMain", "LinkImageHeight" );
+            $imageWidth = $ini->variable( "eZLinkMain", "LinkImageWidth" );
+            $imageHeight = $ini->variable( "eZLinkMain", "LinkImageHeight" );
             
-            $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+            $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
             
             $imageURL = "/" . $variation->imagePath();
             $imageWidth = $variation->width();

@@ -65,7 +65,7 @@ class eZCompanyType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $ret = false;
@@ -102,19 +102,19 @@ class eZCompanyType
      */
     function delete()
     {
-        $sub_categories =& eZCompanyType::getByParentID( $this->ID );
+        $sub_categories = eZCompanyType::getByParentID( $this->ID );
         foreach ( $sub_categories as $category )
         {
             $category->delete();
         }
         $top_category = new eZCompanyType( 0 );
-        $companies =& eZCompany::getByCategory( $this->ID );
+        $companies = eZCompany::getByCategory( $this->ID );
         foreach ( $companies as $company )
         {
             $company->removeCategories();
             $top_category->addCompany( $company );
         }
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZContact_CompanyType WHERE ID='$this->ID'" );
         eZDB::finish( $res, $db );
@@ -125,7 +125,7 @@ class eZCompanyType
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $id != "" )
         {
             $db->array_query( $company_type_array, "SELECT * FROM eZContact_CompanyType WHERE ID='$id'" );
@@ -150,7 +150,7 @@ class eZCompanyType
      */
     static public function getAll( $OrderBy = "ID", $LimitStart = "None", $LimitBy = "None" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         switch ( strtolower( $OrderBy ) )
         {
@@ -180,7 +180,7 @@ class eZCompanyType
 
             if ( is_numeric( $LimitBy ) )
             {
-                $LimitArray =& array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
+                $LimitArray = array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
             }
         }
         else
@@ -204,9 +204,9 @@ class eZCompanyType
     /*!
         Fetches all the company types in the db and return them as an array of objects.
      */
-    static public function &getByParentID( $parent = 0, $OrderBy = "ID", $LimitStart = "None", $LimitBy = "None" )
+    static public function getByParentID( $parent = 0, $OrderBy = "ID", $LimitStart = "None", $LimitBy = "None" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $LimitArray = false;
 
         if ( is_a( $parent, "eZCompanyType" ) )
@@ -246,10 +246,10 @@ class eZCompanyType
 
             if ( is_numeric( $LimitBy ) )
             {
-                $LimitArray =& array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
+                $LimitArray = array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
             }
             else
-                $LimitArray =& array_merge( $LimitArray, array( "Limit" => -1 ) );
+                $LimitArray = array_merge( $LimitArray, array( "Limit" => -1 ) );
         }
         else
         {
@@ -282,7 +282,7 @@ class eZCompanyType
 
         if ( is_numeric( $id ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $company_type_array = array();
             $db->array_query( $company_type_array, "SELECT ParentID FROM eZContact_CompanyType WHERE ParentID='$id'" );
@@ -324,7 +324,7 @@ class eZCompanyType
         return $path;
     }
 
-    static public function &getTree( $parentID=0, $level=0, $add_top = false, $name = false )
+    static public function getTree( $parentID=0, $level=0, $add_top = false, $name = false )
     {
         if ( $add_top )
         {
@@ -338,7 +338,7 @@ class eZCompanyType
         }
         else
         {
-            $categoryList =& eZCompanyType::getByParentID( $parentID );
+            $categoryList = eZCompanyType::getByParentID( $parentID );
 
             $tree = array();
             $level++;
@@ -367,7 +367,7 @@ class eZCompanyType
 
         if ( get_class( $company ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             $companyID = $company->id();
             $res[] = $db->query( "INSERT INTO eZContact_CompanyTypeDict

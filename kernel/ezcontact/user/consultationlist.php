@@ -27,9 +27,9 @@
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( is_a( $user, "eZUser" ) &&
      eZPermission::checkPermission( $user, "eZContact", "Consultation" ) )
 {

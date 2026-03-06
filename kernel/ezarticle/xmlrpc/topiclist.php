@@ -28,7 +28,7 @@
 
 $topics = array();
 
-$topicList =& eZTopic::getAll();
+$topicList = eZTopic::getAll();
 foreach ( $topicList as $topic )
 {
     $topics[] = new eZXMLRPCStruct( array( "URL" => createURLStruct( "ezarticle",

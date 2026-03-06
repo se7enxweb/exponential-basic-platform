@@ -200,7 +200,7 @@ class eZCharTransform
     */
     function groupCommands( $group )
     {
-        $rules =& $this->GroupRules[$group];
+        $rules = $this->GroupRules[$group];
         if ( isset( $rules ) )
             return $rules;
 

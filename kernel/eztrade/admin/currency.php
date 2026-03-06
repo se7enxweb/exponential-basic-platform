@@ -31,7 +31,7 @@
 
 // include_once( "eztrade/classes/ezproductcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
@@ -95,7 +95,7 @@ $t->set_block( "currency_tpl", "currency_item_tpl", "currency_item" );
 
 
 $currency = new eZProductCurrency( );
-$currencies =& $currency->getAll();
+$currencies = $currency->getAll();
 
 $t->set_var( "currency_item", "" );
 

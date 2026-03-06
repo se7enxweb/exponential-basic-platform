@@ -29,7 +29,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 
 // include_once( "classes/eztemplate.php" );
@@ -39,7 +39,7 @@ $Language = $ini->variable( "eZContactMain", "Language" );
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( !is_a( $user, "eZUser" ) )
 {
     // include_once( "classes/ezhttptool.php" );
@@ -97,7 +97,7 @@ if ( isset( $Action ) && $Action == "insert" || isset( $Action ) && $Action == "
     {
         if ( $SelectParentID != $type->id() )
         {
-            $tree =& $type->getTree( $type->id() );
+            $tree = $type->getTree( $type->id() );
             foreach ( $tree as $item )
             {
                 if ( $item[0]->id() == $SelectParentID )
@@ -240,7 +240,7 @@ if ( isset( $Action ) && $Action == "edit" || isset( $Action ) && $Action == "ne
 
         $image = new eZImage( $ImageID );
 
-        $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+        $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
         $imageURL = "/" . $variation->imagePath();
         $imageWidth = $variation->width();

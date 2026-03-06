@@ -26,7 +26,7 @@ class eZPaypalReturn {
      Gets a single Paypal return
     */
     function get( $id=-1 ) {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         if ( $id != -1  ) {
             $db->array_query($paypal_array,
@@ -101,8 +101,8 @@ class eZPaypalReturn {
     /*!
      Gets a list of Paypal results
     */
-    function &getAll() {
-        $db =& eZDB::globalDatabase();
+    function getAll() {
+        $db = eZDB::globalDatabase();
         
         $return_array = array();
         $result_array = array();
@@ -121,12 +121,12 @@ class eZPaypalReturn {
 	    /*!
      Gets a list of Paypal results with matching Parent_txn_id numbers
     */
-    function &getRelated( $txn_id=false) {
+    function getRelated( $txn_id=false) {
 		
 		if ( !$txn_id )
 			return false;
 			
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $return_array = array();
         $result_array = array();
@@ -347,7 +347,7 @@ class eZPaypalReturn {
     {
        $return_value = false;
        $option_array = array();
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $db->array_query( $option_array, "SELECT ID FROM eZTrade_PaypalReturn WHERE Txn_id='$txn_id'" );
        if ( count( $option_array ) > 1 )
        {
@@ -361,7 +361,7 @@ class eZPaypalReturn {
      Inserts or updates a Paypal return
     */
     function store() {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZTrade_PaypalReturn" );
         
@@ -445,7 +445,7 @@ class eZPaypalReturn {
      Deletes a Paypal return
     */
     function delete( $id ) {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $db->begin();
         $ret = $db->query(

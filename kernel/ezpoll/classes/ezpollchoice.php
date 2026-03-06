@@ -62,7 +62,7 @@ class eZPollChoice
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
 
@@ -104,7 +104,7 @@ class eZPollChoice
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset ( $this->ID ) )
         {
@@ -120,7 +120,7 @@ class eZPollChoice
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != -1 )
@@ -150,7 +150,7 @@ class eZPollChoice
     */
     function getAll( $ID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $poll_array = array();
@@ -231,7 +231,7 @@ class eZPollChoice
     */
     function voteCount( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $votecount, "SELECT COUNT(*) AS NUMBER FROM eZPoll_Vote WHERE ChoiceID='$this->ID'" );
         
         return (int)$votecount[0][$db->fieldName("NUMBER")];

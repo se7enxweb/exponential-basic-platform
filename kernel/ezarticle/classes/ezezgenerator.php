@@ -50,7 +50,7 @@ class eZEzGenerator
     /*!
       Generates valid XML data to use for storage.
     */
-    function &generateXML()
+    function generateXML()
     {
         // add the XML header.
         $newContents = "<?xml version=\"1.0\"?>";
@@ -119,7 +119,7 @@ class eZEzGenerator
     /*!
       Decodes the xml chunk and returns the original array to the article. 
     */
-    function &decodeXML()
+    function decodeXML()
     {
         $contentsArray = array();
         

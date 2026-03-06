@@ -34,7 +34,7 @@ if ( $FolderID != 0 && !eZMailFolder::isOwner( eZUser::currentUser(), $FolderID 
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMailMain", "Language" ); 
 
 if( isset( $Cancel ) )

@@ -35,7 +35,7 @@ if ( isset( $Cancel ) )
 // include_once( "classes/eztemplate.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZLinkMain", "Language" );
 $move_item = true;
 

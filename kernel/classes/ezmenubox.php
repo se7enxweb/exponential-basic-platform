@@ -64,7 +64,7 @@ class eZMenuBox
         // include_once( "kernel/ezsession/classes/ezpreferences.php" );
         $preferences = new eZPreferences();
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 
         if ( $settingsModuleName == false )
         {
@@ -76,7 +76,7 @@ class eZMenuBox
         $settingsModuleName = str_replace( "MainMain", "", $settingsModuleName );
         $Language = $ini->variable( $settingsModuleName, "Language" );
 
-        $menuStatus =& $preferences->variable( $module_dir . "_status" );
+        $menuStatus = $preferences->variable( $module_dir . "_status" );
 
         if ( empty( $menuStatus ) )
         {
@@ -90,9 +90,9 @@ class eZMenuBox
         $uri = $_SERVER["REQUEST_URI"];
         $up_uri = $uri;
         $down_uri = $uri;
-        $up_uri =& eZHTTPTool::addVariable( $up_uri, "MoveUp", $module_dir );
-        $down_uri =& eZHTTPTool::addVariable( $down_uri, "MoveDown", $module_dir );
-        $uri =& eZHTTPTool::addVariable( $uri, "ToggleMenu", $module_dir );
+        $up_uri = eZHTTPTool::addVariable( $up_uri, "MoveUp", $module_dir );
+        $down_uri = eZHTTPTool::addVariable( $down_uri, "MoveDown", $module_dir );
+        $uri = eZHTTPTool::addVariable( $uri, "ToggleMenu", $module_dir );
 
         $modified = false;
         if ( $phpfile )
@@ -222,7 +222,7 @@ class eZMenuBox
             if ( $print )
                 $t->pparse( "output", "menu_box_tpl" );
             else
-                $str =& $t->parse( "output", "menu_box_tpl" );
+                $str = $t->parse( "output", "menu_box_tpl" );
             return $str;
         }
         return false;

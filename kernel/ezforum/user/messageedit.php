@@ -29,7 +29,7 @@
 // include_once( "ezforum/classes/ezforummessage.php" );
 // include_once( "ezforum/classes/ezforumcategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $wwwDir = $ini->WWWDir;
 $index = $ini->Index;
@@ -397,7 +397,7 @@ switch ( $Action )
 
             if ( is_object( $moderator ) )
             {
-                $moderators =& eZUserGroup::users( $moderator->id() );
+                $moderators = eZUserGroup::users( $moderator->id() );
 
                 if ( count( $moderators ) > 0 )
                 {
@@ -650,7 +650,7 @@ switch ( $Action )
             $NewMessageBody = eZTextTool::addPre( $msg->body() );
         }
 
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
 
         $NewMessageTopic = $msg->topic();
 

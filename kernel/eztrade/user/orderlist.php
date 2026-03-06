@@ -29,7 +29,7 @@
 // include_once( "classes/ezcurrency.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $ShowOrderStatusToUser = $ini->variable( "eZTradeMain", "ShowOrderStatusToUser" ) == "true";
 
@@ -67,7 +67,7 @@ $t->set_var( "current_offset", $Offset );
 
 $order = new eZOrder();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user )
 {

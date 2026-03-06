@@ -70,10 +70,10 @@ class eZQuizQuestion
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-        $name =& $db->escapeString( $this->Name );
+        $name = $db->escapeString( $this->Name );
         $gameID = $this->Game->id();
 
         $db->query_single( $result, "SELECT MAX(Placement)+1 FROM eZQuiz_Question WHERE GameID='$gameID' " );
@@ -117,10 +117,10 @@ class eZQuizQuestion
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-        $alternatives =& $this->alternatives();
+        $alternatives = $this->alternatives();
         if ( is_array( $alternatives ) )
         {
             foreach ( $alternatives as $alternative )
@@ -141,7 +141,7 @@ class eZQuizQuestion
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -166,7 +166,7 @@ class eZQuizQuestion
     */
     function fill( &$questionArray )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID =& $questionArray[$db->fieldName( "ID" )];
         $this->Name =& $questionArray[$db->fieldName( "Name" )];
         $this->Description =& $questionArray[$db->fieldName( "Description" )];
@@ -180,7 +180,7 @@ class eZQuizQuestion
     */
     function getAll( $offset = 0, $limit = 20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $questionArray = array();
@@ -202,7 +202,7 @@ class eZQuizQuestion
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -274,7 +274,7 @@ class eZQuizQuestion
     function isAlternative( &$alternative )
     {
         $ret = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( is_a( $alternative, "eZQuizAlternative" ) )
         {
             $alternativeID = $alternative->id();
@@ -299,7 +299,7 @@ class eZQuizQuestion
     function alternatives()
     {
         $returnArray = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $questionArray, "SELECT ID FROM eZQuiz_Alternative WHERE QuestionID='$this->ID' ORDER BY ID" );
 
         for ( $i = 0; $i < count( $questionArray ); $i++ )
@@ -316,7 +316,7 @@ class eZQuizQuestion
     function countAlternatives()
     {
         $returnArray = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $result, "SELECT count( ID ) AS COUNT FROM eZQuiz_Alternative WHERE QuestionID='$this->ID'" );
 
         $ret = false;
@@ -336,7 +336,7 @@ class eZQuizQuestion
     function countCorrectAlternatives()
     {
         $returnArray = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $result, "SELECT count( ID ) AS COUNT FROM eZQuiz_Alternative WHERE QuestionID='$this->ID' AND IsCorrect=1" );
 
         $ret = false;

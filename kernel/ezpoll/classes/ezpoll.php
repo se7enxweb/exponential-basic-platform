@@ -79,7 +79,7 @@ class eZPoll
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $dbError = false;
         $db->begin( );
@@ -133,7 +133,7 @@ class eZPoll
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -151,7 +151,7 @@ class eZPoll
     function get( $id=-1 )
     {
         $ret = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != -1 )
         {
@@ -182,7 +182,7 @@ class eZPoll
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $poll_array = array();
@@ -202,7 +202,7 @@ class eZPoll
     */
     function getAllActive()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $poll_array = array();
@@ -301,7 +301,7 @@ class eZPoll
     */
     function mainPoll(  )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         // sets the current poll as main poll
         $db->array_query( $poll_array, "SELECT PollID FROM eZPoll_MainPoll" );
@@ -379,7 +379,7 @@ class eZPoll
     */
     function totalVotes( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $votecount, "SELECT COUNT(*) AS NUMBER FROM eZPoll_Vote WHERE PollID='$this->ID'" );
 
@@ -393,7 +393,7 @@ class eZPoll
     {
         if ( is_a( $poll, "eZPoll" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             // delete old main poll
             $db->query( "DELETE FROM eZPoll_MainPoll" );
@@ -407,9 +407,9 @@ class eZPoll
     /*!
       Returns the forum for the poll.
     */
-    function &forum()
+    function forum()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $res, "SELECT ForumID FROM
                                             eZPoll_PollForumLink

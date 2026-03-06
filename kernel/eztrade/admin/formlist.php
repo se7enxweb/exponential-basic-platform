@@ -31,18 +31,18 @@
 // include_once( "eztrade/classes/ezproductform.php" );
 
 $ActionValue = "list";
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFormMain", "Language" );
 
 $product = new eZProduct( $ProductID );
-$selectedForm =& eZProductForm::productHasForm( $product );
+$selectedForm = eZProductForm::productHasForm( $product );
 
 if( isset( $OK ) )
 {
     if( $selectedFormID > 0 )
     {
-        $form =& new eZForm( $selectedFormID );
+        $form = new eZForm( $selectedFormID );
         $product->deleteForms();
         $product->addForm( $form );
         $product->store();
@@ -69,8 +69,8 @@ $t->set_var( "form_item", "" );
 $t->set_var( "form_list", "" );
 $t->set_var( "no_forms_item", "" );
 
-$totalCount =& eZForm::count();
-$forms =& eZForm::getAll();
+$totalCount = eZForm::count();
+$forms = eZForm::getAll();
 
 if( count( $forms ) == 0 )
 {

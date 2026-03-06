@@ -51,7 +51,7 @@ class eZStatus
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -84,7 +84,7 @@ class eZStatus
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZTodo_Status WHERE ID='$this->ID'" );
         eZDB::finish( $res, $db );
@@ -96,7 +96,7 @@ class eZStatus
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         
         if ( $id != "" )
@@ -124,7 +124,7 @@ class eZStatus
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $status_array = 0;
 

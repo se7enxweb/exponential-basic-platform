@@ -34,8 +34,8 @@ function deleteCache( $ProductID, $CategoryID, $CategoryArray )
 {
     if ( get_class( $ProductID ) == "ezproduct" )
     {
-        $CategoryID =& $ProductID->categoryDefinition( false );
-        $CategoryArray =& $ProductID->categories( false );
+        $CategoryID = $ProductID->categoryDefinition( false );
+        $CategoryArray = $ProductID->categories( false );
         $ProductID = $ProductID->id();
     }
 
@@ -55,7 +55,7 @@ function deleteCache( $ProductID, $CategoryID, $CategoryArray )
 }
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $Limit = $ini->variable( "eZTradeMain", "ProductLimit" );
@@ -127,7 +127,7 @@ if ( $category->sortMode() == "absolute_placement" )
 }
 
 // path
-$pathArray =& $category->path();
+$pathArray = $category->path();
 
 $t->set_var( "path_item", "" );
 foreach ( $pathArray as $path )
@@ -139,7 +139,7 @@ foreach ( $pathArray as $path )
     $t->parse( "path_item", "path_item_tpl", true );
 }
 
-$categoryList =& $category->getByParent( $category );
+$categoryList = $category->getByParent( $category );
 
 // categories
 $i = 0;
@@ -181,8 +181,8 @@ if ( !isset( $Offset ) or !is_numeric( $Offset ) )
     $Offset = 0;
 
 // products
-$TotalTypes =& $category->productCount( $category->sortMode(), true );
-$productList =& $category->products( $category->sortMode(), true, $Offset, $Limit, true, $category->id() );
+$TotalTypes = $category->productCount( $category->sortMode(), true );
+$productList = $category->products( $category->sortMode(), true, $Offset, $Limit, true, $category->id() );
 
 $locale = new eZLocale( $Language );
 $i = 0;
@@ -215,14 +215,14 @@ foreach ( $productList as $product )
     
     
     $priceArray = "";
-    $options =& $product->options();
+    $options = $product->options();
     $high = 0;
     $low = 0;
     foreach ( $options as $option )
     {
         if ( get_class( $option ) == "ezoption" )
         {
-            $optionValues =& $option->values();
+            $optionValues = $option->values();
             if ( count( $optionValues ) > 1 )
             {
                 $i=0;

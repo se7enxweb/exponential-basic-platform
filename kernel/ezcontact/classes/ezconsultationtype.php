@@ -71,7 +71,7 @@ class eZConsultationType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->fieldName( $this->Name );
         if ( !isset( $this->ID ) )
@@ -108,10 +108,10 @@ class eZConsultationType
     {
         if ( isset( $this->ID ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             if ( $relations )
             {
-                $user =& eZUser::currentUser();
+                $user = eZUser::currentUser();
                 $user_id = $user->id();
                 $db->array_query( $consultations, "SELECT A.ID FROM eZContact_Consultation AS A, eZContact_ConsultationPersonUserDict AS B
                                                    WHERE A.ID = B.ConsultationID AND B.UserID='$user_id' AND A.StateID='$this->ID'" );
@@ -135,7 +135,7 @@ class eZConsultationType
 
         if ( $id != "" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query_single( $consulttype_array, "SELECT * FROM eZContact_ConsultationType WHERE ID='$id'" );
             $this->ID = $consulttype_array[ $db->fieldName( "ID" ) ];
             $this->Name = $consulttype_array[ $db->fieldName( "Name" ) ];
@@ -175,7 +175,7 @@ class eZConsultationType
     */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT count( ID ) as Count FROM eZContact_Consultation WHERE StateID='$this->ID'" );
         return $qry[ $db->fieldName( "Count" ) ];
     }
@@ -185,7 +185,7 @@ class eZConsultationType
     */
     function moveUp()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->query_single( $qry, "SELECT ID, ListOrder FROM eZContact_ConsultationType
                                   WHERE ListOrder<'$this->ListOrder' ORDER BY ListOrder DESC",
@@ -203,7 +203,7 @@ class eZConsultationType
     */
     function moveDown()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->query_single( $qry, "SELECT ID, ListOrder FROM eZContact_ConsultationType
                                   WHERE ListOrder>'$this->ListOrder' ORDER BY ListOrder ASC",
@@ -223,7 +223,7 @@ class eZConsultationType
     static public function findTypes()
     {
         $qry_array = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array, "SELECT ID FROM eZContact_ConsultationType ORDER BY ListOrder" );
         $ret_array = array();
         foreach ( $qry_array as $qry )

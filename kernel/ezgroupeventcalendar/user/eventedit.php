@@ -42,7 +42,7 @@ if ( isset( $GoDay ) )
 {
     //include_once( "classes/ezdate.php" );
 
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->fetch();
 
     $year = $session->variable( "Year" );
@@ -60,7 +60,7 @@ else if ( isSet( $GoWeek ) )
 {
   //include_once( "classes/ezdate.php" );
 
-  $session =& eZSession::globalSession();
+  $session = eZSession::globalSession();
   $session->fetch();
 
   $year = $session->variable( "Year" );
@@ -76,7 +76,7 @@ else if ( isSet( $GoWeek ) )
 }
 else if ( isSet( $GoMonth ) )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->fetch();
 
     $year = $session->variable( "Year" );
@@ -87,7 +87,7 @@ else if ( isSet( $GoMonth ) )
 }
 else if ( isSet( $GoYear ) )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->fetch();
 
     $year = $session->variable( "Year" );
@@ -146,7 +146,7 @@ if ( isSet( $AddFile ) )
 // include_once( "ezgroupeventcalendar/classes/ezgroupeditor.php" );
 // include_once( "ezgroupeventcalendar/classes/ezgroupnoshow.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 $Language = $ini->variable( "eZGroupEventCalendarMain", "Language" );
@@ -935,11 +935,11 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
 
 			/* what we need to store this date. timestamp */
 
-			$eventStartTime =& $event->startTime();
+			$eventStartTime = $event->startTime();
 			$startHour		= ( addZero( $eventStartTime->hour() ) );
 			$startMinute	= ( addZero( $eventStartTime->minute() ) );
 
-			$eventStopTime  =& $event->stopTime();
+			$eventStopTime  = $event->stopTime();
 			$stopHour		= ( addZero( $eventStopTime->hour() ) );
 			$stopMinute		= ( addZero( $eventStopTime->minute() ) );
 
@@ -1260,10 +1260,10 @@ if ( isset( $Action ) && $Action == "Edit" && $groupError == false )
 	//set the history bar data
 	$t->parse( "edit_history", "edit_history_tpl", true );
 
-        $type =& $event->type();
+        $type = $event->type();
         $typeID = $type->id();
 
-        $category =& $event->category();
+        $category = $event->category();
         $categoryID = $category->id();
 
         $date  = $event->dateTime();
@@ -1451,7 +1451,7 @@ var_dump($startMinute, $stopMinute);
       $t->set_var( "2_status_selected", "selected" );
 
 
-        $dt =& $event->dateTime();
+        $dt = $event->dateTime();
 	$today = new eZDate();
 
 	$tempYear = addZero( $today->year() );
@@ -1777,7 +1777,7 @@ elseif(isset( $Action ) && $Action == "New" && $groupError == true && $errorPrin
 
 // print the event types
 $type = new eZGroupEventType();
-$typeList =& $type->getTree();
+$typeList = $type->getTree();
 
 foreach ( $typeList as $type )
 {
@@ -1810,7 +1810,7 @@ foreach ( $typeList as $type )
 
 // print the event categorys
 $category = new eZGroupEventCategory();
-$categoryList =& $category->getTree();
+$categoryList = $category->getTree();
 
 foreach ( $categoryList as $category )
 {

@@ -104,7 +104,7 @@ if( $CategoryID != 0  )
 
 // show all user groups in the list!
 // Print out all the groups.
-$groups =& eZUserGroup::getAll();
+$groups = eZUserGroup::getAll();
 foreach ( $groups as $group )
 {
     $t->set_var( "group_id", $group->id() );

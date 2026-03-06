@@ -37,7 +37,7 @@ if ( get_class( $GlobalPageView ) != "ezpageview" )
 }
 
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $tip = new eZTip( $TipID );
 

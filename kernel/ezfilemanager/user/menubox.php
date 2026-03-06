@@ -27,7 +27,7 @@
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
 
@@ -47,7 +47,7 @@ $t->set_file( array(
 
 $t->set_block( "menu_box_tpl", "user_login_tpl", "user_login" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( $user && ( eZObjectPermission::getObjects( "filemanager_folder", 'w', true ) > 0  ||
                 eZObjectPermission::getObjects( "filemanager_folder", 'u', true ) > 0  ||

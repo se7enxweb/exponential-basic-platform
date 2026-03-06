@@ -63,7 +63,7 @@ class eZSection
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin( );
 
         $name = $db->escapeString( $this->Name );
@@ -124,7 +124,7 @@ class eZSection
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query( "DELETE FROM eZSiteManager_Section WHERE ID='$this->ID'" );
     }
@@ -134,7 +134,7 @@ class eZSection
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -175,7 +175,7 @@ class eZSection
     */
     static public function getAll( $offset=0, $limit=40)
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $section_array = array();
@@ -198,7 +198,7 @@ class eZSection
     */
     static public function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -237,7 +237,7 @@ class eZSection
     {
         if ( $sectionID != false )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query_single( $siteDesign, "SELECT SiteDesign FROM eZSiteManager_Section WHERE ID='$sectionID'" );
 	    if( is_array( $siteDesign ) && !empty( $siteDesign ) )
 	    {
@@ -256,7 +256,7 @@ class eZSection
     {
         if ( $sectionID != false )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query_single( $siteDesign, "SELECT SiteDesign FROM eZSiteManager_Section WHERE ID='$sectionID'" );
             return $siteDesign[$db->fieldName("SiteDesign")];
         }
@@ -273,7 +273,7 @@ class eZSection
     {
         if ( $sectionID != false )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query_single( $templateStyle, "SELECT TemplateStyle FROM eZSiteManager_Section WHERE ID='$sectionID'" );
             return $templateStyle[$db->fieldName("TemplateStyle")];
         }
@@ -287,7 +287,7 @@ class eZSection
     {
         if ( $sectionID != false )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query_single( $templateStyle, "SELECT TemplateStyle FROM eZSiteManager_Section WHERE ID='$sectionID'" );
             return $templateStyle[$db->fieldName("TemplateStyle")];
         }
@@ -302,7 +302,7 @@ class eZSection
     {
         if ( is_numeric ( $sectionID ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query_single( $templateStyle, "SELECT Language FROM eZSiteManager_Section WHERE ID='$sectionID'" );
             return $templateStyle[$db->fieldName("Language")];
         }
@@ -362,7 +362,7 @@ class eZSection
       \static
       Will return the global section object for the given section ID.
      */
-    static public function &globalSectionObject( $sectionID )
+    static public function globalSectionObject( $sectionID )
     {
         $objName = "eZSectionObject_$sectionID";
 	    global $GLOBALS;
@@ -383,7 +383,7 @@ class eZSection
     function setOverrideVariables()
     {
 	global $GLOBALS;
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 	
         // set the sitedesign from the section
         if ( $ini->variable( "site", "Sections" ) == "enabled" )
@@ -400,9 +400,9 @@ class eZSection
         }
     }
 
-    static public function &settingNames()
+    static public function settingNames()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $section_array, "SELECT ID, Name
                                            FROM eZSiteManager_SectionFrontPageSetting" );
@@ -410,9 +410,9 @@ class eZSection
         return $section_array;
     }
 
-    function &frontPageRows()
+    function frontPageRows()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
 
@@ -431,7 +431,7 @@ class eZSection
     {
         if ( is_a( $rowID, "eZSectionFrontPage" ) )
             $rowID = $rowID->id();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin( );
 
         $db->lock( "eZSiteManager_SectionFrontPageRowLink" );

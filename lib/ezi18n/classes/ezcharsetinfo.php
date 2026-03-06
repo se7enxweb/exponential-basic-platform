@@ -28,7 +28,7 @@ class eZCharsetInfo
      \static
      \return the hash table with aliases, creates if it doesn't already exist.
     */
-    static function &aliasTable()
+    static function aliasTable()
     {
         $aliasTable =& $GLOBALS['eZCharsetInfoTable'];
         if ( !is_array( $aliasTable ) )
@@ -139,7 +139,7 @@ class eZCharsetInfo
      The table will map from a character encoding scheme to an array of character sets.
      \sa reverseEncodingTable
     */
-    static function &encodingTable()
+    static function encodingTable()
     {
         $encodingTable =& $GLOBALS['eZCharsetInfoEncodingTable'];
         if ( !is_array( $encodingTable ) )
@@ -162,12 +162,12 @@ class eZCharsetInfo
      The table will map from a character set to a character encoding scheme.
      \sa encodingTable
     */
-    static function &reverseEncodingTable()
+    static function reverseEncodingTable()
     {
         $reverseEncodingTable =& $GLOBALS['eZCharsetInfoReverseEncodingTable'];
         if ( !is_array( $reverseEncodingTable ) )
         {
-            $encodingTable =& eZCharsetInfo::encodingTable();
+            $encodingTable = eZCharsetInfo::encodingTable();
             $reverseEncodingTable = array();
             foreach( $encodingTable as $encodingScheme => $charsetMatches )
             {
@@ -185,7 +185,7 @@ class eZCharsetInfo
     */
     static function realCharsetCode( $charsetCode )
     {
-        $aliasTable =& eZCharsetInfo::aliasTable();
+        $aliasTable = eZCharsetInfo::aliasTable();
         $charsetCode = strtolower( $charsetCode );
         if ( isset( $aliasTable[$charsetCode] ) )
             return $aliasTable[$charsetCode];
@@ -207,7 +207,7 @@ class eZCharsetInfo
     {
         if ( !$isRealCharset )
             $charsetCode = eZCharsetInfo::realCharsetCode( $charsetCode );
-        $reverseEncodingTable =& eZCharsetInfo::reverseEncodingTable();
+        $reverseEncodingTable = eZCharsetInfo::reverseEncodingTable();
         if ( isset( $reverseEncodingTable[$charsetCode] ) )
             return $reverseEncodingTable[$charsetCode];
         return 'singlebyte';

@@ -44,8 +44,8 @@ class eZProductTool
     {
         if ( is_numeric( $product ) )
             $product = new eZProduct( $product );
-        $CategoryID =& $product->categoryDefinition( false );
-        $CategoryArray =& $product->categories( false );
+        $CategoryID = $product->categoryDefinition( false );
+        $CategoryArray = $product->categories( false );
         $Hotdeal = $product->isHotDeal();
         $ProductID = $product->id();
 
@@ -73,7 +73,7 @@ class eZProductTool
             }
         }
 
-        $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+        $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                       array( "articlefrontpage",
                                              NULL,
                                              NULL),

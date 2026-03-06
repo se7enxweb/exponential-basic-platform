@@ -55,7 +55,7 @@ class eZAuthor
     function store()
     {
         $ret = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $dbError = false;
         $db->begin( );
@@ -104,7 +104,7 @@ class eZAuthor
     */
     function delete( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( is_numeric( $id ) )
         {
@@ -125,7 +125,7 @@ class eZAuthor
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -154,7 +154,7 @@ class eZAuthor
     */
     function getByName( $name )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         $db->array_query( $author_array, "SELECT * FROM eZUser_Author WHERE Name='$name'" );
@@ -171,9 +171,9 @@ class eZAuthor
     /*!
       Fetches the user id from the database. And returns a array of eZAuthor objects.
     */
-    function &getAll(  )
+    function getAll(  )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $author_array = array();

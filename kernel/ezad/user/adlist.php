@@ -35,7 +35,7 @@
 $category = new eZAdCategory( $CategoryID );
 
 // fetch the user if any
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !isset( $Limit ) )
     $Limit = 1;
@@ -43,20 +43,20 @@ if ( !isset( $Offset ) )
     $Offset = 0;
 
 // ads
-$adList =& $category->ads( "count", false, $Offset, $Limit );
+$adList = $category->ads( "count", false, $Offset, $Limit );
 
 foreach ( $adList as $ad )
 {
     $adID = $ad->id();
 
-    $image =& $ad->image();
+    $image = $ad->image();
 
     // ad image
     if ( $image )
     {
-        $imgSRC =& $image->filePath();
-        $imgWidth =& $image->width();
-        $imgHeight =& $image->height();
+        $imgSRC = $image->filePath();
+        $imgWidth = $image->width();
+        $imgHeight = $image->height();
     }
 
     $ad->addPageView();

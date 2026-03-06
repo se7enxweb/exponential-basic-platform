@@ -27,12 +27,13 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZPollMain", "Language" );
 $PageCaching = $ini->variable( "eZPollMain", "PageCaching" );
 $errorIni = new eZINI( "kernel/ezpoll/user/intl/" . $Language . "/votebox.php.ini", false );
 
 $noItem = $errorIni->variable( "strings", "noitem" );
+$PollID = null;
 
 unset( $menuCachedFile );
 // do the caching

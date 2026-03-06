@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZMailMain", "Language" );
 
@@ -35,7 +35,7 @@ $Language = $ini->variable( "eZMailMain", "Language" );
 // include_once( "ezmail/classes/ezmailfolder.php" );
 // include_once( "ezsession/classes/ezpreferences.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if( $user )
 {
     $t = new eZTemplate( "kernel/ezmail/user/" . $ini->variable( "eZMailMain", "TemplateDir" ),

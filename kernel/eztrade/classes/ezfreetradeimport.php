@@ -38,7 +38,7 @@ class eZFreeTradeImport
     {
         set_time_limit( 0 );
         $categories = $this->getCategoriesFromImport();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( is_array ( $categories ) )
         {
@@ -89,7 +89,7 @@ class eZFreeTradeImport
         set_time_limit( 0 );
         $categories = $this->getItemsFromImport();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( is_array ( $categories ) )
         {
             foreach( $categories as $category )
@@ -120,7 +120,7 @@ class eZFreeTradeImport
         set_time_limit( 0 );
         $products = $this->getProductsFromImport();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( is_array ( $products ) )
         {
             $i=0;
@@ -244,7 +244,7 @@ class eZFreeTradeImport
 
         if ( is_numeric( $id ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->array_query( $RemoteIDFromProductID, "SELECT RemoteID FROM eZTrade_Product WHERE ID='$id'" );
 
             $remoteID = $RemoteIDFromProductID[0][0];
@@ -322,7 +322,7 @@ class eZFreeTradeImport
 
     function makeOption()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->dbInit();
 
         $this->dbImport->array_query( $attribute, "SELECT * FROM attribute" );
@@ -363,7 +363,7 @@ class eZFreeTradeImport
     function makeValue( )
     {
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->dbInit();
         $this->dbImport->array_query( $optionValues, "SELECT * FROM variation" );
 

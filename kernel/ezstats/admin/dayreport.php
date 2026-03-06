@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZStatsMain", "Language" );
 
@@ -73,7 +73,7 @@ if ( !$cur_date->isValid() )
     $Day = $cur_date->day();
 }
 
-$dayReport =& eZPageViewQuery::dayStats( $Year, $Month, $Day );
+$dayReport = eZPageViewQuery::dayStats( $Year, $Month, $Day );
 
 if ( count( $dayReport ) > 0 )
 {

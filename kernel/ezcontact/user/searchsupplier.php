@@ -31,7 +31,7 @@ $SearchResult[0]["IconPath"] = "/design/base/images/icons/document.gif";
 
 // include_once( "ezcontact/classes/ezcompany.php" );
 
-$SearchResult[0]["Result"] =& eZCompany::search( $SearchText );
+$SearchResult[0]["Result"] = eZCompany::search( $SearchText );
 $SearchResult[0]["SearchCount"] = count( $SearchResult[0]["Result"] );
 $SearchResult[0]["SubModuleName"] = "Company";
 
@@ -42,7 +42,7 @@ $SearchResult[1]["IconPath"] = "/design/base/images/icons/document.gif";
 
 // include_once( "ezcontact/classes/ezperson.php" );
 
-$SearchResult[1]["Result"] =& eZPerson::search( $SearchText );
+$SearchResult[1]["Result"] = eZPerson::search( $SearchText );
 $SearchResult[1]["SearchCount"] = count( $SearchResult[1]["Result"] );
 $SearchResult[1]["SubModuleName"] = "Person";
 

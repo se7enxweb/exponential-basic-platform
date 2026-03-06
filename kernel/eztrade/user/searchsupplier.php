@@ -34,7 +34,7 @@ $SearchResult[0]["IconPath"] = "/design/base/images/icons/document.gif";
 
 $product = new eZProduct();
 
-$SearchResult[0]["Result"] =& $product->activeProductSearch( $SearchText, $Offset, $Limit );
+$SearchResult[0]["Result"] = $product->activeProductSearch( $SearchText, $Offset, $Limit );
 $SearchResult[0]["SearchCount"] = $product->activeProductSearchCount( $SearchText );
 
 ?>

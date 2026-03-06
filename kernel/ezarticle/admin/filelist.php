@@ -28,7 +28,7 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
@@ -49,7 +49,7 @@ $t->set_block( "file_list_tpl", "file_tpl", "file" );
 
 $article = new eZArticle( $ArticleID );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->setVariable( "FileListReturnTo", $_SERVER['REQUEST_URI'] );
 $session->setVariable( "NameInBrowse", $article->name() );
 
@@ -69,7 +69,7 @@ $t->set_var( "article_name", $article->name() );
 
 $t->set_var( "site_style", $SiteDesign );
 
-$files =& $article->files();
+$files = $article->files();
 if ( count( $files ) == 0 )
 {
     $t->set_var( "file_list", "" );

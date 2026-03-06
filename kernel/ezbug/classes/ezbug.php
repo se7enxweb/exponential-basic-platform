@@ -106,7 +106,7 @@ class eZBug
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -183,7 +183,7 @@ class eZBug
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -202,7 +202,7 @@ class eZBug
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -237,7 +237,7 @@ class eZBug
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_array = array();
         $module_array = array();
 
@@ -256,9 +256,9 @@ class eZBug
 
       The bugs are returned as an array of eZBug objects.
     */
-    function &getUnhandled()
+    function getUnhandled()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $module_array = array();
@@ -323,7 +323,7 @@ class eZBug
 
       The time is returned as a eZDateTime object.
     */
-    function &created()
+    function created()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->Created );
@@ -592,7 +592,7 @@ class eZBug
     */
     function module( $IDOnly = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $module_array, "SELECT ModuleID
                                           FROM eZBug_BugModuleLink
@@ -614,7 +614,7 @@ class eZBug
     */
     function category()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $category_array, "SELECT CategoryID
                                             FROM eZBug_BugCategoryLink
                                             WHERE BugID='$this->ID'" );
@@ -632,7 +632,7 @@ class eZBug
     */
     function removeFromCategories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res = $db->query( "SELECT Count(*) FROM eZBug_BugCategoryLink
@@ -657,7 +657,7 @@ class eZBug
     */
     function removeFromModules()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res = $db->query( "DELETE
@@ -678,7 +678,7 @@ class eZBug
     */
     function search( $query, $offset=0, $limit=25 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $link_array = array();
         $return_array = array();
@@ -704,7 +704,7 @@ class eZBug
     */
     function searchCount( $query )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $query = new eZQuery( array( "Name", "Description" ), $query );
 
@@ -726,7 +726,7 @@ class eZBug
         {
             $imageID = $image->id();
             $created = (new eZDateTime())->timeStamp( true );
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             $db->lock( "eZBug_BugImageLink" );
             $nextID = $db->nextID( "eZBug_BugImageLink", "ID" );
@@ -749,7 +749,7 @@ class eZBug
     {
         if ( is_a( $image, "eZImage" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $imageID = $image->id();
             $image->delete();
             $db->begin();
@@ -766,7 +766,7 @@ class eZBug
      */
     function images()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $image_array = array();
@@ -787,7 +787,7 @@ class eZBug
     {
         if ( is_a( $file, "eZVirtualFile" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $fileID = $file->id();
             $db->begin();
@@ -813,7 +813,7 @@ class eZBug
     {
         if ( is_a( $file, "eZVirtualFile" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $fileID = $file->id();
             $file->delete();
@@ -832,7 +832,7 @@ class eZBug
     */
     function files()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_array = array();
         $file_array = array();
 
@@ -851,7 +851,7 @@ class eZBug
     */
     function bugExists( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $res, "SELECT ID FROM eZBug_Bug WHERE ID='$id'" );
         return ( count( $res ) == 1 );
     }

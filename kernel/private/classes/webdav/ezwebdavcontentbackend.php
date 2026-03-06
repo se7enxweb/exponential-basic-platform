@@ -235,7 +235,7 @@ class eZWebDAVContentBackend extends ezcWebdavSimpleBackend implements ezcWebdav
             $source = $recurseCollections[$i];
 
             // add the slash at the end of the path if it is missing
-            if ( $source{strlen( $source ) - 1} !== '/' )
+            if ( $source[strlen( $source ) - 1] !== '/' )
             {
                 $source .= '/';
             }
@@ -1783,7 +1783,7 @@ class eZWebDAVContentBackend extends ezcWebdavSimpleBackend implements ezcWebdav
         // Always add the current collection
         $contentEntry = array();
         $scriptURL = $requestUri;
-        if ( $scriptURL{strlen( $scriptURL ) - 1} !== '/' )
+        if ( $scriptURL[strlen( $scriptURL ) - 1] !== '/' )
         {
             $scriptURL .= "/";
         }
@@ -1801,7 +1801,7 @@ class eZWebDAVContentBackend extends ezcWebdavSimpleBackend implements ezcWebdav
         if ( $depth > 0 )
         {
             $scriptURL = $requestUri;
-            if ( $scriptURL{strlen( $scriptURL ) - 1} !== '/' )
+            if ( $scriptURL[strlen( $scriptURL ) - 1] !== '/' )
             {
                 $scriptURL .= "/";
             }
@@ -1988,7 +1988,7 @@ class eZWebDAVContentBackend extends ezcWebdavSimpleBackend implements ezcWebdav
         $thisNodeInfo = $this->fetchNodeInfo( $fullPath, $node );
 
         $scriptURL = $fullPath;
-        if ( $scriptURL{strlen( $scriptURL ) - 1} !== '/' )
+        if ( $scriptURL[strlen( $scriptURL ) - 1] !== '/' )
         {
             $scriptURL .= "/";
         }
@@ -2029,7 +2029,7 @@ class eZWebDAVContentBackend extends ezcWebdavSimpleBackend implements ezcWebdav
 
         // add a slash at the end of the path, if it is missing
         $scriptURL = $target;
-        if ( $scriptURL{strlen( $scriptURL ) - 1} !== '/' )
+        if ( $scriptURL[strlen( $scriptURL ) - 1] !== '/' )
         {
             $scriptURL .= "/";
         }
@@ -2606,7 +2606,7 @@ class eZWebDAVContentBackend extends ezcWebdavSimpleBackend implements ezcWebdav
         /*
         // Todo: add lookup of the name setting for the current object
         $contentObjectID = $object->attribute( 'id' );
-        $contentObjectAttributes =& $object->contentObjectAttributes();
+        $contentObjectAttributes = $object->contentObjectAttributes();
         // @todo @as avoid using [0] (could be another index in some classes)
         $contentObjectAttributes[0]->setAttribute( 'data_text', basename( $destination ) );
         $contentObjectAttributes[0]->store();
@@ -2880,7 +2880,7 @@ class eZWebDAVContentBackend extends ezcWebdavSimpleBackend implements ezcWebdav
 
         // Todo: add lookup of the name setting for the current object
                     $contentObjectID = $object->attribute( 'id' );
-                    $contentObjectAttributes =& $object->contentObjectAttributes();
+                    $contentObjectAttributes = $object->contentObjectAttributes();
                     $contentObjectAttributes[0]->setAttribute( 'data_text', basename( $destination ) );
                     $contentObjectAttributes[0]->store();
 

@@ -55,7 +55,7 @@ class eZHit
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         // lock the table
@@ -77,7 +77,7 @@ class eZHit
     */
     function update()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $db->query( "UPDATE eZLink_Hit SET
 				RemoteIP='$this->RemoteIP',
@@ -90,7 +90,7 @@ class eZHit
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query( "DELETE FROM eZLink_Hit WHERE ID='$ID'" );
     }
 
@@ -98,11 +98,11 @@ class eZHit
       Get out the count for one link.
      */
 
-    function &getLinkHits( $id )
+    function getLinkHits( $id )
     {
-        $db =& eZDB::globalDatabase();
-        $db->query_single( $hit_array, "SELECT COUNT(ID) as Count FROM eZLink_Hit WHERE Link='$id'" );        
-        $count = $hit_array[$db->fieldName( "Count" )];
+        $db = eZDB::globalDatabase();
+        $db->query_single( $hit_array, "SELECT COUNT(ID) as Count FROM eZLink_Hit WHERE Link='$id'" );
+        $count = is_array( $hit_array ) ? $hit_array[$db->fieldName( "Count" )] : 0;
 
         return $count;
     }
@@ -112,7 +112,7 @@ class eZHit
      */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $hit_array, "SELECT * FROM eZLink_Hit WHERE ID='$id'" );
 
         return count( $hit_array );

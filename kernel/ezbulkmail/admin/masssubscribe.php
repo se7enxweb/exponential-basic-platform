@@ -31,7 +31,7 @@
 // include_once( "ezbulkmail/classes/ezbulkmailcategory.php" );
 // include_once( "ezmail/classes/ezmail.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZBulkMailMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezbulkmail/admin/" . $ini->variable( "eZBulkMailMain", "AdminTemplateDir" ),
@@ -159,7 +159,7 @@ if ( isset ( $OK ) && ( count ( $CategoryArrayID ) > 0 ) )
     }
 }
 
-$categoryList =& eZBulkMailCategory::getAll();
+$categoryList = eZBulkMailCategory::getAll();
 
 if ( count ( $categoryList ) > 0 )
 {

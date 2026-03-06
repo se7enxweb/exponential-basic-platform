@@ -57,7 +57,7 @@ class eZRegion
     */  
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         if ( !isset( $this->ID ) )
@@ -91,7 +91,7 @@ class eZRegion
     */  
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $id != "" )
         {
             $db->array_query( $region_array, "SELECT * FROM eZAddress_Region WHERE ID='$id'" );
@@ -108,7 +108,7 @@ class eZRegion
     */
     function fill( &$region_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $this->ID =& $region_array[ $db->fieldName( "ID" ) ];
         $this->CountryID =& $region_array[ $db->fieldName( "CountryID" ) ];
@@ -121,9 +121,9 @@ class eZRegion
     /*!
       Returns the total number of regions
     */
-    static public function &getAllCount( $search = "" )
+    static public function getAllCount( $search = "" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $search_arg = "";
 
         if ( !empty( $search ) )
@@ -142,9 +142,9 @@ class eZRegion
     /*!
       Returns every region as a eZRegion object
     */
-    static public function &getAll( $as_object = true, $search = "", $offset = 0, $max = -1 )
+    static public function getAll( $as_object = true, $search = "", $offset = 0, $max = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $region_array = 0;
         $return_array = array();
@@ -195,9 +195,9 @@ class eZRegion
     /*!
       Returns every region as an array. This function is faster then the one above.
     */
-    static public function &getAllArray( )
+    static public function getAllArray( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $region_array = 0;
         $return_array = array();
         
@@ -226,7 +226,7 @@ class eZRegion
     {
         if ( !$id )
             $id = $this->ID;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZAddress_Region WHERE ID='$id'" );
@@ -234,9 +234,9 @@ class eZRegion
     }    
     
 
-    static public function &getCountryArray( $RequestedCountry=240 )
+    static public function getCountryArray( $RequestedCountry=240 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $region_array = 0;
     
         $db->array_query( $region_array, "SELECT * FROM eZAddress_Region

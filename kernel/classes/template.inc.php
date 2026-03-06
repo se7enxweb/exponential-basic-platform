@@ -129,7 +129,7 @@ class Template {
     {
         if (!is_array($varname))
         {
-            $this->varkeys[$varname] =& preg_quote("/{".$varname."}/");
+            $this->varkeys[$varname] = preg_quote("/{".$varname."}/");
             $this->varvals[$varname] =& $value;
         }
         else
@@ -137,7 +137,7 @@ class Template {
             reset($varname);
             while(list($k, $v) = each($varname))
             {
-                $this->varkeys[$k] =& preg_quote("/{".$k."}/");
+                $this->varkeys[$k] = preg_quote("/{".$k."}/");
                 $this->varvals[$k] =& $v;
             }
         }
@@ -146,7 +146,7 @@ class Template {
     /* public: subst(string $handle)
      * handle: handle of template where variables are to be substituted.
      */
-    function &subst($handle)
+    function subst($handle)
     {
         if (!$this->loadfile($handle))
         {
@@ -155,7 +155,7 @@ class Template {
         }
 
         $str = $this->get_var($handle);
-        $str =& preg_replace( $this->varkeys, $this->varvals, $str);
+        $str = preg_replace( $this->varkeys, $this->varvals, $str);
         return $str;
     }
   
@@ -178,7 +178,7 @@ class Template {
     {
         if (!is_array($handle))
         {
-            $str =& $this->subst($handle);
+            $str = $this->subst($handle);
             if ($append)
             {
                 $this->set_var($target, $this->get_var($target) . $str);
@@ -193,7 +193,7 @@ class Template {
             reset($handle);
             while(list($i, $h) = each($handle))
             {
-                $str =& $this->subst($h);
+                $str = $this->subst($h);
                 $this->set_var($target, $str);
             }
         }
@@ -226,7 +226,7 @@ class Template {
      * public: get_var(array varname)
      * varname: array of variable names
      */
-    function &get_var($varname)
+    function get_var($varname)
     {
         if (!is_array($varname))
         {
@@ -237,7 +237,7 @@ class Template {
             reset($varname);
             while(list($k, $v) = each($varname))
             {
-                $result[$k] =& $this->varvals[$k];
+                $result[$k] = $this->varvals[$k];
             }
             return $result;
         }
@@ -327,7 +327,7 @@ class Template {
      * varname: name of a replacement variable to be protected.
      * unused.
      */
-    function &varname($varname)
+    function varname($varname)
     {
         return preg_quote("/{".$varname."}/");
     }

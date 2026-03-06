@@ -56,12 +56,12 @@ class eZTodoLog
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         
         $log = $db->escapeString( $this->Log );
 
-        $timeStamp =& (new eZDateTime())->timeStamp( true );
+        $timeStamp = (new eZDateTime())->timeStamp( true );
         if ( !isset( $this->ID ) )
         {
             $db->lock( "eZTodo_Log" );
@@ -88,7 +88,7 @@ class eZTodoLog
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         
         if ( isset( $this->ID ) )
@@ -106,7 +106,7 @@ class eZTodoLog
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -131,7 +131,7 @@ class eZTodoLog
     */
     function fill( &$user_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID =& $user_array[$db->fieldName( "ID" )];
         $this->Log =& $user_array[$db->fieldName( "Log" )];
         $this->Created =& $user_array[$db->fieldName( "Created" )];
@@ -166,7 +166,7 @@ class eZTodoLog
 
       The time is returned as a eZDateTime object.
     */
-    function &created()
+    function created()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->Created );

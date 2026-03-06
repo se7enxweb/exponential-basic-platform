@@ -39,7 +39,7 @@ class eZCheckoutSupplierGateway
     function __construct()
     {
 		
-		$ini =& eZINI::instance( 'site.ini' );
+		$ini = eZINI::instance( 'site.ini' );
 		$PaymentMethods = $ini->variable( "Checkout", "PaymentMethods" );
 		$paymentArray = explode(';',$PaymentMethods);
 		$i=1;
@@ -60,7 +60,7 @@ class eZCheckoutSupplierGateway
            array( "ID" => $id, "Text" => $text )
            );
     */
-    function &paymentMethods( )
+    function paymentMethods( )
     {
         return $this->PaymentMethods;
     }
@@ -68,7 +68,7 @@ class eZCheckoutSupplierGateway
     /*!
       Returns the payment type with the given id.
     */
-    function &paymentName( $id )
+    function paymentName( $id )
     {
         $ret = "unknown";
         foreach ( $this->PaymentMethods as $paymentMethod )
@@ -85,9 +85,9 @@ class eZCheckoutSupplierGateway
     /*!
       Returns the file to include for the given payment type.
     */
-    function &paymentFile( $id )
+    function paymentFile( $id )
     {
-		$ini =& eZINI::instance( 'site.ini' );
+		$ini = eZINI::instance( 'site.ini' );
 		$PaymentMethods = $ini->variable( "Checkout", "PaymentMethods" );
 		$paymentArray = explode(';',$PaymentMethods);
 		$i=1;

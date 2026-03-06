@@ -78,9 +78,9 @@ class eZList
         if ( isset( $params["ini"] ) )
             $ini =& $params["ini"];
         else
-            $ini =& eZINI::instance( 'site.ini' );
+            $ini = eZINI::instance( 'site.ini' );
         if ( !is_a( $ini, "INIFile" ) )
-            $ini =& eZINI::instance( 'site.ini' );
+            $ini = eZINI::instance( 'site.ini' );
 
         $module = $params["module"];
         $module_main = $params["module_main"];

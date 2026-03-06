@@ -24,7 +24,7 @@
                          WHERE
                            ID = '$id'";
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->array_query( $object_array, $SqlQuery );
             if ( count( $object_array ) > 1 )
@@ -45,7 +45,7 @@
 
         function getAll( $OrderBy = "ID", $ResponseID = "", $QuestionID = "", $LimitStart = "None", $LimitBy = "None" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
     
             // order by
             switch ( strtolower( $OrderBy ) )
@@ -65,7 +65,7 @@
     
                 if ( is_numeric( $LimitBy ) )
                 {
-                    $LimitArray =& array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
+                    $LimitArray = array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
                 }
             }
             else
@@ -102,7 +102,7 @@
         function store()
         {
             $ret = false;
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             if ( !isSet( $this->ID) )
@@ -142,7 +142,7 @@
 
         function delete()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $res[] = $db->query( "DELETE FROM eZSurvey_ResponseSingle WHERE ID='$this->ID'" );
@@ -152,7 +152,7 @@
 
         function deleteResponse( $ResponseID, $QuestionID )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             
             $res[] = $db->query( "DELETE FROM eZSurvey_ResponseSingle WHERE ResponseID = '$ResponseID' AND QuestionID = '$QuestionID'" );
@@ -162,7 +162,7 @@
         
         function deleteByQuestion( $QuestionID )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             
             $res[] = $db->query( "DELETE FROM eZSurvey_ResponseSingle WHERE QuestionID = '$QuestionID'" );

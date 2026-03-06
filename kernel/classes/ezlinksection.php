@@ -57,7 +57,7 @@ class eZLinkSection
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $table_name = $this->Module . "_LinkSection";
         $db->query_single( $row, "SELECT Name FROM $table_name WHERE ID='$id'" );
         $this->fill( $row );
@@ -68,7 +68,7 @@ class eZLinkSection
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $table_name = $this->Module . "_LinkSection";
         if ( is_numeric( $this->ID ) and $this->ID > 0 )
@@ -105,7 +105,7 @@ class eZLinkSection
             $id = $this->ID;
         if ( !$module )
             $module = $this->Module;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $table_name = $module . "_Link";
         $res[] = $db->query( "DELETE FROM $table_name WHERE SectionID='$id'" );
@@ -122,16 +122,16 @@ class eZLinkSection
     */
     function fill( $row )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->Name = $row[$db->fieldName( "Name" )];
     }
 
     /*!
       Returns an array of links connected to this section.
     */
-    function &links()
+    function links()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $table_name = $this->Module . "_Link";
         $db->array_query( $qry_array, "SELECT ID, Name, URL, Placement, ModuleType FROM $table_name
                                        WHERE SectionID='$this->ID' ORDER BY Placement ASC" );
@@ -149,7 +149,7 @@ class eZLinkSection
     */
     function moveUp( $objectid, $id, $module, $type )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $link_table_name = $module . "_$type" . "SectionDict";
         $type_column = $type . "ID";
@@ -190,7 +190,7 @@ class eZLinkSection
     */
     function moveDown( $objectid, $id, $module, $type )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $link_table_name = $module . "_$type" . "SectionDict";
         $type_column = $type . "ID";

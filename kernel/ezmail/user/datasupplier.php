@@ -28,7 +28,7 @@
 // include_once( "ezmail/classes/ezmailfolder.php" );
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZMailMain", "DefaultSection" );
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 
@@ -113,7 +113,7 @@ switch ( $url_array[2] )
 
     case "check" : // check the mail for this user!
     {
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $accounts = eZMailAccount::getByUser( $user->id() );
 
         foreach ( $accounts as $account )

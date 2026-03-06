@@ -63,7 +63,7 @@ class eZOrderStatus
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->Comment = $db->escapeString( $this->Comment );
@@ -111,7 +111,7 @@ class eZOrderStatus
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )

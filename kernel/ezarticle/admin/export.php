@@ -62,7 +62,7 @@ if ( $article->get( $ArticleID ) )
 
     // convert images to eps
 
-    $images =& $article->images();
+    $images = $article->images();
 
     foreach ( $images as $image )
     {
@@ -89,7 +89,7 @@ if ( $article->get( $ArticleID ) )
 }
 
 print( "<pre>" );
-$doc =& $t->parse( "output", "article_view_tex_tpl" );
+$doc = $t->parse( "output", "article_view_tex_tpl" );
 
 $outputFile = "ezarticle/cache/article.tex";
 

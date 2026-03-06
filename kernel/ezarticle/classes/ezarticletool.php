@@ -50,7 +50,7 @@ class eZArticleTool
     */
     static public function deleteCache( $ArticleID, $CategoryID, $CategoryArray )
     {
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
 
         $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                       array( array( "articleprint", "articleview", "articlestatic", "static", "view", "print"  ),
@@ -82,7 +82,7 @@ class eZArticleTool
             $file->delete();
         }
 
-        $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+        $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                       array( "articleindex",
                                              NULL ),
                                       "cache", "," );
@@ -91,7 +91,7 @@ class eZArticleTool
             $file->delete();
         }
 
-        $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+        $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                       array( "menubox",
                                              NULL,
                                              NULL,
@@ -102,7 +102,7 @@ class eZArticleTool
             $file->delete();
         }
 
-        $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+        $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                       array( "menubox_headlines",
                                              NULL,
                                              NULL ),
@@ -112,7 +112,7 @@ class eZArticleTool
             $file->delete();
         }
         
-        $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+        $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                       array( "smallarticlelist",
                                              NULL ),
                                       "cache", "," );
@@ -121,7 +121,7 @@ class eZArticleTool
             $file->delete();
         }
 
-        $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+        $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                       array( "articlefrontpage",
                                              NULL,
                                              NULL),
@@ -135,7 +135,7 @@ class eZArticleTool
     static public function notificationMessage( &$article )
     {
         // include_once( "classes/eztexttool.php" );
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 
         $PublishNoticeReceiver = $ini->variable( "eZArticleMain", "PublishNoticeReceiver" );
         $PublishNoticeSender = $ini->variable( "eZArticleMain", "PublishNoticeSender" );
@@ -157,7 +157,7 @@ class eZArticleTool
 	$indexFile = $ini->Index; 
 	
 	// init the section ???
-	//$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+	//$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 	//$sectionObject->setOverrideVariables();
 
 	//EP -------------------------------------------------------------------
@@ -206,7 +206,7 @@ class eZArticleTool
         $articleCategories = $article->categories();
         $bulkMailCategories = array();
 
-        $bulkMailCategory =& $articleCategory->bulkMailCategory();
+        $bulkMailCategory = $articleCategory->bulkMailCategory();
         if ( $bulkMailCategory != false )
             $bulkMailCategories[] =& $bulkMailCategory;
 

@@ -36,7 +36,7 @@
                         WHERE
                            ID = '$id'";
                            
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             
             $db->array_query( $survey_array, $SqlQuery );
             if ( count( $survey_array ) > 1 )
@@ -66,7 +66,7 @@
         
         public static function getAll( $OrderBy = "ID", $LimitStart = "None", $LimitBy = "None" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
     
             switch ( strtolower( $OrderBy ) )
             {
@@ -81,7 +81,7 @@
     
                 if ( is_numeric( $LimitBy ) )
                 {
-                    $LimitArray =& array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
+                    $LimitArray = array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
                 }
             }
             else
@@ -117,7 +117,7 @@
         function store()
         {
             $ret = false;
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             
             if ( !isSet( $this->ID ) )
@@ -175,7 +175,7 @@
 
         function delete()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             
             $question_array = $this->surveyQuestions();
@@ -227,7 +227,7 @@
                         ORDER BY
                            Position";
                            
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             
             $db->array_query( $page_array, $SqlQuery );
             
@@ -274,7 +274,7 @@
         
         public static function numberOfSurveys()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             
             $db->array_query( $count, "SELECT count(*) as A FROM eZSurvey_Survey" );
             
@@ -283,7 +283,7 @@
         
         function numberOfQuestions()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             
             $db->array_query( $count, "SELECT count(*) as A FROM eZSurvey_Question WHERE SurveyID = " . $this->ID );
             
@@ -292,7 +292,7 @@
         
         function numberOfPages()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             
             $db->array_query( $count, "SELECT count(*) as A FROM eZSurvey_Question WHERE SurveyID = '$this->ID' AND QuestionTypeID = 99" );
             
@@ -330,7 +330,7 @@
         
         function hasCompleted( $userID )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             
             $db->array_query( $count, "SELECT Complete FROM eZSurvey_Response WHERE SurveyID = '$this->ID' AND UserID = '$userID' AND Complete = 'Y'" );
             
@@ -346,7 +346,7 @@
         
         public static function existSurvey( $id )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $SQLQuery ="SELECT ID FROM eZSurvey_Survey where ID = '$id'";
             $db->array_query( $survey_array, $SQLQuery );
             

@@ -52,7 +52,7 @@ class eZLinkCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -89,7 +89,7 @@ class eZLinkCategory
     */
     function update()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -125,7 +125,7 @@ class eZLinkCategory
         if ( !$categoryid )
             $categoryid = 0;
 
-        $db =& eZDB::globaldatabase();
+        $db = eZDB::globaldatabase();
         $db->query( "DELETE FROM eZLink_LinkCategoryLink
                      WHERE CategoryID='$categoryid' AND
                            LinkID='$linkID'" );
@@ -147,7 +147,7 @@ class eZLinkCategory
         if ( !$categoryid )
             $categoryid = 0;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
         $db->lock( "eZLink_LinkCategoryLink" );
@@ -181,7 +181,7 @@ class eZLinkCategory
             $link->delete();
         }
         // delete self
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query( "DELETE FROM eZLink_LinkCategoryLink WHERE CategoryID='$id'" );
         $db->query( "DELETE FROM eZLink_LinkCategoryDefinition WHERE CategoryID='$id'" );
         $db->query( "DELETE FROM eZLink_Category WHERE ID='$id'" );
@@ -209,7 +209,7 @@ class eZLinkCategory
         }
 
         // now lets delete all the links..
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         foreach( $links as $link )
         {
@@ -238,7 +238,7 @@ class eZLinkCategory
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $linkcategory_array,  "SELECT * FROM eZLink_Category WHERE ID='$id'" );
         if ( count( $linkcategory_array ) > 1 )
         {
@@ -258,7 +258,7 @@ class eZLinkCategory
     /*!
       Print out the group path.
     */
-    function &path( $categoryID=0 )
+    function path( $categoryID=0 )
     {
         if ( $categoryID == 0 )
         {
@@ -302,7 +302,7 @@ class eZLinkCategory
         else
             $id = $value;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $parent_array = array();
         $return_array = array();
 
@@ -328,9 +328,9 @@ class eZLinkCategory
     /*!
       Return the count of links in incoming.
      */
-    function &getTotalIncomingLinks()
+    function getTotalIncomingLinks()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $count = 0;
         $db->array_query( $link_count, "SELECT COUNT(ID) AS LinkCount FROM eZLink_Link WHERE Accepted='0'" );
@@ -342,9 +342,9 @@ class eZLinkCategory
     /*!
       Fetch everything.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $parnet_array = array();
         $return_array = array();
 
@@ -361,7 +361,7 @@ class eZLinkCategory
     /*!
       Fetch everything and return the result in a tree.
     */
-    function &getTree( $parentID=0, $level=0 )
+    function getTree( $parentID=0, $level=0 )
     {
         $category = new eZLinkCategory( $parentID );
 
@@ -389,7 +389,7 @@ class eZLinkCategory
     */
     function links( $offset=0, $limit=30, $fetchUnAccepted=false, $id = -1, $idOnly = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if( $id == -1 )
             $id = $this->id();
@@ -430,7 +430,7 @@ class eZLinkCategory
     */
     function linkCount( $fetchUnAccepted=false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $fetchUnAccepted )
             $fetchUnAccepted = "";
@@ -474,10 +474,10 @@ class eZLinkCategory
     */
     function sectionIDStatic($categoryID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT SectionID from eZLink_Category WHERE ID='$categoryID'");
 
-        $sectionID = $res[$db->fieldName("SectionID")];
+        $sectionID = is_array( $res ) ? $res[$db->fieldName("SectionID")] : 0;
 
         if ( $sectionID > 0 )
             return $sectionID;
@@ -569,7 +569,7 @@ class eZLinkCategory
     /*!
       Returns the image id.
     */
-    function &image( )
+    function image( )
     {
         $ret = false;
         if ( $this->ImageID != 0 )
@@ -585,7 +585,7 @@ class eZLinkCategory
     */
     function deleteImage()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $result, "SELECT ImageID FROM eZLink_Category WHERE ID='$this->ID'" );
 

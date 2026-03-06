@@ -62,7 +62,7 @@ class eZOrderStatusType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->Name = $db->escapeString( $this->Name );
@@ -103,7 +103,7 @@ class eZOrderStatusType
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         
         if ( $id != "" )
@@ -131,7 +131,7 @@ class eZOrderStatusType
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = array();
 
         $db->array_query( $status_type_array, "SELECT ID FROM eZTrade_OrderStatusType ORDER BY Name" );
@@ -173,7 +173,7 @@ class eZOrderStatusType
     */
     function getByName( $name )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $db->array_query( $value_array, "SELECT ID FROM eZTrade_OrderStatusType WHERE Name='$name'" );
 

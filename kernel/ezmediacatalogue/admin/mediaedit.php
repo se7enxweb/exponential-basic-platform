@@ -33,7 +33,7 @@
 // include_once( "ezmediacatalogue/classes/ezmediacategory.php" );
 // include_once( "ezmediacatalogue/classes/ezmediatype.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $CurrentCategoryID = eZHTTPTool::getVar( "CategoryID" );
 $CategoryID = eZHTTPTool::getVar( "CategoryID" );
@@ -94,7 +94,7 @@ if ( isset( $Action ) && $Action == "Edit" )
 // include_once( "ezmediacatalogue/classes/ezmedia.php" );
 // include_once( "ezmediacatalogue/classes/ezmediacategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMediaCatalogueMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezmediacatalogue/admin/" . $ini->variable( "eZMediaCatalogueMain", "TemplateDir" ),
@@ -350,7 +350,7 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
         $old_maincategory = $media->categoryDefinition();
 
         if ( $old_maincategory > -1 )
-            $old_categories =& array_unique( array_merge( $old_maincategory->id(),
+            $old_categories = array_unique( array_merge( $old_maincategory->id(),
                                                           $media->categories( false ) ) );
 
         $new_categories = array_unique( array_merge( $CategoryID, $CategoryArray ) );
@@ -476,17 +476,17 @@ if ( isset( $Action ) && $Action == "Edit" )
 
     $objectPermission = new eZObjectPermission();
 
-    $readGroupArrayID =& $objectPermission->getGroups( $media->id(), "mediacatalogue_media", "r", false );
-    $writeGroupArrayID =& $objectPermission->getGroups( $media->id(), "mediacatalogue_media", "w", false );
+    $readGroupArrayID = $objectPermission->getGroups( $media->id(), "mediacatalogue_media", "r", false );
+    $writeGroupArrayID = $objectPermission->getGroups( $media->id(), "mediacatalogue_media", "w", false );
 }
 
 
 $category = new eZMediaCategory() ;
-$categoryList =& $category->getTree( );
+$categoryList = $category->getTree( );
 
 $tree = new eZMediaCategory();
-$treeArray =& $tree->getTree();
-$user =& eZUser::currentUser();
+$treeArray = $tree->getTree();
+$user = eZUser::currentUser();
 
 $catCount = count( $treeArray );
 $t->set_var( "num_select_categories", min( $catCount, 10 ) );
@@ -617,7 +617,7 @@ else
 }
 
 // Print out all the groups.
-$groups =& eZUserGroup::getAll();
+$groups = eZUserGroup::getAll();
 foreach ( $groups as $group )
 {
     $t->set_var( "group_id", $group->id() );

@@ -103,7 +103,7 @@ class eZUser
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $dbError = false;
         $db->begin( );
@@ -243,7 +243,7 @@ class eZUser
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -264,7 +264,7 @@ class eZUser
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -289,7 +289,7 @@ class eZUser
     */
     function fill( &$user_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $this->ID =& $user_array[$db->fieldName("ID")];
         $this->Login =& $user_array[$db->fieldName("Login")];
@@ -307,9 +307,9 @@ class eZUser
     /*!
       Returns the number of rows a getAll with the same search param would give.
     */
-    static public function &getAllCount( $search = false )
+    static public function getAllCount( $search = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $query = new eZQuery( array( "FirstName", "LastName",
                                      "Login", "Email" ), $search );
@@ -326,9 +326,9 @@ class eZUser
     /*!
       Fetches the user id from the database. And returns a array of eZUser objects.
     */
-    static public function &getAll( $order="Login", $as_object = true, $search = false, $max = -1, $index = 0 )
+    static public function getAll( $order="Login", $as_object = true, $search = false, $max = -1, $index = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         switch ( $order )
         {
@@ -418,7 +418,7 @@ class eZUser
     */
     static public function getUser( $login )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->array_query( $user_array, "SELECT * FROM eZUser_User
@@ -436,7 +436,7 @@ class eZUser
     */
     function getUserByEmail( $email )
       {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return = false;
 
         $db->array_query( $user_array, "SELECT * FROM eZUser_User
@@ -460,7 +460,7 @@ class eZUser
     */
     function getUsersByEmail( $email , $as_object = true )
       {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return = false;
 
         $return_array = array();
@@ -503,7 +503,7 @@ class eZUser
     */
     function validateUser( $login, $password )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $user_array = array();
 
@@ -554,7 +554,7 @@ class eZUser
     */
     static public function exists( $login )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $user_array = array();
 
@@ -786,7 +786,7 @@ class eZUser
         if ( is_a( $group, "eZUserGroup" ) )
             $group = $group->ID();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZUser_UserGroupDefinition WHERE UserID='" . $this->ID . "'" );
         $db->lock( "eZUser_UserGroupDefinition" );
@@ -811,7 +811,7 @@ class eZUser
 
         if ( is_a( $user, "eZUser" ) )
         {
-            $session =& eZSession::globalSession();
+            $session = eZSession::globalSession();
 
             if ( !$session->fetch() )
             {
@@ -835,7 +835,7 @@ class eZUser
      */
     static public function autoCookieLogin( $hash )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $hash )
         {
@@ -855,8 +855,8 @@ class eZUser
 
     static public function clearAutoCookieLogin()
     {
-        $user =& eZUser::currentUser();
-        $db =& eZDB::globalDatabase();
+        $user = eZUser::currentUser();
+        $db = eZDB::globalDatabase();
 
         setCookie( "eZUser_AutoCookieLogin", "", 0, "/",  "", 0 );
         setCookie( "eZUser_AutoCookieLogin" );
@@ -874,7 +874,7 @@ class eZUser
     */
     static public function logout()
     {
-        $session =& eZSession::globalSession();
+        $session = eZSession::globalSession();
         if ( $session->fetch() )
         {
             $session->setVariable( "AuthenticatedUser", "" );
@@ -892,7 +892,7 @@ class eZUser
 
       False is returned if unsuccessful.
     */
-    static public function &currentUser()
+    static public function currentUser()
     {
         $user =& $GLOBALS["eZCurrentUserObject"];
 
@@ -902,7 +902,7 @@ class eZUser
         }
 
 
-        $session =& eZSession::globalSession();
+        $session = eZSession::globalSession();
 
         $returnValue = false;
 
@@ -910,7 +910,7 @@ class eZUser
         {
             $user = new eZUser( $session->variable("AuthenticatedUser" ) );
 
-//            $val =& $session->variable( "AuthenticatedUser" );
+//            $val = $session->variable( "AuthenticatedUser" );
 //            $user = new eZUser( $val );
 
 //              print( $session->variable( "AuthenticatedUser" ) );
@@ -944,11 +944,11 @@ class eZUser
     */
     static public function currentUsers()
     {
-        $globalSession =& eZSession::globalSession();
+        $globalSession = eZSession::globalSession();
 
         $ret = array();
 
-        $sessionIDArray =& $globalSession->getByVariable( "AuthenticatedUser" );
+        $sessionIDArray = $globalSession->getByVariable( "AuthenticatedUser" );
 
         foreach ( $sessionIDArray as $sessionID )
         {
@@ -979,7 +979,7 @@ class eZUser
     */
     function getLogins( $userId )
     {
-        $userSessionList =& eZUser::currentUsers();
+        $userSessionList = eZUser::currentUsers();
         $logins = 0;
         foreach ( $userSessionList as $userSessionItem )
         {
@@ -999,7 +999,7 @@ class eZUser
         $groupStr = "";
         if ( $this->GroupString == false )
         {
-            $groupIDArray =& $this->groups( false );
+            $groupIDArray = $this->groups( false );
             sort( $groupIDArray );
             $first = true;
             foreach ( $groupIDArray as $groupID )
@@ -1020,7 +1020,7 @@ class eZUser
     function groups( $as_object = true )
     {
         $ret = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $user_group_array, "SELECT * FROM eZUser_UserGroupLink
                                                     WHERE UserID='$this->ID'" );
@@ -1035,7 +1035,7 @@ class eZUser
 
     function groupDefinition( $as_object = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $groups, "SELECT * FROM eZUser_UserGroupDefinition WHERE UserID='" . $this->ID . "'" );
 
@@ -1058,7 +1058,7 @@ class eZUser
 
         if ( $this->HasRoot < 0 )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query_single( $result, "SELECT count( * ) as Count FROM eZUser_UserGroupLink, eZUser_Group
                                                     WHERE eZUser_UserGroupLink.UserID='$this->ID'
                                                     AND eZUser_Group.ID=eZUser_UserGroupLink.GroupID
@@ -1077,7 +1077,7 @@ class eZUser
     */
     function removeGroups()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query( "DELETE FROM eZUser_UserGroupLink
                                 WHERE UserID='$this->ID'" );
     }
@@ -1087,7 +1087,7 @@ class eZUser
     */
     function addAddress( $address )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( is_a( $address, "eZAddress" ) )
         {
             $addressID = $address->id();
@@ -1115,7 +1115,7 @@ class eZUser
     */
     function removeAddress( $address )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( is_a( $address, "eZAddress" ) )
         {
             $addressID = $address->id();
@@ -1141,7 +1141,7 @@ class eZUser
     */
     function removeAddresses( $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( !$id )
             $id = $this->ID;
 
@@ -1160,7 +1160,7 @@ class eZUser
     */
     function addresses( $id = false, $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( !$id )
             $id = $this->ID;
@@ -1193,7 +1193,7 @@ class eZUser
     */
     function mainAddress( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $id = $this->ID;
 
@@ -1218,7 +1218,7 @@ class eZUser
 
     function trustees( $id = -1, $as_object = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( is_a( $id, "eZUser" ) )
             $id = $id->ID();
         if ( $id < 0 )
@@ -1245,7 +1245,7 @@ class eZUser
 
     function getByTrustee( $id = -1, $as_object = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( !is_integer( $id ) && get_class( $id ) )
             $id = $id->ID();
         if ( $id < 0 )
@@ -1276,7 +1276,7 @@ class eZUser
         {
             $user = $user->ID();
         }
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZUser_Trustees" );
         $nextID = $db->nextID( "eZUser_Trustees", "ID" );
@@ -1292,7 +1292,7 @@ class eZUser
         {
             $user = $user->ID();
         }
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZUser_Trustees WHERE OwnerID='" .
                              $this->ID() . "' AND UserID='$user'" );
@@ -1301,8 +1301,8 @@ class eZUser
 
     function setCookieValues()
     {
-        $user =& eZUser::currentUser();
-        $db =& eZDB::globalDatabase();
+        $user = eZUser::currentUser();
+        $db = eZDB::globalDatabase();
 
         if ( $user )
         {
@@ -1343,7 +1343,7 @@ class eZUser
 
         $ret = 30;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $timeout_array, "SELECT eZUser_Group.SessionTimeout
                                                       FROM eZUser_User, eZUser_UserGroupLink, eZUser_Group
                                                       WHERE eZUser_User.ID=eZUser_UserGroupLink.UserID
@@ -1365,7 +1365,7 @@ class eZUser
      */
     function search( $queryText, $order = false, $LastName="", $FirstName="", $EMail="", $Login="", $match="AND" ) // gwf
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         switch ( $order )
         {

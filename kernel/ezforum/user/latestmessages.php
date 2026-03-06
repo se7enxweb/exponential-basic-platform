@@ -44,9 +44,9 @@ $t->set_file( "latest_messages_tpl", "latestmessages.tpl"  );
 $t->set_block( "latest_messages_tpl", "message_tpl", "message" );
 $t->setAllStrings();
 
-$user =& eZUser::currentUser();
-$db =& eZDB::globalDatabase();
-$messages =& eZForumMessage::lastMessages( $Limit );
+$user = eZUser::currentUser();
+$db = eZDB::globalDatabase();
+$messages = eZForumMessage::lastMessages( $Limit );
 
 global $GlobalSiteDesign;
 

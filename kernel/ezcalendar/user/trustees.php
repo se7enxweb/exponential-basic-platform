@@ -27,12 +27,12 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZCalendarMain", "Language" );
 $locale = new eZLocale( $Language );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user )
 {
@@ -42,7 +42,7 @@ if ( !$user )
     exit();
 }
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->fetch();
 if ( isset( $Action ) && $Action == "edit" )
 {

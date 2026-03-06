@@ -28,10 +28,10 @@
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 if ( $ini->variable( "eZUserMain", "RequireUserLogin" ) == "enabled" )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( !$user )
     {
         eZHTTPTool::header( "Location: /" );

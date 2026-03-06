@@ -44,7 +44,7 @@ if ( isSet( $Delete ) && isSet( $DelMessage ) && count( $DelMessage ) > 0 )
 	{
 		$message = new eZMessage( $value );
 		$toUser = $message->toUser();
-		$user =& eZUser::currentUser();
+		$user = eZUser::currentUser();
 		if ( $toUser->id() == $user->id() && $message->isRead() == true )
 		{
 			$message->delete();
@@ -59,13 +59,13 @@ $t->set_block( "message_list_tpl", "message_item_tpl", "message_item" );
 $t->set_block( "message_item_tpl", "message_read_tpl", "message_read" );
 $t->set_block( "message_item_tpl", "message_unread_tpl", "message_unread" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $t->set_var( "user_first_name", $user->firstName() );
 $t->set_var( "user_last_name", $user->lastName() );
 
 $message = new eZMessage( );
 
-$messageArray =& $message->messagesToUser( $user );
+$messageArray = $message->messagesToUser( $user );
 
 $i = 0;
 foreach ( $messageArray as $key => $message )

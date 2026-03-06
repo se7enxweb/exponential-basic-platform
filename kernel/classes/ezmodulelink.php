@@ -46,7 +46,7 @@
   \code
   // Sets a module link for eZTrade using Products and with product id 1
   $link = new eZModuleLink( "eZTrade", "Product", 1 );
-  $sections =& $link->sections();
+  $sections = $link->sections();
   foreach( $sections as $section )
   {
   // Do something with section
@@ -77,9 +77,9 @@ class eZModuleLink
       If $as_object is true it is returned with eZLinkSection objects as items,
       otherwise it is returned with the ID as item.
     */
-    function &sections( $as_object = true )
+    function sections( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $table_name = $this->Module . "_LinkSection";
         $link_table_name = $this->Module . "_$this->Type" . "SectionDict";
         $type_column = $this->Type . "ID";
@@ -101,7 +101,7 @@ class eZModuleLink
     */
     function sectionCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $table_name = $this->Module . "_LinkSection";
         $link_table_name = $this->Module . "_$this->Type" . "SectionDict";
         $type_column = $this->Type . "ID";
@@ -117,7 +117,7 @@ class eZModuleLink
     */
     function addSection( $section )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $link_table_name = $this->Module . "_$this->Type" . "SectionDict";
         $section_id = $section->id();
@@ -151,7 +151,7 @@ class eZModuleLink
             $id = $section->id();
         else
             $id = $section;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $link_table_name = $this->Module . "_$this->Type" . "SectionDict";
         $res = $db->query( "DELETE FROM $link_table_name

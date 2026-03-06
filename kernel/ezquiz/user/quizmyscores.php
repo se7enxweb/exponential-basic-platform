@@ -37,7 +37,7 @@
 // include_once( "ezquiz/classes/ezquizanswer.php" );
 // include_once( "ezquiz/classes/ezquizscore.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Limit = $ini->variable( "eZQuizMain", "ScoreLimit" );
 $Language = $ini->variable( "eZQuizMain", "Language" );
@@ -68,7 +68,7 @@ $t->set_var( "game_item", "" );
 
 $printScores = false;
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( is_a( $user, "eZUser" ) )
 {

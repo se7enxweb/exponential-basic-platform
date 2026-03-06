@@ -34,7 +34,7 @@
 // include_once( "ezform/classes/ezformelementfixedvalue.php" );
 
 $ActionValue = "list";
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFormMain", "Language" );
 
@@ -99,7 +99,7 @@ $t->set_var( "element_id", $element->id() );
 
 $t->set_var( "form_id", $FormID );
 
-$values =& $element->fixedValues();
+$values = $element->fixedValues();
 
 if( count( $values ) == 0 )
 {

@@ -49,7 +49,7 @@ class eZXMLRPCDouble
     /*!
       This function will encode the double into a valid XML-RPC value.
     */
-    function &serialize( )
+    function serialize( )
     {
         $ret = "<value>";
         $ret .= "<double>";

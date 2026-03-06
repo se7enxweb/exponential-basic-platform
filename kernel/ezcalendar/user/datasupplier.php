@@ -23,7 +23,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZCalendarMain", "DefaultSection" );
 
 switch ( $url_array[2] )

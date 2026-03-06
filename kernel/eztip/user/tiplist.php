@@ -32,12 +32,12 @@ include_once( "ezsitemanager/classes/ezsection.php" );
 // site information
 include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSiteIni =& $ini;
 $category = new eZTipCategory( $CategoryID );
 
 // fetch the user if any
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( !isset( $Limit ) )
     $Limit = 1;
 if ( !isset( $tipLocationID ) )
@@ -48,7 +48,7 @@ if ( !isset( $Offset ) )
     $Offset = 0;
 	
 // tips
-$tiplist_tpl =& $category->tips( "count", false, $Offset, $Limit, $tipLocationID );
+$tiplist_tpl = $category->tips( "count", false, $Offset, $Limit, $tipLocationID );
 
 /* for debugging
 echo "<pre>";
@@ -82,16 +82,16 @@ $t->set_var( "site-design", $siteDesign );
 	{
 	    $tipID = $tip->id();
 	
-	    $image =& $tip->image();
+	    $image = $tip->image();
 	
 	    // ad image
 	    if ( $image )
 	    {
-            $variation =& $image->requestImageVariation( 145 , 200 );
-	        $imgSRC =& $variation->imagePath( true ) ;
-	        $imgWidth =& $variation->width();
-	        $imgHeight =& $variation->height();
-	        $imgName =& $image->name();
+            $variation = $image->requestImageVariation( 145 , 200 );
+	        $imgSRC = $variation->imagePath( true ) ;
+	        $imgWidth = $variation->width();
+	        $imgHeight = $variation->height();
+	        $imgName = $image->name();
 			$t->set_var("tip_title", "");
 
 	    }

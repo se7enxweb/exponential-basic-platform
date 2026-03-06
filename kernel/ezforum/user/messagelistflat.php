@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlocale.php" );
@@ -58,18 +58,18 @@ $t->setAllStrings();
 
 $forum = new eZForum( $ForumID );
 
-$categories =& $forum->categories();
+$categories = $forum->categories();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 
-$group =& $forum->group();
+$group = $forum->group();
 $viewer = $user;
 if ( is_a( $group, "eZUserGroup" ) )
 {
     if ( is_a( $viewer, "eZUser" ) )
     {
-        $groupList =& $viewer->groups();
+        $groupList = $viewer->groups();
 
         foreach ( $groupList as $userGroup )
         {
@@ -99,8 +99,8 @@ $locale = new eZLocale( $Language );
 if ( !$Offset )
     $Offset = 0;
 
-$messageList =& $forum->messageTreeArray( $Offset, $UserLimit, false, false );
-$messageCount =& $forum->messageCount( false, true );
+$messageList = $forum->messageTreeArray( $Offset, $UserLimit, false, false );
+$messageCount = $forum->messageCount( false, true );
 
 if ( !$messageList )
 {
@@ -111,7 +111,7 @@ if ( !$messageList )
 }
 else
 {
-    $db =& eZDB::globalDatabase();
+    $db = eZDB::globalDatabase();
 
     $level = 0;
     $i = 0;

@@ -65,7 +65,7 @@ class eZAd
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -141,7 +141,7 @@ class eZAd
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
 
@@ -176,7 +176,7 @@ class eZAd
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -201,7 +201,7 @@ class eZAd
     /*!
       Returns the ad's name.
     */
-    function &name()
+    function name()
     {
        return htmlspecialchars( $this->Name );
     }
@@ -209,7 +209,7 @@ class eZAd
     /*!
       Returns the ad's description.
     */
-    function &description()
+    function description()
     {
        return htmlspecialchars( $this->Description );
     }
@@ -217,7 +217,7 @@ class eZAd
     /*!
       Returns the ad's url.
     */
-    function &url()
+    function url()
     {
        return $this->URL;
     }
@@ -225,7 +225,7 @@ class eZAd
     /*!
       Returns the ad's click price.
     */
-    function &clickPrice()
+    function clickPrice()
     {
        return $this->ClickPrice;
     }
@@ -233,7 +233,7 @@ class eZAd
     /*!
       Returns the ad's view price.
     */
-    function &viewPrice()
+    function viewPrice()
     {
        return $this->ViewPrice;
     }
@@ -269,7 +269,7 @@ class eZAd
     /*!
       Returns the ad's HTML banner.
     */
-    function &htmlBanner()
+    function htmlBanner()
     {
         return $this->HTMLBanner;
     }
@@ -277,7 +277,7 @@ class eZAd
     /*!
       Returns the view start date.
     */
-    function &viewStartDate()
+    function viewStartDate()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->ViewStartDate );
@@ -288,7 +288,7 @@ class eZAd
     /*!
       Returns the view stop date.
     */
-    function &viewStopDate()
+    function viewStopDate()
     {
        $dateTime = new eZDateTime();
        $dateTime->setTimeStamp( $this->ViewStopDate );
@@ -381,9 +381,9 @@ class eZAd
 
       The categories are returned as an array of eZAdCategory objects.
     */
-    function &categories()
+    function categories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = array();
         $db->array_query( $category_array, "SELECT * FROM
@@ -403,7 +403,7 @@ class eZAd
     */
     function removeFromCategories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query( "DELETE FROM eZAd_AdCategoryLink
                                 WHERE AdID='$this->ID'" );
@@ -416,7 +416,7 @@ class eZAd
     {
         if ( is_a( $value, "eZImage" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $this->ImageID = $value->id();
         }
@@ -431,7 +431,7 @@ class eZAd
     {
         if ( is_a( $value, "eZImage" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $imageID = $value->id();
 
@@ -445,7 +445,7 @@ class eZAd
     */
     function image()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         $img = new eZImage( );
@@ -463,7 +463,7 @@ class eZAd
     */
     function addPageView( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
 
@@ -493,7 +493,7 @@ class eZAd
             else
                 $offs = 1;
 
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
 
             $res = $db->query( "INSERT INTO eZAd_View
                          ( ID,
@@ -539,7 +539,7 @@ class eZAd
     */
     function viewCount( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $view_result, "SELECT sum(ViewCount) as ViewCount FROM
                                          eZAd_View
@@ -553,7 +553,7 @@ class eZAd
     */
     function clickCount( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $click_result, "SELECT count(*) AS Count FROM
                                                        eZAd_Click
@@ -568,7 +568,7 @@ class eZAd
     */
     function totalViewRevenue( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $view_result, "SELECT SUM(ViewPrice) AS Revenue
                                                     FROM eZAd_View WHERE AdID='$this->ID'" );
@@ -581,7 +581,7 @@ class eZAd
     */
     function totalClickRevenue( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
 //        print( "SELECT SUM(ClickPrice) AS Revenue FROM eZAd_Click WHERE AdID='$this->ID'" );
 

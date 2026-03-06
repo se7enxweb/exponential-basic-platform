@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZStatsMain", "Language" );
 
 // include_once( "classes/eztemplate.php" );
@@ -64,7 +64,7 @@ if ( isset( $Year ) && !is_numeric( $Year ) || isset( $Month ) && !is_numeric( $
 $query = new eZPageViewQuery();
 
 // exit pages
-$exitPages =& $query->topExitPage( $Month, $Year );
+$exitPages = $query->topExitPage( $Month, $Year );
 $exitPageArray = array();
 
 foreach ( $exitPages as $index => $page )
@@ -105,7 +105,7 @@ foreach ( $exitPageArray as $exitPage )
 }
 
 // entry pages
-$entryPages =& $query->topEntryPage( $Month, $Year );
+$entryPages = $query->topEntryPage( $Month, $Year );
 
 $entryPageArray = array();
 

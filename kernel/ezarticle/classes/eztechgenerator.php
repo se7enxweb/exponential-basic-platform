@@ -55,7 +55,7 @@ class eZTechGenerator
     /*!
       Generates valid XML data to use for storage.
     */
-    function &generateXML()
+    function generateXML()
     {
         // add the XML header.
         $newContents = "<?xml version=\"1.0\"?>";
@@ -93,7 +93,7 @@ class eZTechGenerator
       \private
       
     */
-    function &generatePage( $tmpPage )
+    function generatePage( $tmpPage )
     {
         $tmpPage = $this->generateImage( $tmpPage );
 
@@ -116,7 +116,7 @@ class eZTechGenerator
       \private
       
     */
-    function &generateUnknowns( $tmpPage )
+    function generateUnknowns( $tmpPage )
     {
         // make unknown tags readable.. look-ahead assertion is used ( ?! ) 
         $tmpPage = preg_replace( "/<(?!(page|php|\/|image|cpp|shell|sql|hea|lin|iconlink|per|bol|ita|und|str|pre|ver|lis|ezhtml|html|java|ezanchor|mail|module|bullet))/", "&lt;", $tmpPage );
@@ -131,7 +131,7 @@ class eZTechGenerator
         return $tmpPage;
     }
 
-    function &generateHTML( $tmpPage )
+    function generateHTML( $tmpPage )
     {
         // Begin html tag replacer
         // replace all < and >  between <ezhtml> and </ezhtml>
@@ -245,7 +245,7 @@ class eZTechGenerator
       \private
       Converts the link tags to valid XML tags.
     */
-    function &generateLink( $tmpPage )
+    function generateLink( $tmpPage )
     {
         // convert <link ez.no ez systems> to valid xml
         // $tmpPage = "<link ez.no ez systems> <link ez.no ez systems>";
@@ -267,7 +267,7 @@ class eZTechGenerator
       \private
       Generates valid module xml tags
     */
-    function &generateModule( $tmpPage )
+    function generateModule( $tmpPage )
     {
         // convert <module modulename>
         // to <module name="modulename" />
@@ -279,7 +279,7 @@ class eZTechGenerator
     /*!
       \private
     */
-    function &generateImage( $tmpPage )
+    function generateImage( $tmpPage )
     {
         // parse the <image id align size> tag and convert it
         // to <image id="id" align="align" size="size" />
@@ -294,13 +294,13 @@ class eZTechGenerator
     /*!
       Decodes the xml chunk and returns the original array to the article. 
     */
-    function &decodeXML()
+    function decodeXML()
     {
         $contentsArray = array();
 
-        $xml =& eZXML::domTree( $this->Contents );
+        $xml = eZXML::domTree( $this->Contents );
 
-//          $xml =& qdom_tree( $this->Contents );
+//          $xml = qdom_tree( $this->Contents );
 
         if ( !$xml )
         {
@@ -397,7 +397,7 @@ class eZTechGenerator
     }
     
 
-    function &decodeCode( $pageContent, $paragraph )
+    function decodeCode( $pageContent, $paragraph )
     {
         // php code 
         if ( $paragraph->name == "php" )
@@ -462,7 +462,7 @@ class eZTechGenerator
       \private
       
     */
-    function &decodeImage( $pageContent, $paragraph )
+    function decodeImage( $pageContent, $paragraph )
     {
         // image 
         if ( $paragraph->name == "image" )
@@ -501,7 +501,7 @@ class eZTechGenerator
     /*!
       \private
     */
-    function &decodeLink( $pageContent, $paragraph )
+    function decodeLink( $pageContent, $paragraph )
     {
         // link
         if ( $paragraph->name == "link" )
@@ -612,7 +612,7 @@ class eZTechGenerator
       \private
       Decodes the module xml and generates user friendly module code.
     */
-    function &decodeModule( $pageContent, $paragraph )
+    function decodeModule( $pageContent, $paragraph )
     {
         // module
         if ( $paragraph->name == "module" )
@@ -633,7 +633,7 @@ class eZTechGenerator
         return $pageContent;        
     }
 
-    function &decodeStandards( $pageContent, $paragraph, $subitem )
+    function decodeStandards( $pageContent, $paragraph, $subitem )
     {
         
         // header

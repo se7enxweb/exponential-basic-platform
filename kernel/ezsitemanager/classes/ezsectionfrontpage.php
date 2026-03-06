@@ -64,7 +64,7 @@ class eZSectionFrontPage
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
         
@@ -124,7 +124,7 @@ class eZSectionFrontPage
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query( "DELETE FROM eZSiteManager_SectionFrontPageRowLink WHERE FrontPageID='$catID'" );
         $db->query( "DELETE FROM eZSiteManager_SectionFrontPageRow WHERE ID='$catID'" );
@@ -135,7 +135,7 @@ class eZSectionFrontPage
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         
         if ( $id != "" )
@@ -183,9 +183,9 @@ class eZSectionFrontPage
         return $this->ID;
     }
 
-    function &settingByRowID( $id )
+    function settingByRowID( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
                 
         $db->query_single( $setting, "SELECT Name FROM
                                            eZSiteManager_SectionFrontPageSetting,
@@ -196,9 +196,9 @@ class eZSectionFrontPage
         return $setting[$db->fieldName( "Name" )];
     }
     
-    static public function &settingNames()
+    static public function settingNames()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = array();
         $db->array_query( $section_array, "SELECT ID, Name
                                            FROM eZSiteManager_SectionFrontPageSetting ORDER BY ID" );
@@ -210,9 +210,9 @@ class eZSectionFrontPage
         return $ret;
     }
 
-    function &settingByID( $id )
+    function settingByID( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
                 
         $db->query_single( $setting, "SELECT Name
@@ -229,7 +229,7 @@ class eZSectionFrontPage
     */
     function moveUp()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->query_single( $qry, "SELECT ID, Placement FROM eZSiteManager_SectionFrontPageRow
                                   WHERE Placement<'$this->Placement' ORDER BY Placement DESC", array( "Limit" => 1, "Offset" => 0 ) );
@@ -247,7 +247,7 @@ class eZSectionFrontPage
     */
     function moveDown()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         
         $db->query_single( $qry, "SELECT ID, Placement FROM eZSiteManager_SectionFrontPageRow

@@ -29,10 +29,10 @@
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "eztrade/classes/ezorderconfirmation.php" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $orderID = $session->variable( "OrderID" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $wwwDir = $ini->WWWDir;
 $indexFile = $ini->Index;
 
@@ -45,7 +45,7 @@ if ( is_numeric( $orderID ) && $orderConfirmation == $orderID )
     $result = $confirmation->confirmOrder( $session->id() );
 
     // redirect to the confirmation site if the order is sent
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( $user && $result )
     {
         if ( $result == true )

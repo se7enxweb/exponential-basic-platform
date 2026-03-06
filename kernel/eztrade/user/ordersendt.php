@@ -120,7 +120,7 @@ unset( $user );
 // get the customer
 $user = $order->user();
 
-$currentUser =& eZUser::currentUser();
+$currentUser = eZUser::currentUser();
 
 // check if the user is logged i
 if ( !( $currentUser && $user ) ) 
@@ -298,7 +298,7 @@ $totalVAT = 0.0;
 // 
 //     if ( $image )
 //     {
-//         $thumbnail =& $image->requestImageVariation( 35, 35 );        
+//         $thumbnail = $image->requestImageVariation( 35, 35 );        
 // 
 //         $t->set_var( "product_image_path", "/" . $thumbnail->imagePath() );
 //         $t->set_var( "product_image_width", $thumbnail->width() );
@@ -383,7 +383,7 @@ $totalVAT = 0.0;
 //     else
 //         $t->set_var( "td_class", "bgdark" );
 // 
-//     $optionValues =& $item->optionValues();
+//     $optionValues = $item->optionValues();
 // 
 //     $t->set_var( "order_item_option", "" );
 //     foreach ( $optionValues as $optionValue )
@@ -444,7 +444,7 @@ foreach ( $items as $item )
     $t->set_var( "td_class", ( $j % 2 ) == 0 ? "bglight" : "bgdark" );
     $j++;  
     $t->set_var( "cart_item_id", $item->id() );
-    $product =& $item->product();
+    $product = $item->product();
     $vatPercentage = $product->vatPercentage();
     $productHasVAT = $product->priceIncVAT();
     
@@ -460,7 +460,7 @@ foreach ( $items as $item )
 
     $numberOfOptions = 0;
     
-    $optionValues =& $item->optionValues();
+    $optionValues = $item->optionValues();
 
     $t->set_var( "cart_item_option", "" );
     $t->set_var( "cart_item_basis", "" );
@@ -650,7 +650,7 @@ if ( $ShowCart == true )
         $t->set_var( "tax_item", "" );
 }
 
-$usedVouchers =& $order->usedVouchers();
+$usedVouchers = $order->usedVouchers();
 
 $t->set_var( "voucher_item_list", "" );
 
@@ -664,7 +664,7 @@ if ( count ( $usedVouchers ) > 0 )
         $t->set_var( "td_class", ( $j % 2 ) == 0 ? "bglight" : "bgdark" );
         $j++;  
 
-        $voucher =& $voucherUsed->voucher();
+        $voucher = $voucherUsed->voucher();
         $t->set_var( "voucher_number", $voucher->keyNumber() );
 
         eZOrder::voucherTotal( $tax, $total, $voucherUsed );
@@ -690,7 +690,7 @@ if ( count ( $usedVouchers ) > 0 )
 
 
 $checkout = new eZCheckout();
-$instance =& $checkout->instance();
+$instance = $checkout->instance();
 $paymentMethod = $instance->paymentName( $order->paymentMethod() );
 
 $t->set_var( "payment_method", $paymentMethod );

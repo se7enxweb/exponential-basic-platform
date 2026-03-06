@@ -66,17 +66,17 @@ class eZForm
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-        $name =& $db->escapeString( $this->Name );
-        $receiver =& $db->escapeString( $this->Receiver );
-        $cc =& $db->escapeString( $this->CC );
-        $completedPage =& $db->escapeString( $this->CompletedPage );
-        $instructionPage =& $db->escapeString( $this->InstructionPage );
-        $sender =& $db->escapeString( $this->Sender );
-        $sendAsUser =& $this->SendAsUser;
-        $counter =& $this->Counter;
+        $name = $db->escapeString( $this->Name );
+        $receiver = $db->escapeString( $this->Receiver );
+        $cc = $db->escapeString( $this->CC );
+        $completedPage = $db->escapeString( $this->CompletedPage );
+        $instructionPage = $db->escapeString( $this->InstructionPage );
+        $sender = $db->escapeString( $this->Sender );
+        $sendAsUser = $this->SendAsUser;
+        $counter = $this->Counter;
 
         if ( empty( $this->ID ) )
         {
@@ -132,10 +132,10 @@ class eZForm
         if ( $formID == -1 )
             $formID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-        $formElements =& $this->formElements();
+        $formElements = $this->formElements();
         if ( is_array ( $formElements ) )
         {
             foreach ( $formElements as $element )
@@ -163,7 +163,7 @@ class eZForm
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -188,7 +188,7 @@ class eZForm
     */
     function fill( &$formArray )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $formArray[$db->fieldName( "ID" )];
         $this->Name = $formArray[$db->fieldName( "Name" )];
         $this->CC = $formArray[$db->fieldName( "CC" )];
@@ -205,9 +205,9 @@ class eZForm
 
       The objects are returned as an array of eZForm objects.
     */
-    static public function &getAll( $offset=0, $limit=20 )
+    static public function getAll( $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $formArray = array();
@@ -241,7 +241,7 @@ class eZForm
      */
     static public function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -261,7 +261,7 @@ class eZForm
     /*!
       Returns the name of the object.
     */
-    function &name()
+    function name()
     {
       if( !is_null( $this->Name ) && $this->Name != "" )   
       {
@@ -276,7 +276,7 @@ class eZForm
     /*!
       Returns the receiver of the object.
     */
-    function &receiver()
+    function receiver()
     {
       if( !is_null( $this->Receiver ) && $this->Receiver != "" )   
       {
@@ -291,7 +291,7 @@ class eZForm
     /*!
       Returns the cc of the object.
     */
-    function &cc()
+    function cc()
     {
       if( !is_null( $this->CC ) && $this->CC != "" )   
       {
@@ -306,7 +306,7 @@ class eZForm
     /*!
       Returns the completed page of the object.
     */
-    function &completedPage()
+    function completedPage()
     {
         return $this->CompletedPage;
     }
@@ -314,7 +314,7 @@ class eZForm
     /*!
       Returns the instruction page of the object.
     */
-    function &instructionPage()
+    function instructionPage()
     {
         return $this->InstructionPage;
     }
@@ -322,7 +322,7 @@ class eZForm
     /*!
       Returns the counter of the object.
     */
-    function &counter()
+    function counter()
     {
         return $this->Counter;
     }
@@ -330,7 +330,7 @@ class eZForm
     /*!
       Returns the sender of the object.
     */
-    function &sender()
+    function sender()
     {
         return $this->Sender;
     }
@@ -338,7 +338,7 @@ class eZForm
      /*!
       Returns true if one should use the user name of the user for the sending.
     */
-    function &isSendAsUser()
+    function isSendAsUser()
     {
         $ret = true;
 
@@ -425,12 +425,12 @@ class eZForm
       Returns every form element of this form.
       The form elements are returned as an array of eZFormElement objects.
     */
-    function &formElements()
+    function formElements()
     {
         $returnArray = array();
         $formArray = array();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $formArray, "SELECT ElementID FROM eZForm_FormElementDict WHERE
                                        FormID='$this->ID' ORDER BY Placement" );
 
@@ -445,9 +445,9 @@ class eZForm
       Returns a specific form element based on the placement (number)
       The element is returned as eZFormElement objects.
     */
-    function &formElement( $placement )
+    function formElement( $placement )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $element, "SELECT ElementID FROM eZForm_FormElementDict WHERE
                                       FormID='$this->ID' AND Placement='$placement'" );
 
@@ -461,9 +461,9 @@ class eZForm
     /*!
       Returns the number of form elements to this form
     */
-    function &numberOfElements()
+    function numberOfElements()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ElementID) as Count
@@ -475,9 +475,9 @@ class eZForm
     /*!
       Returns the number of types which exists
     */
-    function &numberOfTypes()
+    function numberOfTypes()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -498,7 +498,7 @@ class eZForm
             $elementName = $object->name();
             $formID = $this->ID;
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             $db->query_single( $result, "SELECT MAX(Placement) as Placement
                                      FROM eZForm_FormElementDict WHERE FormID='$formID'" );
@@ -523,7 +523,7 @@ class eZForm
     {
         if ( is_a( $object, "eZFormElement" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $formID = $this->id();
             $elementID = $object->id();
@@ -577,7 +577,7 @@ class eZForm
     {
         if ( is_a( $object, "eZFormElement" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $formID = $this->id();

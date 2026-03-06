@@ -52,7 +52,7 @@ if ( isset( $Back ) )
 }
 // include_once( "kernel/classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( $INIGroup, "Language" );
 $Modules = $ini->read_array( $INIGroup, "ModuleList" );
 $DefaultSection = $ini->variable( $INIGroup, "DefaultSectionName" );
@@ -118,7 +118,7 @@ if ( isset( $DeleteLink ) )
 // include_once( "kernel/classes/ezmodulelink.php" );
 
 $module_link = new eZModuleLink( $ClientModuleName, $ClientModuleType, $ItemID );
-$sections =& $module_link->sections();
+$sections = $module_link->sections();
 
 if ( isset( $NewSection ) or count( $sections ) == 0 )
 {
@@ -265,7 +265,7 @@ switch( $module )
                         {
                             $module_lower = strtolower( $module );
 
-                            $types =& $Supplier->urlTypes();
+                            $types = $Supplier->urlTypes();
                             $t->set_var( "type_level", "" );
                             $t->set_var( "selected", $LinkType == $module_lower ? "selected" : "" );
                             $t->set_var( "module_select_type", $module_lower );
@@ -322,7 +322,7 @@ switch( $module )
                         include( $file );
                         if ( isset( $Supplier ) and get_class( $Supplier ) )
                         {
-                            $types =& $Supplier->urlTypes();
+                            $types = $Supplier->urlTypes();
                             $t->set_var( "type_level", "" );
                             $t->set_var( "selected", $LinkType == $module_lower ? "selected" : "" );
                             $t->set_var( "module_type", $module_lower );
@@ -352,7 +352,7 @@ switch( $module )
                 if ( isset( $Supplier ) and get_class( $Supplier ) )
                 {
                     $module_lower = strtolower( $module );
-                    $types =& $Supplier->urlTypes();
+                    $types = $Supplier->urlTypes();
                     $t->set_var( "module_name", $module );
                     reset( $types );
                     while( list($key,$val) = each( $types ) )
@@ -382,7 +382,7 @@ switch( $module )
                         include( $file );
                         if ( isset( $Supplier ) and get_class( $Supplier ) )
                         {
-                            $types =& $Supplier->urlTypes();
+                            $types = $Supplier->urlTypes();
                             $t->set_var( "type_level", "" );
                             $t->set_var( "selected", $LinkType == $module_lower ? "selected" : "" );
                             $t->set_var( "module_type", $module_lower );
@@ -412,7 +412,7 @@ switch( $module )
                 include( $file );
                 if ( isset( $Supplier ) and get_class( $Supplier ) )
                 {
-                    $list =& $Supplier->urlList( $type, $Category, $Offset );
+                    $list = $Supplier->urlList( $type, $Category, $Offset );
                     $categories =& $list["categories"];
                     $path =& $list["path"];
                     $t->set_var( "category_item", "" );

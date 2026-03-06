@@ -100,7 +100,7 @@ class eZProduct
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( $this->ShowPrice == true )
@@ -261,7 +261,7 @@ class eZProduct
     */
     function get( $id="", $categoryID = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -400,7 +400,7 @@ class eZProduct
     /*!
       Returns the remote ID of the product.
     */
-    function &remoteID( )
+    function remoteID( )
     {
        return $this->RemoteID;
     }
@@ -409,7 +409,7 @@ class eZProduct
     /*!
       Returns the price of the product.
     */
-    function &price()
+    function price()
     {
         return $this->Price;
     }
@@ -417,7 +417,7 @@ class eZProduct
     /*!
       Returns the manufacturer's list 'price of the product.
     */
-    function &listPrice()
+    function listPrice()
     {
         return $this->ListPrice;
     } 
@@ -451,8 +451,8 @@ class eZProduct
     */
     function correctPrice( $calcVAT, $withPriceGroups = true )
     {
-        $db =& eZDB::globalDatabase();
-        $inUser =& eZUser::currentUser();
+        $db = eZDB::globalDatabase();
+        $inUser = eZUser::currentUser();
         $price = 0;
 
         if ( is_a( $inUser, "eZUser" ) && $withPriceGroups == true )
@@ -480,18 +480,18 @@ class eZProduct
             $price = $this->Price;
         }
 
-        $vatType =& $this->vatType();
+        $vatType = $this->vatType();
 
         if ( $calcVAT == true )
         {
             if ( $this->excludedVAT() )
             {
-                $vatType =& $this->vatType();
+                $vatType = $this->vatType();
                 $vat = 0;
 
                 if ( $vatType )
                 {
-                    $vat =& $vatType->value();
+                    $vat = $vatType->value();
                 }
 
                 $price = ( $price * $vat / 100 ) + $price;
@@ -501,12 +501,12 @@ class eZProduct
         {
             if ( $this->includesVAT() )
             {
-                $vatType =& $this->vatType();
+                $vatType = $this->vatType();
                 $vat = 0;
 
                 if ( $vatType )
                 {
-                    $vat =& $vatType->value();
+                    $vat = $vatType->value();
                 }
 
                 $price = $price - ( $price / ( $vat + 100 ) ) * $vat;
@@ -521,8 +521,8 @@ class eZProduct
     */
     function localeSavings( $calcVAT )
     {
-        $inUser =& eZUser::currentUser();
-        $ini =& eZINI::instance( 'site.ini' );
+        $inUser = eZUser::currentUser();
+        $ini = eZINI::instance( 'site.ini' );
         $inLanguage = $ini->variable( "eZTradeMain", "Language" );
 
         $locale = new eZLocale( $inLanguage );
@@ -541,8 +541,8 @@ class eZProduct
     */
     function correctSavings( $calcVAT )
     {
-        $db =& eZDB::globalDatabase();
-        $inUser =& eZUser::currentUser();
+        $db = eZDB::globalDatabase();
+        $inUser = eZUser::currentUser();
         $maxPrice = 0;
         $price = 0;
 
@@ -632,7 +632,7 @@ class eZProduct
     */
     function correctPriceRange( $calcVAT, $withPriceGroups = true )
     {
-        $inUser =& eZUser::currentUser();
+        $inUser = eZUser::currentUser();
 
         if ( !is_a( $inUser, "eZUser" ) )
         {
@@ -690,10 +690,10 @@ class eZProduct
     /*!
       Returns the correct localized price of the product.
     */
-    function &localePrice( $calcVAT, $withPriceGroups = true )
+    function localePrice( $calcVAT, $withPriceGroups = true )
     {
-        $inUser =& eZUser::currentUser();
-        $ini =& eZINI::instance( 'site.ini' );
+        $inUser = eZUser::currentUser();
+        $ini = eZINI::instance( 'site.ini' );
         $inLanguage = $ini->variable( "eZTradeMain", "Language" );
 
         $locale = new eZLocale( $inLanguage );
@@ -736,7 +736,7 @@ class eZProduct
       If a value is given as argument this value is used for VAT calculation.
       This is used in carts where you have multiple products and prices on options.
     */
-    function &priceExVAT( $price="", $calcVAT = true )
+    function priceExVAT( $price="", $calcVAT = true )
     {
        if ( $price == "" )
        {
@@ -747,7 +747,7 @@ class eZProduct
            $calcPrice = $price;
        }
 
-       $vatType =& $this->vatType();
+       $vatType = $this->vatType();
 
        if ( $this->includesVAT() )
         {
@@ -755,7 +755,7 @@ class eZProduct
 
            if ( $vatType )
            {
-               $value =& $vatType->value();
+               $value = $vatType->value();
 
                $vat = ( $calcPrice / ( $value + 100  ) ) * $value;
            }
@@ -773,7 +773,7 @@ class eZProduct
       If a value is given as argument this value is used for VAT calculation.
       This is used in carts where you have multiple products and prices on options.
     */
-    function &priceIncVAT( $price="" )
+    function priceIncVAT( $price="" )
     {
        if ( $price == "" )
        {
@@ -784,7 +784,7 @@ class eZProduct
            $calcPrice = $price;
        }
 
-        $vatType =& $this->vatType();
+        $vatType = $this->vatType();
 
         $vat = 0;
 
@@ -794,7 +794,7 @@ class eZProduct
         {
             if ( $vatType )
             {
-                $value =& $vatType->value();
+                $value = $vatType->value();
 
                 $vat = $priceExVat / 100 * $value ;
             }
@@ -804,7 +804,7 @@ class eZProduct
         {
             if ( $vatType )
             {
-                $value =& $vatType->value();
+                $value = $vatType->value();
                 $vat = $calcPrice /  ( 100 + $value ) * $value;
                 $priceExVat = $calcPrice - ( $calcPrice / ( 100 + $value ) * $value);
             }
@@ -818,7 +818,7 @@ class eZProduct
      */
     function vatPercentage()
     {
-        $vatType =& $this->vatType();
+        $vatType = $this->vatType();
         if ( $vatType )
             return $vatType->value();
     }
@@ -826,12 +826,12 @@ class eZProduct
     /*!
      Obsolete. Use addVAT() or extractVAT() instead.
     */
-    function &vat( $price="" )
+    function vat( $price="" )
     {
         return $this->extractVAT( $price );
     }
 
-    function &extractVAT( $price="" )
+    function extractVAT( $price="" )
     {
        if ( $price == "" )
        {
@@ -842,13 +842,13 @@ class eZProduct
            $calcPrice = $price;
        }
 
-        $vatType =& $this->vatType();
+        $vatType = $this->vatType();
         $vat = 0;
         if ( $this->includesVAT() )
         {
            if ( $vatType )
            {
-               $value =& $vatType->value();
+               $value = $vatType->value();
                $vat = ( $calcPrice / ( $value + 100  ) ) * $value;
            }
         }
@@ -856,7 +856,7 @@ class eZProduct
         {
            if ( $vatType )
            {
-               $value =& $vatType->value();
+               $value = $vatType->value();
                $vat = $calcPrice - ( $calcPrice / $value + 100 );
           }
         }
@@ -869,7 +869,7 @@ class eZProduct
       If a value is given as argument this value is used for VAT calculation.
       This is used in carts where you have multiple products and prices on options.
     */
-    function &addVAT( $price="" )
+    function addVAT( $price="" )
     {
        if ( $price == "" )
        {
@@ -880,11 +880,11 @@ class eZProduct
            $calcPrice = $price;
        }
 
-       $vatType =& $this->vatType();
+       $vatType = $this->vatType();
        $vat = 0;
        if ( $vatType )
        {
-           $value =& $vatType->value();
+           $value = $vatType->value();
            $vat = ( $calcPrice * $value ) / 100;
        }
 
@@ -935,7 +935,7 @@ class eZProduct
     function setTotalQuantity( $quantity )
     {
         $id = $this->ID;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array,
                           "SELECT Q.ID
                            FROM eZTrade_Quantity AS Q, eZTrade_ProductQuantityDict AS PQD
@@ -992,7 +992,7 @@ class eZProduct
     {
         if ( !$id )
             $id = $this->ID;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array,
                           "SELECT Q.Quantity
                            FROM eZTrade_Quantity AS Q, eZTrade_ProductQuantityDict AS PQD
@@ -1035,7 +1035,7 @@ class eZProduct
     */
     static public function namedQuantity( $quantity )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $name = false;
         if ( is_bool( $quantity ) and !$quantity )
         {
@@ -1073,7 +1073,7 @@ class eZProduct
     /*!
       Returns the keywords of the product.
     */
-    function &keywords( )
+    function keywords( )
     {
         if ( !is_null( $this->Keywords ) )
             return htmlspecialchars( $this->Keywords );
@@ -1084,7 +1084,7 @@ class eZProduct
     /*!
       Returns the product number of the product.
     */
-    function &productNumber( )
+    function productNumber( )
     {
         if ( !is_null( $this->ProductNumber ) )
             return htmlspecialchars( $this->ProductNumber );
@@ -1095,7 +1095,7 @@ class eZProduct
     /*!
       Returns the catalog product number of the product.
     */
-    function &catalogNumber( )
+    function catalogNumber( )
     {
         if ( is_null( $this->CatalogNumber ) )
             return false;
@@ -1105,13 +1105,13 @@ class eZProduct
     /*!
       Returns the XML contents of the product.
     */
-    function &contents( )
+    function contents( )
     {
         return stripslashes($this->Contents);
     }    
 
     // returns Box Type ID
-    function &BoxTypeID( )
+    function BoxTypeID( )
     {
         return $this->BoxTypeID;
     }
@@ -1123,7 +1123,7 @@ class eZProduct
       use another configuration you must render this from the Contents field
       manualli with the eZArticleRenderer class.
     */
-    function &brief( )
+    function brief( )
     {
         // include_once( "ezarticle/classes/ezarticlerenderer.php" );
         $renderer = new eZArticleRenderer( $this );
@@ -1132,7 +1132,7 @@ class eZProduct
         return $articleContents[0];
     }    
 
-    function &briefPlain( )
+    function briefPlain( )
     {
         //include_once( "ezarticle/classes/ezarticlegenerator.php" );
         //include_once( "ezarticle/classes/ezarticlerenderer.php" );
@@ -1141,10 +1141,10 @@ class eZProduct
         // $articleContents = $renderer->renderPage( -1 );
 	/*
         $generator = new eZArticleGenerator( );
-	$articleContents =& $generator->decodeXML( $this->content);
+	$articleContents = $generator->decodeXML( $this->content);
 
         $generator = new eZArticleGenerator();
-        $contentsArray =& $generator->decodeXML( $product->contents() );
+        $contentsArray = $generator->decodeXML( $product->contents() );
 	*/
 	/*
 	$renderer = new eZArticleRenderer( $this );
@@ -1152,7 +1152,7 @@ class eZProduct
 	*/
 
 	$generator = new eZArticleGenerator();
-        $articleContents =& $generator->decodeXML( $this->Contents );
+        $articleContents = $generator->decodeXML( $this->Contents );
 
 	//	print_r($contentsArray); exit();
 
@@ -1162,7 +1162,7 @@ class eZProduct
     /*!
       Returns the description of the product.
     */
-    function &description( )
+    function description( )
     {
         // include_once( "ezarticle/classes/ezarticlerenderer.php" );
         $renderer = new eZArticleRenderer( $this );
@@ -1171,7 +1171,7 @@ class eZProduct
         return $articleContents[1];
     }
 
-    function &descriptionPlain( )
+    function descriptionPlain( )
     {
 	include_once( "ezarticle/classes/ezarticlegenerator.php" );
 	include_once( "ezarticle/classes/ezarticlerenderer.php" );
@@ -1180,14 +1180,14 @@ class eZProduct
         // $articleContents = $renderer->renderPage( 0 );
         /*
         $generator = new eZArticleGenerator( );
-        $articleContents =& $generator->decodeXML( $this->contents );
+        $articleContents = $generator->decodeXML( $this->contents );
 
         $renderer = new eZArticleRenderer( $this );
         $articleContents = $renderer->renderPage( -1 );
         */
 
 	$generator = new eZArticleGenerator();
-	$articleContents =& $generator->decodeXML( $this->Contents );
+	$articleContents = $generator->decodeXML( $this->Contents );
 
         return $articleContents[1];
     }
@@ -1234,7 +1234,7 @@ class eZProduct
     */
     function weight()
     {
-		$ini =& eZINI::instance( 'site.ini' );
+		$ini = eZINI::instance( 'site.ini' );
 		if ( $this->Weight != 0 )
 		       return $this->Weight;
 		else return $ini->variable( "eZTradeMain", "DefaultWeight" );
@@ -1433,7 +1433,7 @@ class eZProduct
             $optionID = $value->id();
             $value->store();
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             $db->lock( "eZTrade_ProductOptionLink" );
             $nextID = $db->nextID( "eZTrade_ProductOptionLink", "ID" );
@@ -1456,7 +1456,7 @@ class eZProduct
     {
        $return_array = array();
        $option_array = array();
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $db->array_query( $option_array, "SELECT OptionID FROM eZTrade_ProductOptionLink WHERE ProductID='$this->ID'" );
        for ( $i = 0; $i < count( $option_array ); $i++ )
@@ -1474,7 +1474,7 @@ class eZProduct
     {
        $return_value = false;
        $option_array = array();
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $db->array_query( $option_array, "SELECT OptionID FROM eZTrade_ProductOptionLink WHERE ProductID='$this->ID'" );
 
@@ -1491,7 +1491,7 @@ class eZProduct
     */
     function addImage( $value, $placement = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $image_array = array();
         $res = array();
 
@@ -1553,7 +1553,7 @@ class eZProduct
         {
             $imageID = $value->id();
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             $res[] = $db->query( "DELETE FROM eZTrade_ProductImageLink WHERE ProductID='$this->ID' AND ImageID='$imageID'" );
             $res[] = $db->query( "DELETE FROM eZTrade_ProductImageDefinition WHERE ProductID='$this->ID' AND MainImageID='$imageID'" );
@@ -1568,12 +1568,12 @@ class eZProduct
     /*!
       Returns every image to a product as a array of eZImage objects.
     */
-    function &images()
+    function images()
     {
         $return_array = array();
         $image_array = array();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $image_array, "SELECT ID, ImageID, Placement FROM eZTrade_ProductImageLink WHERE ProductID='$this->ID' ORDER BY Created" );
 
         // convert the database if placement is not set
@@ -1609,7 +1609,7 @@ class eZProduct
     */
     function setMainImage( $image )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if( is_a( $image, "eZImage" ) )
         {
@@ -1666,7 +1666,7 @@ class eZProduct
     */
     function setThumbnailImage( $image )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if( is_a( $image, "eZImage" ) )
@@ -1726,7 +1726,7 @@ class eZProduct
     */
     function mainImage( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $res = $db->array_query( $res_array, "SELECT * FROM eZTrade_ProductImageDefinition
                                      WHERE
@@ -1749,7 +1749,7 @@ class eZProduct
     */
     function thumbnailImage( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->array_query( $res_array, "SELECT * FROM eZTrade_ProductImageDefinition
@@ -1775,7 +1775,7 @@ class eZProduct
     */
     function activeProductSearch( $query=false, $offset=false, $limit=false , $active=TRUE, $sortMode="time")
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = array();
         $res_array = array();
         
@@ -1891,7 +1891,7 @@ class eZProduct
     */
     function activeProductSearchCount( $query, $active=TRUE )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = array();
 
 		if ( $active==FALSE )
@@ -1918,7 +1918,7 @@ class eZProduct
     */
     function extendedSearch( $priceLower, $priceHigher, $text, $offset=0, $limit=10, $categoryArrayID=array() )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $products = array();
 
@@ -2011,7 +2011,7 @@ class eZProduct
     */
     function extendedSearchCount( $priceLower, $priceHigher, $text, $categoryArrayID=array() )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
 
@@ -2094,7 +2094,7 @@ class eZProduct
     /*!
       Returns the products set to hot deal.
     */
-    function &hotDealProducts( $limit = false )
+    function hotDealProducts( $limit = false )
     {
        $limit_text = '';
        if ( is_numeric( $limit ) and $limit >= 0 )
@@ -2107,7 +2107,7 @@ class eZProduct
        $permissionSQL = $permissionSQLArray["SQL"];
 
        $ret = array();
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $query = "SELECT eZTrade_Product.ID FROM eZTrade_Product $permissionTableSQL
                                      WHERE
                                      $permissionSQL IsHotDeal='1'  ORDER BY Name";
@@ -2125,9 +2125,9 @@ class eZProduct
     /*!
       Returns the products for a given product number (SKU)).
     */
-    function &findProductNumber( $id )
+    function findProductNumber( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $product = false;
         
@@ -2151,7 +2151,7 @@ class eZProduct
     */
     function categories( $as_object = true )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $ret = array();
        $db->array_query( $category_array, "SELECT * FROM eZTrade_ProductCategoryLink WHERE ProductID='$this->ID'" );
@@ -2180,7 +2180,7 @@ class eZProduct
     */
     function removeFromCategories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res = $db->query( "DELETE FROM eZTrade_ProductCategoryLink WHERE ProductID='$this->ID'" );
@@ -2197,7 +2197,7 @@ class eZProduct
        $ret = false;
        if ( is_a( $category, "eZProductCategory" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
            $catID = $category->id();
 
            $db->array_query( $ret_array, "SELECT ID FROM eZTrade_ProductCategoryLink
@@ -2219,7 +2219,7 @@ class eZProduct
     {
        if ( is_a( $value, "eZProductCategory" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
            $res = array();
            $db->begin();
 
@@ -2254,7 +2254,7 @@ class eZProduct
     */
     function categoryDefinition( $as_object = true )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $res = array();
 
        $query = "SELECT CategoryID FROM
@@ -2287,7 +2287,7 @@ class eZProduct
     {
        if ( is_a( $type, "eZProductType" ) )
        {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $typeID = $type->id();
@@ -2328,7 +2328,7 @@ class eZProduct
     */
     function type( )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $db->array_query( $res, "SELECT TypeID FROM
                                             eZTrade_ProductTypeLink
@@ -2349,7 +2349,7 @@ class eZProduct
     */
     function removeType()
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $db->begin();
 
        // delete values
@@ -2367,7 +2367,7 @@ class eZProduct
     */
     function getByRemoteID( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $product = false;
 
@@ -2388,7 +2388,7 @@ class eZProduct
     */
     function productName( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -2409,7 +2409,7 @@ class eZProduct
     */
     function setVATType( $type )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        if ( is_a( $type, "eZVATType" ) )
        {
@@ -2422,7 +2422,7 @@ class eZProduct
     */
     function setBoxType( $type )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        if ( get_class( $type ) == "ezboxtype" )
        {
@@ -2439,7 +2439,7 @@ class eZProduct
     */
     function boxType( )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $ret = false;
        if ( is_numeric( $this->BoxTypeID ) and ( $this->BoxTypeID > 0 ) )
@@ -2458,10 +2458,10 @@ class eZProduct
     */
     function vatType( )
     {
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $ret = new eZVATType();
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         if ( $ini->variable( "eZTradeMain", "PricesIncVATBeforeLogin" ) == "enabled" )
             $useVAT = true;
         else
@@ -2521,7 +2521,7 @@ class eZProduct
     */
     function setShippingGroup( $group )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        if ( is_a( $group, "eZShippingGroup" ) )
        {
@@ -2535,9 +2535,9 @@ class eZProduct
 
       False if no type is not assigned.
     */
-    function &shippingGroup( )
+    function shippingGroup( )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $ret = false;
        if ( is_numeric( $this->ShippingGroupID ) and ( $this->ShippingGroupID > 0 ) )
@@ -2548,9 +2548,9 @@ class eZProduct
        return $ret;
     }
 
-    function &priceRange( $id=false )
+    function priceRange( $id=false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( !$id )
             $id = $this->ID;
@@ -2618,7 +2618,7 @@ class eZProduct
     */
     function deleteForms()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ProductID = $this->ID;
 
@@ -2634,7 +2634,7 @@ class eZProduct
     */
     function addForm( $form )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if( is_a( $form, "eZForm" ) )
         {
@@ -2668,7 +2668,7 @@ class eZProduct
     */
     function forms( $as_object = true)
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         // include_once( "ezform/classes/ezform.php" );
 
@@ -2693,7 +2693,7 @@ class eZProduct
     /*!
       Returns every active product as a array of eZProduct objects.
     */
-    function &activeProducts( $sortMode="time",
+    function activeProducts( $sortMode="time",
                               $offset=0,
                               $limit=50,
                               $categoryID=false )
@@ -2705,14 +2705,14 @@ class eZProduct
         /*!
       Returns every product to a category as a array of eZProduct objects.
     */
-    function &products( $sortMode="time",
+    function products( $sortMode="time",
                         $fetchNonActive=false,
                         $offset=0,
                         $limit=50,
                         $fetchDiscontinued=false,
                         $categoryID=false )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        switch( $sortMode )
        {
@@ -2743,7 +2743,7 @@ class eZProduct
        $return_array = array();
        $product_array = array();
 
-       $user =& eZUser::currentUser();
+       $user = eZUser::currentUser();
        if ( $user )
        {
            $groups = $user->groups();
@@ -2791,7 +2791,7 @@ class eZProduct
     */
     function voucher()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ProductID = $this->ID;
 
@@ -2816,7 +2816,7 @@ class eZProduct
     */
     function voucherInformation()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ProductID = $this->ID;
 
@@ -2841,8 +2841,8 @@ class eZProduct
     */
     function forum( $as_object = true )
     {
-        $ini =& eZINI::instance( 'site.ini' );
-        $db =& eZDB::globalDatabase();
+        $ini = eZINI::instance( 'site.ini' );
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $res, "SELECT ForumID FROM
                                             eZTrade_ProductForumLink
@@ -2866,7 +2866,7 @@ class eZProduct
 
             $forum->store();
 			
-			$ini =& eZINI::instance( 'site.ini' );
+			$ini = eZINI::instance( 'site.ini' );
 			$linkModules = $ini->variable( "eZForumMain", "LinkModules" );
 			$module_array = explode(',', $linkModules );
 			unset ($linkModules);
@@ -2928,7 +2928,7 @@ class eZProduct
      */
     function productIDFromForum( $ForumID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ProductID = 0;
 
@@ -2957,7 +2957,7 @@ class eZProduct
         else
             $fileID = $value;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -2994,7 +2994,7 @@ class eZProduct
         else
             $fileID = $value;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query( "DELETE FROM eZTrade_ProductFileLink WHERE ProductID='$this->ID' AND FileID='$fileID'" );
     }
 
@@ -3003,7 +3003,7 @@ class eZProduct
     */
     function files( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $file_array = array();

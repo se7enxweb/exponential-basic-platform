@@ -27,7 +27,7 @@
 // include_once( "classes/ezdb.php" );
 // include_once( "classes/ezdatetime.php" );
 
-$db =& eZDB::globalDatabase();
+$db = eZDB::globalDatabase();
 
 $db->begin();
 

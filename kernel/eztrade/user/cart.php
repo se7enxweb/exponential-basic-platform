@@ -33,7 +33,7 @@
 // include_once( "eztrade/classes/ezcart.php" );
 
 // Load settings
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $ShowQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
@@ -59,7 +59,7 @@ if ( isset( $ShopMore ) )
 }
 
 // These are the common objects regardless of Action
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 if(eZHTTPTool::getVar( "ShippingTypeID" )){
   $currentTypeID = eZHTTPTool::getVar( "ShippingTypeID" );
@@ -77,7 +77,7 @@ if ( isset( $DeleteSelected ) )
     foreach ( $CartSelectArray as $cartID )
     {
         $cartItem = new eZCartItem( $cartID );
-        $optionValues =& $cartItem->optionValues();
+        $optionValues = $cartItem->optionValues();
 
         foreach( $optionValues as $optionValue )
         {
@@ -101,7 +101,7 @@ if ( ( isset( $Action ) && $Action == "Refresh" ) || isset( $DoCheckOut ) )
         if ( $CartCountArray[$i] < 1 )
         {
             $cartItem = new eZCartItem( $cartID );
-            $optionValues =& $cartItem->optionValues();
+            $optionValues = $cartItem->optionValues();
             
             foreach( $optionValues as $optionValue )
             {
@@ -113,9 +113,9 @@ if ( ( isset( $Action ) && $Action == "Refresh" ) || isset( $DoCheckOut ) )
         else
         {
             $cartItem = new eZCartItem( $cartID );
-            $product =& $cartItem->product();
+            $product = $cartItem->product();
 
-            $optionValues =& $cartItem->optionValues();
+            $optionValues = $cartItem->optionValues();
             $j = 0;
 
             // First we track the maximum number of items available in stock.
@@ -187,7 +187,7 @@ if ( isset( $DoCheckOut ) )
     exit();
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $cart = new eZCart();
 $cartBySession = $cart->getBySession( $session );
@@ -237,7 +237,7 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
                 // the same product
                 if ( ( $ProductID == $productItem->id() ) && ( $productAddedToBasket == false ) )
                 {
-                    $optionValues =& $item->optionValues();
+                    $optionValues = $item->optionValues();
 
                     if ( count( $optionValues ) > 0 )
                     { // product with options
@@ -245,8 +245,8 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
 
                         foreach ( $optionValues as $optionValue )
                         {
-                            $option =& $optionValue->option();
-                            $value =& $optionValue->optionValue();
+                            $option = $optionValue->option();
+                            $value = $optionValue->optionValue();
 
                             $optionValueFound = false;
 
@@ -461,7 +461,7 @@ foreach ( $items as $item )
     $t->set_var( "td_class", ( $i % 2 ) == 0 ? "bglight" : "bgdark" );
     $i++;
     $t->set_var( "cart_item_id", $item->id() );
-    $product =& $item->product();
+    $product = $item->product();
 
     $t->set_var( "product_name", $product->name() );
     $t->set_var( "product_id", $product->id() );
@@ -482,7 +482,7 @@ foreach ( $items as $item )
 
     $numberOfOptions = 0;
     
-    $optionValues =& $item->optionValues();
+    $optionValues = $item->optionValues();
 
     $t->set_var( "cart_item_option", "" );
     $t->set_var( "cart_item_basis", "" );
@@ -491,8 +491,8 @@ foreach ( $items as $item )
     {
         turnColumnsOnOff( "option" );
         
-        $option =& $optionValue->option();
-        $value =& $optionValue->optionValue();
+        $option = $optionValue->option();
+        $value = $optionValue->optionValue();
         $value_quantity = $value->totalQuantity();
         $descriptions = $value->descriptions();
 
@@ -562,7 +562,7 @@ $t->setAllStrings();
 
 turnColumnsOnOff( "header" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $vat=false;
 
 if ($user)
@@ -648,7 +648,7 @@ if ( $ShowCart == true )
   else
     $shippingName = $cart->ShipServiceCode; //$shipServiceCode;
   
-    // ser =& eZUser::currentUser();
+    // ser = eZUser::currentUser();
     
   if ( $shippingName != "" && $user )		
     $t->set_var( "shipping_name", " (" . $shippingName . ")" );

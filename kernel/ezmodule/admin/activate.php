@@ -27,7 +27,7 @@
 // include_once( "ezsession/classes/ezpreferences.php" );
 // include_once( "ezmodule/classes/ezmodulehandler.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $preferences = new eZPreferences();
 $single_module = eZModuleHandler::useSingleModule();
 
@@ -42,7 +42,7 @@ else
     {
         case "all":
         {
-            $modules =& eZModuleHandler::all();
+            $modules = eZModuleHandler::all();
             break;
         }
         case "none":
@@ -52,14 +52,14 @@ else
         }
         default:
         {
-            $modules =& eZModuleHandler::active();
+            $modules = eZModuleHandler::active();
             if ( $Activate )
             {
-                $modules =& eZModuleHandler::append( $modules, $ModuleName );
+                $modules = eZModuleHandler::append( $modules, $ModuleName );
             }
             else
             {
-                $modules =& eZModuleHandler::remove( $modules, $ModuleName );
+                $modules = eZModuleHandler::remove( $modules, $ModuleName );
             }
         }
     }

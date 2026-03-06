@@ -40,7 +40,7 @@ if ( isSet ( $Back ) )
 }
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
@@ -54,7 +54,7 @@ $t->set_file( "voucher_tpl", "corporate_account.tpl" );
 $t->setAllStrings();
 
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $accountNumber = $user->accountNumber();
 
@@ -66,7 +66,7 @@ $t->set_var( "error", "" );
 
 if ( $Action == "Verify" )
 {
-  $user =& eZUser::currentUser();
+  $user = eZUser::currentUser();
   $accountNumber = $user->accountNumber();
 
   /*

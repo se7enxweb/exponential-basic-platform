@@ -30,12 +30,12 @@
 // include_once( "ezbug/classes/ezbug.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZBugMain", "DefaultSection" );
 
 function hasPermission( $bugID )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     $bug = new eZBug( $bugID );
     $module = $bug->module();
     if ( is_a( $module, "eZBugModule" ) && eZObjectPermission::hasPermission( $module->id(), "bug_module", "w" ) )

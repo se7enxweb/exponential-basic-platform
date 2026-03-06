@@ -32,7 +32,7 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $Limit = $ini->variable( "eZArticleMain", "AdminListLimit" );
 

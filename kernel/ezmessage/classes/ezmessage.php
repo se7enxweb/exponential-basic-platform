@@ -55,7 +55,7 @@ class eZMessage
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $subject = $db->escapeString( $this->Subject );
@@ -108,7 +108,7 @@ class eZMessage
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( isset( $this->ID ) )
@@ -127,7 +127,7 @@ class eZMessage
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -157,9 +157,9 @@ class eZMessage
     /*!
       Fetches the user id from the database. And returns a array of eZMessage objects.
     */
-    function &getAll(  )
+    function getAll(  )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $message_array = array();
@@ -178,10 +178,10 @@ class eZMessage
     /*!
       Fetches the messages for a user.
     */
-    function &messagesToUser( $user )
+    function messagesToUser( $user )
     {
         $userID = $user->id();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $message_array = array();
@@ -205,10 +205,10 @@ $query = "SELECT DISTINCT eZMessage_Message.ID, eZMessage_MessageDefinition.ToUs
     /*!
       Fetches the messages for a user.
     */
-    function &messagesFromUser( $user )
+    function messagesFromUser( $user )
     {
         $userID = $user->id();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $message_array = array();
@@ -310,7 +310,7 @@ $str = stripslashes($str);
     /*!
       Returns the to user as an eZUser object.
     */
-    function &toUser()
+    function toUser()
     {
         $ret = new eZUser( $this->ToUserID );
         return $ret;
@@ -354,7 +354,7 @@ $str = stripslashes($str);
     /*!
       Returns the message creation time as a eZDateTime object.
     */
-    function &created()
+    function created()
     {
         $dateTime = new eZDateTime();    
         $dateTime->setTimeStamp( $this->Created );
@@ -365,7 +365,7 @@ $str = stripslashes($str);
     /*!
       Returns the message read time as a eZDateTime object.
     */
-    function &TimeRead()
+    function TimeRead()
     {
         $dateTime = new eZDateTime();    
         $dateTime->setTimeStamp( $this->TimeRead );

@@ -27,7 +27,7 @@
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( is_a( $user, "eZUser" ) and
      ( eZPermission::checkPermission( $user, "eZContact", "CompanyList" ) or
        eZPermission::checkPermission( $user, "eZContact", "PersonList" ) or

@@ -30,7 +30,7 @@ ob_end_clean();
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $watermarkToggle = $ini->variable( "watermark", "watermarkEnabled" ) == "true" ? true : false;
 
 $file = new eZImage( $ImageID );
@@ -46,7 +46,7 @@ if ( $watermarkToggle == true )
   $watermarkFileSize = eZPBFile::filesize( $watermarkPath );
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $image = new eZImage( $ImageID );
 if ( eZObjectPermission::hasPermission( $image->id(), "imagecatalogue_image", "r", $user ) == false )
 {
@@ -59,7 +59,7 @@ if ( eZObjectPermission::hasPermission( $image->id(), "imagecatalogue_image", "r
 //  # the file may be a local file with full path. 
 $fileSize = eZPBFile::filesize( $filePath );
 $fp = eZPBFile::fopen( $filePath, "r" );
-$content =& fread( $fp, $fileSize );
+$content = fread( $fp, $fileSize );
 
 //Header("Content-type: application/oct-stream"); 
 //Header("Content-length: $fileSize"); 

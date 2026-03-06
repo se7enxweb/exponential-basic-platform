@@ -77,7 +77,7 @@ class eZMailAccount
     */
     function delete( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id == -1 )
         {
@@ -95,7 +95,7 @@ class eZMailAccount
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $name = $db->escapeString( $this->Name );
         $loginname = $db->escapeString( $this->LoginName );
         $password = $db->escapeString( $this->Password );
@@ -154,7 +154,7 @@ class eZMailAccount
 
         if ( $id != "" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->array_query( $account_array, "SELECT * FROM eZMail_Account WHERE ID='$id'" );
             if ( count( $account_array ) > 1 )
             {
@@ -354,7 +354,7 @@ class eZMailAccount
         if ( is_a( $user, "eZUser" ) )
             $user = $user->id();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT UserID from eZMail_Account WHERE ID='$accountID'" );
 
         if ( is_array( $res ) && $res[$db->fieldName("UserID")] == $user )
@@ -373,7 +373,7 @@ class eZMailAccount
         if ( is_a( $user, "eZUser" ) )
             $user = $user->id();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $account_array = array();
@@ -394,7 +394,7 @@ class eZMailAccount
      */
     function checkMail()
     {
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         //$server = "{" . $this->Server . "/pop3:" .$this->ServerPort ."}";
         $server = "{" . $this->Server . "/imap:" .$this->ServerPort ."}";
         $mbox = imap_open( $server, $this->LoginName, $this->Password, OP_HALFOPEN);

@@ -29,7 +29,7 @@
 //  $user = new eZUser();
 //  $user = $user->currentUser();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( $user == false )
 {

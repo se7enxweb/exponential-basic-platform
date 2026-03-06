@@ -121,7 +121,7 @@ class eZXMLRPCClient
 
       If an error occured false (0) is returned.
     */
-    function &send( &$call, $useSSL = false )
+    function send( &$call, $useSSL = false )
     {
         $rawResponse = 0;
         if (!$useSSL || !in_array("curl",get_loaded_extensions()))
@@ -132,19 +132,19 @@ class eZXMLRPCClient
                 {
                     $fp = fsockopen( $this->Server,
                     $this->Port,
-                    &$this->errorNumber,
-                    &$this->errorString,
+                    $this->errorNumber,
+                    $this->errorString,
                     $this->TimeOut );
                 }
                 else
                 {
                     $fp = fsockopen( $this->Server,
                     $this->Port,
-                    &$this->errorNumber,
-                    &$this->errorString );
+                    $this->errorNumber,
+                    $this->errorString );
                 }
 
-                $payload =& $call->payload();
+                $payload = $call->payload();
 
                 // send the XML-RPC call
                 if ( $fp != 0 )
@@ -205,7 +205,7 @@ class eZXMLRPCClient
                 {
                     curl_setopt ($ch, CURLOPT_TIMEOUT, $this->TimeOut);
                 }
-                $payload =& $call->payload();
+                $payload = $call->payload();
                 // send the XML-RPC call
                 if ( $ch != 0 )
                 {

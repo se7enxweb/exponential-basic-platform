@@ -53,7 +53,7 @@ class eZBulkMailTemplate
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         $header = $db->escapeString( $this->Header );
@@ -98,7 +98,7 @@ class eZBulkMailTemplate
     */
     function delete( $id = -1)
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id == -1 )
             $id = $this->ID;
@@ -116,7 +116,7 @@ class eZBulkMailTemplate
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( $id != "" )
         {
@@ -143,7 +143,7 @@ class eZBulkMailTemplate
     */
     static public function getAll()
     {
-        $db =& eZDB::globaldatabase();
+        $db = eZDB::globaldatabase();
         $return_array = array();
         $template_array = array();
         

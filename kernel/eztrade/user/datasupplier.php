@@ -29,8 +29,8 @@ $PageCaching = $ini->variable( "eZTradeMain", "PageCaching");
 // include_once( "eztrade/classes/ezpricegroup.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$user =& eZUser::currentUser();
-$ini =& eZINI::instance( 'site.ini' );
+$user = eZUser::currentUser();
+$ini = eZINI::instance( 'site.ini' );
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 
 $RequireUser = $ini->variable( "eZTradeMain", "RequireUserLogin" ) == "enabled" ? true : false;
@@ -49,7 +49,7 @@ $GlobalSectionID = $ini->variable( "eZTradeMain", "DefaultSection" );
 
 if ( $user )
 {
-    $groupIDArray =& $user->groups( false );
+    $groupIDArray = $user->groups( false );
     sort( $groupIDArray );
 }
 else

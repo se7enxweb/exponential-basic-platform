@@ -29,9 +29,9 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
-$Language =& $ini->variable( "eZBugMain", "Language" );
+$Language = $ini->variable( "eZBugMain", "Language" );
 
 // include_once( "ezbug/classes/ezbug.php" );
 // include_once( "ezbug/classes/ezbugcategory.php" );
@@ -62,14 +62,14 @@ $t->set_var( "name_value", $bug->name() );
 $t->set_var( "description_value", eZTextTool::nl2br( $bug->description() ) );
 $t->set_var( "action_value", "Update" );
 
-$date =& $bug->created();
+$date = $bug->created();
 $t->set_var( "bug_date", $locale->format( $date ) );    
 
 
-$pri =& $bug->priority();
-$status =& $bug->status();
-$module =& $bug->module();
-$category =& $bug->category();
+$pri = $bug->priority();
+$status = $bug->status();
+$module = $bug->module();
+$category = $bug->category();
 
 if ( $pri )
 {    
@@ -125,7 +125,7 @@ if( count( $logList ) > 0 )
 {
     foreach ( $logList as $log )
     {
-        $date =& $log->created();
+        $date = $log->created();
     
         $t->set_var( "log_date", $locale->format( $date ) );
     

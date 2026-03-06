@@ -28,7 +28,7 @@ include_once( "classes/eztemplate.php" );
 include_once( "classes/ezlocale.php" );
 include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $SiteStyle = $ini->variable( "site", "SiteStyle" );
@@ -50,7 +50,7 @@ $t->set_block( "file_list_tpl", "file_tpl", "file" );
 
 $product = new eZProduct( $ProductID );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->setVariable( "FileListReturnTo", $REQUEST_URI );
 $session->setVariable( "NameInBrowse", $product->name() );
 
@@ -73,7 +73,7 @@ $t->set_var( "product_name", $product->name() );
 
 $t->set_var( "site_style", $SiteStyle );
 
-$files =& $product->files();
+$files = $product->files();
 if ( count( $files ) == 0 )
 {
     $t->set_var( "file_list", "" );

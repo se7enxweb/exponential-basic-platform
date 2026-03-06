@@ -27,7 +27,7 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/eztemplate.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZSearchMain", "Language" );
 $SearchModules = $ini->variable( "eZSearchMain", "SearchModules" );
@@ -39,7 +39,7 @@ if ( isset ($SectionIDOverride) )
 {
     // include_once( "ezsitemanager/classes/ezsection.php" );
 
-    $sectionObject =& eZSection::globalSectionObject( $SectionIDOverride );
+    $sectionObject = eZSection::globalSectionObject( $SectionIDOverride );
     $sectionObject->setOverrideVariables();
 }
 

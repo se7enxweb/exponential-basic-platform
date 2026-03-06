@@ -25,7 +25,7 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
 $error = new eZINI( "kernel/ezforum/admin/intl/" . $Language . "/categoryedit.php.ini", false );
@@ -54,7 +54,7 @@ if ( $Action == "insert" )
     if ( eZPermission::checkPermission( $user, "eZForum", "CategoryAdd" ) )
     {
         // clear the menu cache
-        $files =& eZCacheFile::files( "kernel/ezforum/cache/",
+        $files = eZCacheFile::files( "kernel/ezforum/cache/",
                                       array( "menubox",
                                              NULL ),
                                       "cache", "," );
@@ -92,7 +92,7 @@ if ( $Action == "delete" )
     if ( eZPermission::checkPermission( $user, "eZForum", "CategoryDelete" ) )
     {
         // clear the menu cache
-        $files =& eZCacheFile::files( "kernel/ezforum/cache/",
+        $files = eZCacheFile::files( "kernel/ezforum/cache/",
                                       array( "menubox",
                                              NULL ),
                                       "cache", "," );
@@ -126,7 +126,7 @@ if ( $Action == "delete" )
 if ( $Action == "DeleteCategories" )
 {
     // clear the menu cache
-    $files =& eZCacheFile::files( "kernel/ezforum/cache/",
+    $files = eZCacheFile::files( "kernel/ezforum/cache/",
                                   array( "menubox",
                                          NULL ),
                                   "cache", "," );
@@ -163,7 +163,7 @@ if ( $Action == "update" )
     if ( eZPermission::checkPermission( $user, "eZForum", "CategoryModify" ) )
     {
         // clear the menu cache
-        $files =& eZCacheFile::files( "kernel/ezforum/cache/",
+        $files = eZCacheFile::files( "kernel/ezforum/cache/",
                                       array( "menubox",
                                              NULL ),
                                       "cache", "," );
@@ -245,7 +245,7 @@ if ( $Action == "edit" )
 }
 
 
-$sectionList =& eZSection::getAll();
+$sectionList = eZSection::getAll();
 
 if ( count( $sectionList ) > 0 )
 {

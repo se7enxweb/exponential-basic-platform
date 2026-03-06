@@ -36,7 +36,7 @@ class eZPostgreSQLDB
     function __construct( $server, $db, $user, $password  )
     {
         $this->INI = eZINI::instance( "site.ini" );
-        if ( $this->INI->->variable( "site", "DebugOutput" ) == "enabled")
+        if ( $this->INI->variable( "site", "DebugOutput" ) == "enabled")
         {
             $this->Database = pg_pconnect( "host=$server dbname=$db user=$user password=$password" );
             if ( !$this->Database )
@@ -56,7 +56,7 @@ class eZPostgreSQLDB
         return "postgresql";
     }
 
-    function &query( $sql )
+    function query( $sql )
     {
         if ( $this->Database )
         {
@@ -64,7 +64,7 @@ class eZPostgreSQLDB
             
             if ( !$result )
             {
-                if ( $this->INI->->variable( "site", "DebugOutput" ) == "enabled" )
+                if ( $this->INI->variable( "site", "DebugOutput" ) == "enabled" )
                 {
                     print( "PostgreSQL error: error executing query: $sql ".
                            pg_errormessage ( $this->Database ) );
@@ -107,11 +107,11 @@ class eZPostgreSQLDB
             $sql .= " LIMIT $limit, $offset";
         }
         
-        $result =& $this->query( $sql );
+        $result = $this->query( $sql );
 
         if ( $result == false )
         {
-            if ( $this->INI->->variable( "site", "DebugOutput" ) == "enabled" )
+            if ( $this->INI->variable( "site", "DebugOutput" ) == "enabled" )
             {
                 print( $this->Error );
             }
@@ -127,14 +127,14 @@ class eZPostgreSQLDB
             {
                 for($i = 0; $i < pg_numrows($result); $i++)
                 {
-                    $array[$i + $offset] =& pg_fetch_array ( $result, $i );
+                    $array[$i + $offset] = pg_fetch_array ( $result, $i );
                 }
             }
             else
             {
                 for($i = 0; $i < pg_numrows($result); $i++)
                 {
-                    $tmp_row =& pg_fetch_array ( $result, $i );
+                    $tmp_row = pg_fetch_array ( $result, $i );
                     $array[$i + $offset] =& $tmp_row[$column];
                 }
             }
@@ -221,7 +221,7 @@ class eZPostgreSQLDB
     /*!
       Will escape a string so it's ready to be inserted in the database.
     */
-    function &escapeString( $str )
+    function escapeString( $str )
     {
         $str = str_replace ("'", "\'", $str );
         $str = str_replace ("\"", "\\\"", $str );
@@ -232,7 +232,7 @@ class eZPostgreSQLDB
       \static
       Will convert the field name to lower case.
     */      
-    function &fieldName( $str )
+    function fieldName( $str )
     {
         return strToLower( $str );
     }

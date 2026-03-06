@@ -64,10 +64,10 @@ class eZFormElementFixedValue
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-        $value =& $db->escapeString( $this->Value );
+        $value = $db->escapeString( $this->Value );
         
         if ( empty( $this->ID ) )
         {
@@ -96,7 +96,7 @@ class eZFormElementFixedValue
         if ( $formID == -1 )
             $formID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
 
@@ -113,7 +113,7 @@ class eZFormElementFixedValue
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "-1" )
@@ -139,7 +139,7 @@ class eZFormElementFixedValue
     */
     function fill( &$formArray )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $formArray["ID"];
         $this->Value = $formArray["Value"];
     }
@@ -149,9 +149,9 @@ class eZFormElementFixedValue
 
       The objects are returned as an array of eZFormElementFixedValues objects.
     */
-    function &getAll( )
+    function getAll( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $returnArray = array();
         $formArray = array();
@@ -174,7 +174,7 @@ class eZFormElementFixedValue
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -194,7 +194,7 @@ class eZFormElementFixedValue
     /*!
       Returns the value of the object.
     */
-    function &value()
+    function value()
     {
         return htmlspecialchars( $this->Value );
     }

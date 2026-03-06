@@ -63,7 +63,7 @@ class eZBulkMailCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -103,7 +103,7 @@ class eZBulkMailCategory
     */
     function delete( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( $id == -1 )
@@ -143,7 +143,7 @@ class eZBulkMailCategory
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -167,10 +167,10 @@ class eZBulkMailCategory
     */
     function getByName( $name )
     {
-        $db =& eZDB::globaldatabase();
+        $db = eZDB::globaldatabase();
         $category_array = array();
 
-        $name =& $db->escapeString( $name );
+        $name = $db->escapeString( $name );
         $db->array_query( $category_array, "SELECT ID FROM eZBulkMail_Category WHERE Name='$name'" );
 
         $return_value = false;
@@ -187,7 +187,7 @@ class eZBulkMailCategory
     */
     static public function getAll( $withPrivate = true )
     {
-        $db =& eZDB::globaldatabase();
+        $db = eZDB::globaldatabase();
         $return_array = array();
         $category_array = array();
 
@@ -271,7 +271,7 @@ class eZBulkMailCategory
      */
     function addGroupSubscription( $groupID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( is_a( $groupID, "eZUserGroup" ) )
@@ -293,7 +293,7 @@ class eZBulkMailCategory
      */
     function removeGroupSubscription( $group )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( is_a( $group, "eZUserGroup" ) )
@@ -317,7 +317,7 @@ class eZBulkMailCategory
      */
     function groupSubscriptions( $asObjects = true, $CategoryID = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $CategoryID == 0 )
             $CategoryID = $this->ID;
@@ -337,7 +337,7 @@ class eZBulkMailCategory
     */
     function mail( $offset = 0, $limit = 50, $getDrafs = true, $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $getDraftsSQL = "";
 
         if( $id == -1 )
@@ -377,7 +377,7 @@ class eZBulkMailCategory
      */
     function mailCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query_single( $result, "
                 SELECT COUNT( eZBulkMail_Mail.ID ) AS Count
@@ -394,7 +394,7 @@ class eZBulkMailCategory
      */
     function subscribers( $asObject = true, $categoryID = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $categoryID == 0 )
             $categoryID = $this->ID;
@@ -422,7 +422,7 @@ class eZBulkMailCategory
      */
     function subscribedUsers( $categoryID = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if( $categoryID == 0 )
             $categoryID = $this->ID;
@@ -443,7 +443,7 @@ class eZBulkMailCategory
      */
     function subscriberCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query_single( $result, "SELECT COUNT( EMail ) as Count FROM eZBulkMail_SubscriptionAddress, eZBulkMail_SubscriptionLink
                                              WHERE eZBulkMail_SubscriptionAddress.ID=eZBulkMail_SubscriptionLink.AddressID
@@ -465,7 +465,7 @@ class eZBulkMailCategory
      */
     function setSingleList( $value )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $result = $db->query( "UPDATE eZBulkMail_Category SET IsSingleCategory='0'" );
@@ -494,7 +494,7 @@ class eZBulkMailCategory
      */
     static public function singleList( $asObject = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_value = false;
         $result_array = array();
         $db->array_query( $result_array, "SELECT ID FROM eZBulkMail_Category WHERE IsSingleCategory='1'" );
@@ -521,7 +521,7 @@ class eZBulkMailCategory
         $ret = false;
         if ( is_a ( $address, "eZBulkMailSubscriptionAddress" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $addressID = $address->id();
             $db->array_query( $result_array, "SELECT ID FROM eZBulkMail_SubscriptionCategorySettings WHERE CategoryID='$categoryID' AND AddressID='$addressID'" );
@@ -533,7 +533,7 @@ class eZBulkMailCategory
         }
         if ( is_a( $address, "eZBulkMailUserSubscripter" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $user = $address->user();
 
@@ -571,7 +571,7 @@ class eZBulkMailCategory
         $ret = false;
         if ( is_a( $address, "eZBulkMailSubscriptionAddress" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $addressID = $address->id();
@@ -595,7 +595,7 @@ class eZBulkMailCategory
         }
         else if ( is_a ( $address, "eZBulkMailUserSubscripter" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $user = $address->user();
@@ -630,7 +630,7 @@ class eZBulkMailCategory
         $result = false;
         if ( is_a( $user, "eZUser" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $userID = $user->id();

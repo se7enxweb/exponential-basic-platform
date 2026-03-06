@@ -49,7 +49,7 @@ class eZXMLRPCInt
     /*!
       This function will encode the int into a valid XML-RPC value.
     */
-    function &serialize( )
+    function serialize( )
     {
         $ret = "<value>";
         $ret .= "<int>";

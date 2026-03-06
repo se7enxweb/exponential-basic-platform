@@ -30,15 +30,15 @@
 //include_once( "kernel/classes/ezlocale.php" );
 //include_once( "kernel/classes/ezpublish.php" );
 
-$ini =& eZINI::instance('site.ini');
-$Language =& $ini->variable( "eZUserMain", "Language" );
+$ini = eZINI::instance('site.ini');
+$Language = $ini->variable( "eZUserMain", "Language" );
 $Locale = new eZLocale( $Language );
 //$iso = $Locale->languageISO();
 
-$SiteURL =& $ini->variable( "site", "SiteURL" );
-$AdminSiteURL =& $ini->variable( "site", "AdminSiteURL" );
-$AdminSiteProtocol =& $ini->variable( "site", "AdminSiteProtocol" );
-$UserSiteProtocol =& $ini->variable( "site", "UserSiteProtocol" );
+$SiteURL = $ini->variable( "site", "SiteURL" );
+$AdminSiteURL = $ini->variable( "site", "AdminSiteURL" );
+$AdminSiteProtocol = $ini->variable( "site", "AdminSiteProtocol" );
+$UserSiteProtocol = $ini->variable( "site", "UserSiteProtocol" );
 
 //$site_modules = $ini->read_array( "site", "EnabledModules" );
 $site_modules = eZModuleHandler::all();
@@ -49,11 +49,11 @@ $singleModule = eZPreferences::variable( 'SingleModule' );
 
 //include_once( "kernel/ezsession/classes/ezpreferences.php" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 if ( $session->fetch() == false )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->store();
 }
 
@@ -62,7 +62,7 @@ if ( isset( $page_charset ) )
     $session->setVariable( "charsetLanguage", $page_charset );
 }
 
-$charsetLanguage =& $session->variable( "charsetLanguage" );
+$charsetLanguage = $session->variable( "charsetLanguage" );
 
 // Fix to avoid setting the session variable when sections change charsets.
 // This means that moving away from the section enabled pages will refetch the
@@ -113,15 +113,15 @@ else if ( isset($url_array[2]) && ($url_array[2] == "image" && ( $url_array[3] =
 
 if ( $charsetLanguage == "" )
 {
-    $charsetLanguage =& $ini->variable( "eZUserMain", "Language" );
+    $charsetLanguage = $ini->variable( "eZUserMain", "Language" );
 }
 
 $charsetLocale = new eZLocale( $charsetLanguage );
 $iso = $charsetLocale->languageISO();
 
 $preferences = new eZPreferences();
-$modules =& eZModuleHandler::active();
-// $modules =& $preferences->variableArray( "EnabledModules" );
+$modules = eZModuleHandler::active();
+// $modules = $preferences->variableArray( "EnabledModules" );
 $single_module = eZModuleHandler::useSingleModule();
 
 $t = new eZTemplate( "design/admin/templates/" . $SiteDesign,
@@ -136,7 +136,7 @@ $t->set_block( "header_tpl", "menu_tpl", "menu_item" );
 $t->set_block( "header_tpl", "charset_switch_tpl", "charset_switch" );
 $t->set_block( "charset_switch_tpl", "charset_switch_item_tpl", "charset_switch_item" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( $user )
 {
@@ -157,12 +157,12 @@ $t->set_var( "charset_switch", "" );
 
 // The following is the charset switch - to view languages with different charsets
 
-$CharsetSwitch =& $ini->variable( "site", "CharsetSwitch" );
+$CharsetSwitch = $ini->variable( "site", "CharsetSwitch" );
 
 if ( $CharsetSwitch == "enabled" )
 {
 
-    $charsets =& $ini->variable( "site", "Charsets" );
+    $charsets = $ini->variable( "site", "Charsets" );
     $charsets_array = explode( ";", $charsets );
 
     foreach ( $charsets_array as $charset_item )

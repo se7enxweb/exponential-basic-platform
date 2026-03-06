@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 $Max = $ini->variable( "eZContactMain", "MaxPersonList" );
 
@@ -47,7 +47,7 @@ $t->setAllStrings();
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( !is_a( $user, "eZUser" ) )
 {
     // include_once( "classes/ezhttptool.php" );
@@ -94,7 +94,7 @@ $t->set_block( "person_list_tpl", "person_list_next_inactive_tpl", "person_list_
 $t->set_var( "person_item", "" );
 $t->set_var( "image_item", "" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 if ( $session->fetch() != false )
 {
@@ -102,7 +102,7 @@ if ( $session->fetch() != false )
     {
         if ( $session->variable( "PersonLimitType" ) == false )
             $session->setVariable( "PersonLimitType", "all" );
-        $LimitType =& $session->variable( "PersonLimitType" );
+        $LimitType = $session->variable( "PersonLimitType" );
     }
     else
     {
@@ -224,9 +224,9 @@ else
         $image =& $persons[$i]->image();
         if ( get_class( $image ) == "ezimage" && $image->id() != 0 )
         {
-            $imageWidth =& $ini->variable( "eZContactMain", "PersonlistImageWidth" );
-            $imageHeight =& $ini->variable( "eZContactMain", "PersonlistImageHeight" );
-            $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+            $imageWidth = $ini->variable( "eZContactMain", "PersonlistImageWidth" );
+            $imageHeight = $ini->variable( "eZContactMain", "PersonlistImageHeight" );
+            $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
             $imageURL = "/" . $variation->imagePath();
             $imageWidth = $variation->width();
             $imageHeight = $variation->height();

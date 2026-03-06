@@ -6,7 +6,7 @@
     // include_once( "ezsurvey/classes/ezquestion.php" );
     // include_once( "ezsitemanager/classes/ezsection.php" );
     
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
     $Language = $ini->variable( "eZSurveyMain", "Language" );
     
     $t = new eZTemplate( "kernel/ezsurvey/admin/" . $ini->variable( "eZSurveyMain", "AdminTemplateDir" ),
@@ -60,7 +60,7 @@
     // copia o survey e edita-o
     if ( $Action == "copy" )
     {
-        $survey =& $survey->copySurvey( "C�pia de " . $survey->title() );
+        $survey = $survey->copySurvey( "C�pia de " . $survey->title() );
         $currentUser = eZUser::currentUser();
         if ( $currentUser != FALSE )
         {
@@ -130,7 +130,7 @@
                 $t->parse( "status_item", "status_item_tpl", true );
             }
             
-            $section_array =& eZSection::getAll();
+            $section_array = eZSection::getAll();
             
             foreach ( $section_array as $sectionItem )
             {
@@ -165,7 +165,7 @@
                 $t->parse( "status_item", "status_item_tpl", true );
             }
             
-            $section_array =& eZSection::getAll();
+            $section_array = eZSection::getAll();
             
             foreach ( $section_array as $sectionItem )
             {
@@ -266,7 +266,7 @@
         }
         
         // lista perguntas
-        $types =& eZQuestion::questionTypes();
+        $types = eZQuestion::questionTypes();
         $question_array = $survey->surveyQuestions();
         
         $i = 0;
@@ -378,7 +378,7 @@
             $t->parse( "status_item", "status_item_tpl", true );
         }
         
-        $section_array =& eZSection::getAll();
+        $section_array = eZSection::getAll();
         
         foreach ( $section_array as $sectionItem )
         {

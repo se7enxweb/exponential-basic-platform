@@ -88,7 +88,7 @@ class eZNewsImporter
                 $importer = new eZNyheterNOImporter( $this->Site, $this->Login, $this->Password );
 
                 $importer->news();
-                $newsList =& $importer->news();
+                $newsList = $importer->news();
             }
             break;
 
@@ -97,7 +97,7 @@ class eZNewsImporter
                 // include_once( "eznewsfeed/classes/ezrdfimporter.php" );
 
                 $importer = new eZRDFImporter( $this->Site, $this->Login, $this->Password );
-                $newsList =& $importer->news();
+                $newsList = $importer->news();
             }
             break;
 
@@ -106,7 +106,7 @@ class eZNewsImporter
                 // include_once( "eznewsfeed/classes/ezrssimporter.php" );
 
                 $importer = new eZRSSImporter( $this->Site, $this->Login, $this->Password );
-                $newsList =& $importer->news();
+                $newsList = $importer->news();
             }
             break;
 
@@ -115,7 +115,7 @@ class eZNewsImporter
                 // include_once( "eznewsfeed/classes/ezbackslashimporter.php" );
 
                 $importer = new eZBackslashImporter( $this->Site, $this->Login, $this->Password );
-                $newsList =& $importer->news();
+                $newsList = $importer->news();
             }
             break;
           }

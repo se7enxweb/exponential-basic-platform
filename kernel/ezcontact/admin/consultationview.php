@@ -31,13 +31,13 @@
 // include_once( "classes/ezhttptool.php" );
 // include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( !is_a( $user, "eZUser" ) )
 {
     // include_once( "classes/ezhttptool.php" );
@@ -85,7 +85,7 @@ $t->set_var( "group_notice_name", "" );
 
 $t->set_var( "state_id", "" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user )
 {

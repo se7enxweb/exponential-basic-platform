@@ -32,14 +32,14 @@
 
 // include_once( "ezsession/classes/ezsession.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "ezuser/classes/ezuser.php" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( $user  )
 {
     if ( isset( $RedirectURL ) && ( $RedirectURL != "" ) )
@@ -58,12 +58,12 @@ if ( $user  )
     }
     else if ( count( $user->addresses() ) > 0 )
     {
-        $addresses =& $user->addresses();
+        $addresses = $user->addresses();
 
         $countryError = false;
         foreach ( $addresses as $address )
         {
-            $country =& $address->country();
+            $country = $address->country();
             if ( ( is_a( $country, "eZCountry" ) ) && ( $country->id() == 0 ) )
                 $countryError = true;
         }

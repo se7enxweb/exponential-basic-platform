@@ -78,7 +78,7 @@ class eZProjectType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         if ( !isset( $this->ID ) )
@@ -120,7 +120,7 @@ class eZProjectType
     {
         if ( isset( $this->ID ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             $res[] = $db->query( "DELETE FROM eZContact_PersonProjectDict WHERE ProjectID='$this->ID'" );
             $res[] = $db->query( "DELETE FROM eZContact_CompanyProjectDict WHERE ProjectID='$this->ID'" );
@@ -139,7 +139,7 @@ class eZProjectType
 
         if ( $id != "" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query_single( $consulttype_array, "SELECT * FROM eZContact_ProjectType WHERE ID='$id'" );
             $this->fill( $consulttype_array );
 
@@ -153,7 +153,7 @@ class eZProjectType
     */
     function fill( &$consulttype_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $consulttype_array[$db->fieldName( "ID" )];
         $this->Name = $consulttype_array[$db->fieldName( "Name" )];
         $this->ListOrder = $consulttype_array[$db->fieldName( "ListOrder" )];
@@ -208,9 +208,9 @@ class eZProjectType
     /*!
       Returns the number of external items using this item.
     */
-    function &count()
+    function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $person_qry, "SELECT count( PersonID ) as Count
                                          FROM eZContact_PersonProjectDict
                                          WHERE ProjectID='$this->ID'" );
@@ -225,7 +225,7 @@ class eZProjectType
     */
     function moveUp()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->query_single( $qry, "SELECT ID, ListOrder FROM eZContact_ProjectType
                                   WHERE ListOrder<'$this->ListOrder' ORDER BY ListOrder DESC",
@@ -241,7 +241,7 @@ class eZProjectType
     */
     function moveDown()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->query_single( $qry, "SELECT ID, ListOrder FROM eZContact_ProjectType
                                   WHERE ListOrder>'$this->ListOrder' ORDER BY ListOrder ASC",
@@ -258,10 +258,10 @@ class eZProjectType
       Finds all project types.
       Returns an array with eZProjectType objects taken from the database.
     */
-    static public function &findTypes( $as_object = true )
+    static public function findTypes( $as_object = true )
     {
         $qry_array = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $as_object )
             $select = "*";
         else

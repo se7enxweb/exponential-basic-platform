@@ -76,16 +76,16 @@ class eZVoucherEMail
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-        $description =& addslashes( $this->Description );
+        $description = addslashes( $this->Description );
 
         if ( !isset( $this->ID ) )
         {
             $db->lock( "eZTrade_VoucherEMail" );
             $nextID = $db->nextID( "eZTrade_VoucherEMail", "ID" );
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
             $password = md5( $this->Password );
 
             $res = $db->query( "INSERT INTO eZTrade_VoucherEMail
@@ -128,7 +128,7 @@ class eZVoucherEMail
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res = $db->query( "DELETE FROM eZTrade_VoucherEMail WHERE ID='$this->ID'" );
@@ -146,7 +146,7 @@ class eZVoucherEMail
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -183,9 +183,9 @@ class eZVoucherEMail
 
       The categories are returned as an array of eZVoucherEMail objects.
     */
-    function &getAll( $offset=0, $limit=20 )
+    function getAll( $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $quizArray = array();
@@ -219,7 +219,7 @@ class eZVoucherEMail
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -239,7 +239,7 @@ class eZVoucherEMail
     /*!
       Returns the description of the voucher smail.
     */
-    function &description()
+    function description()
     {
         return htmlspecialchars( $this->Description );
     }

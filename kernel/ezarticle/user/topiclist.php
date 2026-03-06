@@ -73,7 +73,7 @@ foreach ( $topicArray as $topic )
         $t->set_var( "td_class", "bgdark" );
     }
 
-    $articles =& $topic->articles();
+    $articles = $topic->articles();
 
     $t->set_var( "article_item", "" );
     foreach ( $articles as $article )

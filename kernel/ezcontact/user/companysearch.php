@@ -32,7 +32,7 @@
 // include_once( "ezcontact/classes/ezcompanytype.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-$ini =& eZINI::globalINI();
+$ini = eZINI::globalINI();
 $Language = $ini->variable( "eZContactMain", "Language" );
 $errorIni = new eZINI( "kernel/ezcontact/user/intl/" . $Language . "/companysearch.php.ini", false );
 

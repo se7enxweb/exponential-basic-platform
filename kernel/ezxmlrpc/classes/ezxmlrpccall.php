@@ -162,7 +162,7 @@ class eZXMLRPCCall
       Returns the call payload. This is the requst encoded
       as an XML-RPC call.
     */
-    function &payload( )
+    function payload( )
     {
         $parameters = "";
         if ( count( $this->ParameterList ) > 0 )
@@ -199,10 +199,10 @@ class eZXMLRPCCall
 //        $rawResponse = eZXMLRPCResponse::stripHTTPHeader( $rawResponse );
 
 //        eZPBLog::writeNotice( "empty?: " . $rawResponse . "<-" );
-//        $domTree =& qdom_tree( $rawResponse );
-//        $domTree =& xmltree( $rawResponse );
+//        $domTree = qdom_tree( $rawResponse );
+//        $domTree = xmltree( $rawResponse );
 
-        $domTree =& eZXML::domTree( $rawResponse, array( "TrimWhiteSpace" => true ) );
+        $domTree = eZXML::domTree( $rawResponse, array( "TrimWhiteSpace" => true ) );
 
 //        print_r( $domTree );
 

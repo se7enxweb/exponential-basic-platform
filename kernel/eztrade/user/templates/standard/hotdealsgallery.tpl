@@ -52,6 +52,36 @@
     </tr>
     <tr>
         <td>
+        <!-- BEGIN option_tpl -->
+        <div class="desc"><small>{option_name}: {option_description}</small></div>
+        <input type="hidden" name="OptionIDArray[]" value="{option_id}" />
+        <!-- BEGIN value_price_header_tpl -->
+        <!-- BEGIN value_description_header_tpl -->
+        <!-- END value_description_header_tpl -->
+        <!-- BEGIN value_price_header_item_tpl -->
+        <!-- END value_price_header_item_tpl -->
+        <!-- BEGIN value_currency_header_item_tpl -->
+        <!-- END value_currency_header_item_tpl -->
+        <!-- END value_price_header_tpl -->
+        <select name="OptionValueArray[]">
+        <!-- BEGIN value_tpl -->
+        <!-- BEGIN value_description_tpl -->
+        <option value="{value_id}">{value_name}
+        <!-- END value_description_tpl -->
+        <!-- BEGIN value_price_item_tpl -->
+        {value_price}
+        <!-- END value_price_item_tpl -->
+        <!-- BEGIN value_availability_item_tpl -->
+        ({value_availability})
+        <!-- END value_availability_item_tpl -->
+        </option>
+        <!-- BEGIN value_price_currency_list_tpl -->
+        <!-- BEGIN value_price_currency_item_tpl -->
+        <!-- END value_price_currency_item_tpl -->
+        <!-- END value_price_currency_list_tpl -->
+        <!-- END value_tpl -->
+        </select><br />
+        <!-- END option_tpl -->
         <!-- BEGIN add_to_cart_tpl -->
         <form action="{www_dir}{index}/{module}/{action_url}/{product_id}/" method="post">
         <div align="right">

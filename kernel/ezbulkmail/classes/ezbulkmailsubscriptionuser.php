@@ -56,7 +56,7 @@ class eZBulkMailSubscriptionUser
     {
         $password = md5( $this->Password );
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if ( !isset( $this->ID ) )
         {
@@ -95,7 +95,7 @@ class eZBulkMailSubscriptionUser
     */
     function delete( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if( $id == -1 )
             $id = $this->ID;
 
@@ -122,7 +122,7 @@ class eZBulkMailSubscriptionUser
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "-1" )
         {
@@ -146,7 +146,7 @@ class eZBulkMailSubscriptionUser
      */
     function getByEmail( $email )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $email = addslashes( $email );
         $db->array_query( $address_array, "SELECT ID FROM eZBulkMail_SubscriptionUser WHERE EMail='$email'" );
 
@@ -251,7 +251,7 @@ class eZBulkMailSubscriptionUser
      */
     function subscriptions( $asObjects = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $final_result = array();
         $db->array_query( $result_array, "SELECT CategoryID FROM eZBulkMail_SubscriptionLink WHERE UserID='$this->ID'" );
         if( count( $result_array ) > 0 )
@@ -303,7 +303,7 @@ class eZBulkMailSubscriptionUser
      */
     function unsubscribe( $category )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if( is_a( $category, "eZBulkMailCategory" ) )
         {
             $categoryID = $category->id();
@@ -320,7 +320,7 @@ class eZBulkMailSubscriptionUser
      */
     function addDelay( $category, $delay )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZBulkMail_SubscriptionCategorySettings" );
 
@@ -340,7 +340,7 @@ class eZBulkMailSubscriptionUser
     */
     function validate( $email, $password )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $md5 = md5( $password );
         $db->array_query( $subscription_array, "SELECT * FROM eZBulkMail_SubscriptionUser

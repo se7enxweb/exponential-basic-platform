@@ -30,7 +30,7 @@
 
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $wwwDir = $ini->WWWDir;
 $indexFile = $ini->Index;
 
@@ -50,7 +50,7 @@ if ( !$session->fetch() )
     $session->store();
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user )
 {
@@ -121,7 +121,7 @@ if ( isset( $Action ) && $Action == "SendWishlist" )
         {
             $mailTemplate->set_var( "host_name", $headersInfo["Host"].$indexFile );
             
-            $product =& $item->product();
+            $product = $item->product();
             $mailTemplate->set_var( "product_id", $product->id() );
             $mailTemplate->set_var( "product_name", $product->name() );
             $mailTemplate->parse( "product", "product_tpl", true );            

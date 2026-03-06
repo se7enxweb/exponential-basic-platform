@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZStatsMain", "Language" );
 
@@ -69,7 +69,7 @@ if ( isset( $Year ) && !is_numeric( $Year ) || isset( $Month ) && !is_numeric( $
 }
 
 $query = new eZPageViewQuery();
-$monthReport =& $query->monthStats( $Year, $Month );
+$monthReport = $query->monthStats( $Year, $Month );
 
 if ( count( $monthReport ) > 0 )
 {

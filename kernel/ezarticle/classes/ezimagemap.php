@@ -42,7 +42,7 @@ class eZImageMap
     
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID = $id;
         $db->array_query( $article_array, "SELECT Link, AltText, Shape, StartPosX, StartPosY, EndPosX, EndPosY FROM eZImageCatalogue_ImageMap WHERE ImageID='$this->ID'" );
         
@@ -59,7 +59,7 @@ class eZImageMap
     
     function store( $elements )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res = array();
         $res[] = $db->query( "DELETE FROM eZImageCatalogue_ImageMap WHERE ImageID='$this->ID'" );

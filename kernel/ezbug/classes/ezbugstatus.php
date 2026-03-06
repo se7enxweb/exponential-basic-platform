@@ -71,7 +71,7 @@ class eZBugStatus
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $name = $db->escapeString( $this->Name );
         if ( !isset( $this->ID ) )
@@ -102,7 +102,7 @@ class eZBugStatus
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( isset( $this->ID ) )
         {
@@ -124,7 +124,7 @@ class eZBugStatus
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( $id != "" )
         {
@@ -148,7 +148,7 @@ class eZBugStatus
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $return_array = array();
         $status_array = array();

@@ -136,7 +136,7 @@ class eZGroupEventCategory
 
       The categories are returned as an array of eZGroupEventCategory objects.
     */
-    function &getAll()
+    function getAll()
     {
         $this->dbInit();
         
@@ -161,7 +161,7 @@ class eZGroupEventCategory
 
       The categories are returned as an array of eZGroupEventCategory objects.      
     */
-    function &getByParent( $parent, $showAll=false, $sortby="name" )
+    function getByParent( $parent, $showAll=false, $sortby="name" )
     {
         if ( is_a( $parent, "eZGroupEventCategory" ) )
         {
@@ -237,12 +237,12 @@ class eZGroupEventCategory
     /*!
       Returns the categories sorted as a tree.
     */
-    function &getTree( $parentID=0, $level=0 )
+    function getTree( $parentID=0, $level=0 )
     {
 
         $EventCategory = new eZGroupEventCategory( $parentID );
 
-        $EventCategoryList =& $EventCategory->getByParent( $EventCategory, true );
+        $EventCategoryList = $EventCategory->getByParent( $EventCategory, true );
 
         $tree = array();
         $level++;

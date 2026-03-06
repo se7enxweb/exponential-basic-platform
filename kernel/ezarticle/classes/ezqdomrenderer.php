@@ -151,7 +151,7 @@ class eZQDomRenderer
         $UsedImageList = array();
         $RollOverCount = 0;
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 
         $this->Template = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
                      "kernel/ezarticle/user/intl/", "en_GB", "articleview.php" );
@@ -238,10 +238,10 @@ class eZQDomRenderer
     /*!
       Returns the XHTML contents of the introduction of the article.
     */
-    function &renderIntro()
+    function renderIntro()
     {
-//        $xml =& xmltree( $this->Article->contents() );
-        $xml =& eZXML::domTree( $this->Article->contents() );
+//        $xml = xmltree( $this->Article->contents() );
+        $xml = eZXML::domTree( $this->Article->contents() );
 
         if ( !$xml )
         {
@@ -298,13 +298,13 @@ class eZQDomRenderer
     /*!
       Returns the XHTML article of the article.
     */
-    function &renderPage( $pageNumber=0 )
+    function renderPage( $pageNumber=0 )
     {
-//        $xml =& qdom_tree( $this->Article->contents() );
+//        $xml = qdom_tree( $this->Article->contents() );
 
-        $xml =& eZXML::domTree( $this->Article->contents() );
+        $xml = eZXML::domTree( $this->Article->contents() );
 
-//        $xml =& xmltree( $this->Article->contents() );
+//        $xml = xmltree( $this->Article->contents() );
 
 //        $err = qdom_error();
 //        if ( $err )
@@ -319,10 +319,10 @@ class eZQDomRenderer
             $intro = "";
 
             $this->PrevTag = "";
-            $articleImages =& $this->Article->images();
+            $articleImages = $this->Article->images();
 
             if ( is_a( $this->Article, "eZArticle" ) )
-                $articleMedia =& $this->Article->media();
+                $articleMedia = $this->Article->media();
 
             $articleID = $this->Article->id();
 
@@ -418,8 +418,8 @@ class eZQDomRenderer
             }
         }
 
-        $returnArray[] =& stripslashes($intro);
-        $returnArray[] =& stripslashes($bodyContents);
+        $returnArray[] = stripslashes($intro);
+        $returnArray[] = stripslashes($bodyContents);
 
         return $returnArray;
     }
@@ -427,7 +427,7 @@ class eZQDomRenderer
     /*!
       Renders rollover tags.
     */
-    function &renderRollOver( $paragraph )
+    function renderRollOver( $paragraph )
     {
         $pageContent = "";
         if ( $paragraph->name == "rollover" )
@@ -471,7 +471,7 @@ class eZQDomRenderer
                 $image = new eZImage( $imageOneID );
                 $imageOneWidth = $image->width();
                 $imageOneHeight = $image->height();
-                $variation =& $image->requestImageVariation( $imageOneWidth, $imageOneHeight );
+                $variation = $image->requestImageVariation( $imageOneWidth, $imageOneHeight );
                 $imageOneURL = "/" . $variation->imagePath();
             }
 
@@ -480,7 +480,7 @@ class eZQDomRenderer
                 $image = new eZImage( $imageTwoID );
                 $imageTwoWidth = $image->width();
                 $imageTwoHeight = $image->height();
-                $variation =& $image->requestImageVariation( $imageTwoWidth, $imageOneWidth );
+                $variation = $image->requestImageVariation( $imageTwoWidth, $imageOneWidth );
                 $imageTwoURL = "/" . $variation->imagePath();
             }
 
@@ -507,7 +507,7 @@ class eZQDomRenderer
     /*!
       Renders header tags.
     */
-    function &renderHeader( $paragraph )
+    function renderHeader( $paragraph )
     {
         $pageContent = "";
         if ( $paragraph->name == "header" )
@@ -547,7 +547,7 @@ class eZQDomRenderer
 
 
             $this->Template->set_var( "contents", $content );
-            $pageContent =& $this->Template->parse( "header_" . $level, "header_" . $level. "_tpl" );
+            $pageContent = $this->Template->parse( "header_" . $level, "header_" . $level. "_tpl" );
         }
         return $pageContent;
     }
@@ -555,7 +555,7 @@ class eZQDomRenderer
     /*!
       Renders image tags.
     */
-    function &renderImage( $paragraph )
+    function renderImage( $paragraph )
     {
         $pageContent = "";
 	$image = "";
@@ -639,7 +639,7 @@ class eZQDomRenderer
                 // include_once( "ezarticle/classes/ezimagemap.php" );
                 $map = new eZImageMap( $image->id() );
 
-                $elements =& $map->elements();
+                $elements = $map->elements();
 
                 // generate HTML map:
                 $mapName = "eZMap_" . $image->id();
@@ -676,7 +676,7 @@ class eZQDomRenderer
             // add image if a valid image was found, else report an error in the log.
             if ( is_a( $image, "eZImage" ) )
             {
-                $ini =& eZINI::instance( 'site.ini' );
+                $ini = eZINI::instance( 'site.ini' );
 
                 // store the relative ID to the image
                 $this->UsedImageList[] = $imageID;
@@ -687,19 +687,19 @@ class eZQDomRenderer
                     {
                         case "small" :
                         {
-                            $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "SmallImageWidth" ),
+                            $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "SmallImageWidth" ),
                             $ini->variable( "eZArticleMain", "SmallImageHeight" ) );
                         }
                         break;
                         case "medium" :
                         {
-                            $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "MediumImageWidth" ),
+                            $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "MediumImageWidth" ),
                             $ini->variable( "eZArticleMain", "MediumImageHeight" ) );
                         }
                         break;
                         case "large" :
                         {
-                            $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "LargeImageWidth" ),
+                            $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "LargeImageWidth" ),
                             $ini->variable( "eZArticleMain", "LargeImageHeight" ) );
                         }
                         break;
@@ -712,7 +712,7 @@ class eZQDomRenderer
 
                         default :
                         {
-                            $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "MediumImageWidth" ),
+                            $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "MediumImageWidth" ),
                             $ini->variable( "eZArticleMain", "MediumImageHeight" ) );
                         }
                     }
@@ -873,7 +873,7 @@ class eZQDomRenderer
     /*!
       Renders media tags.
     */
-    function &renderMedia( $paragraph )
+    function renderMedia( $paragraph )
     {
         $pageContent = "";
         if ( $paragraph->name == "media" )
@@ -902,14 +902,14 @@ class eZQDomRenderer
             // add media if a valid media was found, else report an error in the log.
             if ( is_a( $media, "eZMedia" ) )
             {
-                $ini =& eZINI::instance( 'site.ini' );
+                $ini = eZINI::instance( 'site.ini' );
 
                 $mediaURL = $media->mediaPath();
 
                 $mediaCaption = $media->caption();
                 $mediaID = $media->id();
 
-                $attributeString =& $media->attributeString();
+                $attributeString = $media->attributeString();
 
                 $this->Template->set_var( "media_id", $mediaID );
                 $this->Template->set_var( "media_uri", $mediaURL );
@@ -927,7 +927,7 @@ class eZQDomRenderer
     /*!
       Renders file tags.
     */
-    function &renderFile( $paragraph )
+    function renderFile( $paragraph )
     {
 	global $GlobalSiteIni;
         $pageContent = "";
@@ -961,11 +961,12 @@ class eZQDomRenderer
             $file = $articleFiles[$fileID-1];
 
             // add media if a valid media was found, else report an error in the log.
+            $pageContent = '';
             if ( is_a( $file, "eZVirtualFile" ) )
             {
                 $fileID = $file->id();
 
-                $ini =& eZINI::instance( 'site.ini' );
+                $ini = eZINI::instance( 'site.ini' );
 
                 $fileName = str_replace( " ", "%20", $file->originalFileName() );
                 $this->Template->set_var( "file_uri", $GlobalSiteIni->Index . "/filemanager/download/" . $fileID . "/" . $fileName );
@@ -978,8 +979,9 @@ class eZQDomRenderer
         return $pageContent;
     }
 
-    function &renderPlain( $paragraph )
+    function renderPlain( $paragraph )
     {
+        $pageContent = '';
         // ordinary text
         if ( $paragraph->name == "#text" || $paragraph->name == "text" )
         {
@@ -997,7 +999,7 @@ class eZQDomRenderer
     /*!
       Renders the standard tags like bold, italic ...
     */
-    function &renderStandards( $paragraph )
+    function renderStandards( $paragraph )
     {
         $pageContent = "";
         switch ( $paragraph->name )
@@ -1193,7 +1195,7 @@ class eZQDomRenderer
     /*!
       Renders custom tags.
     */
-    function &renderCustom( $paragraph )
+    function renderCustom( $paragraph )
     {
         $pageContent = "";
         $tagName = $paragraph->name;
@@ -1236,7 +1238,7 @@ class eZQDomRenderer
     /*!
       Renders link tags.
     */
-    function &renderLink( $paragraph )
+    function renderLink( $paragraph )
     {
         $pageContent = "";
 	$to = "";
@@ -1279,7 +1281,7 @@ class eZQDomRenderer
             $this->Template->set_var( "target", $target );
             $this->Template->set_var( "link_text", $text );
 
-            $pageContent =& trim( $this->Template->parse( "link", "link_tpl" ) );
+            $pageContent = trim( $this->Template->parse( "link", "link_tpl" ) );
         }
 
         if ( $paragraph->name == "popuplink" )
@@ -1308,7 +1310,7 @@ class eZQDomRenderer
 
             $this->Template->set_var( "href", $href );
             $this->Template->set_var( "link_text", $text );
-            $pageContent =& trim( $this->Template->parse( "popuplink", "popuplink_tpl" ) );
+            $pageContent = trim( $this->Template->parse( "popuplink", "popuplink_tpl" ) );
         }
 
 
@@ -1360,7 +1362,7 @@ class eZQDomRenderer
 
             $this->Template->set_var( "href", "mailto:$to?subject=$subject" );
             $this->Template->set_var( "link_text", $text );
-            $pageContent =& $this->Template->parse( "link", "link_tpl" );
+            $pageContent = $this->Template->parse( "link", "link_tpl" );
             $pageContent = preg_replace("/\s+target=\"{target}\"\s*/", "", $pageContent );
         }
 
@@ -1392,7 +1394,7 @@ class eZQDomRenderer
             $this->Template->set_var( "href", $href );
             $this->Template->set_var( "target", "" );
             $this->Template->set_var( "link_text", $text );
-            $pageContent =& trim( $this->Template->parse( "link", "link_tpl" ) );
+            $pageContent = trim( $this->Template->parse( "link", "link_tpl" ) );
         }
 
         // ezstatic
@@ -1423,7 +1425,7 @@ class eZQDomRenderer
             $this->Template->set_var( "href", $href );
             $this->Template->set_var( "target", "" );
             $this->Template->set_var( "link_text", $text );
-            $pageContent =& trim( $this->Template->parse( "link", "link_tpl" ) );
+            $pageContent = trim( $this->Template->parse( "link", "link_tpl" ) );
         }
 
         // ezcategory
@@ -1454,7 +1456,7 @@ class eZQDomRenderer
             $this->Template->set_var( "href", $href );
             $this->Template->set_var( "target", "" );
             $this->Template->set_var( "link_text", $text );
-            $pageContent =& trim( $this->Template->parse( "link", "link_tpl" ) );
+            $pageContent = trim( $this->Template->parse( "link", "link_tpl" ) );
         }
         return $pageContent;
     }
@@ -1468,12 +1470,12 @@ class eZQDomRenderer
     }
 
 
-    function &renderHr( $paragraph )
+    function renderHr( $paragraph )
     {
         $pageContent = "";
         if ( $paragraph->name == "hr" )
         {
-            $pageContent =& $this->Template->parse( "hr", "hr_tpl" );
+            $pageContent = $this->Template->parse( "hr", "hr_tpl" );
         }
         return $pageContent;
     }
@@ -1481,8 +1483,9 @@ class eZQDomRenderer
     /*!
       Renders a table object.
     */
-    function &renderTable( $paragraph )
+    function renderTable( $paragraph )
     {
+        $pageContent = '';
         $template = $this->Template;
         if ( $paragraph->name == "table" )
         {
@@ -1545,7 +1548,7 @@ class eZQDomRenderer
                                     }
                                 }
 
-                            $childrenData =& $this->renderChildren( $data );
+                            $childrenData = $this->renderChildren( $data );
                             $template->set_var( "contents", $childrenData );
                             $template->set_var( "td_width", $tdWidth );
                             $template->set_var( "td_colspan", $tdColspan );
@@ -1558,7 +1561,7 @@ class eZQDomRenderer
             }
             $template->set_var( "table_width", $tableWidth );
             $template->set_var( "table_border", $tableBorder );
-            $pageContent =& $template->parse( "table", "table_tpl" );
+            $pageContent = $template->parse( "table", "table_tpl" );
         }
 
         return $pageContent;
@@ -1568,7 +1571,7 @@ class eZQDomRenderer
       \private
       Renders the children for this paragraph and returns the contents.
      */
-    function &renderChildren( $paragraph )
+    function renderChildren( $paragraph )
     {
 		$tmpContent = "";
         // render children

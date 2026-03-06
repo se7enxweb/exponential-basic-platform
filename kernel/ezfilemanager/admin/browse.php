@@ -34,7 +34,7 @@
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
 $ImageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
 
@@ -63,7 +63,7 @@ $t->set_block( "folder_tpl", "folder_read_tpl", "folder_read" );
 
 $t->set_var( "read", "" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if( !isset( $FolderID ) )
 {
@@ -74,7 +74,7 @@ $folder = new eZVirtualFolder( $FolderID );
 
 $error = true;
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 $returnUrl = $session->variable( "FileListReturnTo" );
 $t->set_var( "name", $session->variable( "NameInBrowse" ) );
@@ -108,7 +108,7 @@ if ( $folder->id() != 0 )
 }
 
 // path
-$pathArray =& $folder->path();
+$pathArray = $folder->path();
 
 $t->set_var( "path_item", "" );
 foreach ( $pathArray as $path )
@@ -122,7 +122,7 @@ foreach ( $pathArray as $path )
 
 // Print out the folders.
 
-$folderList =& $folder->getByParent( $folder );
+$folderList = $folder->getByParent( $folder );
 
 $i = 0;
 $deleteFolders = false;
@@ -159,7 +159,7 @@ else
 // Print out the files.
 
 $count = $folder->countFiles();
-$fileList =& $folder->files( "name", 0, $count );
+$fileList = $folder->files( "name", 0, $count );
 
 $deleteFiles = false;
 foreach ( $fileList as $file )

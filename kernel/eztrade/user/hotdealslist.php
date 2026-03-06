@@ -28,7 +28,7 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $hotDealColumns  = $ini->variable( "eZTradeMain", "HotDealColumns" );
@@ -43,7 +43,7 @@ $PricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enab
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "eztrade/classes/ezpricegroup.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $RequireUser = $ini->variable( "eZTradeMain", "RequireUserLogin" ) == "enabled" ? true : false;
 $ShowPrice = $RequireUser ? is_a( $user, "eZUser" ) : true;
@@ -104,7 +104,7 @@ if ( isset( $HotDealColumns ) )
 $t->set_var( "hotdeal_columns", $hotDealListColumns );
 
 // products
-$productList =& $product->hotDealProducts( $MaxHotDeals );
+$productList = $product->hotDealProducts( $MaxHotDeals );
 
 $locale = new eZLocale( $Language );
 $i=0;
@@ -154,8 +154,8 @@ foreach ( $productList as $product )
 
     if  ( $image )
     {
-        $thumbnail =& $image->requestImageVariation( $hotDealImageWidth, $hotDealImageHeight );
-//        $thumbnail =& $image->requestImageVariation( 109, 109 );
+        $thumbnail = $image->requestImageVariation( $hotDealImageWidth, $hotDealImageHeight );
+//        $thumbnail = $image->requestImageVariation( 109, 109 );
 
         if ( $thumbnail )
         {

@@ -34,7 +34,7 @@
 #echo " " . $url_array[2] . " " . $url_array[3] . " " . $url_array[4] . " " . $url_array[5];
 #exit();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( eZPermission::checkPermission( $user, "eZArticle", "ModuleEdit" ) == false )
 {
     eZHTTPTool::header( "Location: /error/403" );

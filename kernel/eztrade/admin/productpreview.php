@@ -41,7 +41,7 @@
 
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $PriceGroup = 1;
 $ShowPrice = true;
@@ -151,7 +151,7 @@ else
     $category->get( $CategoryID );
 }
 
-$pathArray =& $category->path();
+$pathArray = $category->path();
 $mainImageID = false;
 $t->set_var( "path", "" );
 foreach ( $pathArray as $path )
@@ -245,7 +245,7 @@ $t->set_var( "value_price_header", "" );
 
 // show alternative currencies
 $currency = new eZProductCurrency( );
-$currencies =& $currency->getAll();
+$currencies = $currency->getAll();
 $t->set_var( "currency_count", count( $currencies ) );
 $t->set_var( "value_price_header", "" );
 $t->set_var( "value_price_header_item", "" );
@@ -388,14 +388,14 @@ foreach ( $options as $option )
 
 // link list
 $module_link = new eZModuleLink( "eZTrade", "Product", $product->id() );
-$sections =& $module_link->sections();
+$sections = $module_link->sections();
 $t->set_var( "section_item", "" );
 foreach ( $sections as $section )
 {
     $t->set_var( "link_item", "" );
     $t->set_var( "section_name", $section->name() );
     $t->set_var( "section_id", $section->id() );
-    $links =& $section->links();
+    $links = $section->links();
     $i = 0;
     foreach ( $links as $link )
     {
@@ -429,7 +429,7 @@ if ( $type )
             $t->set_var( "end_tr", "</tr>" );
         }
 
-        $value =& $attribute->value( $product );
+        $value = $attribute->value( $product );
         $t->set_var( "attribute_id", $attribute->id( ) );
         $t->set_var( "attribute_name", $attribute->name( ) );
         $t->set_var( "attribute_value", $value );
@@ -528,7 +528,7 @@ if (
 
     // show alternative currencies
     $currency = new eZProductCurrency( );
-    $currencies =& $currency->getAll();
+    $currencies = $currency->getAll();
 
     foreach ( $currencies as $currency )
     {

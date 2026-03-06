@@ -50,7 +50,7 @@ class eZCheckout
     */
     function __construct()
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $checkout = $ini->variable( "eZTradeMain", "Checkout" );
 
         // check for local checkout code
@@ -70,7 +70,7 @@ class eZCheckout
     /*!
       Returns the checkout instance.
     */
-    function &instance()
+    function instance()
     {
         return $this->CheckoutObject;
     }

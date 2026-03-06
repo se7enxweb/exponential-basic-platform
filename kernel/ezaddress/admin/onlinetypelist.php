@@ -33,7 +33,7 @@ $item_type = new eZOnlineType();
 $item_type_array = $item_type->getAll();
 $move_item = true;
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZAddressMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZAddressMain", "DocumentRoot" );
 

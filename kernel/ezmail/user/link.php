@@ -54,7 +54,7 @@ if ( isset( $OK ) )
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMailMain", "Language" ); 
 
 $t = new eZTemplate( "kernel/ezmail/user/" . $ini->variable( "eZMailMain", "TemplateDir" ),
@@ -115,7 +115,7 @@ else
 {
     $t->set_var( "company_list", "" );
 }
-$personList =& (new eZPerson())->getAll();
+$personList = (new eZPerson())->getAll();
 
 foreach ( $personList as $person )
 {

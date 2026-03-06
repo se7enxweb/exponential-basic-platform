@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZUserMain", "Language" );
 
@@ -38,7 +38,7 @@ $Language = $ini->variable( "eZUserMain", "Language" );
 
 require( "kernel/ezuser/admin/admincheck.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( isset( $DeleteGroups ) and isset( $GroupArrayID ) )
 {

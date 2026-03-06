@@ -34,7 +34,7 @@ if ( isset( $Cancel ) )
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlog.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZCalendarMain", "Language" );
 $LanguageIni = new eZINI( "kernel/ezcalendar/admin/intl/" . $Language . "/typeedit.php.ini", false );
 

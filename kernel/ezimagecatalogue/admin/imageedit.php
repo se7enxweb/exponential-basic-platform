@@ -29,7 +29,7 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 // include_once( "ezuser/classes/ezauthor.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $CurrentCategoryID = eZHTTPTool::getVar( "CategoryID" );
 $CategoryID = eZHTTPTool::getVar( "CategoryID" );
@@ -89,7 +89,7 @@ if (isset( $Action ) && $Action == "New" )
 // include_once( "ezimagecatalogue/classes/ezimage.php" );
 // include_once( "ezimagecatalogue/classes/ezimagecategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezimagecatalogue/admin/" . $ini->variable( "eZImageCatalogueMain", "AdminTemplateDir" ),
@@ -594,16 +594,16 @@ if ( $Action == "Edit" )
         $t->parse( "image_info", "image_info_tpl", false );
     $objectPermission = new eZObjectPermission();
 
-    $readGroupArrayID =& $objectPermission->getGroups( $image->id(), "imagecatalogue_image", "r", false );
-    $writeGroupArrayID =& $objectPermission->getGroups( $image->id(), "imagecatalogue_image", "w", false );
+    $readGroupArrayID = $objectPermission->getGroups( $image->id(), "imagecatalogue_image", "r", false );
+    $writeGroupArrayID = $objectPermission->getGroups( $image->id(), "imagecatalogue_image", "w", false );
 }
 
 $category = new eZImageCategory() ;
-$categoryList =& $category->getTree( );
+$categoryList = $category->getTree( );
 
 $tree = new eZImageCategory();
-$treeArray =& $tree->getTree();
-$user =& eZUser::currentUser();
+$treeArray = $tree->getTree();
+$user = eZUser::currentUser();
 
 $catCount = count( $treeArray );
 $t->set_var( "num_select_categories", min( $catCount, 10 ) );
@@ -679,7 +679,7 @@ foreach ( $treeArray as $catItem )
 
 
 // Print out all the groups.
-$groups =& eZUserGroup::getAll();
+$groups = eZUserGroup::getAll();
 foreach ( $groups as $group )
 {
     $t->set_var( "group_id", $group->id() );

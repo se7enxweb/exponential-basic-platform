@@ -36,7 +36,7 @@
 // include_once( "ezforum/classes/ezforumcategory.php" );
 // include_once( "ezforum/classes/ezforum.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
 $SimpleUserList = $ini->variable( "eZForumMain", "SimpleUserList" );
@@ -63,8 +63,8 @@ $locale = new eZLocale( $Language );
 if ( !isset($Offset) || !$Offset )
     $Offset = 0;
 
-$messageList =& $forum->messageTree( $Offset, $SimpleUserList );
-$messageCount =& $forum->messageCount();
+$messageList = $forum->messageTree( $Offset, $SimpleUserList );
+$messageCount = $forum->messageCount();
 $t->set_var( "total_threads", $forum->messageCount( false, false ) );
 //$t->set_var( "total_messages", $forum->messageCount( false, true ) );
 if ( $forum->messageCount( false, false ) > 0 )
@@ -76,7 +76,7 @@ $t->set_var( "message_list", "" );
 	
 if ( !$messageList )
 {
-    $errorIni = new eZINI( "ezforum/user/intl/" . $Language . "/" . "messagereviewlist.php" . ".ini" , false );
+    $errorIni = new eZINI( "kernel/ezforum/user/intl/" . $Language . "/" . "messagereviewlist.php" . ".ini" , false );
     $noitem = $errorIni->variable( "strings", "noitem" );
 	$noitem="<p>".$noitem."</p>";
     $t->set_var( "message_list", $noitem );
@@ -110,10 +110,10 @@ else
 				$messageBody = strip_tags($messageBody);
 				$t->set_var( "body", $messageBody );
 //			$t->set_var( "body", strip_tags( $message->body() ) );
-        		$time =& $message->postingTime();
+        		$time = $message->postingTime();
         		$t->set_var( "postingtime", $locale->format( $time ) );
         		$t->set_var( "message_id", $message->id() );
-            	$muser =& $message->user();
+            	$muser = $message->user();
 				if ( $muser->id() == 0 )
 					$MessageAuthor = $anonymous;
 				else
@@ -121,7 +121,7 @@ else
 				if ( $muser->firstName()== "" && $muser->lastName()=="" )
 					$MessageAuthor = $anonymous;
 				$t->set_var( "user", $MessageAuthor );
-				$user =& eZUser::currentUser();
+				$user = eZUser::currentUser();
 				$t->set_var( "private_message", "" );
 				if ( ( $MessageAuthor != $anonymous) and ($user) )
 				{

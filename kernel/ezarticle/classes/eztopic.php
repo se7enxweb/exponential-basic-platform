@@ -55,7 +55,7 @@ class eZTopic
     */
     function store()
     {
-	$db =& eZDB::globalDatabase();
+	$db = eZDB::globalDatabase();
 
 	$db->begin( );
 
@@ -67,7 +67,7 @@ class eZTopic
 	    $db->lock( "eZArticle_Topic" );
 	    $nextID = $db->nextID( "eZArticle_Topic", "ID" );
 
-	    $timeStamp =& (new eZDateTime())->timeStamp( true );
+	    $timeStamp = (new eZDateTime())->timeStamp( true );
 
 	    $res = $db->query( "INSERT INTO eZArticle_Topic
 			 ( ID, Name, Created, Description )
@@ -104,7 +104,7 @@ class eZTopic
     */
     function delete()
     {
-	$db =& eZDB::globalDatabase();
+	$db = eZDB::globalDatabase();
 
 	if ( isset( $this->ID ) )
 	{
@@ -123,7 +123,7 @@ class eZTopic
     */
     function get( $id=-1 )
     {
-		$db =& eZDB::globalDatabase();
+		$db = eZDB::globalDatabase();
 	
 		$ret = false;
 		if ( $id != "" )
@@ -152,9 +152,9 @@ class eZTopic
       Always returns an object of type eZTopic, but with ID 0 if a suitable information
       isn't found in the db.
     */
-    function &getByName( $name )
+    function getByName( $name )
     {
-		$db =& eZDB::globalDatabase();
+		$db = eZDB::globalDatabase();
 	
 		$topic = new eZTopic();
 	
@@ -176,9 +176,9 @@ class eZTopic
     /*!
       Fetches the user id from the database. And returns a array of eZTopic objects.
     */
-    function &getAll(  )
+    function getAll(  )
     {
-		$db =& eZDB::globalDatabase();
+		$db = eZDB::globalDatabase();
 	
 		$return_array = array();
 		$topic_array = array();
@@ -197,9 +197,9 @@ class eZTopic
     /*!
       Returns all articles with the current topic.
     */
-    function &articles(  )
+    function articles(  )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $article_array = array();
@@ -210,13 +210,13 @@ class eZTopic
         $return_array = array();
         $article_array = array();
 
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $currentUserSQL = "";
         $groupSQL = "";
         $usePermission = true;
         if ( $user )
         {
-            $groups =& $user->groups( false );
+            $groups = $user->groups( false );
 
             foreach ( $groups as $group )
             {

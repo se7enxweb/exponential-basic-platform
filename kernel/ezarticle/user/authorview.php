@@ -32,7 +32,7 @@
 // include_once( "ezarticle/classes/ezarticle.php" );
 // include_once( "ezuser/classes/ezauthor.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $Limit = $ini->variable( "eZArticleMain", "AuthorArticleLimit" );
@@ -54,13 +54,13 @@ if ( !isset( $Limit ) or !is_numeric( $Limit ) )
 if ( !isset( $SortOrder ) )
     $SortOrder = "published";
 
-$article_count =& eZArticle::authorArticleCount( $AuthorID );
+$article_count = eZArticle::authorArticleCount( $AuthorID );
 
 $t->set_var( "article_count", $article_count );
 $t->set_var( "article_start", $Offset + 1 );
 $t->set_var( "article_end", min( $Offset + $Limit, $article_count ) );
 
-$articles =& eZArticle::authorArticleList( $AuthorID, $Offset, $Limit, $SortOrder );
+$articles = eZArticle::authorArticleList( $AuthorID, $Offset, $Limit, $SortOrder );
 
 $t->set_var( "author_id", $AuthorID );
 $author = new eZAuthor( $AuthorID );
@@ -71,7 +71,7 @@ $t->set_var( "sort", $SortOrder );
 
 $t->set_var( "article_item", "" );
 
-$db =& eZDB::globalDatabase();
+$db = eZDB::globalDatabase();
 $i = 0;
 $dateTime = new eZDateTime();
 foreach( $articles as $article )

@@ -39,10 +39,10 @@
 $GlobalSectionID = eZArticleCategory::sectionIDStatic( $CategoryID );
 
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
@@ -60,7 +60,7 @@ if ( isset( $CategoryID ) )
 }
 
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 $templateDirTmp = $sectionObject->templateStyle();
@@ -102,7 +102,7 @@ $t->set_block( "article_list_page_tpl", "header_item_tpl", "header_item" );
 
 // headline
 $t->set_block( "header_item_tpl", "latest_headline_tpl", "latest_headline" );
-$t->set_block( "header_item_tpl", "category_headline_item_tpl", "category_headline_item" );
+$t->set_block( "header_item_tpl", "category_headline_tpl", "category_headline_item" );
 
 // path
 $t->set_block( "article_list_page_tpl", "path_item_tpl", "path_item" );
@@ -151,13 +151,13 @@ else
 $ThumbnailImageWidth = $ini->variable( "eZArticleMain", "ThumbnailImageWidth" );
 $ThumbnailImageHeight = $ini->variable( "eZArticleMain", "ThumbnailImageHeight" );
 
-$thumbnailImageWidthOverride =& $t->get_user_variable( "article_list_page_tpl",  "ThumbnailImageWidth" );
+$thumbnailImageWidthOverride = $t->get_user_variable( "article_list_page_tpl",  "ThumbnailImageWidth" );
 if ( $thumbnailImageWidthOverride )
 {
     $ThumbnailImageWidth = $thumbnailImageWidthOverride;
 }
 
-$thumbnailImageHeightOverride =& $t->get_user_variable( "article_list_page_tpl",  "ThumbnailImageHeight" );
+$thumbnailImageHeightOverride = $t->get_user_variable( "article_list_page_tpl",  "ThumbnailImageHeight" );
 if ( $thumbnailImageHeightOverride )
 {
     $ThumbnailImageHeight = $thumbnailImageHeightOverride;
@@ -235,27 +235,27 @@ foreach ( $pathArray as $path )
 
 $categoryList = $category->getByParent( $category );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 // current category image
-$image =& $category->image();
+$image = $category->image();
 
 $t->set_var( "current_image_item", "" );
 
 if ( ( is_a( $image, "eZImage" ) ) && ( $image->id() != 0 ) )
 {
-    $imageWidth =& $ini->variable( "eZArticleMain", "CategoryImageWidth" );
-    $imageHeight =& $ini->variable( "eZArticleMain", "CategoryImageHeight" );
+    $imageWidth = $ini->variable( "eZArticleMain", "CategoryImageWidth" );
+    $imageHeight = $ini->variable( "eZArticleMain", "CategoryImageHeight" );
 
-    $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+    $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
     $imageURL = "/" . $variation->imagePath();
-    $imageWidth =& $variation->width();
-    $imageHeight =& $variation->height();
-    $imageCaption =& $image->caption();
-    $imageDescription =& $image->description();
+    $imageWidth = $variation->width();
+    $imageHeight = $variation->height();
+    $imageCaption = $image->caption();
+    $imageDescription = $image->description();
 
-    $photographer =& $image->photographer();
+    $photographer = $image->photographer();
 
     $t->set_var( "current_image_width", $imageWidth );
     $t->set_var( "current_image_height", $imageHeight );
@@ -280,21 +280,21 @@ foreach ( $categoryList as $categoryItem )
     $t->set_var( "category_name", $categoryItem->name() );
 
     $parent = $categoryItem->parent();
-    $image =& $categoryItem->image();
+    $image = $categoryItem->image();
 
     $t->set_var( "image_item", "" );
 
     if ( ( is_a( $image, "eZImage" ) ) && ( $image->id() != 0 ) )
     {
-        $imageWidth =& $ini->variable( "eZArticleMain", "CategoryImageWidth" );
-        $imageHeight =& $ini->variable( "eZArticleMain", "CategoryImageHeight" );
+        $imageWidth = $ini->variable( "eZArticleMain", "CategoryImageWidth" );
+        $imageHeight = $ini->variable( "eZArticleMain", "CategoryImageHeight" );
 
-        $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+        $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
         $imageURL = "/" . $variation->imagePath();
-        $imageWidth =& $variation->width();
-        $imageHeight =& $variation->height();
-        $imageCaption =& $image->caption();
+        $imageWidth = $variation->width();
+        $imageHeight = $variation->height();
+        $imageCaption = $image->caption();
 
         $t->set_var( "image_width", $imageWidth );
         $t->set_var( "image_height", $imageHeight );
@@ -364,12 +364,12 @@ if ( $CategoryID == 0 )
     // do not set offset for the main page news
     // always sort by publishing date is the merged category
     $article = new eZArticle();
-    $articleList =& $article->articles( "time", false, $Offset, $Limit );
+    $articleList = $article->articles( "time", false, $Offset, $Limit );
     $articleCount = $article->articleCount( false );
 }
 else
 {
-    $articleList =& $category->articles( $category->sortMode(), false, true, $Offset, $Limit, $category->id() );
+    $articleList = $category->articles( $category->sortMode(), false, true, $Offset, $Limit, $category->id() );
     $articleCount = $category->articleCount( false, true  );
 }
 
@@ -382,7 +382,7 @@ $t->set_var( "article_list", "" );
 $SiteDescriptionOverride = "";
 foreach ( $articleList as $article )
 {
-    $categoryDef =& $article->categoryDefinition();
+    $categoryDef = $article->categoryDefinition();
 
     $t->set_var( "category_id", $CategoryID );
 
@@ -407,7 +407,7 @@ foreach ( $articleList as $article )
     $t->set_var( "author_text", $article->authorText() );
 
     // check for topic
-    $topic =& $article->topic();
+    $topic = $article->topic();
 
     if ( ( is_a( $topic, "eZTopic" ) ) && ( $topic->name() != "" ) )
     {
@@ -421,7 +421,7 @@ foreach ( $articleList as $article )
     }
 
     // preview image
-    $thumbnailImage =& $article->thumbnailImage();
+    $thumbnailImage = $article->thumbnailImage();
     if ( $thumbnailImage )
     {
         if ( $GrayScaleImageList == "enabled" )
@@ -429,7 +429,7 @@ foreach ( $articleList as $article )
         else
             $convertToGray = false;
 
-        $variation =& $thumbnailImage->requestImageVariation( $ThumbnailImageWidth, $ThumbnailImageHeight, $convertToGray );
+        $variation = $thumbnailImage->requestImageVariation( $ThumbnailImageWidth, $ThumbnailImageHeight, $convertToGray );
         if( is_object( $variation ) ) {
             $t->set_var("thumbnail_image_uri", "/" . $variation->imagePath());
             $t->set_var("thumbnail_image_width", $variation->width());
@@ -463,12 +463,12 @@ foreach ( $articleList as $article )
         $t->set_var( "td_class", "bgdark" );
     }
 
-    $published =& $article->published();
+    $published = $article->published();
 
     $authorText = $article->authorText();
 
-    $publishedDateValue =& $published->date();
-    $publishedTimeValue =& $published->time();
+    $publishedDateValue = $published->date();
+    $publishedTimeValue = $published->time();
 
     $t->set_var( "article_datevalue", $locale->format( $publishedDateValue ) );
     $t->set_var( "article_timevalue", $locale->format( $publishedTimeValue ) );
@@ -515,7 +515,7 @@ foreach ( $articleList as $article )
     }
 
     // check if the article contains more than intro
-    $contents =& $renderer->renderPage();
+    $contents = $renderer->renderPage();
 
     if ( trim( $contents[1] ) == "" && count( $article->attributes( false ) ) <= 0 )
     {

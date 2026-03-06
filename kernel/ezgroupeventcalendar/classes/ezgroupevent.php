@@ -276,7 +276,7 @@ class eZGroupEvent
 
       The events are returned as an array of eZEvent objects.
     */
-    function &getAll()
+    function getAll()
     {
         $this->dbInit();
         
@@ -299,7 +299,7 @@ class eZGroupEvent
 
       The events are returned as an array of eZEvent objects.
     */
-    function &getAllByOthers()
+    function getAllByOthers()
     {
         $this->dbInit();
         
@@ -323,7 +323,7 @@ class eZGroupEvent
 
       The events are returned as an array of eZEvent objects.
     */
-      function &getByDate( $date, $group, $showPrivate=false )
+      function getByDate( $date, $group, $showPrivate=false )
     {
         $ret = array();
 
@@ -344,7 +344,7 @@ class eZGroupEvent
             $stamp   = $date->year() . $month . $day;
             $longstamp = $stamp . '235959';
 			//include_once( "classes/INIFile.php" );
-			$ini =& eZINI::instance( 'site.ini' );
+			$ini = eZINI::instance( 'site.ini' );
 			
 			if( $ini->variable( "eZGroupEventCalendarMain", "SubGroupSelect" ) == "enabled" )
 			{
@@ -405,7 +405,7 @@ class eZGroupEvent
 
       The events are returned as an array of eZEvent objects.
     */
-    function &getByGroupType( $date, $group, $type, $showPrivate=false )
+    function getByGroupType( $date, $group, $type, $showPrivate=false )
     {
         $ret = array();
 
@@ -425,7 +425,7 @@ class eZGroupEvent
             $groupID = $group->id();
 
 			//include_once( "classes/INIFile.php" );
-			$ini =& eZINI::instance( 'site.ini' );
+			$ini = eZINI::instance( 'site.ini' );
 			
 			if( $ini->variable( "eZGroupEventCalendarMain", "SubGroupSelect" ) == "enabled" )
 			{
@@ -492,7 +492,7 @@ class eZGroupEvent
 
       The events are returned as an array of eZEvent objects.
     */
-    function &getAllByDate( $date, $showPrivate=false, $groupNoShow=true )
+    function getAllByDate( $date, $showPrivate=false, $groupNoShow=true )
     {
         $ret = array();
 
@@ -572,7 +572,7 @@ class eZGroupEvent
 
       The events are returned as an array of eZEvent objects.
     */
-    function &getAllByType( $date, $type, $showPrivate=false, $groupNoShow=true )
+    function getAllByType( $date, $type, $showPrivate=false, $groupNoShow=true )
     {
         $ret = array();
         // Advanced debuging
@@ -652,7 +652,7 @@ class eZGroupEvent
 
       The events are returned as an array of eZEvent objects.
     */
-    function &getByType( $type, $showPrivate=false )
+    function getByType( $type, $showPrivate=false )
     {
         $ret = array();
         if ( ( is_a( $type, "eZGroupEventType" ) ) )
@@ -694,7 +694,7 @@ class eZGroupEvent
 
       The events are returned as an array of eZEvent objects.
     */
-    function &getByGroup( $group, $showPrivate=false )
+    function getByGroup( $group, $showPrivate=false )
     {
         $ret = array();
 
@@ -831,7 +831,7 @@ class eZGroupEvent
     /*!
       Returns the date of the event.
     */
-    function &getDate()
+    function getDate()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -858,7 +858,7 @@ class eZGroupEvent
     /*!
       Returns the start time of the event.
     */
-    function &startTime()
+    function startTime()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -877,7 +877,7 @@ class eZGroupEvent
     /*!
       Returns the end time of the event.
     */
-    function &stopTime()
+    function stopTime()
     {
         if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -943,7 +943,7 @@ class eZGroupEvent
     /*!
       Returns true if the event is private.
     */
-    function &isPrivate()
+    function isPrivate()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -959,7 +959,7 @@ class eZGroupEvent
     /*!
       Returns true if the event notification is enabled.
     */
-    function &isEventAlarmNotice()
+    function isEventAlarmNotice()
     {
 	if ( $this->State_ == "Dirty" )
 	  $this->get( $this->ID );
@@ -1186,12 +1186,12 @@ class eZGroupEvent
   	 
     $ret = false;  	 
     // include_once( "classes/INIFile.php" );
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
     // site variables
     $siteName = $ini->variable( "site", "SiteURL" ); 
     $siteAdministrator = $ini->variable( "eZUserMain", "ReminderMailFromAddress" );
 
-    $db =& eZDB::globalDatabase(); 	 
+    $db = eZDB::globalDatabase(); 	 
     $event_array = new eZGroupEvent(); 	 
 
     $eventIteration = 0;
@@ -1413,7 +1413,7 @@ class eZGroupEvent
     */ 	 
     function files( $as_object = true ) 	 
     { 	 
-        $db =& eZDB::globalDatabase(); 	 
+        $db = eZDB::globalDatabase(); 	 
   	 
         $return_array = array(); 	 
         $file_array = array(); 	 
@@ -1445,7 +1445,7 @@ class eZGroupEvent
         else 	 
             $fileID = $value; 	 
   	 
-        $db =& eZDB::globalDatabase(); 	 
+        $db = eZDB::globalDatabase(); 	 
         $db->query( "DELETE FROM eZGroupEventCalendar_EventFileLink WHERE EventID='$this->ID' AND FileID='$fileID'" ); 	 
     } 	 
   	 
@@ -1464,7 +1464,7 @@ class eZGroupEvent
         else 	 
             $fileID = $value; 	 
   	 
-        $db =& eZDB::globalDatabase(); 	 
+        $db = eZDB::globalDatabase(); 	 
   	 
         $db->begin( ); 	 
   	 
@@ -1493,7 +1493,7 @@ class eZGroupEvent
     */
     function forum( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $res, "SELECT ForumID FROM
                                             eZGroupEventCalendar_EventForumLink
                                             WHERE EventID='$this->ID'" );
@@ -1522,7 +1522,7 @@ class eZGroupEvent
 	    //            $forum->setModerator( $moderatorgroup );
 
             $forum->store();
-	    $ini =& eZINI::instance( 'site.ini' );
+	    $ini = eZINI::instance( 'site.ini' );
 	    $linkModules = $ini->variable( "eZGroupEventCalendarMain", "LinkModules" );
 	    $module_array = explode(',', $linkModules );
 	    unset ($linkModules);
@@ -1560,7 +1560,7 @@ class eZGroupEvent
     */
     function eventIDFromForum( $ForumID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $EventID = 0;
         $db->array_query( $result, "SELECT EventID FROM
                                     eZGroupEventCalendar_EventForumLink
@@ -1575,7 +1575,7 @@ class eZGroupEvent
     /*!
       Returns true if the event is recurring.
     */
-    function &isRecurring()
+    function isRecurring()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -1590,7 +1590,7 @@ class eZGroupEvent
     /*!
       Returns value of RecurType
     */
-    function &recurType()
+    function recurType()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -1601,7 +1601,7 @@ class eZGroupEvent
     /*!
       Returns value of RecurFreq
     */
-    function &recurFreq()
+    function recurFreq()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -1612,7 +1612,7 @@ class eZGroupEvent
     /*!
       Returns an array form of RecurDay
     */
-    function &recurDay()
+    function recurDay()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -1623,7 +1623,7 @@ class eZGroupEvent
         /*!
       Returns an array form of RecurDay
     */
-    function &recurMonthlyType()
+    function recurMonthlyType()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -1645,7 +1645,7 @@ class eZGroupEvent
     /*!
       Returns RepeatUntilDate or false
     */
-    function &repeatUntilDate()
+    function repeatUntilDate()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -1667,7 +1667,7 @@ class eZGroupEvent
     /*!
       Returns RepeatTimes or false
     */
-    function &repeatTimes()
+    function repeatTimes()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -1682,7 +1682,7 @@ class eZGroupEvent
     /*!
       Returns array form of RecurExceptions
     */
-    function &recurExceptions()
+    function recurExceptions()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -1695,7 +1695,7 @@ class eZGroupEvent
      /*!
       Returns repeatForever
     */
-    function &repeatForever()
+    function repeatForever()
     {
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
@@ -1822,11 +1822,11 @@ class eZGroupEvent
 	// BUG in eZDate2.2 -> For some reason the day is not preserved when calling &date.
 	// we have to set it manually
 	// the below line should be the corrent one.
-	// $date =& $date->date();
+	// $date = $date->date();
 	// instead we do this stuff
-	$hackYear =& $datetime->year();
-	$hackMonth =& $datetime->month();
-	$hackDay =& $datetime->day();
+	$hackYear = $datetime->year();
+	$hackMonth = $datetime->month();
+	$hackDay = $datetime->day();
 	$date = new eZDate($hackYear, $hackMonth, $hackDay);
 	} //end hack
        // second we switch out the type and do 4 different calculations

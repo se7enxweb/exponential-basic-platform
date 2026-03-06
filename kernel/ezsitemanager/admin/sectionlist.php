@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZSiteManagerMain", "Language" );
 $Limit = $ini->variable( "eZSiteManagerMain", "AdminListLimit" );
 
@@ -48,8 +48,8 @@ if ( !isset( $Offset ) )
     $Offset = 0;
 
 $t->set_var( "site_style", $SiteDesign );
-$sectionList =& eZSection::getAll( $Offset, $Limit );
-$totalCount =& eZSection::count();
+$sectionList = eZSection::getAll( $Offset, $Limit );
+$totalCount = eZSection::count();
 
 
 if ( count ( $sectionList ) > 0 )

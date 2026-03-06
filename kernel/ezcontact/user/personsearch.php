@@ -32,7 +32,7 @@
 //// include_once( "ezcontact/classes/ezpersontype.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 $errorIni = new eZINI( "kernel/ezcontact/user/intl/" . $Language . "/personsearch.php.ini", false );
 

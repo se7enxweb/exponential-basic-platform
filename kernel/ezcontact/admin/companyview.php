@@ -29,7 +29,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 $CompanyViewLogin = $ini->variable( "eZContactMain", "CompanyViewLogin" ) == "true";
 $CompanyEditLogin = $ini->variable( "eZContactMain", "CompanyEditLogin" ) == "true";
@@ -67,7 +67,7 @@ $AdminSiteURL = $ini->variable( "Site", "AdminSiteURL" );
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( $CompanyViewLogin and !is_a( $user, "eZUser" ) )
 {
@@ -364,7 +364,7 @@ else
     }
 
 // Person list
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     $t->set_var( "person_consultation_button", "" );
     $t->set_var( "buy_button", "" );
     if ( is_a( $user, "eZUser" ) && eZPermission::checkPermission( $user, "eZContact", "consultation" ) )
@@ -405,7 +405,7 @@ else
     }
 
 // Consultation list
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( is_a( $user, "eZUser" ) && eZPermission::checkPermission( $user, "eZContact", "consultation" ) )
     {
         if ( !isset( $OrderBy ) )

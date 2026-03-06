@@ -36,7 +36,7 @@
 // include_once( "ezquiz/classes/ezquizanswer.php" );
 // include_once( "ezquiz/classes/ezquizscore.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Limit = $ini->variable( "eZQuizMain", "ScoreLimit" );
 $Language = $ini->variable( "eZQuizMain", "Language" );

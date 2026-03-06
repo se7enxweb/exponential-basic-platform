@@ -32,7 +32,7 @@
 // sections
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
 $SlideShowHeaderFooter = $ini->variable( "eZImageCatalogueMain", "SlideShowHeaderFooter" );
@@ -61,7 +61,7 @@ if ( $CategoryID == 0 )
 if ( !$GlobalSectionID )
     $GlobalSectionID = $ini->variable( "eZImageCatalogueMain", "DefaultSection" );
 
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 if ( $Position == "" )
@@ -82,7 +82,7 @@ else
     }
     else
     {        
-        $variation =& $image->requestImageVariation( $ini->variable( "eZImageCatalogueMain", "ImageViewWidth" ),
+        $variation = $image->requestImageVariation( $ini->variable( "eZImageCatalogueMain", "ImageViewWidth" ),
         $ini->variable( "eZImageCatalogueMain", "ImageViewHeight" ) );
     }
 

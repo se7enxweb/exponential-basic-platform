@@ -29,7 +29,7 @@
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
 $Limit = $ini->variable( "eZForumMain", "SearchAdminLimit" );
@@ -66,7 +66,7 @@ if ( $QueryString != "" )
     $forum = new eZForum();
     
     // do a search in all forums
-    $messages =& $forum->search( $QueryString, $Offset, $Limit, $total_count);
+    $messages = $forum->search( $QueryString, $Offset, $Limit, $total_count);
 
     $locale = new eZLocale( $Language );
 

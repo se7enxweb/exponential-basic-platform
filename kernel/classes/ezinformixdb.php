@@ -256,7 +256,7 @@ class eZInformixDB
     /*!
       Will escape a string so it's ready to be inserted in the database.
     */
-    function &escapeString( $str )
+    function escapeString( $str )
     {
         $str = str_replace ("'", "''", $str );        
         $str = str_replace ("\r", "", $str );        
@@ -267,7 +267,7 @@ class eZInformixDB
       \static
       Will just return the field name.
     */      
-    function &fieldName( $str )
+    function fieldName( $str )
     {
         return strToLower( $str );
     }

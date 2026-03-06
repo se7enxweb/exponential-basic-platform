@@ -30,7 +30,7 @@
 // include_once( "ezbulkmail/classes/ezbulkmailsubscriptionaddress.php" );
 // include_once( "ezbulkmail/classes/ezbulkmailcategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZBulkMailMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezbulkmail/admin/" . $ini->variable( "eZBulkMailMain", "AdminTemplateDir" ),

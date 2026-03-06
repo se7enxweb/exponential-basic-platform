@@ -48,8 +48,8 @@ if ( $Command == "list" )
     $total += $imageCount;
     if ( $loc_max > 0 and $loc_offset >= 0 )
     {
-        $imageList =& eZImage::getUnassigned( $loc_offset, $loc_max );
-//          $imageList =& eZImage::getUnassigned();
+        $imageList = eZImage::getUnassigned( $loc_offset, $loc_max );
+//          $imageList = eZImage::getUnassigned();
         foreach( $imageList as $imageItem )
         {
             $cols = array( "Caption" => new eZXMLRPCString( $imageItem->caption( false ) ),

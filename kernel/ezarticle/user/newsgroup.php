@@ -33,7 +33,7 @@
 // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
@@ -86,7 +86,7 @@ $t->set_var( "image_dir", $ImageDir );
 
 $category = new eZArticleCategory( $CategoryID );
 
-$categoryList =& $category->getByParent( $category, true, "placement", 0, 4 );
+$categoryList = $category->getByParent( $category, true, "placement", 0, 4 );
 
 $locale = new eZLocale( $Language );
 
@@ -112,7 +112,7 @@ foreach( $categoryList as $category )
     $t->set_var( "category_id", $category->id() );
     $t->set_var( "category_name", $category->name() );
 
-    $articles =& $category->articles( "time", false, true, 0, $articleLimit );
+    $articles = $category->articles( "time", false, true, 0, $articleLimit );
 
     $t->set_var( "article_item", "" );
     $j=0;
@@ -124,8 +124,8 @@ foreach( $categoryList as $category )
         $renderer = new eZArticleRenderer( $article );
         $t->set_var( "article_intro", $renderer->renderIntro(  ) );
         
-        $published =& $article->published();
-        $published =& $published->date();        
+        $published = $article->published();
+        $published = $published->date();        
 
         $t->set_var( "article_published", $locale->format( $published ) );
         
@@ -134,7 +134,7 @@ foreach( $categoryList as $category )
         if ( $j == 0 )
         {
             // preview image
-            $thumbnailImage =& $article->thumbnailImage();
+            $thumbnailImage = $article->thumbnailImage();
             if ( $thumbnailImage )
             {
                 if ( $GrayScaleImageList == "enabled" )
@@ -142,7 +142,7 @@ foreach( $categoryList as $category )
                 else
                     $convertToGray = false;
                 
-                $variation =& $thumbnailImage->requestImageVariation( $ini->variable( "eZArticleMain", "ThumbnailGroupImageWidth" ),
+                $variation = $thumbnailImage->requestImageVariation( $ini->variable( "eZArticleMain", "ThumbnailGroupImageWidth" ),
                 $ini->variable( "eZArticleMain", "ThumbnailGroupImageHeight" ), $convertToGray );
                 
                 $t->set_var( "thumbnail_image_uri", "/" . $variation->imagePath() );

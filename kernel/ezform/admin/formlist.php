@@ -31,7 +31,7 @@
 // include_once( "ezform/classes/ezform.php" );
 
 $ActionValue = "list";
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFormMain", "Language" );
 $Limit = $ini->variable( "eZFormMain", "AdminFormListLimit" );
@@ -66,8 +66,8 @@ $t->set_var( "form_item", "" );
 $t->set_var( "form_list", "" );
 $t->set_var( "no_forms_item", "" );
 
-$totalCount =& eZForm::count();
-$forms =& eZForm::getAll( $Offset, $Limit );
+$totalCount = eZForm::count();
+$forms = eZForm::getAll( $Offset, $Limit );
 
 
 if( count( $forms ) == 0 )

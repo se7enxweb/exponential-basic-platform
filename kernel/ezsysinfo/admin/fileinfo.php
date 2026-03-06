@@ -30,8 +30,8 @@ $sum = array();
 
 // include_once( "ezsysinfo/classes/ezsysinfo.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
-$Language =& $ini->variable( "eZSysinfoMain", "Language" );
+$ini = eZINI::instance( 'site.ini' );
+$Language = $ini->variable( "eZSysinfoMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezsysinfo/admin/" . $ini->variable( "eZSysinfoMain", "AdminTemplateDir" ),
                      "kernel/ezsysinfo/admin/intl/", $Language, "fileinfo.php" );

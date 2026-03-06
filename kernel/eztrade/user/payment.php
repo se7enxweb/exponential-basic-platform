@@ -32,26 +32,26 @@ unset( $PaymentSuccess );
 // include_once( "eztrade/classes/ezcart.php" );
 // include_once( "eztrade/classes/ezcheckout.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $wwwDir = $ini->WWWDir;
 $indexFile = $ini->Index;
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 // fetch the cart
 $cart = new eZCart();
 $cart = $cart->getBySession( $session );
 $RequireUserLogin = true;
 
-$Language =& $ini->variable( "eZTradeMain", "Language" );
+$Language = $ini->variable( "eZTradeMain", "Language" );
 $locale = new eZLocale( $Language );
 
 function deleteCache($ProductID, $CategoryID, $CategoryArray, $Hotdeal )
 {
     if ( is_a( $ProductID, "eZProduct" ) )
     {
-        $CategoryID =& $ProductID->categoryDefinition( false );
-        $CategoryArray =& $ProductID->categories( false );
+        $CategoryID = $ProductID->categoryDefinition( false );
+        $CategoryArray = $ProductID->categories( false );
         $Hotdeal = $ProductID->isHotDeal();
         $ProductID = $ProductID->id();
     }
@@ -80,7 +80,7 @@ function deleteCache($ProductID, $CategoryID, $CategoryArray, $Hotdeal )
             $file->delete();
         }
     }
-    $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+    $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                   array( "articlefrontpage",
                                          NULL,
                                          NULL),
@@ -98,7 +98,7 @@ if ( !$cart )
 
     if( $orderCompletedID > 0 )
     {
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $order = new eZOrder( $orderCompletedID );
         $orderUser = $order->user();
         if ( $user->id() == $orderUser->id() )
@@ -135,7 +135,7 @@ $PreOrderID = $session->variable( "PreOrderID" );
 
 $currency = new eZCurrency();
 $checkout = new eZCheckout();
-$instance =& $checkout->instance();
+$instance = $checkout->instance();
 
 $paymentMethod = $session->arrayValue( "PaymentMethod" );
 $paymentMethod = $paymentMethod[0];
@@ -165,7 +165,7 @@ if ( $PaymentSuccess == true )
 
     // create a new order
     $order = new eZOrder();
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     $order->setUser( $user );
 
     if ( $ini->variable( "eZTradeMain", "ShowBillingAddress" ) != "enabled" )
@@ -245,19 +245,19 @@ if ( $PaymentSuccess == true )
     
         $orderItem->store();
     
-        $optionValues =& $item->optionValues();
+        $optionValues = $item->optionValues();
     
         foreach ( $optionValues as $optionValue )
         {
-            $option =& $optionValue->option();
-            $value =& $optionValue->optionValue();
+            $option = $optionValue->option();
+            $value = $optionValue->optionValue();
         
             $orderOptionValue = new eZOrderOptionValue();
             $orderOptionValue->setOrderItem( $orderItem );
         
             $orderOptionValue->setRemoteID( $optionValue->remoteID() );
         
-            $descriptions =& $value->descriptions();
+            $descriptions = $value->descriptions();
         
             $orderOptionValue->setOptionName( $option->name() );
             $orderOptionValue->setValueName( $descriptions[0] );
@@ -301,7 +301,7 @@ if ( $PaymentSuccess == true )
     // get the customer
     $user = $order->user();
 
-    $currentUser =& eZUser::currentUser();
+    $currentUser = eZUser::currentUser();
 
     // check if the user is logged in
     if ( !( $currentUser && $user ) ) 
@@ -468,7 +468,7 @@ if ( $PaymentSuccess == true )
         $mailTemplate->set_var( "td_class", ( $i % 2 ) == 0 ? "bglight" : "bgdark" );
         $i++;
         $mailTemplate->set_var( "cart_item_id", $item->id() );
-        $product =& $item->product();
+        $product = $item->product();
         $vatPercentage = $product->vatPercentage();
         $productHasVAT = $product->priceIncVAT();
 
@@ -487,7 +487,7 @@ if ( $PaymentSuccess == true )
 
         $numberOfOptions = 0;
 
-        $optionValues =& $item->optionValues();
+        $optionValues = $item->optionValues();
 
         foreach ( $optionValues as $optionValue )
         {
@@ -761,7 +761,7 @@ if ( $PaymentSuccess == true )
         $mailSubject = $subjectINI->variable( "strings", "mail_subject_admin" ) . " " . $ini->variable( "site", "SiteURL" );
 
     $checkout = new eZCheckout();
-    $instance =& $checkout->instance();
+    $instance = $checkout->instance();
 	
     $paymentMethod = $instance->paymentName( $order->paymentMethod() );
 
@@ -951,17 +951,17 @@ if ( $PaymentSuccess == true )
     }
 
     // Decrease product/option quantity
-    $items =& $cart->items();
+    $items = $cart->items();
     foreach ( $items as $item )
     {
-        $product =& $item->product();
+        $product = $item->product();
         $count = $item->count();
         $quantity = $product->totalQuantity();
-        $values =& $item->optionValues();
+        $values = $item->optionValues();
         $selected_values = array();
         foreach ( $values as $value )
             {
-                $option_value =& $value->optionValue();
+                $option_value = $value->optionValue();
                 $selected_values[] = $option_value->id();
             }
 
@@ -975,13 +975,13 @@ if ( $PaymentSuccess == true )
             $product->store();
             $changed_quantity = true;
         }
-        $options =& $product->options();
+        $options = $product->options();
         $change_discontinuity = false;
         $max_max_value = 0;
         $has_value = false;
         foreach( $options as $option )
         {
-            $option_values =& $option->values();
+            $option_values = $option->values();
             foreach( $option_values as $option_value )
             {
                 if ( in_array( $option_value->id(), $selected_values ) )
@@ -1014,14 +1014,14 @@ if ( $PaymentSuccess == true )
             deleteCache( $product, false, false, false );
         }
 
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
 
 
 
         for( $i=0; $i < $count; $i++ )
         {
             // Create vouchers
-            $voucherInfo =& $item->voucherInformation();
+            $voucherInfo = $item->voucherInformation();
             if ( $item->voucherInformation() )
             {
                 $voucher = new eZVoucher( );

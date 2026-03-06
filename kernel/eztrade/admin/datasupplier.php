@@ -30,7 +30,7 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if( eZPermission::checkPermission( $user, "eZTrade", "ModuleEdit" ) == false )
 {
     eZHTTPTool::header( "Location: /error/403" );

@@ -61,7 +61,7 @@ class eZNewsCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $name = $db->escapeString( $this->Name );
@@ -102,7 +102,7 @@ class eZNewsCategory
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( isset( $this->ID ) )
@@ -122,7 +122,7 @@ class eZNewsCategory
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -148,7 +148,7 @@ class eZNewsCategory
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $category_array = array();
@@ -174,7 +174,7 @@ class eZNewsCategory
     {
         if ( is_a( $parent, "eZNewsCategory" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $return_array = array();
             $category_array = array();
@@ -321,7 +321,7 @@ class eZNewsCategory
     {
        if ( is_a( $value, "eZNews" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
            $db->begin();
            $newsID = $value->id();
            $db->lock( "eZNewsFeed_NewsCategoryLink" );
@@ -350,13 +350,13 @@ class eZNewsCategory
 
       If $fetchNonPublished is set to "only" only the news which is not published are returned.
     */
-    function &newsList( $sortMode="time",
+    function newsList( $sortMode="time",
                        $fetchNonPublished="no",
                        $offset=0,
                        $limit=50 )
     {
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $OrderBy = "eZNewsFeed_News.PublishingDate DESC";
         switch( $sortMode )
@@ -438,11 +438,11 @@ class eZNewsCategory
       If $fetchNonPublished is set to "only" only the news which is not published
       are are.
     */
-    function &newsListCount( $sortMode="time",
+    function newsListCount( $sortMode="time",
                        $fetchNonPublished="no" )
     {
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
        $return_array = array();
        $news_array = array();

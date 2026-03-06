@@ -26,12 +26,12 @@
 // include_once( "classes/ezhttptool.php" );
 // include_once( "classes/eztemplate.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZForumMain", "DefaultSection" );
 
-function &errorPage( $PrimaryName, $PrimaryURL, $type )
+function errorPage( $PrimaryName, $PrimaryURL, $type )
 {
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
 
     $t = new eZTemplate( "kernel/ezforum/user/" . $ini->variable( "eZForumMain", "TemplateDir" ),
                          "kernel/ezforum/user/intl", $ini->variable( "eZForumMain", "Language" ), "message.php" );
@@ -54,8 +54,8 @@ function &errorPage( $PrimaryName, $PrimaryURL, $type )
     $t->setAllStrings();
 
     $error = $t->parse( "error", "page" );
-    $Info =& stripslashes( $error );
-    $error =& urlencode( $Info );
+    $Info = stripslashes( $error );
+    $error = urlencode( $Info );
     return $error;
 }
 

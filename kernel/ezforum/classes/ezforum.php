@@ -64,7 +64,7 @@ class eZForum
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $name = $db->escapeString( $this->Name );
@@ -124,7 +124,7 @@ class eZForum
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         // delete messages
         $db->query( "DELETE FROM eZForum_Message WHERE ForumID='$this->ID'" );
@@ -143,7 +143,7 @@ class eZForum
     */
     function removeFromForums()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         // delete category assignments
         $db->query( "DELETE FROM eZForum_ForumCategoryLink WHERE ForumID='$this->ID'" );
@@ -154,7 +154,7 @@ class eZForum
     */
     function get( $id = "" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $category_array = array();
 
@@ -198,9 +198,9 @@ class eZForum
     /*!
       Returns the messages in a forum.
     */
-    function &messages()
+    function messages()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $message_array, "SELECT ID, PostingTime FROM
                                            eZForum_Message
@@ -220,9 +220,9 @@ class eZForum
     /*!
       Returns the messages in every forum matching the query string.
     */
-    function &search( $queryText, $offset, $limit, &$SearchTotalCount, $params = array() )
+    function search( $queryText, $offset, $limit, &$SearchTotalCount, $params = array() )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_array = array();
         $queryText = $db->escapeString( $queryText );
 
@@ -233,10 +233,10 @@ class eZForum
 
         $groupString = "eZForum_Forum.GroupID=0";
 
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         if ( $user )
         {
-            $groups =& $user->groups( false );
+            $groups = $user->groups( false );
             $i = 0;
 
             foreach ( $groups as $userGroup )
@@ -290,7 +290,7 @@ class eZForum
 
             $db->array_query( $message_array, $queryString );
             $SearchTotalCount = count( $message_array );
-            $message_array =& array_slice( $message_array, $offset, $limit );
+            $message_array = array_slice( $message_array, $offset, $limit );
 
             $db->query( "DROP TABLE eZForum_SearchTemp" );
         }
@@ -312,7 +312,7 @@ class eZForum
 
             $db->array_query( $message_array, $queryString );
             $SearchTotalCount = count( $message_array );
-            $message_array =& array_slice( $message_array, $offset, $limit );
+            $message_array = array_slice( $message_array, $offset, $limit );
         }
 
         for ( $i = 0; $i < count( $message_array ); $i++ )
@@ -327,9 +327,9 @@ class eZForum
     /*!
       Returns the total count of a query.
     */
-    function &getQueryCount( $queryString )
+    function getQueryCount( $queryString )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $queryString = $db->escapeString( $queryString );
         $message_array = 0;
 
@@ -353,9 +353,9 @@ class eZForum
 
       Default limit is set to 30.
     */
-    function &messageTree( $offset = 0, $limit = 30, $showUnApproved = false )
+    function messageTree( $offset = 0, $limit = 30, $showUnApproved = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $approvedCode = "";
         if ( $showUnApproved == false )
@@ -387,7 +387,7 @@ class eZForum
     */
     function messageTreeArray( $offset = 0, $limit = 30, $showUnApproved = false, $showReplies = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $approvedCode = "";
         if ( $showUnApproved == false )
@@ -395,7 +395,7 @@ class eZForum
             $approvedCode = " AND IsApproved=1 ";
         }
 
-        $timeStamp =& (new eZDateTime())->timeStamp( true );
+        $timeStamp = (new eZDateTime())->timeStamp( true );
         if ( $showReplies )
         {
             $db->array_query( $message_array, "SELECT ID, Topic, UserID, PostingTime, Depth, UserName,
@@ -430,7 +430,7 @@ class eZForum
     */
     function messageThreadTree( $threadID, $showUnApprived = false, $offset = 0, $limit = 100 )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        if ( !isset( $showUnApproved ) || !$showUnApproved )
            $showUnApproved = " AND IsApproved='1' ";
@@ -469,7 +469,7 @@ class eZForum
     */
     function categories( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $forum_array, "SELECT CategoryID FROM
                                          eZForum_ForumCategoryLink
@@ -492,7 +492,7 @@ class eZForum
     /*!
       Returns the name of the forum.
     */
-    function &name( $html = true )
+    function name( $html = true )
     {
         if( !is_null( $this->Name ) )
         {
@@ -522,7 +522,7 @@ class eZForum
     /*!
 
     */
-    function &description()
+    function description()
     {
 		$description = stripslashes( $this->Description );
         return htmlspecialchars( $description );
@@ -563,7 +563,7 @@ class eZForum
     /*!
       Returns the forum moderator as a eZUser object.
     */
-    function &moderator()
+    function moderator()
     {
         $group = false;
 
@@ -579,7 +579,7 @@ class eZForum
     /*!
       Returns the forum moderator as a eZUser object.
     */
-    function &group()
+    function group()
     {
         $group = false;
 
@@ -669,7 +669,7 @@ class eZForum
     */
     function threadCount( $countUnapproved = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $unapprovedSQL = "";
         if ( $countUnapproved == false )
@@ -691,7 +691,7 @@ class eZForum
     */
     function messageCount( $countUnapproved = false, $showReplies = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $countUnapproved == false )
             $unapprovedSQL = "AND IsApproved='1'";

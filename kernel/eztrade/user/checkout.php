@@ -32,7 +32,7 @@
 // include_once( "classes/ezcurrency.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $shippingname = eZHTTPTool::getVar( "shippname" );
 
@@ -114,7 +114,7 @@ $cart = new eZCart();
 // this particular file, i've commented out the duplicates as needed.
 // $user = eZUser::currentUser();
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 $user = eZUser::currentUser();
 
@@ -345,7 +345,7 @@ if(empty($currentTypeID[0]))
 
     // create a new order
     $order = new eZOrder();
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
 
     if ( !is_a( $user, "eZUser" ) )
     {
@@ -472,20 +472,20 @@ if(empty($currentTypeID[0]))
         $orderItem->store();
 
         // Store the optionvalues.
-        $optionValues =& $item->optionValues();
+        $optionValues = $item->optionValues();
         if ( count( $optionValues ) > 0 )
         {
             foreach ( $optionValues as $optionValue )
             {
-                $option =& $optionValue->option();
-                $value =& $optionValue->optionValue();
+                $option = $optionValue->option();
+                $value = $optionValue->optionValue();
 
                 $orderOptionValue = new eZOrderOptionValue();
                 $orderOptionValue->setOrderItem( $orderItem );
 
                 $orderOptionValue->setRemoteID( $optionValue->remoteID() );
 
-                $descriptions =& $value->descriptions();
+                $descriptions = $value->descriptions();
 
                 $orderOptionValue->setOptionName( $option->name() );
                 $orderOptionValue->setValueName( $descriptions[0] );
@@ -539,7 +539,7 @@ $markup =0;
 
 $currentShippingType = false;
 
-$thisuser =& eZUser::currentUser();
+$thisuser = eZUser::currentUser();
 
 $id = $thisuser->id();
 
@@ -612,11 +612,11 @@ if ($cart->AddressID){
 //{
 
     $shippingAddress = new eZAddress( $taxaddressID );
-    $shippingRegion =& $shippingAddress->region();
+    $shippingRegion = $shippingAddress->region();
 
 //    $billingAddress = new eZAddress( $BillingAddressID );
-//    $billingRegion =& $billingAddress->region();
-//    $country =& $address->country();
+//    $billingRegion = $billingAddress->region();
+//    $country = $address->country();
 
 
 ///////////////////////////////////////////////////////////
@@ -641,7 +641,7 @@ else if ( $CountryVATDiscrimination == true )
     $address = new eZAddress();
     $mainAddress = $address->mainAddress( $user );
 
-    $country =& $mainAddress->country();
+    $country = $mainAddress->country();
     if ( !$country && !$country->hasVAT() )
     {
         $vat = false;
@@ -707,7 +707,7 @@ foreach ( $items as $item )
     $t->set_var( "td_class", ( $i % 2 ) == 0 ? "bglight" : "bgdark" );
     $i++;
     $t->set_var( "cart_item_id", $item->id() );
-    $product =& $item->product();
+    $product = $item->product();
 
     $t->set_var( "product_id", $product->id() );
     $t->set_var( "product_name", $product->name() );
@@ -724,7 +724,7 @@ foreach ( $items as $item )
 
     $numberOfOptions = 0;
 
-    $optionValues =& $item->optionValues();
+    $optionValues = $item->optionValues();
 
     $t->set_var( "cart_item_option", "" );
     $t->set_var( "cart_item_basis", "" );
@@ -738,8 +738,8 @@ foreach ( $items as $item )
     {
         turnColumnsOnOff( "option", $t, $ShowSavingsColumn, $ShowExTaxColumn, $ShowIncTaxColumn );
 
-        $option =& $optionValue->option();
-        $value =& $optionValue->optionValue();
+        $option = $optionValue->option();
+        $value = $optionValue->optionValue();
         $value_quantity = $value->totalQuantity();
         $descriptions = $value->descriptions();
 
@@ -1183,7 +1183,7 @@ else
 
 $can_checkout = true;
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $t->set_var( "user_id", $user->id() );
 // print out the addresses
@@ -1332,9 +1332,9 @@ if ( $total["inctax"] )
 {
     $checkout = new eZCheckout();
 
-    $instance =& $checkout->instance();
+    $instance = $checkout->instance();
 
-    $paymentMethods =& $instance->paymentMethods( $useVoucher );
+    $paymentMethods = $instance->paymentMethods( $useVoucher );
 
     foreach ( $paymentMethods as $paymentMethod )
     {

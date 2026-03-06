@@ -26,7 +26,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZLinkMain", "Language" );
 $error = new eZINI( "kernel/ezuser/admin/intl/" . $Language . "/useredit.php.ini", false );
 $error_msg = false;
@@ -67,7 +67,7 @@ if ( ( isset ( $AddImages ) ) and ( is_numeric( $LinkCategoryID ) ) and ( is_num
 if ( isset( $Action ) && $Action == "insert" )
 {
     // clear the menu cache
-    $files =& eZCacheFile::files( "kernel/ezlink/cache/",
+    $files = eZCacheFile::files( "kernel/ezlink/cache/",
                                   array( "menubox",
                                          NULL ),
                                   "cache", "," );
@@ -111,7 +111,7 @@ if ( isset( $Action ) && $Action == "insert" )
             {
                 $categoryID = $category->id();
 
-                $session =& eZSession::globalSession();
+                $session = eZSession::globalSession();
                 $session->setVariable( "SelectImages", "single" );
                 $session->setVariable( "ImageListReturnTo", "/link/categoryedit/edit/$categoryID/" );
                 $session->setVariable( "NameInBrowse", $category->name() );
@@ -138,7 +138,7 @@ if ( isset( $Action ) && $Action == "insert" )
 if ( isset( $Action ) && $Action == "delete" )
 {
     // clear the menu cache
-    $files =& eZCacheFile::files( "kernel/ezlink/cache/",
+    $files = eZCacheFile::files( "kernel/ezlink/cache/",
                                   array( "menubox",
                                          NULL ),
                                   "cache", "," );
@@ -165,7 +165,7 @@ if ( isset( $Action ) && $Action == "delete" )
 if ( isset( $Action ) && $Action == "DeleteCategories" )
 {
     // clear the menu cache
-    $files =& eZCacheFile::files( "kernel/ezlink/cache/",
+    $files = eZCacheFile::files( "kernel/ezlink/cache/",
                                   array( "menubox",
                                          NULL ),
                                   "cache", "," );
@@ -199,7 +199,7 @@ if ( isset( $Action ) && $Action == "DeleteCategories" )
 if ( isset( $Action ) && $Action == "update" )
 {
     // clear the menu cache
-    $files =& eZCacheFile::files( "kernel/ezlink/cache/",
+    $files = eZCacheFile::files( "kernel/ezlink/cache/",
                                   array( "menubox",
                                          NULL ),
                                   "cache", "," );
@@ -326,14 +326,14 @@ if ( $Action == "edit" )
         $t->set_var( "category_description", $linkCategory->description() );
         $t->set_var( "category_id", $linkCategory->id() );
 
-        $image =& $linkCategory->image();
+        $image = $linkCategory->image();
 
         if ( is_a( $image, "eZImage" ) && $image->id() != 0 )
         {
-            $imageWidth =& $ini->variable( "eZLinkMain", "CategoryImageWidth" );
-            $imageHeight =& $ini->variable( "eZLinkMain", "CategoryImageHeight" );
+            $imageWidth = $ini->variable( "eZLinkMain", "CategoryImageWidth" );
+            $imageHeight = $ini->variable( "eZLinkMain", "CategoryImageHeight" );
 
-            $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+            $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
             $imageURL = "/" . $variation->imagePath();
             $imageWidth = $variation->width();
@@ -392,7 +392,7 @@ foreach( $categoryLinkList as $i => $categoryLinkItem )
 
 // Get all sections
 
-$sectionList =& eZSection::getAll();
+$sectionList = eZSection::getAll();
 
 if ( count( $sectionList ) > 0 )
 {

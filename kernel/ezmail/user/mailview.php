@@ -97,7 +97,7 @@ if ( isset( $Delete ) )
     $mail = new eZMail( $MailID );
     $folderID = $mail->folder( false );
 
-    $del_var =& eZPreferences::variable( "eZMail_OnDel" );
+    $del_var = eZPreferences::variable( "eZMail_OnDel" );
     if( $del_var == "del" )
     {
         eZMail::delete( $MailID );
@@ -117,7 +117,7 @@ if ( isset( $Link ) )
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMailMain", "Language" ); 
 
 $t = new eZTemplate( "kernel/ezmail/user/" . $ini->variable( "eZMailMain", "TemplateDir" ),

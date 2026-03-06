@@ -156,7 +156,7 @@ class eZXMLRPCServer
             $response->setResult( $result );
         }
 
-        $payload =& $response->payload();
+        $payload = $response->payload();
 
         Header("Server: eZ xmlrpc server" );
         Header("Content-type: text/xml" );

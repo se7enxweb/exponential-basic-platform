@@ -35,7 +35,7 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
 $ImageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
@@ -52,10 +52,10 @@ $t->set_block( "folder_list_tpl", "folder_tpl", "folder" );
 
 $folder = new eZVirtualFolder( $FolderID );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 // Print out the folders.
-$folderList =& $folder->getByParent( $folder );
+$folderList = $folder->getByParent( $folder );
 
 foreach ( $folderList as $folderItem )
 {

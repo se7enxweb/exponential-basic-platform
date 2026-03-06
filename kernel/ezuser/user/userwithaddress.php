@@ -31,7 +31,7 @@ require( "kernel/ezuser/user/usercheck.php" );
 // include_once( "ezsession/classes/ezsession.php" );
 // include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $SelectCountry = $ini->variable( "eZUserMain", "SelectCountry" );
 $SelectRegion = $ini->variable( "eZUserMain", "SelectRegion" );
@@ -39,7 +39,7 @@ $AnonymousUserGroup = $ini->variable( "eZUserMain", "AnonymousUserGroup" );
 $ForceSSL = $ini->variable( "eZUserMain", "ForceSSL" );
 $AutoCookieLogin = eZHTTPTool::getVar( "AutoCookieLogin" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezuser/classes/ezusergroup.php" );
@@ -47,7 +47,7 @@ $session =& eZSession::globalSession();
 // include_once( "ezaddress/classes/ezcountry.php" );
 // include_once( "ezmail/classes/ezmail.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 // set SSL mode and redirect if not already in SSL mode.
 if ( ( $ForceSSL == "enabled" ) )
@@ -181,7 +181,7 @@ else
     $t->set_var( "no_address", "" );
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $t->set_var( "ok_button", "" );
 $t->set_var( "submit_button", "" );
@@ -784,10 +784,10 @@ if ( is_a( $user, "eZUser" ) )
 $t->set_var( "address", "" );
 
 if ( $SelectCountry == "enabled" )
-    $countryList =& eZCountry::getAllArray();
+    $countryList = eZCountry::getAllArray();
 
 if ( $SelectRegion == "enabled" )
-    $regionList =& eZRegion::getAllArray();
+    $regionList = eZRegion::getAllArray();
 
 // Make sure the MainAddressID is set to something sensible
 $deleted = false;

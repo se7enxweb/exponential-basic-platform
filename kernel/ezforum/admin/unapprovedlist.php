@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
 $UnapprovdLimit = $ini->variable( "eZForumMain", "UnApprovdLimit" );
@@ -78,7 +78,7 @@ else
         $t->set_var( "forum_name", $forum->name() );
         $t->set_var( "forum_id", $forum->id() );
 
-        $categoryList =& $forum->categories();
+        $categoryList = $forum->categories();
         $category =& $categoryList[0];
 
         $t->set_var( "category_name", $category->name() );

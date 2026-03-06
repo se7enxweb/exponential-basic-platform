@@ -57,7 +57,7 @@ class eZCodePageMapper
         return $this->Valid;
     }
 
-    function &mapInputCode( $in_code )
+    function mapInputCode( $in_code )
     {
         if ( isset( $this->InputOutputMap[$in_code] ) )
             return $this->InputOutputMap[$in_code];
@@ -65,7 +65,7 @@ class eZCodePageMapper
         return $retValue;
     }
 
-    function &mapOutputCode( $out_code )
+    function mapOutputCode( $out_code )
     {
         if ( isset( $this->OutputInputMap[$out_code] ) )
             return $this->OutputInputMap[$out_code];
@@ -179,8 +179,8 @@ class eZCodePageMapper
                  eZCodePage::fileModification( $this->OutputCharsetCode ) <= $cache_m )
             {
                 unset( $eZCodePageMapperCacheCodeDate );
-                $in_out_map =& $this->InputOutputMap;
-                $out_in_map =& $this->OutputInputMap;
+                $in_out_map = $this->InputOutputMap;
+                $out_in_map = $this->OutputInputMap;
                 eZDebug::writeDebug( 'loading cache from: ' . $cache, __METHOD__ );
                 include( $cache );
                 if ( isset( $eZCodePageMapperCacheCodeDate ) or

@@ -46,7 +46,7 @@ class eZExample
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         if ( $id != -1  )
         {
@@ -70,9 +70,9 @@ class eZExample
     /*!
       Retrieves all Text fields from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $return_array = array();
         $url_array = array();
@@ -93,11 +93,11 @@ class eZExample
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         
         $text = $db->escapeString( $this->Text );
-        $timeStamp =& (new eZDateTime())->timeStamp( true );
+        $timeStamp = (new eZDateTime())->timeStamp( true );
 
         $db->begin();
         $db->lock( "eZExample_Test" );
@@ -139,7 +139,7 @@ class eZExample
     */
     function delete( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( is_numeric( $id ) )
         {
              $this->ID = $id;

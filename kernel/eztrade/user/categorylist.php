@@ -24,8 +24,8 @@
 //
 
 
-$ini =& eZINI::instance( 'site.ini' );
-$PageCaching =& $ini->variable( "eZTradeMain", "PageCaching");
+$ini = eZINI::instance( 'site.ini' );
+$PageCaching = $ini->variable( "eZTradeMain", "PageCaching");
 
 $PureStatic = "false";
 //$PureStatic = "true";
@@ -64,7 +64,7 @@ if ( $PureStatic == "false" )
     // include_once( "ezuser/classes/ezpermission.php" );
     // include_once( "ezuser/classes/ezobjectpermission.php" );
     
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
     $Language = $ini->variable( "eZTradeMain", "Language" );
     $CategoryListProductImages = $ini->variable( "eZTradeMain", "CategoryListProductImages" ) == "enabled" ? true : false;
  
@@ -95,7 +95,7 @@ if ( $PureStatic == "false" )
 
     $t->set_var( "sitedesign", $GlobalSiteDesign );
 
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
    
     // categories
     $i=0;

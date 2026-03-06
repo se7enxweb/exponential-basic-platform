@@ -25,7 +25,7 @@
 
 // include_once( "classes/ezuritool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZContactMain", "DefaultSection" );
 
 $url_array = eZURITool::split($_SERVER["REQUEST_URI"] );

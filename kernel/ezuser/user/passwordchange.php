@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZUserMain", "DocumentRoot" );
 $errorIni = new eZINI( "kernel/ezuser/admin/intl/" . $Language . "/passwordchange.php.ini", false );
@@ -54,7 +54,7 @@ $t->set_file( array(
     "change" => "passwordchange.tpl"
 ) );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( !$user )
 {
     eZHTTPTool::header( "Location: /user/login/" );

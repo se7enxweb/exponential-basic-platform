@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 
 // include_once( "classes/ezlocale.php" );
@@ -71,7 +71,7 @@ if ( !is_numeric( $Day ) )
 $company = new eZCompany( $CompanyID );
 $t->set_var( "company_name", $company->name() );
 $t->set_var( "company_id", $company->id() );
-$categories =& $company->categories( false, false, 1 );
+$categories = $company->categories( false, false, 1 );
 $t->set_var( "category_id", "" );
 if ( count( $categories ) > 0 )
     $t->set_var( "category_id", $categories[0] );
@@ -79,7 +79,7 @@ if ( count( $categories ) > 0 )
 $date = new eZDate( $Year, $Month, 1 );
 
 $t->set_var( "month", "" );
-$counts =& $company->yearViewCounts( $Year );
+$counts = $company->yearViewCounts( $Year );
 if ( count( $counts ) > 0 )
 {
     $maxCount = 0;

@@ -46,7 +46,7 @@ class eZSimpleGenerator
     /*!
       Generates valid XML data to use for storage.
     */
-    function &generateXML()
+    function generateXML()
     {
         // add the XML header.
         

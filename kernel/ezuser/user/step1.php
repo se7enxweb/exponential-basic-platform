@@ -8,7 +8,7 @@ require( "kernel/ezuser/user/usercheck.php" );
 // include_once( "ezsession/classes/ezsession.php" );
 // include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $SelectCountry = $ini->variable( "eZUserMain", "SelectCountry" );
 $SelectRegion = $ini->variable( "eZUserMain", "SelectRegion" );
@@ -16,7 +16,7 @@ $AnonymousUserGroup = $ini->variable( "eZUserMain", "AnonymousUserGroup" );
 
 $AutoCookieLogin = eZHTTPTool::getVar( "AutoCookieLogin" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezuser/classes/ezusergroup.php" );
@@ -25,7 +25,7 @@ $session =& eZSession::globalSession();
 // include_once( "ezaddress/classes/ezregion.php" );
 // include_once( "ezmail/classes/ezmail.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $form_type = "Account Registration";
 $error = array();

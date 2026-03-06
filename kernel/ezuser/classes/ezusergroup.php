@@ -91,7 +91,7 @@ class eZUserGroup
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $dbError = false;
         $db->begin();
@@ -140,7 +140,7 @@ class eZUserGroup
     */
     function delete( $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( !$id )
             $id = $this->ID;
@@ -160,7 +160,7 @@ class eZUserGroup
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -178,7 +178,7 @@ class eZUserGroup
     */
     function fill( &$user_group_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $this->ID = $user_group_array[$db->fieldName( "ID" )];
         $this->Name = $user_group_array[$db->fieldName( "Name" )];
@@ -193,9 +193,9 @@ class eZUserGroup
       Returns every user group from the database. The result is returned as an
       array of eZUserGroup objects.
     */
-    static public function &getAll( $as_object = true )
+    static public function getAll( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $group_array = array();
@@ -238,7 +238,7 @@ class eZUserGroup
 
         if ( is_a( $user, "eZUser" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $group_array = array();
 
@@ -343,7 +343,7 @@ class eZUserGroup
 
 
         $ret = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $search )
         {
@@ -381,7 +381,7 @@ class eZUserGroup
      */
     function userEmails()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $mail_array = array();
         $db->array_query( $mail_array, "SELECT Email from eZUser_UserGroupLink, eZUser_User WHERE eZUser_User.ID=eZUser_UserGroupLink.UserID AND eZUser_UserGroupLink.GroupID='$this->ID'",
         0, -1, "Email" );
@@ -483,7 +483,7 @@ class eZUserGroup
 
        if ( is_a( $user, "eZUser" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
 
            $dbError = false;
            $db->begin( );

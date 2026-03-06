@@ -100,7 +100,7 @@ foreach ( $pathArray as $path )
     $t->parse( "path_item", "path_item_tpl", true );
 }
 
-$categoryList =& $category->getByParent( $category, true );
+$categoryList = $category->getByParent( $category, true );
 
 
 // categories
@@ -150,12 +150,12 @@ if ( !isset( $Offset ) )
 // news
 if ( $ShowUnPublished = "no" )
 {
-    $newsList =& $category->newsList( "time", "no", $Offset, $Limit );
+    $newsList = $category->newsList( "time", "no", $Offset, $Limit );
     $newsListCount = $category->newsListCount( "time", "no" );    
 }
 else
 {
-    $newsList =& $category->newsList( "time", "only", $Offset, $Limit );
+    $newsList = $category->newsList( "time", "only", $Offset, $Limit );
     $newsListCount = $category->newsListCount( "time", "only" );
 }
 
@@ -185,7 +185,7 @@ foreach ( $newsList as $news )
     $t->set_var( "news_origin", $news->origin() );
 
     $published = $news->originalPublishingDate();
-    $date =& $published->date();            
+    $date = $published->date();            
     $t->set_var( "news_date", $locale->format( $date ) );
     
     if ( ( $i % 2 ) == 0 )

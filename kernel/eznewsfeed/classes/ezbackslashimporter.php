@@ -56,9 +56,9 @@ class eZBackslashImporter
     /*!
       Returns the news items as an array.
     */
-    function &news( )
+    function news( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_array = array();
 
         if (!($fp = @fopen($this->Site, "r"))) {
@@ -76,7 +76,7 @@ class eZBackslashImporter
         fclose( $fp );
 
         $params["TrimWhiteSpace"] = true;
-        $doc =& eZXML::domTree( $output, $params );
+        $doc = eZXML::domTree( $output, $params );
         if ( count( $doc->children ) > 0 )
         foreach ( $doc->children as $child )
         {

@@ -74,7 +74,7 @@ if( isset( $NewType ) )
      } 
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
@@ -126,7 +126,7 @@ else
     $t->set_var( "type_list", "" );
 }
 
-$types =& eZArticleType::getAll();
+$types = eZArticleType::getAll();
 $t->set_var( "selected", "" );
 $t->set_var( "type_id", "" );
 $t->set_var( "type_name", "" );

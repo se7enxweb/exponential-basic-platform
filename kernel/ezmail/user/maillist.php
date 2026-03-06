@@ -57,7 +57,7 @@ if ( isset( $Move ) && $FolderSelectID != -1 && count( $MailArrayID ) > 0 ) // r
         $folder->addMail( $mailitemID );
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 if( isset( $NumMessages ) )
 {
     eZPreferences::setVariable( "eZMail_MessagesPerPage", $NumMessages );
@@ -106,7 +106,7 @@ $t->set_var( "mail_replied", "" );
 $t->set_var( "mail_repliedall", "" );
 $t->set_var( "mail_status_renderer", "" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $limit_array = array_unique( array( 20, 30, 40, 50, 60, 80, 100, 150, 200, $NumMessages ) );
 $currentMethod = eZPreferences::variable( "eZMail_MessagesPerPage" );

@@ -30,7 +30,7 @@
 // include_once( "eztip/classes/eztip.php" );
 // include_once( "eztip/classes/eztipcategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTipMain", "Language" );
 
 $t = new eZTemplate( "kernel/eztip/admin/" . $ini->variable( "eZTipMain", "AdminTemplateDir" ),
@@ -120,7 +120,7 @@ else
 
 
 // tips
-$tipList =& $category->tiplist( "time", true );
+$tipList = $category->tiplist( "time", true );
 
 $locale = new eZLocale( $Language );
 $i=0;

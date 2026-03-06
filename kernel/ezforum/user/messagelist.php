@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlocale.php" );
@@ -67,10 +67,10 @@ $t->set_block( "read_access_tpl", "hide_threads_tpl", "hide_threads" );
 //$t->set_var( "header_list", "" );
 $t->setAllStrings();
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->fetch();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( isset( $ForumMessages ) )
 {
@@ -102,7 +102,7 @@ else
 }
 $forum = new eZForum( $ForumID );
 
-$categories =& $forum->categories();
+$categories = $forum->categories();
 
 
 if ( $user )
@@ -114,11 +114,11 @@ if ( $user )
     if ( isset( $ShowThreads ) )
         $preferences->setVariable( "eZForum_Threads", "Show" );
 
-    $showThreads =& $preferences->variable( "eZForum_Threads" );
+    $showThreads = $preferences->variable( "eZForum_Threads" );
 }
 else
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
 
     if ( isset( $HideThreads ) )
         $session->setVariable( "eZForum_Threads", "Hide" );
@@ -132,14 +132,14 @@ else
 if ( $showThreads == "" )
     $showThreads = "Hide";
 
-$group =& $forum->group();
+$group = $forum->group();
 $viewer = $user;
 
 if ( is_a( $group, "eZUserGroup" ) )
 {
     if ( is_a( $viewer, "eZUser" ) )
     {
-        $groupList =& $viewer->groups();
+        $groupList = $viewer->groups();
         foreach ( $groupList as $userGroup )
         {
             if ( $userGroup->id() == $group->id() )
@@ -170,7 +170,7 @@ if ( count( $categories ) > 0 )
     $GlobalSectionID = eZForumCategory::sectionIDStatic( $category->id() );
 
     // init the section
-    $sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+    $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
     $sectionObject->setOverrideVariables();
 
 }
@@ -199,15 +199,15 @@ if ( $showThreads == "Hide" )
 {
     $t->set_var( "hide_threads", "" );
     $t->parse( "show_threads", "show_threads_tpl" );
-    $messageList =& $forum->messageTreeArray( $Offset, $UserLimit, false, false );
-    $messageCount =& $forum->messageCount( false, false );
+    $messageList = $forum->messageTreeArray( $Offset, $UserLimit, false, false );
+    $messageCount = $forum->messageCount( false, false );
 }
 else if ( $showThreads == "Show" )
 {
     $t->set_var( "show_threads", "" );
     $t->parse( "hide_threads", "hide_threads_tpl" );
-    $messageList =& $forum->messageTreeArray( $Offset, $UserLimit );
-    $messageCount =& $forum->messageCount( false, true );
+    $messageList = $forum->messageTreeArray( $Offset, $UserLimit );
+    $messageCount = $forum->messageCount( false, true );
 }
 
 if ( !$messageList )
@@ -219,7 +219,7 @@ if ( !$messageList )
 }
 else
 {
-    $db =& eZDB::globalDatabase();
+    $db = eZDB::globalDatabase();
 
     $level = 0;
     $i = 0;
@@ -302,7 +302,7 @@ else
 
                 $t->set_var( "author", $messageAuthor );
                 
-                $currentUser =& eZUser::currentUser();
+                $currentUser = eZUser::currentUser();
                 $t->set_var( "private_message", "" );
                 if ( ( $messageAuthor != $anonymous) && ($currentUser) )
                 { 

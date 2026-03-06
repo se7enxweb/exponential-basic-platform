@@ -34,7 +34,7 @@
 // include_once( "ezmail/classes/ezmail.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZBugMain", "Language" );
 
@@ -88,7 +88,7 @@ $t->set_var( "program_version", "" );
 
 if ( $Action == "Insert" )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
 
     if ( $user )
     {
@@ -118,7 +118,7 @@ if ( $Action == "Insert" )
 
 if ( $Action == "Update" )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
 
     if ( $user )
     {
@@ -332,7 +332,7 @@ if ( $Action == "Edit" )
     $t->set_var( "description_value", eZTextTool::nl2br( $bug->description() ) );
     $t->set_var( "action_value", "Update" );
 
-    $date =& $bug->created();
+    $date = $bug->created();
     $t->set_var( "bug_date", $locale->format( $date ) );
 
     if ( $bug->version() != "" )
@@ -342,18 +342,18 @@ if ( $Action == "Edit" )
     }
 
     $logList = eZBugLog::getByBug( $bug );
-    $cat =& $bug->category();
+    $cat = $bug->category();
     if ( $cat )
     {
         $categoryID = $cat->id();
     }
 
-    $module =& $bug->module();
+    $module = $bug->module();
     if ( $module )
         $moduleID = $module->id();
 
-    $pri =& $bug->priority();
-    $status =& $bug->status();
+    $pri = $bug->priority();
+    $status = $bug->status();
 
     if ( $status )
         $statusID = $status->id();
@@ -458,7 +458,7 @@ if ( $Action == "Edit" )
     {
         foreach ( $logList as $log )
         {
-            $date =& $log->created();
+            $date = $log->created();
             $t->set_var( "log_date", $locale->format( $date ) );
             $t->set_var( "log_description", $log->description() );
             $t->parse( "log_item", "log_item_tpl", true );

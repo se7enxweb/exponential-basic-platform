@@ -31,7 +31,7 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $move_item = true;
 
@@ -104,11 +104,11 @@ if ( isset ( $Key ) )
         $t->set_var( "voucher_created", $locale->format( $voucher->created() ) );
         $t->set_var( "voucher_id", $voucher->id() );
 
-        $voucherInfo =& $voucher->information();
+        $voucherInfo = $voucher->information();
 
         if ( $voucherInfo->mailMethod() == 1 )
         {
-            $mail =& $voucherInfo->online();
+            $mail = $voucherInfo->online();
             $t->set_var( "sent_email", $mail->url() );
             $t->set_var( "sent_description", $voucherInfo->description() );
         }

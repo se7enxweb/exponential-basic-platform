@@ -1165,9 +1165,9 @@ class eZINI
     function overrideDirs( $scope = null )
     {
         if ( $this->UseLocalOverrides == true )
-            $dirs =& $this->LocalOverrideDirArray;
+            $dirs = $this->LocalOverrideDirArray;
         else
-            $dirs =& self::$GlobalOverrideDirArray;
+            $dirs = self::$GlobalOverrideDirArray;
 
         return self::overrideDirsByScope( $dirs, $scope );
     }
@@ -1241,9 +1241,9 @@ class eZINI
     function setOverrideDirs( array $newDirs, $scope = false )
     {
         if ( $this->UseLocalOverrides == true )
-            $dirs =& $this->LocalOverrideDirArray;
+            $dirs = $this->LocalOverrideDirArray;
         else
-            $dirs =& self::$GlobalOverrideDirArray;
+            $dirs = self::$GlobalOverrideDirArray;
 
         if ( $scope === false )
             $dirs = $newDirs;
@@ -1282,9 +1282,9 @@ class eZINI
     function removeOverrideDir( $identifier, $scope = 'extension' )
     {
         if ( $this->UseLocalOverrides == true )
-            $dirs =& $this->LocalOverrideDirArray;
+            $dirs = $this->LocalOverrideDirArray;
         else
-            $dirs =& self::$GlobalOverrideDirArray;
+            $dirs = self::$GlobalOverrideDirArray;
 
         if ( !$identifier || !is_string( $identifier ) )
         {
@@ -1326,9 +1326,9 @@ class eZINI
             eZDebug::writeNotice( "Prepending override dir '$dir'", "eZINI" );
 
         if ( $this->UseLocalOverrides == true )
-            $dirs =& $this->LocalOverrideDirArray;
+            $dirs = $this->LocalOverrideDirArray;
         else
-            $dirs =& self::$GlobalOverrideDirArray;
+            $dirs = self::$GlobalOverrideDirArray;
 
         $scope = self::selectOverrideScope( $scope, $identifier, $dir, 'extension' );
 
@@ -1370,9 +1370,9 @@ class eZINI
             eZDebug::writeNotice( "Appending override dir '$dir'", __METHOD__ );
 
         if ( $this->UseLocalOverrides == true )
-            $dirs =& $this->LocalOverrideDirArray;
+            $dirs = $this->LocalOverrideDirArray;
         else
-            $dirs =& self::$GlobalOverrideDirArray;
+            $dirs = self::$GlobalOverrideDirArray;
 
         $scope = self::selectOverrideScope( $scope, $identifier, $dir, 'override' );
 
@@ -1754,7 +1754,7 @@ class eZINI
     /*!
      Fetches all defined placements for every setting and returns them as an associative array
     */
-    function &groupPlacements()
+    function groupPlacements()
     {
         if ( !$this->BlockValuesPlacement )
         {

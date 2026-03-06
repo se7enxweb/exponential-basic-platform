@@ -27,8 +27,8 @@
 //include_once( "classes/ezlocale.php" );
 //include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance('site.ini');
-$Language =& $ini->variable( "eZUserMain", "Language" );
+$ini = eZINI::instance('site.ini');
+$Language = $ini->variable( "eZUserMain", "Language" );
 $Locale = new eZLocale( $Language );
 $iso = $Locale->languageISO();
 
@@ -41,9 +41,9 @@ $t->set_file( array(
     "help_header_tpl" => "help_header.tpl"
     ) );
 
-$SiteURL =& $ini->variable( "site", "SiteURL" );
+$SiteURL = $ini->variable( "site", "SiteURL" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( $user )
 {

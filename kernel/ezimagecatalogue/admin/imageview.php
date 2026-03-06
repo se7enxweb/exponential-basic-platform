@@ -33,7 +33,7 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
@@ -48,7 +48,7 @@ $t->set_block( "image_view_tpl", "path_tpl", "path" );
 
 $t->setAllStrings();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $image = new eZImage( $ImageID );
      
@@ -62,7 +62,7 @@ $parent_category = $image->categories();
 
 if ( $ShowOriginal != "enabled" && !isset( $VariationID ) )
 {
-    $variation =& $image->requestImageVariation( $ini->variable( "eZImageCatalogueMain", "ImageViewWidth" ),
+    $variation = $image->requestImageVariation( $ini->variable( "eZImageCatalogueMain", "ImageViewWidth" ),
     $ini->variable( "eZImageCatalogueMain", "ImageViewHeight" ) );
 }
 else if ( isset( $VariationID ) )
@@ -71,7 +71,7 @@ else if ( isset( $VariationID ) )
     if ( $variation->imageID() != $ImageID )
     {
         
-        $variation =& $image->requestImageVariation( $ini->variable( "eZImageCatalogueMain", "ImageViewWidth" ),
+        $variation = $image->requestImageVariation( $ini->variable( "eZImageCatalogueMain", "ImageViewWidth" ),
         $ini->variable( "eZImageCatalogueMain", "ImageViewHeight" ) );
     }
 }
@@ -80,7 +80,7 @@ $t->set_var( "path", "" );
 $category = $image->categoryDefinition();
 if ( $category != -1 )
 {
-	$pathArray =& $category->path();
+	$pathArray = $category->path();
 	foreach ( $pathArray as $path )
 		{
 	    $t->set_var( "category_id", $path[0] );

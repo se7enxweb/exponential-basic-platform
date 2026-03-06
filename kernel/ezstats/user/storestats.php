@@ -51,7 +51,7 @@ ob_end_clean();
 $filePath = "design/base/images/design/1x1.gif";
 $fileSize = eZPBFile::filesize( $filePath );
 $fp = eZPBFile::fopen( $filePath, "r" );
-$content =& fread( $fp, $fileSize );
+$content = fread( $fp, $fileSize );
 
 $originalFileName = "1x1.gif";
 // $originalFileName = "1x1.png";

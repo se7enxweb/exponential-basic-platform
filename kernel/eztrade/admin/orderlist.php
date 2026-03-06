@@ -29,7 +29,7 @@
 // include_once( "classes/ezcurrency.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
@@ -47,17 +47,17 @@ $Language = $ini->variable( "eZTradeMain", "Language" );
 
 if ( isset( $Hide ) )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->setVariable( "OrderList", "Hide" );
 }
 
 if ( isset( $Show ) )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->setVariable( "OrderList", "Show" );
 }
 
-$checkMode =& eZSession::globalSession();
+$checkMode = eZSession::globalSession();
 if ( $checkMode->variable( "OrderList" ) == "Hide" )
     $HideFollowup = "on";
 else

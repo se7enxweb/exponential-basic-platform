@@ -49,7 +49,7 @@ class eZQDomGenerator
         $this->Contents = $contents;
 
         // user defined tags
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 
         $customTags = $ini->variable( "eZArticleMain", "CustomTags" );
 
@@ -59,7 +59,7 @@ class eZQDomGenerator
     /*!
       Generates valid XML data to use for storage.
     */
-    function &generateXML()
+    function generateXML()
     {
         // add the XML header.
         $newContents = "<?xml version=\"1.0\"?>";
@@ -78,7 +78,7 @@ class eZQDomGenerator
         {
             $tmpPage = $page;
 
-            $tmpPage =& $this->generatePage( $tmpPage );
+            $tmpPage = $this->generatePage( $tmpPage );
 
             $body .= "<page>" . $tmpPage  . "</page>";        
         }
@@ -95,7 +95,7 @@ class eZQDomGenerator
       \private
       
     */
-    function &generatePage( $tmpPage )
+    function generatePage( $tmpPage )
     {
         $tmpPage = $this->generateImage( $tmpPage );
 
@@ -132,10 +132,10 @@ class eZQDomGenerator
       \private
       
     */
-    function &generateUnknowns( $tmpPage )
+    function generateUnknowns( $tmpPage )
     {
-        $tmpPage =& preg_replace( "#< #", "&lt; ", $tmpPage );
-//        $tmpPage =& preg_replace( "# >#", " &gt;", $tmpPage );
+        $tmpPage = preg_replace( "#< #", "&lt; ", $tmpPage );
+//        $tmpPage = preg_replace( "# >#", " &gt;", $tmpPage );
         
         // make unknown tags readable.. look-ahead assertion is used ( ?! ) 
 //        $tmpPage = preg_replace( "/<(?!(page|php|\/|image|cpp|shell|sql|hea|lin|iconlink|per|bol|ita|und|str|pre|ver|lis|ezhtml|html|java|ezanchor|mail|module|bullet))/", "&lt;", $tmpPage );
@@ -154,7 +154,7 @@ class eZQDomGenerator
       \private
       Converts image tags to XML tags.
     */
-    function &generateImage( $tmpPage )
+    function generateImage( $tmpPage )
     {
         $tmpPage = preg_replace( "/(<image\s+([0-9]+)\s+([a-z]+)\s+([a-z]+?)\s*>)/", "<image id=\"\\2\" align=\"\\3\" size=\"\\4\" />", $tmpPage );
         
@@ -173,7 +173,7 @@ class eZQDomGenerator
       \private
       Converts an rollover image to XML tags.
     */
-    function &generateRollOver( $tmpPage )
+    function generateRollOver( $tmpPage )
     {
         preg_match( "/<rollover\s+([0-9]+)\s+([0-9]+)\s+([^\s]+)\s+(.+)\s*>/i", $tmpPage, $matchArray );
         
@@ -188,7 +188,7 @@ class eZQDomGenerator
       \private
       Converts media tags to XML tags.
     */
-    function &generateMedia( $tmpPage )
+    function generateMedia( $tmpPage )
     {
         // default image tag <media id>
         $tmpPage = preg_replace( "/(<media\s+?([0-9]+?)\s*?>)/", "<media id=\"\\2\" />", $tmpPage );
@@ -199,7 +199,7 @@ class eZQDomGenerator
       \private
       Converts file tags to XML tags.
     */
-    function &generateFile( $tmpPage )
+    function generateFile( $tmpPage )
     {
         // default image tag <file id text>
         $tmpPage = preg_replace( "/(<file\s+?([0-9]+)\s*(.*?)>)/", "<file id=\"\\2\" text=\"\\3\" />", $tmpPage );
@@ -207,7 +207,7 @@ class eZQDomGenerator
     }
     
     
-    function &generateHr( $tmpPage )
+    function generateHr( $tmpPage )
     {
         // default horizontal line tag <hr>
         $tmpPage = preg_replace( "/(<hr\s*?>)/", "<hr />", $tmpPage );
@@ -219,7 +219,7 @@ class eZQDomGenerator
       \private
       
     */
-    function &generateHeader( $tmpPage )
+    function generateHeader( $tmpPage )
     {
         $tmpPage = preg_replace( "/(<header\s+?([^ ]+?)\s*?>)/", "<header level=\"\\2\">", $tmpPage );
 
@@ -231,7 +231,7 @@ class eZQDomGenerator
     /*!
       \private
     */      
-    function &generateTable( $tmpPage )
+    function generateTable( $tmpPage )
     {
 
         $tmpPage = preg_replace( "/(<table\s+([0-9]+[^ ]??)\s+([0-9]+?)\s*>)/", "<table width=\"\\2\" border=\"\\3\">", $tmpPage );
@@ -248,7 +248,7 @@ class eZQDomGenerator
       \private
        
     */
-    function &generateForm( $tmpPage )
+    function generateForm( $tmpPage )
     {
         $tmpPage = preg_replace( "/(<form\s*?>)/", "<form />", $tmpPage );
         
@@ -259,7 +259,7 @@ class eZQDomGenerator
       \private
       Converts the link tags to valid XML tags.
     */
-    function &generateLink( $tmpPage )
+    function generateLink( $tmpPage )
     {
         // convert <link ez.no ez systems> to valid xml
         // $tmpPage = "<link ez.no ez systems> <link ez.no ez systems>";
@@ -295,7 +295,7 @@ class eZQDomGenerator
     /*!
       Will encode all character in <html></html> and <pre></pre> tags.
     */
-    function &generateHTML( $tmpPage )
+    function generateHTML( $tmpPage )
     {
         // Begin html tag replacer
         // replace all < and >  between <html> and </html>
@@ -391,14 +391,14 @@ class eZQDomGenerator
       If htmlSpecialChars == true the output is converted to HTML special chars like:
       &gt; and &lt;...
     */
-    function &decodeXML( $htmlSpecialChars=false )
+    function decodeXML( $htmlSpecialChars=false )
     {
         $contentsArray = array();
         
-        $xml =& eZXML::domTree( $this->Contents );
+        $xml = eZXML::domTree( $this->Contents );
 
-        //        $xml =& xmltree( $this->Contents );
-        //        $xml =& qdom_tree( $this->Contents );
+        //        $xml = xmltree( $this->Contents );
+        //        $xml = qdom_tree( $this->Contents );
 
         if ( !$xml )
         {
@@ -491,7 +491,7 @@ class eZQDomGenerator
     /*!
       Decodes rollover tags
     */     
-    function &decodeRollOver(  $paragraph )
+    function decodeRollOver(  $paragraph )
     {
         switch ( $paragraph->name )
         {
@@ -554,7 +554,7 @@ class eZQDomGenerator
         /*!
       Decodes header tags
     */     
-    function &decodeHeader(  $paragraph )
+    function decodeHeader(  $paragraph )
     {
     	$pageContent = '';
     	
@@ -599,7 +599,7 @@ class eZQDomGenerator
       \private
       
     */
-    function &decodeImage( $paragraph )
+    function decodeImage( $paragraph )
     {
     	$imageCaptionOverride = $imageID = $imageAlignment = $imageSize = $imageHref = 
     	$imageTarget = '';
@@ -670,7 +670,7 @@ class eZQDomGenerator
       \private
       
     */
-    function &decodeMedia( $paragraph )
+    function decodeMedia( $paragraph )
     {
         // media 
         if ( $paragraph->name == "media" )
@@ -697,7 +697,7 @@ class eZQDomGenerator
       \private
       
     */
-    function &decodeFile( $paragraph )
+    function decodeFile( $paragraph )
     {
         if ( $paragraph->name == "file" )
         {
@@ -725,7 +725,7 @@ class eZQDomGenerator
     }
     
     
-    function &decodeHr( $paragraph )
+    function decodeHr( $paragraph )
     {
         if ( $paragraph->name == "hr" )
         {            
@@ -739,7 +739,7 @@ class eZQDomGenerator
     /*!
       \private
     */
-    function &decodeLink( $paragraph )
+    function decodeLink( $paragraph )
     {
         $href = false;
     	$target = $pageContent = '';
@@ -908,7 +908,7 @@ class eZQDomGenerator
     /*!
       \private
     */
-    function &decodeTable( $paragraph )
+    function decodeTable( $paragraph )
     {
         if ( $paragraph->name == "table" )
         {
@@ -1017,7 +1017,7 @@ class eZQDomGenerator
       \private
       
     */
-    function &decodeStandards(  $paragraph )
+    function decodeStandards(  $paragraph )
     {
         $pageContent = "";
         $tmpContent = "";
@@ -1166,7 +1166,7 @@ class eZQDomGenerator
       \private
       Decodes the custom tags.
     */
-    function &decodeCustom(  $paragraph )
+    function decodeCustom(  $paragraph )
     {
         $pageContent = "";
         $tagName = $paragraph->name;

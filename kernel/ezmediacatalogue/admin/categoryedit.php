@@ -51,7 +51,7 @@ if ( $Action == "Edit" ) {
 
     $Name = $category->name();
     $Description = $category->description();
-    $parent =& $category->parent();
+    $parent = $category->parent();
     if ($parent)
         $CurrentCategoryID = $parent->id();
     else
@@ -64,7 +64,7 @@ if ( isset( $Cancel ) )
     exit();
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user )
 {
@@ -72,7 +72,7 @@ if ( !$user )
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZMediaCatalogueMain", "Language" );
 
@@ -301,16 +301,16 @@ if ( $Action == "Edit" )
     $t->set_var( "category_id", $category->id() );
     $t->set_var( "category_description", $category->description() );
 
-    $parent =& $category->parent();
+    $parent = $category->parent();
 
     if ( $parent )
         $CurrentCategoryID = $parent->id();
 
     $t->set_var( "action_value", "update" );
 
-    $readGroupArrayID =& eZObjectPermission::getGroups( $category->id(), "mediacatalogue_category", "r", false );
+    $readGroupArrayID = eZObjectPermission::getGroups( $category->id(), "mediacatalogue_category", "r", false );
 
-    $writeGroupArrayID =& eZObjectPermission::getGroups( $category->id(), "mediacatalogue_category", "w", false );
+    $writeGroupArrayID = eZObjectPermission::getGroups( $category->id(), "mediacatalogue_category", "w", false );
 }
 
 // Print out all the groups.
@@ -368,7 +368,7 @@ foreach ( $groups as $group )
 
 $category = new eZMediaCategory() ;
 
-$categoryList =& $category->getTree( );
+$categoryList = $category->getTree( );
 
 if ( count ( $categoryList ) == 0 )
 {

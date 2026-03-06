@@ -28,7 +28,7 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproduct.php" );
@@ -50,7 +50,7 @@ $category = new eZProductCategory(  );
 $category->get( $CategoryID );
 
 
-$categoryList =& $category->getByParent( $category );
+$categoryList = $category->getByParent( $category );
 
 // categories
 foreach ( $categoryList as $categoryItem )
@@ -58,7 +58,7 @@ foreach ( $categoryList as $categoryItem )
     $t->set_var( "top_category_id", $categoryItem->id() );
     $t->set_var( "top_category_name", $categoryItem->name() );
 
-    $subItemList =& $category->getByParent( $categoryItem );
+    $subItemList = $category->getByParent( $categoryItem );
 
     $t->set_var( "level_1_category", "" );
     

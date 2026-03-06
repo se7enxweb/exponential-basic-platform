@@ -27,8 +27,8 @@
 // include_once( "ezarticle/classes/ezarticletool.php" );
 
 $article = new eZArticle();
-$articleValidArray =& $article->getAllValid();
-$articleUnValid =& $article->getAllUnValid();
+$articleValidArray = $article->getAllValid();
+$articleUnValid = $article->getAllUnValid();
 
 if ( count ( $articleValidArray ) > 0 )
 {

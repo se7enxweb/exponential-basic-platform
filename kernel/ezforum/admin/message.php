@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $AllowHTML = $ini->variable( "eZForumMain", "AllowHTML" );
 $Language = $ini->variable( "eZForumMain", "Language" );

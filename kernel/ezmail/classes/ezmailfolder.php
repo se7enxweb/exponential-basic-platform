@@ -66,7 +66,7 @@ class eZMailFolder
     */
     function delete( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id == -1 )
             $id = $this->ID;
@@ -83,7 +83,7 @@ class eZMailFolder
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $name = $db->escapeString( $this->Name );
         $db->begin();
@@ -128,7 +128,7 @@ class eZMailFolder
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -248,7 +248,7 @@ class eZMailFolder
        if ( is_a( $mail, "eZMail" ) )
            $mail = $mail->id();
 
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $db->begin();
        if ( $removeFromOld == true )
            $results[] = $db->query( "DELETE FROM eZMail_MailFolderLink WHERE MailID='$mail'" );
@@ -281,7 +281,7 @@ class eZMailFolder
             $query = "DELETE FROM eZMail_MailFolderLink
                        WHERE FolderID='$this->ID' AND MailID='$mailID'";
 
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
            $db->query( $query );
        }
     }
@@ -295,7 +295,7 @@ class eZMailFolder
     {
       if ( is_a( $parent, "eZMailFolder" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $return_array = array();
             $folder_array = array();
@@ -327,7 +327,7 @@ class eZMailFolder
     static public function getByUser( $user = false, $withSpecialFolders=false, $parentFolder = -1 )
     {
         if ( !is_a( $user, "eZUser" ) )
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
 
         $noSpecial = "";
         if ( $withSpecialFolders == false )
@@ -341,7 +341,7 @@ class eZMailFolder
         $return_array = array();
         $res = array();
         $userid = $user->id();
-        $database =& eZDB::globalDatabase();
+        $database = eZDB::globalDatabase();
         $query = "SELECT ID FROM eZMail_Folder WHERE UserID='$userid' $noSpecial $parentFolderSQL";
         $database->array_query( $res, $query );
 
@@ -356,7 +356,7 @@ class eZMailFolder
     /*
       Creates a tree of the folders for the current user.
      */
-    static public function &getTree( $parentID=0, $level=0 )
+    static public function getTree( $parentID=0, $level=0 )
     {
         $folderList = eZMailFolder::getByUser( false, false, $parentID );
 
@@ -382,7 +382,7 @@ class eZMailFolder
       $offset and $limit sets how many mail to return in one bunch and where in the list to start.
       Static if the folderID is supplied.
      */
-    function &mail( $sortmode="subject_asc", $offset=0, $limit=50, $folderID = -1 )
+    function mail( $sortmode="subject_asc", $offset=0, $limit=50, $folderID = -1 )
     {
         if ( $folderID == -1 )
             $folderID = $this->ID;
@@ -400,7 +400,7 @@ class eZMailFolder
             case "size_desc" : $orderBySQL = "Mail.Size DESC"; break;
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $query = "SELECT Mail.ID FROM eZMail_Mail AS Mail, eZMail_MailFolderLink AS Link
                   WHERE Mail.ID=Link.MailID AND Link.FolderID='$folderID'
                   ORDER BY $orderBySQL";
@@ -421,7 +421,7 @@ class eZMailFolder
      */
     function mailCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $query = "SELECT Count( Mail.ID ) as Count FROM eZMail_Mail AS Mail, eZMail_MailFolderLink AS Link
                   WHERE Mail.ID=Link.MailID AND Link.FolderID='$this->ID'";
         $db->query_single( $result, $query );
@@ -433,7 +433,7 @@ class eZMailFolder
      */
     function deleteAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $query = "SELECT Mail.ID FROM eZMail_Mail AS Mail, eZMail_MailFolderLink AS Link
                   WHERE Mail.ID=Link.MailID AND Link.FolderID='$this->ID'";
 
@@ -448,7 +448,7 @@ class eZMailFolder
      */
     function count( $unreadOnly = false, $folderID =-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $folderID == -1 )
             $folderID = $this->ID;
@@ -476,21 +476,21 @@ class eZMailFolder
     static public function getSpecialFolder( $specialType, $user=false )
     {
         if ( !is_a( $user, "eZUser" ) )
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
 
         $userid = $user->id();
 
         if ( $userid == 0 )
             return false;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT ID FROM eZMail_Folder WHERE FolderType='$specialType' AND UserID='$userid'" );
 
 //        echo $res[$db->fieldName( "ID" )];
         if ( $res && $res[$db->fieldName( "ID" )] != "" )
             return new eZMailFolder(  $res[$db->fieldName( "ID" )] );
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $Language = $ini->variable( "eZMailMain", "Language" );
         $folderNameIni = new eZINI( "kernel/ezmail/user/intl/" . $Language . "/folderlist.php.ini" );
         switch( $specialType )
@@ -544,7 +544,7 @@ class eZMailFolder
     function isChild( $folderID, $check_for_self = false )
     {
         $return_value = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( is_a( $folderID, "eZMailFolder" ) )
             $folderID = $folderID->id();
@@ -572,7 +572,7 @@ class eZMailFolder
         if ( is_a( $user, "eZUser" ) )
             $user = $user->id();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT UserID from eZMail_Folder WHERE ID='$folderID'" );
         if ( $res[$db->fieldName( "UserID" )] == $user )
             return true;

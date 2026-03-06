@@ -34,14 +34,16 @@
 
 class eZSQLite3DB
 {
+    public $Type;
+
     function __construct( $databaseFileName  )
     {
-        $this->DB = $db;
+        $this->DB = null;
         $this->Type = 'sqlite';
         $this->DatabaseFileName = $databaseFileName;
 
-        $ini =& eZINI::instance( 'site.ini' );
-        // $databaseFilePath =& $ini->variable( "site", "DabaseSQLiteFile" );
+        $ini = eZINI::instance( 'site.ini' );
+        // $databaseFilePath = $ini->variable( "site", "DabaseSQLiteFile" );
 
         $this->Database = $this->connect( $this->DatabaseFileName );
         $numAttempts = 1;
@@ -174,35 +176,47 @@ class eZSQLite3DB
       Execute a query on the global MySQL database link.  If it returns an error,
       the script is halted and the attempted SQL query and MySQL error message are printed.
     */
-    function &query( $sql, $print=false, $debug=false )
+    function query( $sql, $print=false, $debug=false )
     {
+        $GLOBALS['_db_query_count'] = ( $GLOBALS['_db_query_count'] ?? 0 ) + 1;
+        $_t = hrtime( true );
+
         if ( $debug == true )
         {
+            /*
             echo "Executing SQL: $sql<hr>";
             
             // include_once( "kernel/classes/ezbenchmark.php" );
             
             $bench = new eZBenchmark();
             $bench->start();
-            
+            */
             $result = $this->Database->exec( $sql );
+            /*
             $bench->stop();
             if ( $bench->elapsed() > 0.01 )
             {
                 $GLOBALS["DDD"] .= $sql . "<br>";
                 $GLOBALS["DDD"] .= $bench->printResults( true ) . "<br>";
             }
-
+            */
         }
         else
         {
             $result = $this->Database->exec( $sql );
         }
 
-        // eZPBLog::writeNotice( $sql );
-        $ini = eZINI::instance( 'site.ini' );
-        $debug = $ini->variable( 'site', 'DebugOutput' ) == 'enabled' ? true : false;
-        $debugDatabaseTransactions = $ini->variable( 'site', 'DebugDatabaseTransactions' ) == 'enabled' ? true : false;
+        $GLOBALS['_db_query_ms'] = ( $GLOBALS['_db_query_ms'] ?? 0.0 ) + ( hrtime( true ) - $_t ) / 1e6;
+
+        // Cache debug flags statically so we don't call eZINI on every query
+        static $debugOutput = null, $debugDatabaseTransactions = null;
+        if ( $debugOutput === null )
+        {
+            $ini = eZINI::instance( 'site.ini' );
+            $debugOutput              = $ini->variable( 'site', 'DebugOutput' ) == 'enabled';
+            $debugDatabaseTransactions = $ini->variable( 'site', 'DebugDatabaseTransactions' ) == 'enabled';
+        }
+        $debug = $debugOutput;
 
         if ( $result === false )
         {
@@ -316,7 +330,10 @@ class eZSQLite3DB
         {
             $sql .= " LIMIT $offset, $limit ";
         }
+        $GLOBALS['_db_query_count'] = ( $GLOBALS['_db_query_count'] ?? 0 ) + 1;
+        $_t = hrtime( true );
         $results = $this->Database->query( $sql );
+        $GLOBALS['_db_query_ms'] = ( $GLOBALS['_db_query_ms'] ?? 0.0 ) + ( hrtime( true ) - $_t ) / 1e6;
 
         if ( $results == false )
         {

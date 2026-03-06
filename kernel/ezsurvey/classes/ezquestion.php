@@ -46,7 +46,7 @@
                         WHERE
                            ID = '$id'";
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->array_query( $question_array, $SqlQuery );
             if ( count( $question_array ) > 1 )
@@ -86,7 +86,7 @@
 
         public static function getAll( $OrderBy = "ID", $SurveyID = "", $LimitStart = "None", $LimitBy = "None" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             switch ( strtolower( $OrderBy ) )
             {
@@ -113,7 +113,7 @@
 
                 if ( is_numeric( $LimitBy ) )
                 {
-                    $LimitArray =& array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
+                    $LimitArray = array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
                 }
             }
             else
@@ -152,7 +152,7 @@
         function store()
         {
             $ret = false;
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             if ( !isSet( $this->ID ) )
@@ -203,7 +203,7 @@
 
         function delete()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             eZResponseQuestion::deleteByQuestion( $this->ID );
@@ -242,7 +242,7 @@
         {
             $SqlQuery = "SELECT ID, Type FROM eZSurvey_QuestionType";
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->array_query( $type_array, $SqlQuery );
 
@@ -259,7 +259,7 @@
                         ORDER BY
                            $OrderBy";
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->array_query( $questionChoice_array, $SqlQuery );
 
@@ -275,7 +275,7 @@
         
         function numberOfQuestionsChoices()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->array_query( $count, "SELECT count(*) as A FROM eZSurvey_QuestionChoice WHERE QuestionID = " . $this->ID );
 
@@ -284,7 +284,7 @@
         
         function questionNumber()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $SqlQuery = "SELECT count(*) as A FROM eZSurvey_Question
                         WHERE SurveyID = '" . $this->SurveyID . "'
@@ -309,7 +309,7 @@
                          ORDER BY
                            Position DESC";
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->array_query( $question_array, $SqlQuery, Array( "Offset" => 0, "Limit" => 1 ) );
 
@@ -353,7 +353,7 @@
                          ORDER BY
                            Position";
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->array_query( $question_array, $SqlQuery, Array( "Offset" => 0, "Limit" => 1 ) );
 
@@ -522,7 +522,7 @@
 
         function stats()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             
             $questionChoices = $this->questionChoices();
             $numberResponses = eZResponse::numberOfResponses( $this->SurveyID );
@@ -665,7 +665,7 @@
             else
             {
                 //$this->Position = eZNovisSequence::GetNextValue( "QuestionPosition" );
-                $db =& eZDB::globalDatabase();
+                $db = eZDB::globalDatabase();
                 $db->lock( "eZSurvey_Question" );
                 $this->Position = $db->nextID( "eZSurvey_Question", "Position" );
                 $db->unlock();

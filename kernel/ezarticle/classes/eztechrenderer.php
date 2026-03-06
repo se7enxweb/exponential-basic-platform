@@ -135,7 +135,7 @@ class eZTechRenderer
     /*!
       Returns the XHTML contents of the introduction of the article.
     */
-    function &renderIntro()
+    function renderIntro()
     {
 //          print( "<pre>" );
 
@@ -143,7 +143,7 @@ class eZTechRenderer
 
 //          print_r( $xml );
 
-//          $xml =& qdom_tree( $this->Article->contents() );
+//          $xml = qdom_tree( $this->Article->contents() );
 
 //          print_r( $xml );
 
@@ -207,11 +207,11 @@ class eZTechRenderer
 
       Returns an array( $intro, $contents );
     */
-    function &renderPage( $pageNumber=0 )
+    function renderPage( $pageNumber=0 )
     {
-        $xml =& xmltree( $this->Article->contents() );
+        $xml = xmltree( $this->Article->contents() );
 
-//        $xml =& qdom_tree( $this->Article->contents() );
+//        $xml = qdom_tree( $this->Article->contents() );
 
         $returnArray = array( );
 
@@ -225,7 +225,7 @@ class eZTechRenderer
             $body = array();
 
             $this->PrevTag = "";
-            $articleImages =& $this->Article->images();
+            $articleImages = $this->Article->images();
             $articleID = $this->Article->id();
 
             foreach ( $xml->children as $child )
@@ -324,7 +324,7 @@ class eZTechRenderer
         return $returnArray;
     }
 
-    function &renderPlain( $pageContent, $paragraph )
+    function renderPlain( $pageContent, $paragraph )
     {
         // ordinary text
         if ( $paragraph->name == "#text" || $paragraph->name == "text" )
@@ -341,7 +341,7 @@ class eZTechRenderer
     }
 
 
-    function &renderLink( $pageContent, $paragraph )
+    function renderLink( $pageContent, $paragraph )
     {
         global $GlobalSiteIni;
 
@@ -455,7 +455,7 @@ class eZTechRenderer
     /*!
       \private
     */
-    function &renderModule( $pageContent, $paragraph )
+    function renderModule( $pageContent, $paragraph )
     {
         // ordinary text
         if ( $paragraph->name == "module" )
@@ -486,7 +486,7 @@ class eZTechRenderer
             if ( file_exists( $moduleFile ) )
             {
                 // save the buffer contents
-                $buffer =& ob_get_contents();
+                $buffer = ob_get_contents();
                 ob_end_clean();
 
                 // fetch the module printout
@@ -510,7 +510,7 @@ class eZTechRenderer
     }
 
 
-    function &renderImage( $pageContent, $paragraph, $articleImages )
+    function renderImage( $pageContent, $paragraph, $articleImages )
     {
         global $GlobalSiteIni;
 
@@ -556,7 +556,7 @@ class eZTechRenderer
             // add image if a valid image was found, else report an error in the log.
             if ( is_a( $image, "eZImage" ) )
             {
-                $ini =& eZINI::instance( 'site.ini' );
+                $ini = eZINI::instance( 'site.ini' );
 
                                 // store the relative ID to the image
                 $this->UsedImageList[] = $imageID;
@@ -565,19 +565,19 @@ class eZTechRenderer
                 {
                     case "small" :
                     {
-                        $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "SmallImageWidth" ),
+                        $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "SmallImageWidth" ),
                         $ini->variable( "eZArticleMain", "SmallImageHeight" ) );
                     }
                     break;
                     case "medium" :
                     {
-                        $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "MediumImageWidth" ),
+                        $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "MediumImageWidth" ),
                         $ini->variable( "eZArticleMain", "MediumImageHeight" ) );
                     }
                     break;
                     case "large" :
                     {
-                        $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "LargeImageWidth" ),
+                        $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "LargeImageWidth" ),
                         $ini->variable( "eZArticleMain", "LargeImageHeight" ) );
                     }
                     break;
@@ -590,7 +590,7 @@ class eZTechRenderer
 
                     default :
                     {
-                        $variation =& $image->requestImageVariation( $ini->variable( "eZArticleMain", "MediumImageWidth" ),
+                        $variation = $image->requestImageVariation( $ini->variable( "eZArticleMain", "MediumImageWidth" ),
                         $ini->variable( "eZArticleMain", "MediumImageHeight" ) );
                     }
                 }
@@ -649,7 +649,7 @@ class eZTechRenderer
         return $pageContent;
     }
 
-    function &renderCode( $pageContent, $paragraph )
+    function renderCode( $pageContent, $paragraph )
     {
         // php code
         if ( $paragraph->name == "php" )
@@ -707,7 +707,7 @@ class eZTechRenderer
         return $pageContent;
     }
 
-    function &renderStandards( $pageContent, $paragraph )
+    function renderStandards( $pageContent, $paragraph )
     {
         // header
         if ( $paragraph->name == "header" )
@@ -749,9 +749,9 @@ class eZTechRenderer
         // bullet list
         if ( $paragraph->name == "bullet" )
         {
-            $tmpContent =& trim( $paragraph->children[0]->content );
+            $tmpContent = trim( $paragraph->children[0]->content );
 
-            $tmpContent =& preg_replace( "#^(.*)$#m", "<li>\\1</li>", $tmpContent );
+            $tmpContent = preg_replace( "#^(.*)$#m", "<li>\\1</li>", $tmpContent );
 
             $pageContent .= "<ul>" . $tmpContent . "</ul>";
         }
@@ -764,7 +764,7 @@ class eZTechRenderer
       \private
       Returns a php highlighted string.
     */
-    function &phpHighlight( $string )
+    function phpHighlight( $string )
     {
         $string = preg_replace ( "/(<)/", "&lt;", $string );
         $string = preg_replace ( "/(>)/", "&gt;", $string );
@@ -810,7 +810,7 @@ class eZTechRenderer
       \private
       Returns a sql highlighted string.
     */
-    function &sqlHighlight( $string )
+    function sqlHighlight( $string )
     {
 
         // some special characters
@@ -868,7 +868,7 @@ class eZTechRenderer
       \private
       Returns a c++ highlighted string.
     */
-    function &cppHighlight( $string )
+    function cppHighlight( $string )
     {
         $string = preg_replace ( "/(<)/", "&lt;", $string );
         $string = preg_replace ( "/(>)/", "&gt;", $string );
@@ -911,7 +911,7 @@ class eZTechRenderer
       \private
       Returns a shell script highlighted string.
     */
-    function &shellHighlight( $string )
+    function shellHighlight( $string )
     {
         $reservedWords = array( "/(IF )/i",
                                 "/(FI )/i",
@@ -939,7 +939,7 @@ class eZTechRenderer
       \private
       Returns a perl highlighted string.
     */
-    function &perlHighlight( $string )
+    function perlHighlight( $string )
     {
         $string = preg_replace ( "/(<)/", "&lt;", $string );
         $string = preg_replace ( "/(>)/", "&gt;", $string );
@@ -981,7 +981,7 @@ class eZTechRenderer
       \private
       Returns a lisp highlighted string.
     */
-    function &lispHighlight( $string )
+    function lispHighlight( $string )
     {
         $len = strlen( $string );
         $index = 0;
@@ -1111,7 +1111,7 @@ class eZTechRenderer
 //          return $string;
     }
 
-    function &sptobsp( $string )
+    function sptobsp( $string )
     {
         preg_replace( "# #m", "&nbsp;", $string );
         return $string;
@@ -1121,7 +1121,7 @@ class eZTechRenderer
       \private
       Returns a java highlighted string.
     */
-    function &javaHighlight( $string )
+    function javaHighlight( $string )
     {
         $string = preg_replace ( "/(<)/", "&lt;", $string );
         $string = preg_replace ( "/(>)/", "&gt;", $string );
@@ -1167,9 +1167,9 @@ class eZTechRenderer
       \private
       Returns a html highlighted string.
     */
-    function &htmlHighlight( $string )
+    function htmlHighlight( $string )
     {
-        $string =& htmlspecialchars( $string );
+        $string = htmlspecialchars( $string );
 
         $string = preg_replace( "#(&lt;.*?&gt;)#", "<font color=\"blue\">\\1</font>", $string );
 

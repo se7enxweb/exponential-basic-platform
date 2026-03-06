@@ -40,7 +40,7 @@
 
   // get the preferences
   $preferences = new eZPreferences();
-  $color =& $preferences->variable( "Color" );
+  $color = $preferences->variable( "Color" );
 
   if ( $color )
   {
@@ -76,10 +76,10 @@ class eZPreferences
     */
     function variableArray( $name, $group = false )
     {
-        $val =& $this->variable( $name, $group );
+        $val = $this->variable( $name, $group );
         if ( $val != "" )
         {
-            $val =& explode( ";", $val );
+            $val = explode( ";", $val );
         }
         else
             $val = array();
@@ -94,13 +94,13 @@ class eZPreferences
     static public function variable( $name, $group = false )
     {
         $ret = false;
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         if( !$user )
             return 0;
 
         if ( is_a( $user, "eZUser" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $userID = $user->id();
 
             if ( !is_bool( $group ) )
@@ -127,7 +127,7 @@ class eZPreferences
     static public function setVariable( $name, $value, $group = false )
     {
         $ret = false;
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         if( !$user )
             return 0;
 
@@ -135,9 +135,9 @@ class eZPreferences
         {
             if ( is_array( $value ) )
             {
-                $value =& implode( ";", $value );
+                $value = implode( ";", $value );
             }
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $dbError = false;
             $db->begin( );

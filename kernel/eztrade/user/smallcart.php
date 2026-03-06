@@ -30,7 +30,7 @@
 
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $RequireQuantity = $ini->variable( "eZTradeMain", "RequireQuantity" ) == "true";
@@ -68,7 +68,7 @@ if ( !$session->fetch() )
     $session->store();
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $cart = $cart->getBySession( $session );
 
@@ -98,7 +98,7 @@ $t->set_block( "cart_item_list_tpl", "cart_item_tpl", "cart_item" );
 $t->set_block( "cart_item_tpl", "product_image_tpl", "product_image" );
 $t->set_block( "cart_item_list_tpl", "cart_item_prelist_tpl", "cart_item_prelist" );
 // fetch the cart items
-$items =& $cart->items( );
+$items = $cart->items( );
 
 $locale = new eZLocale( $Language );
 $currency = new eZCurrency();
@@ -127,8 +127,8 @@ foreach ( $items as $item )
 
     if  ( $image )
     {
-        $thumbnail =& $image->requestImageVariation( $hotDealImageWidth, $hotDealImageHeight );
-//        $thumbnail =& $image->requestImageVariation( 109, 109 );
+        $thumbnail = $image->requestImageVariation( $hotDealImageWidth, $hotDealImageHeight );
+//        $thumbnail = $image->requestImageVariation( 109, 109 );
         
         if ( $thumbnail )
         {
@@ -189,7 +189,7 @@ foreach ( $items as $item )
 
         $t->set_var( "cart_item_count", $item->count() );
 
-        $optionValues =& $item->optionValues();
+        $optionValues = $item->optionValues();
         $Quantity = $product->totalQuantity();
 
         $min_quantity = false;
@@ -197,8 +197,8 @@ foreach ( $items as $item )
         {
             foreach ( $optionValues as $optionValue )
             {
-                $option =& $optionValue->option();
-                $value =& $optionValue->optionValue();
+                $option = $optionValue->option();
+                $value = $optionValue->optionValue();
                 $value_quantity = $value->totalQuantity();
                 if ( !(is_bool( $value_quantity ) and !$value_quantity) )
                 {

@@ -29,7 +29,7 @@
 // include_once( "ezexample/classes/ezexample.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $tpl = new eZTemplate( "kernel/ezexample/user/" . $ini->variable( "eZUserMain", "TemplateDir" ),
                        "kernel/ezexample/user/" . "intl", $Language, "listtable.php" );
@@ -38,7 +38,7 @@ $tpl->setAllStrings();
 // get all fields from the database.
 
 $field = new eZExample( );
-$fieldArray =& $field->getAll();
+$fieldArray = $field->getAll();
 
 // parse the template.
 

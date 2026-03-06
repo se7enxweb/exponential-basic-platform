@@ -28,7 +28,7 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZGroupEventCalendarMain", "Language" );
 $SiteStyle = $ini->variable( "site", "SiteStyle" );
@@ -49,7 +49,7 @@ $t->set_block( "file_list_tpl", "file_tpl", "file" );
 
 $event = new eZGroupEvent( $EventID );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->setVariable( "FileListReturnTo", $REQUEST_URI );
 $session->setVariable( "NameInBrowse", $event->name() );
 
@@ -72,7 +72,7 @@ $t->set_var( "event_name", $event->name() );
 
 $t->set_var( "site_style", $SiteStyle );
 
-$files =& $event->files();
+$files = $event->files();
 if ( count( $files ) == 0 )
 {
     $t->set_var( "file_list", "" );

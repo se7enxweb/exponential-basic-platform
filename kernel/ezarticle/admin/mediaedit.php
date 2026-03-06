@@ -33,7 +33,7 @@
 // include_once( "ezmediacatalogue/classes/ezmediatype.php" );
 // include_once( "ezuser/classes/ezauthor.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
@@ -173,7 +173,7 @@ if ( is_numeric( $MediaID ) )
 
     if ( $media->fileExists( true ) )
     {
-        $mediaPath =& $media->filePath( true );
+        $mediaPath = $media->filePath( true );
         $size = eZPBFile::filesize( $mediaPath );
     }
     else

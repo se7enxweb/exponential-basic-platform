@@ -35,7 +35,7 @@
 // include_once( "eztodo/classes/eztodo.php" );
 // include_once( "eztodo/classes/ezstatus.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTodoMain", "Language" );
 
 

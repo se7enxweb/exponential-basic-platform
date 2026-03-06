@@ -75,7 +75,7 @@ class eZCartVoucherItem
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         
         if ( !isset( $this->ID ) )
@@ -123,7 +123,7 @@ class eZCartVoucherItem
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         
         if ( $id != "" )
@@ -153,7 +153,7 @@ class eZCartVoucherItem
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
             
         $res[] = $db->query( "DELETE FROM eZTrade_CartVoucherItem WHERE ID='$this->ID'" );

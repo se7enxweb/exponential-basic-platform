@@ -53,7 +53,7 @@ class eZFormRenderer
     */
     function __construct( $form = "" )
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         if ( is_a( $form, "eZForm" ) )
         {
             $this->Form = $form;
@@ -121,16 +121,16 @@ class eZFormRenderer
     /*!
         Renders the element which are given as an argument based on its type.
      */
-    function &renderElement( $element )
+    function renderElement( $element )
     {
         $output = "";
         $target = '';
         if ( is_a( $element, "eZFormElement" ) )
         {
-            $subItems =& $element->fixedValues();
+            $subItems = $element->fixedValues();
             $this->Template->set_var( "sub_item", "" );
 
-            $type =& $element->elementType();
+            $type = $element->elementType();
 
             if( !is_null( $type ) )
                 $name = $type->name();
@@ -194,7 +194,7 @@ class eZFormRenderer
             }
 
             if ( trim( $type ) != "" )
-                $output =& $this->Template->parse( $target, $type . "_tpl" );
+                $output = $this->Template->parse( $target, $type . "_tpl" );
         }
 
         return $output;
@@ -203,7 +203,7 @@ class eZFormRenderer
     /*!
         Renders a form
      */
-    function &renderForm( $form = "", $addFormTags = true, $addButtons = true )
+    function renderForm( $form = "", $addFormTags = true, $addButtons = true )
     {
         $output = "";
         $render = false;
@@ -224,7 +224,7 @@ class eZFormRenderer
 
         if ( $render == true )
         {
-            $elements =& $this->Form->formElements();
+            $elements = $this->Form->formElements();
 
             $elementCounter = 0;
 
@@ -301,7 +301,7 @@ class eZFormRenderer
                 }
                 else
                 {
-                    if ( $user =& eZUser::currentUser() )
+                    if ( $user = eZUser::currentUser() )
                     {
                         $this->Template->set_var( "form_sender", $user->eMail() );
                     }
@@ -346,7 +346,7 @@ class eZFormRenderer
         $target = false;
         $errorMessages = array();
         $errorMessagesAdditionalInfo = array();
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 
         $this->Form = new eZForm( $FormID );
 
@@ -419,7 +419,7 @@ class eZFormRenderer
 
         $form = new eZForm( $FormID );
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $Language = $ini->variable( "eZFormMain", "Language" );
 
         $emailDefaults = false;

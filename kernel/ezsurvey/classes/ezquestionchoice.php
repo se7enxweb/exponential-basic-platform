@@ -23,7 +23,7 @@
                          WHERE
                            ID = '$id'";
 
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->array_query( $object_array, $SqlQuery );
             if ( count( $object_array ) > 1 )
@@ -44,7 +44,7 @@
         function store()
         {
             $ret = false;
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             if ( !isSet( $this->ID) )
@@ -82,7 +82,7 @@
 
         function delete()
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
 
             $res[] = $db->query( "DELETE FROM eZSurvey_QuestionChoice WHERE ID='$this->ID'" );

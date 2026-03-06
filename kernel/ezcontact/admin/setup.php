@@ -28,7 +28,7 @@
 // include_once( "classes/INIFile.php" );
 
 $ini =& $GlobalSiteIni;
-$SiteDesign =& $ini->variable( "site", "SiteStyle" );
+$SiteDesign = $ini->variable( "site", "SiteStyle" );
 
 $menuItems = array(
     array( "/contact/consultationtype/list/", "{intl-consultationtypelist}" ),

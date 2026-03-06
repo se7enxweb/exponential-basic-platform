@@ -28,7 +28,7 @@
 // include_once( "classes/ezhttptool.php" );
 // include_once( "classes/ezfile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZSiteManagerMain", "Language" );
 $SitePath = $ini->variable( "site", "SitePath" );
 
@@ -55,13 +55,13 @@ if ( isset( $Store ) )
     elseif ( file_exists( "settings/site.ini" ) )
       	$fp = eZPBFile::fopen( "settings/site.ini", "w+");
 
-    $Contents =& str_replace ("\r", "", $Contents );
+    $Contents = str_replace ("\r", "", $Contents );
     fwrite ( $fp, $Contents );
     fclose( $fp );
 }
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZSiteManagerMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezsitemanager/admin/" . $ini->variable( "eZSiteManagerMain", "AdminTemplateDir" ),

@@ -25,7 +25,7 @@
 
 // $url_array = explode( "/", $REQUEST_URI );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "classes/ezhttptool.php" );
 

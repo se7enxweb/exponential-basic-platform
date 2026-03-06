@@ -70,7 +70,7 @@ if( isset( $EmptyTrash ) )
     $trash->deleteAll();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMailMain", "Language" ); 
 
 $t = new eZTemplate( "kernel/ezmail/user/" . $ini->variable( "eZMailMain", "TemplateDir" ),

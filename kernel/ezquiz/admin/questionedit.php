@@ -63,7 +63,7 @@ if ( isset( $OK ) )
 if ( isset( $Cancel ) )
 {
     $question = new eZQuizQuestion( $QuestionID);
-    $game =& $question->game();
+    $game = $question->game();
     $gameID = $game->id();
     eZHTTPTool::header( "Location: /quiz/game/edit/$gameID/" );
     exit();
@@ -81,7 +81,7 @@ if ( isset( $Delete ) )
     $Action = "";
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZQuizMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezquiz/admin/" . $ini->variable( "eZQuizMain", "AdminTemplateDir" ),
@@ -155,7 +155,7 @@ if ( isset( $Action ) && $Action == "Update" )
 
     if ( isset( $OK ) )
     {
-        $game =& $question->game();
+        $game = $question->game();
         $gameID = $game->id();
         eZHTTPTool::header( "Location: /quiz/game/edit/$gameID" );
         exit();
@@ -183,7 +183,7 @@ if ( is_numeric( $QuestionID ) )
     $t->set_var( "question_id", $question->id() );
     $t->set_var( "question_name", $question->name() );
 
-    $alternativeList =& $question->alternatives();
+    $alternativeList = $question->alternatives();
 }
 
 if ( count( $alternativeList ) > 0 )
@@ -211,7 +211,7 @@ if ( count( $errorMessages ) > 0 )
 {
     foreach ( $errorMessages as $errorMessage )
     {
-        $errorMessage =& $t->Ini->variable( "strings", $errorMessage );
+        $errorMessage = $t->Ini->variable( "strings", $errorMessage );
         $t->set_var( "error_message", $errorMessage );
         $t->parse( "error_item", "error_item_tpl", true );
     }

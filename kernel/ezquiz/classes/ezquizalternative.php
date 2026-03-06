@@ -69,10 +69,10 @@ class eZQuizAlternative
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-        $name =& $db->escapeString( $this->Name );
+        $name = $db->escapeString( $this->Name );
         $questionID = $this->Question->id();
 
 
@@ -106,10 +106,10 @@ class eZQuizAlternative
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
-//        $answers =& $this->answers();
+//        $answers = $this->answers();
 
         if ( is_array ( $answers ) )
         {
@@ -130,7 +130,7 @@ class eZQuizAlternative
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
 
@@ -162,7 +162,7 @@ class eZQuizAlternative
     */
     function fill( &$alternativeArray )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID =& $alternativeArray[$db->fieldName( "ID" )];
         $this->Name =& $alternativeArray[$db->fieldName( "Name" )];
         $this->IsCorrect =& $alternativeArray[$db->fieldName( "IsCorrect" )];
@@ -176,7 +176,7 @@ class eZQuizAlternative
     */
     function getAll( $offset = 0, $limit = 20)
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $alternativeArray = array();
@@ -196,7 +196,7 @@ class eZQuizAlternative
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count FROM eZQuiz_Alternative" );
@@ -289,7 +289,7 @@ class eZQuizAlternative
     function answers()
     {
         $returnArray = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $questionArray, "SELECT ID FROM eZQuiz_Answer WHERE AlternativeID='$this->ID'" );
 
         for ( $i = 0; $i < count( $questionArray ); $i++ )

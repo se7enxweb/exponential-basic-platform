@@ -81,7 +81,7 @@ class eZXMLRPCArray
     /*!
       This function will encode the sting into a valid XML-RPC value.
     */
-    function &serialize( )
+    function serialize( )
     {
         $ret = $this->serializeArray( $this->Array, $this->Type, $this->Recursive );
         return $ret;
@@ -105,7 +105,7 @@ class eZXMLRPCArray
     /*!
       Returns the contents as a regular array.
     */
-    function &toArray()
+    function toArray()
     {
         $arr = array();
         foreach( $this->Array as $item )

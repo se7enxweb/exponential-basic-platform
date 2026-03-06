@@ -29,7 +29,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 $MaxCompanyList = $ini->variable( "eZContactMain", "MaxCompanyList" );
 $CompanyOrder = $ini->variable( "eZContactMain", "CompanyOrder" );
@@ -52,7 +52,7 @@ $type->get( $TypeID );
 
 $company = new eZCompany();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( !is_a( $user, "eZUser" ) )
 {
     // include_once( "classes/ezhttptool.php" );
@@ -206,7 +206,7 @@ else
 
         $image = new eZImage( $ImageID );
 
-        $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+        $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
         $imageURL = "/" . $variation->imagePath();
         $imageWidth = $variation->width();

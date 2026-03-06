@@ -31,7 +31,7 @@
 // include_once( "ezarticle/classes/ezarticleform.php" );
 
 $ActionValue = "list";
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFormMain", "Language" );
 
@@ -69,8 +69,8 @@ $t->set_var( "form_item", "" );
 $t->set_var( "form_list", "" );
 $t->set_var( "no_forms_item", "" );
 
-$totalCount =& eZForm::count();
-$forms =& eZForm::getAll();
+$totalCount = eZForm::count();
+$forms = eZForm::getAll();
 
 if( count( $forms ) == 0 )
 {

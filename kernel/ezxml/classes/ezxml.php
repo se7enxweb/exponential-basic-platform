@@ -62,20 +62,20 @@ class eZXML
 
         // get document version
         // stip the !doctype (xdutoit modification)
-        $xmlDoc =& preg_replace( "%<\!DOCTYPE.*?>%is", "", $xmlDoc );
+        $xmlDoc = preg_replace( "%<\!DOCTYPE.*?>%is", "", $xmlDoc );
 
         // strip header
-        $xmlDoc =& preg_replace( "#<\?.*?\?>#", "", $xmlDoc );
+        $xmlDoc = preg_replace( "#<\?.*?\?>#", "", $xmlDoc );
 
         // strip comments
-        $xmlDoc =& eZXML::stripComments( $xmlDoc );
+        $xmlDoc = eZXML::stripComments( $xmlDoc );
 
 
         // libxml compatible object creation
         $domDocument = new eZDOMDocument();
         $domDocument->version = "1.0";
 
-        $domDocument->root =& $domDocument->children;
+        $domDocument->root = $domDocument->children;
         $currentNode =& $domDocument;
 
         $pos = 0;
@@ -180,7 +180,7 @@ class eZXML
                     {
                         $isCDATASection = true;
                         $endTagPos = strpos( $xmlDoc, "]]>", $cdataPos );
-                        $cdataSection =& substr( $xmlDoc, $cdataPos + 9, $endTagPos - ( $cdataPos + 9 ) );
+                        $cdataSection = substr( $xmlDoc, $cdataPos + 9, $endTagPos - ( $cdataPos + 9 ) );
 
                         // new CDATA node
                         unset( $subNode );
@@ -209,11 +209,11 @@ class eZXML
                     // find attributes
                     if ( $tagNameEnd > 0 )
                     {
-                        $attributePart =& substr( $tagName, $tagNameEnd, strlen( $tagName ) );
+                        $attributePart = substr( $tagName, $tagNameEnd, strlen( $tagName ) );
 
                         // attributes
                         unset( $attr );
-                        $attr =& eZXML::parseAttributes( $attributePart );
+                        $attr = eZXML::parseAttributes( $attributePart );
 
                         if ( $attr != false )
                             $subNode->attributes =& $attr;
@@ -255,11 +255,11 @@ class eZXML
                     $subNode->type = 3;
 
                     // convert special chars
-                    $tagContent =& str_replace("&gt;", ">", $tagContent );
-                    $tagContent =& str_replace("&lt;", "<", $tagContent );
-                    $tagContent =& str_replace("&apos;", "'", $tagContent );
-                    $tagContent =& str_replace("&quot;", '"', $tagContent );
-                    $tagContent =& str_replace("&amp;", "&", $tagContent );
+                    $tagContent = str_replace("&gt;", ">", $tagContent );
+                    $tagContent = str_replace("&lt;", "<", $tagContent );
+                    $tagContent = str_replace("&apos;", "'", $tagContent );
+                    $tagContent = str_replace("&quot;", '"', $tagContent );
+                    $tagContent = str_replace("&amp;", "&", $tagContent );
                     
                     $subNode->content = $tagContent;
                     
@@ -277,7 +277,7 @@ class eZXML
     */
     static public function stripComments( &$str )
     {
-        $str =& preg_replace( "#<\!--.*?-->#s", "", $str );
+        $str = preg_replace( "#<\!--.*?-->#s", "", $str );
         return $str;
     }
 
@@ -286,7 +286,7 @@ class eZXML
       \private
       Parses the attributes. Returns false if no attributes in the supplied string is found.
     */
-    static public function &parseAttributes( $attributeString )
+    static public function parseAttributes( $attributeString )
     {
         $ret = array();
         

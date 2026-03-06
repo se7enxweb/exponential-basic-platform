@@ -28,7 +28,7 @@ ob_start();
 
 // site information
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSiteIni =& $ini;
 
 
@@ -83,7 +83,7 @@ $server->processRequest();
 // Will add a new article to the archive.
 // The ID of the article will be returned.
 //
-function &newArticle( $args )
+function newArticle( $args )
 {
 //      $user = new eZUser();
 //      $user = $user->validateUser( $args[0]->value(), $args[1]->value() );
@@ -177,7 +177,7 @@ function &newArticle( $args )
     return $tmp;
 }
 
-function &login( $args )
+function login( $args )
 {
     $user = new eZUser();
     $user = $user->validateUser( $args[0]->value(), $args[1]->value() );
@@ -196,7 +196,7 @@ function &login( $args )
     return $ret;
 }
 
-function &articleCategoryTree( $args )
+function articleCategoryTree( $args )
 {
     $user = new eZUser();
     $user = $user->validateUser( $args[0]->value(), $args[1]->value() );
@@ -204,7 +204,7 @@ function &articleCategoryTree( $args )
     if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser", "AdminLogin" ) )
     {
         $category = new eZArticleCategory();
-        $categoryTree =& $category->getTree();
+        $categoryTree = $category->getTree();
 
         $cat = array();
         foreach ( $categoryTree as $catItem )

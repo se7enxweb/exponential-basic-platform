@@ -57,7 +57,7 @@ class eZCountry
     */  
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         if ( !isset( $this->ID ) )
@@ -88,7 +88,7 @@ class eZCountry
     */  
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $id != "" )
         {
             $db->array_query( $country_array, "SELECT * FROM eZAddress_Country WHERE ID='$id'" );
@@ -104,7 +104,7 @@ class eZCountry
     */
     function fill( &$country_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $this->ID =& $country_array[ $db->fieldName( "ID" ) ];
         $this->ISO =& $country_array[ $db->fieldName( "ISO" ) ];
@@ -115,9 +115,9 @@ class eZCountry
     /*!
       Returns the total number of countries
     */
-    static public function &getAllCount( $search = "" )
+    static public function getAllCount( $search = "" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( !empty( $search ) )
         {
@@ -139,9 +139,9 @@ class eZCountry
     /*!
       Returns every country as a eZCountry object
     */
-    static public function &getAll( $as_object = true, $search = "", $offset = 0, $max = -1 )
+    static public function getAll( $as_object = true, $search = "", $offset = 0, $max = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $country_array = 0;
         $return_array = array();
@@ -192,9 +192,9 @@ class eZCountry
     /*!
       Returns every country as an array. This function is faster then the one above.
     */
-    static public function &getAllArray( )
+    static public function getAllArray( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $country_array = 0;
         $return_array = array();
         
@@ -218,7 +218,7 @@ class eZCountry
     {
         if ( !$id )
             $id = $this->ID;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZAddress_Country WHERE ID='$id'" );

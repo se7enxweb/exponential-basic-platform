@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $error_msg = false;
 $error = new eZINI( "kernel/ezuser/admin/intl/" . $Language . "/useredit.php.ini", false );
@@ -381,7 +381,7 @@ $user->get( $UserID );
 if ( $Action == "edit" )
 {
 /*
-$messages =& eZForumMessage::lastMessages( 10 , $user, $UserID );
+$messages = eZForumMessage::lastMessages( 10 , $user, $UserID );
 echo "<pre>";
 print_r($messages);
 echo "</pre>";

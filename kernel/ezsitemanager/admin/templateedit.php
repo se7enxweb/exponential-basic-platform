@@ -28,7 +28,7 @@
 if ( isset( $Store ) )
 {
     $fp = eZPBFile::fopen( $FileName, "w+");
-    $Contents =& str_replace ("\r", "", $Contents );
+    $Contents = str_replace ("\r", "", $Contents );
     fwrite ( $fp, $Contents );
     fclose( $fp );
     $realPath = $FileName;
@@ -39,7 +39,7 @@ else
 }
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZSiteManagerMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezsitemanager/admin/" . $ini->variable( "eZSiteManagerMain", "AdminTemplateDir" ),

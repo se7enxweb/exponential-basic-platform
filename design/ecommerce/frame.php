@@ -37,7 +37,7 @@
             <span class="cartTopRowLeft">
 			<?php
 			include_once( "kernel/ezuser/classes/ezuser.php" );
-			$user =& eZUser::currentUser();
+			$user = eZUser::currentUser();
 			if ($user) {
 				echo "Welcome back ".$user->firstName()."</span>";
 				echo "<span class=\"cartTopRowRight\"><a href=\"".$GlobalSiteIni->WWWDir.$GlobalSiteIni->Index."/account/logout\">Logout</a></span>";

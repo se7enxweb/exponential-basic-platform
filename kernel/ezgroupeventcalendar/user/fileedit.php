@@ -32,7 +32,7 @@
 // include_once( "ezfilemanager/classes/ezvirtualfile.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZGroupEventCalendarMain", "Language" );
 
 //include_once( "ezgroupeventcalendar/classes/ezgroupeventcategory.php" );

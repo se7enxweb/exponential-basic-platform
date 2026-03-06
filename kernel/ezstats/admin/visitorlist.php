@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZStatsMain", "Language" );
 
@@ -51,7 +51,7 @@ if ( !isset( $Offset ) or !is_numeric( $Offset ) )
 if ( !isset( $ViewLimit ) or !is_numeric( $ViewLimit ) )
     $ViewLimit = 25;
 
-$latest =& eZPageViewQuery::topVisitors( $ViewLimit, $Offset );
+$latest = eZPageViewQuery::topVisitors( $ViewLimit, $Offset );
 $ItemCount = eZPageViewQuery::topVisitorsCount();
 
 $t->set_var( "item_start", $Offset + 1 );

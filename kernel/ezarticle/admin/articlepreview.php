@@ -32,7 +32,7 @@
 // include_once( "ezarticle/classes/ezarticle.php" );
 // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
@@ -77,7 +77,7 @@ $renderer = new eZArticleRenderer( $article );
 $t->set_var( "article_name", $article->name() );
 $t->set_var( "author_text", $article->authorText() );
 
-$articleContents =& $renderer->renderPage( $PageNumber -1 );
+$articleContents = $renderer->renderPage( $PageNumber -1 );
         
 $t->set_var( "article_intro", $articleContents[0] );
 $t->set_var( "article_body", $articleContents[1] );
@@ -142,7 +142,7 @@ if( $typeCount > 0 )
 // image list
 
 $usedImages = $renderer->usedImageList();
-$images =& $article->images();
+$images = $article->images();
 $imageNumber = 0;
 $i=0;
 foreach ( $images as $imageArray ) {
@@ -173,7 +173,7 @@ foreach ( $images as $imageArray ) {
         $t->set_var( "image_id", $image->id() );
         $t->set_var( "article_id", $ArticleID );
 
-        $variation =& $image->requestImageVariation( 150, 150 );
+        $variation = $image->requestImageVariation( 150, 150 );
 
         $t->set_var( "image_url", "/" . $variation->imagePath() );
         $t->set_var( "image_width", $variation->width() );

@@ -41,7 +41,7 @@ if ( isset( $Cancel ) )
 // include_once( "ezarticle/classes/ezarticlegenerator.php" );
 // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
@@ -199,7 +199,7 @@ if ( $Action == "insert" && !$error )
         eZObjectPermission::removePermissions( $categoryID, "article_category", 'r' );
     }
 
-    $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+    $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                   array( "articlelist", $ParentID, NULL ),
                                   "cache", "," );
     foreach ( $files as $file )
@@ -355,7 +355,7 @@ if ( isset( $Action ) && $Action == "update" && !$error )
 
 
     $categoryID = $category->id();
-    $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+    $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                   array( "articlelist", array( $CategoryID, $ParentID ), NULL ),
                                   "cache", "," );
     foreach ( $files as $file )
@@ -390,7 +390,7 @@ if ( $Action == "delete" )
     $category = new eZArticleCategory();
     $category->get( $CategoryID );
 
-    $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+    $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                   array( "articlelist",
                                          array( $CategoryID, $category->parent( false ) ), NULL ),
                                   "cache", "," );
@@ -486,13 +486,13 @@ if ( $Action == "edit" )
     // set the current sortmode to selected
     $t->set_var( $category->sortMode( true ) . "_selected", "selected" );
 
-    $image =& $category->image();
+    $image = $category->image();
     if ( is_a( $image, "eZImage" ) && $image->id() != 0 )
     {
-        $imageWidth =& $ini->variable( "eZArticleMain", "CategoryImageWidth" );
-        $imageHeight =& $ini->variable( "eZArticleMain", "CategoryImageHeight" );
+        $imageWidth = $ini->variable( "eZArticleMain", "CategoryImageWidth" );
+        $imageHeight = $ini->variable( "eZArticleMain", "CategoryImageHeight" );
 
-        $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+        $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
         $imageURL = "/" . $variation->imagePath();
         $imageWidth = $variation->width();
@@ -611,7 +611,7 @@ foreach ( $groupList as $groupItem )
     $t->parse( "editor_group_item", "editor_group_item_tpl", true );
 }
 
-$sectionList =& eZSection::getAll();
+$sectionList = eZSection::getAll();
 
 if ( count( $sectionList ) > 0 )
 {

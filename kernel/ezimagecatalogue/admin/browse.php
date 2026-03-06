@@ -36,7 +36,7 @@
 // include_once( "ezimagecatalogue/classes/ezimagecategory.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
@@ -49,10 +49,10 @@ $t->set_file( "image_list_page_tpl", "browse.tpl" );
 
 $t->setAllStrings();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 $returnUrl = $session->variable( "ImageListReturnTo" );
 
@@ -133,7 +133,7 @@ foreach ( $pathArray as $path )
 
 
 // Print out all the categories
-$categoryList =& $category->getByParent( $category );
+$categoryList = $category->getByParent( $category );
 
 $i=0;
 foreach ( $categoryList as $categoryItem )
@@ -169,11 +169,11 @@ else
 // Print out all the images
 if ( isset( $SearchText )  )
 {
-    $imageList =& eZImage::search( $SearchText );
+    $imageList = eZImage::search( $SearchText );
 }
 else
 {
-    $imageList =& $category->images();
+    $imageList = $category->images();
 }
 
 
@@ -209,11 +209,11 @@ foreach ( $imageList as $image )
         $t->parse( "multi_images", "multi_images_tpl" );
     }
 
-    $width =& $ini->variable( "eZImageCatalogueMain", "ThumbnailViewWidth" );
+    $width = $ini->variable( "eZImageCatalogueMain", "ThumbnailViewWidth" );
     
-    $height =& $ini->variable( "eZImageCatalogueMain", "ThumbnailViewHight" );
+    $height = $ini->variable( "eZImageCatalogueMain", "ThumbnailViewHight" );
     
-    $variation =& $image->requestImageVariation( $width, $height );
+    $variation = $image->requestImageVariation( $width, $height );
 
     $t->set_var( "image_description",$image->description() ); 
     $t->set_var( "image_alt", $image->name() );
@@ -224,7 +224,7 @@ foreach ( $imageList as $image )
 
     if ( $image->fileExists( true ) )
     {
-        $imagePath =& $image->filePath( true );
+        $imagePath = $image->filePath( true );
         $size = eZPBFile::filesize( $imagePath );
     }
     else

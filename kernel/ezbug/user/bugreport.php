@@ -34,7 +34,7 @@
 // include_once( "ezimagecatalogue/classes/ezimage.php" );
 // include_once( "ezfilemanager/classes/ezvirtualfile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZBugMain", "Language" );
 
@@ -86,7 +86,7 @@ if ( $Action == "New" )
     $category->addBug( $bug );
     $module->addBug( $bug );
 
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( $user )
         $bug->setUser( $user );
     else
@@ -117,7 +117,7 @@ if ( $Action == "Update" )
     $category->addBug( $bug );
     $module->addBug( $bug );
 
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( $user )
         $bug->setUser( $user );
     else
@@ -139,7 +139,7 @@ if ( $Action == "Update" )
 /* bug is now allways saved... lets check what the user really wanted to do..*/
 if ( isset( $Ok ) ) // here check for errors. and display them if nescacary
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( ( $Name != "" ) && ( $Description != "" ) )
     {
         if ( $user )
@@ -235,7 +235,7 @@ $t->set_var( "version_value", "" );
 if ( isset( $IsPrivate ) && $IsPrivate == "On" )
     $t->set_var( "private_checked", "checked" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( $user )
     $t->set_var( "usr_email", $user->email() );
 else
@@ -252,7 +252,7 @@ if( $Action == "Edit" ) // load values from database
     if ( $category )
         $catName = $category->name();
 
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( !$user )
         $t->set_var( "usr_email", $bug->userEmail() );
 
@@ -313,7 +313,7 @@ if( $Action == "Edit" ) // load values from database
         $tmp = $image->caption();
         $t->set_var( "image_name", $image->caption() );
 
-        $variation =& $image->requestImageVariation( 150, 150 );
+        $variation = $image->requestImageVariation( 150, 150 );
         $t->set_var( "image_url", "/" .$variation->imagePath() );
         $t->set_var( "image_width", $variation->width() );
         $t->set_var( "image_height",$variation->height() );
@@ -359,7 +359,7 @@ $category = new eZBugCategory();
 $module = new eZBugModule();
 
 // show email address field if the user is not logged in
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( $user )
 {

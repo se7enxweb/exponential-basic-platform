@@ -65,7 +65,7 @@ if ( isset( $Send ) )
     }
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZBulkMailMain", "Language" );
 $templateID = 0;
 
@@ -105,7 +105,7 @@ if ( $useDefaults == "enabled" && empty( $From ) && empty( $FromName ) )
 }
 else
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( empty( $From ) )
         $t->set_var( "from_value", $user->email() );
     else

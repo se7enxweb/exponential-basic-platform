@@ -25,13 +25,13 @@
 
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/ezhttptool.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZForumMain", "Language" );
 $locale = new eZLocale( $Language );
 
 require( "kernel/ezuser/admin/admincheck.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $message = new eZForumMessage();
 
@@ -72,17 +72,17 @@ if( isset( $ActionValueArray ) )
             $mailTemplate->set_var( "message_topic", $message->topic() );
             $mailTemplate->set_var( "message_postingtime", $locale->format( $message->postingTime() ) );
 
-            $body =& $mailTemplate->parse( "dummy", "mail_reject_tpl" );
+            $body = $mailTemplate->parse( "dummy", "mail_reject_tpl" );
 
             $mail->setSubject( $languageIni->variable( "strings", "mail_subject" ) . " " . $message->topic() );
 
-            $messageUser =& $message->user();
+            $messageUser = $message->user();
 
             if ( is_a( $messageUser, "eZUser" ) )
             {
                 $mail->setTo( $messageUser->email() );
                 $forum = new eZForum( $message->forumID() );
-                $forumUser =& $forum->moderator();
+                $forumUser = $forum->moderator();
 
                 $mail->setFrom( $user->email() );
                 $mail->setBody( $body );

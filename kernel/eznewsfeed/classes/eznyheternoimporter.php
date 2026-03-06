@@ -55,9 +55,9 @@ class eZNyheterNOImporter
     /*!
       Imports news from the given site.
     */
-    function &news( )
+    function news( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         print( $this->Login . "<br>" );
         print( $this->Password . "<br>" );
         
@@ -125,31 +125,31 @@ class eZNyheterNOImporter
                                     {
                                         case "URLSOURCE" :
                                         {
-                                            $origin =& trim( $content );
+                                            $origin = trim( $content );
                                         }
                                         break;
 
                                         case "URL" :
                                         {
-                                            $url =& trim( $content );
+                                            $url = trim( $content );
                                         }
                                         break;
                                         
                                         case "URLTIME" :
                                         {
-                                            $publishingDate =& trim( $content );
+                                            $publishingDate = trim( $content );
                                         }
                                         break;
 
                                         case "LINKTEXT" :
                                         {
-                                            $name =& trim( $content );
+                                            $name = trim( $content );
                                         }
                                         break;
 
                                         case "CAPTION" :
                                         {
-                                            $description =& trim( $content );
+                                            $description = trim( $content );
                                         }
                                         break;
                                         

@@ -29,7 +29,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZContactMain", "Language" );
 $SiteURL = $ini->variable( "Site", "SiteURL" );
 $AdminSiteURL = $ini->variable( "Site", "AdminSiteURL" );
@@ -56,7 +56,7 @@ $AdminSiteURL = $ini->variable( "Site", "AdminSiteURL" );
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( !is_a( $user, "eZUser" ) )
 {
     // include_once( "classes/ezhttptool.php" );
@@ -327,12 +327,12 @@ if ( $Action == "view" )
         $t->parse( "no_project_status", "no_project_status_tpl" );
     }
 
-    $image =& $person->image();
+    $image = $person->image();
     if ( get_class( $image ) == "ezimage" && $image->id() != 0 )
     {
-        $imageWidth =& $ini->variable( "eZContactMain", "PersonImageWidth" );
-        $imageHeight =& $ini->variable( "eZContactMain", "PersonImageHeight" );
-        $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+        $imageWidth = $ini->variable( "eZContactMain", "PersonImageWidth" );
+        $imageHeight = $ini->variable( "eZContactMain", "PersonImageHeight" );
+        $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
         $imageURL = "/" . $variation->imagePath();
         $imageWidth = $variation->width();
         $imageHeight = $variation->height();
@@ -349,7 +349,7 @@ if ( $Action == "view" )
     }
 
     // Consultation list
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( eZPermission::checkPermission( $user, "eZContact", "consultation" ) )
     {
         $max = $ini->variable( "eZContactMain", "MaxPersonConsultationList" );

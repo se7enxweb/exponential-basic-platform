@@ -36,18 +36,18 @@ class eZProductPermission
 {
     function hasPermission( $productID, $user = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( is_a( $user, "eZUser" ) )
         {
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
         }
 
         if ( !$user )
             return false;
         $ret = false;
 
-        $groups =& $user->groups( false );
+        $groups = $user->groups( false );
         foreach ( $groups as $groupItem )
         {
             $db->array_query( $permissions, "SELECT * FROM eZTrade_ProductPermissionLink
@@ -62,7 +62,7 @@ class eZProductPermission
 
     function getPermissionList( $productID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $list, "SELECT * FROM eZTrade_ProductPermissionLink
                                   WHERE ProductID='$productID'" );
         $ret = array();
@@ -75,7 +75,7 @@ class eZProductPermission
 
     function setPermission( $productID, $groupID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZTrade_ProductPermissionLink" );
         $nextID = $db->nextID( "eZTrade_ProductPermissionLink" );
@@ -87,7 +87,7 @@ class eZProductPermission
 
     function removePermissions( $productID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZTrade_ProductPermissionLink

@@ -30,7 +30,7 @@
 // include_once( "eztrade/classes/ezvoucher.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 

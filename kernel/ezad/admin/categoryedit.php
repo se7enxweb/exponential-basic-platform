@@ -39,7 +39,7 @@ if ( isset ( $DeleteCategories ) )
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/eztemplate.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZAdMain", "Language" );
 
 // include_once( "ezad/classes/ezad.php" );

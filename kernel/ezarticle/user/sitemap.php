@@ -48,7 +48,7 @@ if ( isset( $CategoryID ) )
 }
     
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
@@ -64,7 +64,7 @@ $t->set_block( "article_sitemap_page_tpl", "value_tpl", "value" );
 
 $tree = new eZArticleCategory();
 $treeArray = $tree->getTree( $CategoryID );
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $t->set_var( "category_value", "" );
 $t->set_var( "article_value", "" );
@@ -76,7 +76,7 @@ if ( $CategoryID != 0 && is_numeric( $CategoryID ) )
     if ( eZObjectPermission::hasPermission( $frontCategory->id(), "article_category", 'r', $user ) == true  ||
          eZArticleCategory::isOwner( eZUser::currentUser(), $frontCategory->id() ) )
     {    
-        $articleFrontList =& $frontCategory->articles( 1, false, true, 0, 50, $frontCategory->id() );
+        $articleFrontList = $frontCategory->articles( 1, false, true, 0, 50, $frontCategory->id() );
 
         $itemCount++;
 
@@ -136,7 +136,7 @@ foreach ( $treeArray as $catItem )
             
             $t->parse( "value", "category_value_tpl", true );    
             
-            $articleList =& $category->articles( 1, false, true, 0, 50, $catItem[0]->id() );
+            $articleList = $category->articles( 1, false, true, 0, 50, $catItem[0]->id() );
             $itemCount++;
 
             foreach ( $articleList as $article )

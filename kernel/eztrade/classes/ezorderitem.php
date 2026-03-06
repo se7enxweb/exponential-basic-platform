@@ -66,7 +66,7 @@ class eZOrderItem
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if ( !isset( $this->ID ) )
         {
@@ -115,7 +115,7 @@ class eZOrderItem
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -145,7 +145,7 @@ class eZOrderItem
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $ret[] = $db->query( "DELETE FROM eZTrade_OrderOptionValue WHERE OrderItemID='$this->ID'" );
@@ -218,7 +218,7 @@ class eZOrderItem
      */
     function optionValues()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
 
@@ -339,7 +339,7 @@ class eZOrderItem
     */
     function localePrice( $calcCount=true, $withOptions=true, $calcVAT=true )
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $Language = $ini->variable( "eZTradeMain", "Language" );
         $locale = new eZLocale( $Language );
         $currency = new eZCurrency();

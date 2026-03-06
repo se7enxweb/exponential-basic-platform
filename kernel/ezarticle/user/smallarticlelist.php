@@ -31,13 +31,18 @@
 // include_once( "ezarticle/classes/ezarticle.php" );
 // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
 $CapitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
 $DefaultLinkText =  $ini->variable( "eZArticleMain", "DefaultLinkText" );
 $PageCaching = $ini->variable( "eZArticleMain", "PageCaching" );
+
+if ( !isset( $noItem ) ) $noItem = null;
+if ( !isset( $Limit ) ) $Limit = null;
+if ( !isset( $Offset ) ) $Offset = null;
+if ( !isset( $CategoryID ) ) $CategoryID = null;
 
 unset( $menuCachedFile );
 // do the caching
@@ -113,7 +118,7 @@ function createSmallArticleList( $generateStaticPage = false, $menuCachedFile = 
 
         $t->set_var( "article_intro", $renderer->renderIntro(  ) );
 
-	    $contents =& $renderer->renderPage();
+	    $contents = $renderer->renderPage();
 
         if ( $article->linkText() != "" )
         {

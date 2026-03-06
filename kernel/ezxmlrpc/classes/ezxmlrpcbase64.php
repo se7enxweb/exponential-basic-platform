@@ -47,9 +47,9 @@ class eZXMLRPCBase64
     /*!
       This function will encode the base64 into a valid XML-RPC value.
     */
-    function &serialize( )
+    function serialize( )
     {        
-        $value =& base64_encode( $this->Value );
+        $value = base64_encode( $this->Value );
         
         $ret = "<value>";
         $ret .= "<base64>";
@@ -73,7 +73,7 @@ class eZXMLRPCBase64
     */
     function decode( $value )
     {
-        $this->Value =& base64_decode( $value );
+        $this->Value = base64_decode( $value );
     }
     
     // The string value

@@ -28,7 +28,7 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
@@ -51,7 +51,7 @@ $t->set_block( "media_list_tpl", "media_tpl", "media" );
 
 $article = new eZArticle( $ArticleID );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->setVariable( "MediaListReturnTo", $_SERVER['REQUEST_URI'] );
 $session->setVariable( "SelectMedia", "multi" );
 $session->setVariable( "NameInBrowse", $article->name() );

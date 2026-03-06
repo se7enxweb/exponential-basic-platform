@@ -29,7 +29,7 @@
 // include_once( "classes/ezcachefile.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $PageCaching = $ini->variable( "eZArticleMain", "PageCaching" );
 
@@ -138,7 +138,7 @@ function createArticleMenu( $menuCacheFile = false, $ini = null,
 // do the caching
 if ( $PageCaching == "enabled" )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     $groupstr = "";
     if( is_a( $user, "eZUser" ) )
     {

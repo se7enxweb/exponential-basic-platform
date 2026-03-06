@@ -32,7 +32,7 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZMediaCatalogueMain", "Language" );
 
@@ -43,7 +43,7 @@ $t->set_file( "media_view_tpl", "mediaview.tpl" );
 
 $t->setAllStrings();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $media = new eZMedia( $MediaID );
 
@@ -58,7 +58,7 @@ $t->set_var( "media_caption", $media->caption() );
 $t->set_var( "media_name", $media->name() );
 $t->set_var( "media_description", $media->description() );
 
-$attString =& $media->attributeString();
+$attString = $media->attributeString();
 
 $t->set_var( "attributes", $attString );
 $t->set_var( "referer_url", $RefererURL );

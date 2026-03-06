@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZPollMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZPollMain", "DocumentRoot" );
@@ -40,7 +40,7 @@ if ( $ini->variable( "eZPollMain", "AllowDoubleVotes" ) == "enabled" )
 // include_once( "ezpoll/classes/ezpollchoice.php" );
 // include_once( "ezsession/classes/ezsession.php" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 if( !$session->fetch() )
     $session->store();
@@ -57,7 +57,7 @@ if ( $poll->isClosed() )
 $poll = new eZPoll( $PollID );
 if ( !$poll->anonymous() )
 {
-    $pollUser =& eZUser::currentUser();
+    $pollUser = eZUser::currentUser();
     if ( !$pollUser )
     {
         eZHTTPTool::header( "Location: /user/user/new/" );

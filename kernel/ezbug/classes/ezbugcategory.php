@@ -72,7 +72,7 @@ class eZBugCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $name = $db->escapeString( $this->Name );
         $description = $db->escapeString( $this->Description );
@@ -111,7 +111,7 @@ class eZBugCategory
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -135,7 +135,7 @@ class eZBugCategory
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -160,7 +160,7 @@ class eZBugCategory
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $category_array = array();
@@ -230,7 +230,7 @@ class eZBugCategory
        {
            $bugID = $value->id();
 
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
            $db->begin();
            $db->lock( "eZBug_BugCategoryLink" );
            $nextID = $db->nextID( "eZBug_BugCategoryLink", "ID" );
@@ -259,7 +259,7 @@ class eZBugCategory
                        $offset=0,
                        $limit=50 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
 //         $OrderBy = "eZBug_Bug.Published DESC";
 //         switch( $sortMode )

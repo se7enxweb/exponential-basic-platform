@@ -26,7 +26,7 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $PageCaching = $ini->variable( "eZQuizMain", "PageCaching" );
 $GlobalSectionID = $ini->variable( "eZQuizMain", "DefaultSection" );
@@ -81,7 +81,7 @@ switch ( $url_array[2] )
             {
                 $GameID = $url_array[4];
 
-                $user =& eZUser::currentUser();
+                $user = eZUser::currentUser();
 
                 if ( !is_a( $user, "eZUser" ) )
                 {
@@ -134,7 +134,7 @@ switch ( $url_array[2] )
     {
         $Action = $url_array[3];
 
-        $user =&  eZUser::currentUser();
+        $user =  eZUser::currentUser();
 
         if( !is_a( $user, "eZUser" ) )
         {

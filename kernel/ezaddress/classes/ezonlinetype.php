@@ -69,7 +69,7 @@ class eZOnlineType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
 
@@ -120,7 +120,7 @@ class eZOnlineType
      */
     function delete( $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( !$id )
             $id = $this->ID;
 
@@ -137,7 +137,7 @@ class eZOnlineType
     */
     function get( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $id != "" )
         {
             $db->array_query( $online_type_array, "SELECT * FROM eZAddress_OnlineType WHERE ID='$id'",
@@ -158,7 +158,7 @@ class eZOnlineType
     */
     function fill( &$online_type_array )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
                 
         $this->ID = $online_type_array[$db->fieldName( "ID" )];
         $this->Name = $online_type_array[$db->fieldName( "Name" )];
@@ -171,10 +171,10 @@ class eZOnlineType
     /*
       Fetches out all the online types that is stored in the database.
     */
-    static public function &getAll( $as_object = true )
+    static public function getAll( $as_object = true )
     {
                
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $online_type_array = 0;
 
         $online_type_array = array();
@@ -289,9 +289,9 @@ class eZOnlineType
       Returns the number of external items using this item.
     */
 
-    function &count()
+    function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 //          $db->array_query( $person_qry,  "SELECT count( Pe.ID ) as Count
 //                                           FROM eZContact_Person AS Pe, eZContact_PersonOnlineDict AS POD,
 //                                                eZAddress_Online AS Online, eZAddress_OnlineType AS OT
@@ -319,7 +319,7 @@ class eZOnlineType
 
     function moveUp()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ID, ListOrder FROM eZAddress_OnlineType
                                   WHERE Removed=0 AND ListOrder<'$this->ListOrder' ORDER BY ListOrder DESC", array( "Limit" => "1" ) );
         $listorder = $qry[$db->fieldName( "ListOrder" )];
@@ -337,7 +337,7 @@ class eZOnlineType
 
     function moveDown()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ID, ListOrder FROM eZAddress_OnlineType
                                   WHERE Removed=0 AND ListOrder>'$this->ListOrder' ORDER BY ListOrder ASC", array( "Limit" => "1" ) );
         $listorder = $qry[$db->fieldName( "ListOrder" )];

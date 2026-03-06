@@ -61,7 +61,7 @@ class eZImageCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -99,9 +99,9 @@ class eZImageCategory
         return true;
     }
 
-    function &search( $name, $literal = false, $sortby='name', $user = false )
+    function search( $name, $literal = false, $sortby='name', $user = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $topic = array();
 
         $sortbySQL = "Category.Name";
@@ -113,17 +113,17 @@ class eZImageCategory
         $query = new eZQuery( array( "Category.Name", "Category.Description" ),
                               $name );
         $query->setIsLiteral( $literal );
-        $where =& $query->buildQuery();
+        $where = $query->buildQuery();
 
         if ( is_a( $user, "eZUser" ) )
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
 
         $show_str = "";
         $usePermission = true;
 
         if ( $user )
         {
-            $groups =& $user->groups( false );
+            $groups = $user->groups( false );
 
             $i = 0;
             foreach ( $groups as $group )
@@ -186,7 +186,7 @@ class eZImageCategory
 
         $categoryID = $category->id();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -205,7 +205,7 @@ class eZImageCategory
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -235,7 +235,7 @@ class eZImageCategory
     */
     public static function getAll( $limit = false, $offset = 0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
 		if ( is_numeric($limit) && $limit > 0 )
 			$limitText = " ORDER BY ID DESC LIMIT ".$limit;
@@ -259,7 +259,7 @@ class eZImageCategory
       \Static
       Returns all images in a category
     */
-    function &getImages( $user, $category = false )
+    function getImages( $user, $category = false )
     {
         return eZImageCategory::images( "time", 0, -1, $category );
     }
@@ -271,7 +271,7 @@ class eZImageCategory
     {
         if ( is_a( $parent, "eZImageCategory" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $parentID = $parent->id();
 
@@ -298,7 +298,7 @@ class eZImageCategory
     {
         if ( is_a( $parent, "eZImageCategory" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $return_array = array();
             $category_array = array();
@@ -329,9 +329,9 @@ class eZImageCategory
 
         Returns an object of eZImageCategory.
      */
-    function &getByName( $name )
+    function getByName( $name )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $topic = new eZImageCategory();
 
@@ -483,7 +483,7 @@ class eZImageCategory
         if ( !is_a( $user, "eZUser" ) )
             return false;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT UserID from eZImageCatalogue_Category WHERE ID='$imageCategory'");
 
         if( isset( $res["UserID"] ) && is_numeric($res["UserID"] ) )
@@ -555,7 +555,7 @@ class eZImageCategory
        if ( !$categoryid )
            $categoryid = 0; //$this->ID;
 
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $imageID = $value->id();
 
@@ -599,7 +599,7 @@ class eZImageCategory
         else
             return false;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $query = "DELETE FROM eZImageCatalogue_ImageCategoryLink
                   WHERE CategoryID='$categoryid' AND
                         ImageID='$imageID'";
@@ -622,18 +622,18 @@ class eZImageCategory
     {
         if ( !isset( $limit ) or $limit == 0 )
         {
-            $ini =& eZINI::instance( 'site.ini' );
+            $ini = eZINI::instance( 'site.ini' );
             $limit = $ini->variable( "eZImageCatalogueMain", "ListImagesPerPage" );
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $usePermission = true;
         $groupSQL = false;
         if ( $user )
         {
-            $groups =& $user->groups( false );
+            $groups = $user->groups( false );
 
             $i = 0;
             foreach ( $groups as $group )
@@ -718,7 +718,7 @@ class eZImageCategory
     */
     function images( $sortMode = "time", $offset = 0, $limit = -1, $category=false, $check_write = false )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        if ( is_a ( $category, "eZImageCategory" ) )
        {
@@ -730,13 +730,13 @@ class eZImageCategory
            $catID = $this->ID;
        $return_array = array();
        $article_array = array();
-       $user =& eZUser::currentUser();
+       $user = eZUser::currentUser();
        $usePermission = true;
        $groupSQL = false;
 
        if ( $user )
        {
-           $groups =& $user->groups( false );
+           $groups = $user->groups( false );
 
            if ( $user->hasRootAccess() )
            {
@@ -833,7 +833,7 @@ class eZImageCategory
 
     static public function sectionIDStatic( $categoryID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT SectionID from eZImageCatalogue_Category WHERE ID='$categoryID'" );
         $sectionID = (int) $db->fieldName( "SectionID" );
 

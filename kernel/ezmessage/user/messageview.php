@@ -30,7 +30,7 @@
 
 // include_once( "ezmessage/classes/ezmessage.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMessageMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezmessage/user/" . $ini->variable( "eZMessageMain", "TemplateDir" ),
@@ -46,9 +46,9 @@ $message = new eZMessage( );
 
 if ( $message->get( $MessageID ) )
 {
-    $toUser =& $message->toUser();
-    $fromUser =& $message->fromUser();
-    $currentUser =& eZUser::currentUser();
+    $toUser = $message->toUser();
+    $fromUser = $message->fromUser();
+    $currentUser = eZUser::currentUser();
 
     if ( $currentUser->id() != $toUser->id() && $currentUser->id() != $fromUser->id()  )
     {
@@ -61,7 +61,7 @@ if ( $message->get( $MessageID ) )
     	$message->setIsRead( true );
     	$message->store();
     }
-    $messageArray =& $message->messagesToUser( $user );
+    $messageArray = $message->messagesToUser( $user );
 
     $created = $message->created();
     $t->set_var( "message_date", $locale->format( $created ) );

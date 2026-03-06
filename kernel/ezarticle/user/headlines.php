@@ -28,9 +28,12 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezcachefile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
+
+if ( !isset( $Limit ) ) $Limit = null;
+if ( !isset( $CategoryID ) ) $CategoryID = null;
 
 if ( !function_exists( "createHeadlinesMenu" )  )
 {
@@ -85,12 +88,12 @@ if ( !function_exists( "createHeadlinesMenu" )  )
                 // do not set offset for the main page news
                 // always sort by publishing date is the merged category
                 $article = new eZArticle();
-                $articleList =& $article->articles( "time", false, $HeadlineOffset, $Limit );
+                $articleList = $article->articles( "time", false, $HeadlineOffset, $Limit );
                 $articleCount = $article->articleCount( false );
             }
             else
             {
-                $articleList =& $category->articles( $category->sortMode(), false, true, $HeadlineOffset, $Limit );
+                $articleList = $category->articles( $category->sortMode(), false, true, $HeadlineOffset, $Limit );
                 $articleCount = $category->articleCount( false, true  );
             }
 
@@ -111,21 +114,21 @@ if ( !function_exists( "createHeadlinesMenu" )  )
                 // category image/icon
                 $catDef = $article->categoryDefinition();
 
-                $image =& $catDef->image();
+                $image = $catDef->image();
 
                 $t->set_var( "current_image_item", "" );
 
                 if ( ( is_a( $image, "eZImage" ) ) && ( $image->id() != 0 ) )
                 {
-                    $imageWidth =& $ini->variable( "eZArticleMain", "CategoryImageWidth" );
-                    $imageHeight =& $ini->variable( "eZArticleMain", "CategoryImageHeight" );
+                    $imageWidth = $ini->variable( "eZArticleMain", "CategoryImageWidth" );
+                    $imageHeight = $ini->variable( "eZArticleMain", "CategoryImageHeight" );
 
                     $variation =& $image;
 
                     $imageURL = $variation->filePath( );
-                    // $imageWidth =& $variation->width();
-                    // $imageHeight =& $variation->height();
-                    $imageCaption =& $image->caption();
+                    // $imageWidth = $variation->width();
+                    // $imageHeight = $variation->height();
+                    $imageCaption = $image->caption();
 
                     $t->set_var( "current_image_width", $imageWidth );
                     $t->set_var( "current_image_height", $imageHeight );
@@ -138,8 +141,8 @@ if ( !function_exists( "createHeadlinesMenu" )  )
                     $t->set_var( "current_image_item", "" );
                 }
 
-                $published =& $article->published();
-                $date =& $published->date();
+                $published = $article->published();
+                $date = $published->date();
 
                 $t->set_var( "article_published", $locale->format( $date ) );
 
@@ -174,7 +177,7 @@ if ( !function_exists( "createHeadlinesMenu" )  )
 
             if ( is_a( $menuCacheFile, "eZCacheFile" ) )
             {
-                $output =& $t->parse( "output", "article_list_page_tpl" );
+                $output = $t->parse( "output", "article_list_page_tpl" );
                 $menuCacheFile->store( $output );
                 print( $output );
             }
@@ -189,11 +192,11 @@ unset( $menuCachedFile );
 // do the caching
 if ( $PageCaching == "enabled" )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     $groupstr = "";
     if ( is_a( $user, "eZUser" ) )
     {
-        $groupIDArray =& $user->groups( false );
+        $groupIDArray = $user->groups( false );
         sort( $groupIDArray );
         $first = true;
         foreach ( $groupIDArray as $groupID )

@@ -27,7 +27,7 @@
 // include_once( "classes/INIFile.php" );
 
 //$ini = new eZINI( "site.ini");
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTodoMain", "Language" );
 $NotDoneID = $ini->variable( "eZTodoMain", "NotDoneID" );
@@ -39,7 +39,7 @@ $iniLanguage = new eZINI( "kernel/eztodo/user/intl/$Language/todolist.php.ini", 
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "eztodo/classes/eztodo.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $t = new eZTemplate( "kernel/eztodo/user/" . $ini->variable( "eZTodoMain", "TemplateDir" ),
                      "kernel/eztodo/user/intl/", $Language, "todomenulist.php" );

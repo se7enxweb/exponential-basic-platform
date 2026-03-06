@@ -58,7 +58,7 @@ class eZAddress
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $ret = false;
@@ -126,7 +126,7 @@ class eZAddress
     function get( $id="" )
     {
         $ret = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $id != "" )
         {
             $db->array_query( $address_array, "SELECT * FROM eZAddress_Address WHERE ID='$id'" );
@@ -161,7 +161,7 @@ class eZAddress
     */
     static public function getAll( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $address_array = 0;
 
         $db->array_query( $address_array, "SELECT * FROM eZAddress_Address" );
@@ -176,7 +176,7 @@ class eZAddress
     {
         if ( !$id )
             $id = $this->ID;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZAddress_Address WHERE ID='$id'" );
         eZDB::finish( $res, $db );
@@ -186,7 +186,7 @@ class eZAddress
     /*!
       Copy this object.
     */
-    function &copy( )
+    function copy( )
     {
         $new = $this;
         $new->unsetID();
@@ -286,7 +286,7 @@ class eZAddress
         else
             $userID = $user;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $checkForAddress, "SELECT UserID FROM eZAddress_AddressDefinition
                                      WHERE UserID='$userID'" );
@@ -321,7 +321,7 @@ class eZAddress
         else
             $userID = $user;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $addressArray, "SELECT AddressID FROM eZAddress_AddressDefinition
                                      WHERE UserID='$userID'", 0, 1 );

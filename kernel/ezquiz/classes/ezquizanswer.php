@@ -68,9 +68,9 @@ class eZQuizAnswer
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
-        $name =& $db->escapeString( $this->Name );
+        $name = $db->escapeString( $this->Name );
         $userID = $this->User->id();
         $alternativeID = $this->Alternative->id();
 
@@ -104,7 +104,7 @@ class eZQuizAnswer
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZQuiz_Answer WHERE ID='$catID'" );
         eZDB::finish( $res, $db );
@@ -117,7 +117,7 @@ class eZQuizAnswer
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -127,7 +127,7 @@ class eZQuizAnswer
 
             if ( count( $answerArray ) == 1 )
             {
-                $this->fill( &$answerArray[0] );
+                $this->fill( $answerArray[0] );
                 $ret = true;
             }
             elseif ( count( $answerArray ) == 1 )
@@ -144,7 +144,7 @@ class eZQuizAnswer
     function fill( &$answerArray )
     {
         $this->ID =& $answerArray[$db->fieldName( "ID" )];
-        $this->User =& new eZUser( $answerArray[$db->fieldName( "UserID" )] );
+        $this->User = new eZUser( $answerArray[$db->fieldName( "UserID" )] );
         $this->Alternative = new eZQuizAlternative( $answerArray[$db->fieldName( "QuestionID" )] );
     }
 
@@ -155,7 +155,7 @@ class eZQuizAnswer
     */
     function getAll( $offset = 0, $limit = 20)
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $answerArray = array();
@@ -175,7 +175,7 @@ class eZQuizAnswer
      */
     function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count FROM eZQuiz_Answer" );
@@ -200,7 +200,7 @@ class eZQuizAnswer
             $UserID = $this->User->id();
         }
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $result, "SELECT * FROM eZQuiz_Answer, eZQuiz_Alternative
                             WHERE eZQuiz_Answer.AlternativeID = eZQuiz_Alternative.ID
                             AND eZQuiz_Alternative.QuestionID = '$QuestionID' AND eZQuiz_Answer.UserID = '$UserID'" );

@@ -34,13 +34,13 @@
 // include_once( "classes/ezcachefile.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $Locale = new eZLocale( $Language );
 $AdminListLimit = $ini->variable( "eZArticleMain", "AdminListLimit" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 if ( isset( $GoTo ) && is_Numeric( $GoToCategoryID ) )
 {
@@ -72,7 +72,7 @@ if ( isset( $StoreSelection ) )
     }
 }
 
-$articleMix =& $session->variable( "MixUnpublished" );
+$articleMix = $session->variable( "MixUnpublished" );
 
 $ArticleSelection =& $articleMix;
 
@@ -129,7 +129,7 @@ if ( isset( $DeleteArticles ) )
                 // get the category to redirect to
                 $articleID = $article->id();
 
-                $categoryArray =& $article->categories();
+                $categoryArray = $article->categories();
                 $categoryIDArray = array();
                 foreach ( $categoryArray as $cat )
                 {
@@ -153,7 +153,7 @@ if ( isset( $DeleteCategories ) )
     if ( count( $CategoryArrayID ) != 0 )
     {
         /** Delete menubox cache **/
-        $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+        $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                  array( "menubox", NULL ),
                                  "cache", "," );
         foreach ( $files as $file )
@@ -172,7 +172,7 @@ if ( isset( $DeleteCategories ) )
                 $category->delete();
         }
         $categories = array_unique( $categories );
-        $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+        $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                       array( "articlelist",
                                              $categories, NULL ),
                                       "cache", "," );
@@ -241,7 +241,7 @@ if ( isset( $MoveCategoryUp ) || isset( $MoveCategoryDown ) )
     }
 
     /** Clear cache when moving stuff arround **/
-    $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+    $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                  array( "menubox", NULL ),
                                  "cache", "," );
     
@@ -249,7 +249,7 @@ if ( isset( $MoveCategoryUp ) || isset( $MoveCategoryDown ) )
     {
         $file->delete();
     }
-    $files =& eZCacheFile::files( "kernel/ezarticle/cache/",
+    $files = eZCacheFile::files( "kernel/ezarticle/cache/",
                                  array( "articlelist", $CategoryID, NULL, NULL ), "cache", "," );
     foreach ( $files as $file )
     {
@@ -309,11 +309,11 @@ foreach ( $pathArray as $path )
     $t->parse( "path_item", "path_item_tpl", true );
 }
 
-$categoryList =& $category->getByParent( $category, true, "placement" );
+$categoryList = $category->getByParent( $category, true, "placement" );
 
 // category "tree" selector
 $tree = new eZArticleCategory();
-$treeArray =& $tree->getTree();
+$treeArray = $tree->getTree();
 
 foreach ( $treeArray as $catItem )
 {
@@ -429,14 +429,14 @@ if ( is_numeric( $CategoryID ) && ( $CategoryID > 0 ) )
        
         case "Published" :
         {
-            $articleList =& $category->articles( $category->sortMode(), false, true, $Offset, $Limit );
+            $articleList = $category->articles( $category->sortMode(), false, true, $Offset, $Limit );
             $articleCount = $category->articleCount( false, true  );        
         }
         break;
 
         case "Unpublished" :
         {
-            $articleList =& $category->articles( $category->sortMode(), false, false, $Offset, $Limit );
+            $articleList = $category->articles( $category->sortMode(), false, false, $Offset, $Limit );
             $articleCount = $category->articleCount( false, false  );
         }
         break;
@@ -444,7 +444,7 @@ if ( is_numeric( $CategoryID ) && ( $CategoryID > 0 ) )
         case "All" :
         default  :
         {
-            $articleList =& $category->articles( $category->sortMode(), true, true, $Offset, $Limit, $category->id() );
+            $articleList = $category->articles( $category->sortMode(), true, true, $Offset, $Limit, $category->id() );
             $articleCount = $category->articleCount( true, true  );        
         }
     }

@@ -43,7 +43,7 @@ ini_set('upload_max_filesize', 5242880); // 5MB
 //////////////////////////////////////////////////////
 // Settings
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $SiteURL = $ini->variable( "site", "UserSiteURL" );
 $wwwDir = $ini->variable( "site", "UserSiteURL" );
@@ -204,14 +204,14 @@ foreach ($productList as $product)
   $mainImage = $product->mainImage();
   if ( $mainImage )
   {
-    $variation =& $mainImage->requestImageVariation( $MainImageWidth, $MainImageHeight );
+    $variation = $mainImage->requestImageVariation( $MainImageWidth, $MainImageHeight );
     $line['image_url'] = "http://" . $SiteURL . "/" . $variation->imagePath();
   }
   else
     $line['image_url'] = "";
 
   $category = $product->categoryDefinition();
-  $pathArray =& $category->path();
+  $pathArray = $category->path();
   $line['category'] = "";
   $i = 1;
 
@@ -243,7 +243,7 @@ chmod( $fileName, 0644 );
 // unlink ( "/home/web/public_html/export_froogle/");
 
 $fp = fopen( $fileName, "r" );
-$content =& fread( $fp, $fileSize );
+$content = fread( $fp, $fileSize );
 
 
 
@@ -265,7 +265,7 @@ else {
    //chmod( $fileName, 0777 );
 
    //   $fp = fopen( $fileName, "r" );
-   //   $content =& fread( $fp, $fileSize );
+   //   $content = fread( $fp, $fileSize );
 }
 /////////////////////////////////////////////
 */
@@ -291,7 +291,7 @@ if( $exportCSVFile ){
 
    /*
    $source_fp = fopen( $source_file_name , 'r');
-   $source_c =& fread( $source_fp, $fileSize );
+   $source_c = fread( $source_fp, $fileSize );
    */
 
    // die($source_c);
@@ -323,7 +323,7 @@ if( $exportCSVFile ){
        echo "Run: $SitePath/bin/cron/froogle_upload.sh $fileName \n";
 
        /*
-       $buffer =& ob_get_contents();
+       $buffer = ob_get_contents();
        ob_end_clean();
 
        // fetch the system printout

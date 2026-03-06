@@ -55,13 +55,13 @@ $category = new eZNewsCategory( $CategoryID );
 // news
 
 // fetch the first new item
-$firstNewsList =& $category->newsList( "time", "no", 0, 1 );
+$firstNewsList = $category->newsList( "time", "no", 0, 1 );
 
 // fetch the n next news items
-$newsList =& $category->newsList( "time", "no", 1, 4 );
+$newsList = $category->newsList( "time", "no", 1, 4 );
 
 // fetch the news to be listed as small items at the bottom
-$shortNewsList =& $category->newsList( "time", "no", 5, 10 );
+$shortNewsList = $category->newsList( "time", "no", 5, 10 );
 
 $locale = new eZLocale( $Language );
 

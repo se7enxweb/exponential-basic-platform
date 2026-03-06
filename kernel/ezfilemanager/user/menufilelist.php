@@ -35,7 +35,7 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
 $ImageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
@@ -51,9 +51,9 @@ $t->set_block( "file_list_page_tpl", "file_list_tpl", "file_list" );
 $t->set_block( "file_list_tpl", "file_tpl", "file" );
 
 $folder = new eZVirtualFolder( $FolderID );
-$fileList =& $folder->files();
+$fileList = $folder->files();
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 foreach ( $fileList as $file )
 {

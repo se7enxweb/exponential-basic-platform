@@ -78,7 +78,7 @@ class eZWishListItem
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( !isset( $this->ID ) )
@@ -122,7 +122,7 @@ class eZWishListItem
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -151,7 +151,7 @@ class eZWishListItem
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res[] = $db->query( "DELETE FROM eZTrade_WishListOptionValue WHERE WishListItemID='$this->ID'" );
@@ -178,7 +178,7 @@ class eZWishListItem
       Returns the product to the wishlist item as an eZProduct object.
 
     */
-    function &product()
+    function product()
     {
        $ret = false;
 
@@ -194,7 +194,7 @@ class eZWishListItem
     /*!
       Returns the wishlist.
     */
-    function &wishlist()
+    function wishlist()
     {
        $ret = false;
 
@@ -274,10 +274,10 @@ class eZWishListItem
 
       An empty array is returned if none exists.
     */
-    function &optionValues( )
+    function optionValues( )
     {
        $return_array = array();
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $db->array_query( $res_array, "SELECT ID FROM eZTrade_WishListOptionValue
                                      WHERE
@@ -306,7 +306,7 @@ class eZWishListItem
            $session->store();
        }
 
-       $user =& eZUser::currentUser();
+       $user = eZUser::currentUser();
 
        $cart = $cart->getBySession( $session );
 
@@ -368,14 +368,14 @@ class eZWishListItem
     */
     function price()
     {
-        $optionValues =& $this->optionValues();
-        $product =& $this->product();
+        $optionValues = $this->optionValues();
+        $product = $this->product();
 
         $optionPrice = 0.0;
         foreach ( $optionValues as $optionValue )
         {
-            $option =& $optionValue->option();
-            $value =& $optionValue->optionValue();
+            $option = $optionValue->option();
+            $value = $optionValue->optionValue();
 
             // the pricegroup is set in the datasupplier
 

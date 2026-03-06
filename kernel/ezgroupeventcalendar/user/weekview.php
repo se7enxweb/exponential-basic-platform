@@ -61,7 +61,7 @@ $GlobalSectionID = $ini->variable( "eZGroupEventCalendarMain", "DefaultSection" 
 $Locale     = new eZLocale( $Language );
 
 $user = eZUser::currentUser();
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 $session->fetch();
 
 $URL = explode( "/", $_SERVER['REQUEST_URI'] );
@@ -138,7 +138,7 @@ $isMyCalendar = ( $groupID && $groupID == $GetByGroupID )? "-private" :"";
 
 
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 $templateDirTmp = $sectionObject->templateStyle();
@@ -329,16 +329,16 @@ if( $user )
 
 					// Fetch all the appointments
 					if( $eventGroup->id() == 0 && $type->id() == 0)
-						$appointments =& $tmpGroupEvent->getAllByDate( $tmpDate, true );
+						$appointments = $tmpGroupEvent->getAllByDate( $tmpDate, true );
 					// Fetch all appointments by type
 					elseif( $eventGroup->id() == 0 && $type->id() != 0 )
-						$appointments =& $tmpGroupEvent->getAllByType( $tmpDate, $type, true );
+						$appointments = $tmpGroupEvent->getAllByType( $tmpDate, $type, true );
 					// Fetch all appointments by Group and Type
 					elseif( $eventGroup->id() != 0 && $type->id() != 0 )
-						$appointments =& $tmpGroupEvent->getByGroupType( $tmpDate, $eventGroup, $type, true );
+						$appointments = $tmpGroupEvent->getByGroupType( $tmpDate, $eventGroup, $type, true );
 					// Fetch all appointments by Group
 					else
-						$appointments =& $tmpGroupEvent->getByDate( $tmpDate, $eventGroup, true );
+						$appointments = $tmpGroupEvent->getByDate( $tmpDate, $eventGroup, true );
 
                     $t->set_var( "public_appointment", "" );
                     $t->set_var( "private_appointment", "" );
@@ -447,7 +447,7 @@ if( $user )
 
     // group list
     $group = new eZUserGroup();
-    $group_array =& $group->getAll();
+    $group_array = $group->getAll();
 
     foreach( $group_array as $groupItem )
     {

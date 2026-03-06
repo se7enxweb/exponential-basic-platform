@@ -148,7 +148,7 @@ if ( isset( $Action ) && $Action == "edit" )
     $t->set_var( "module_name", $module->name() );
     $t->set_var( "module_id", $module->id() );
 
-    $writeGroupArrayID =& eZObjectPermission::getGroups( $module->id(), "bug_module", "w", false );
+    $writeGroupArrayID = eZObjectPermission::getGroups( $module->id(), "bug_module", "w", false );
 
     $t->set_var( "action_value", "update" );
 }
@@ -189,7 +189,7 @@ foreach ( $moduleList as $moduleItem )
 
 // group selector
 $group = new eZUserGroup();
-$groupList =& $group->getAll();
+$groupList = $group->getAll();
 
 foreach ( $groupList as $groupItem )
 {

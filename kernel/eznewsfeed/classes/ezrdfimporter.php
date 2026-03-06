@@ -56,9 +56,9 @@ class eZRDFImporter
     /*!
       Returns the news items as an array.
     */
-    function &news( )
+    function news( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_array = array();
 
         if (!($fp = @fopen($this->Site, "r"))) {

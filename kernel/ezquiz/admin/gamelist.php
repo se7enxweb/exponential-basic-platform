@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZQuizMain", "Language" );
 $Limit = $ini->variable( "eZQuizMain", "AdminListLimit" );
 
@@ -48,8 +48,8 @@ if ( !isset( $Offset ) )
     $Offset = 0;
 
 $t->set_var( "site_style", $SiteDesign );
-$gameList =& eZQuizGame::getAll( $Offset, $Limit );
-$totalCount =& eZQuizGame::count();
+$gameList = eZQuizGame::getAll( $Offset, $Limit );
+$totalCount = eZQuizGame::count();
 
 if ( count ( $gameList ) > 0 )
 {

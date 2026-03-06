@@ -33,7 +33,7 @@
 
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
 $NewMessageLimit = $ini->variable( "eZForumMain", "NewMessageLimit" );
@@ -60,7 +60,7 @@ if ( !isset( $Offset ) )
 $t->set_var( "url_text", "" );
 $t->set_var( "search_result", "" );
 
-$db =& eZDB::globalDatabase();
+$db = eZDB::globalDatabase();
 
 if ( isset( $SearchText ) and !isset( $QueryString ) )
     $QueryString = $SearchText;

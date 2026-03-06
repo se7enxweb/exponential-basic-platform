@@ -48,7 +48,7 @@ class eZLinkAttribute
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
         $db->lock( "eZLink_Attribute" );
@@ -64,7 +64,7 @@ class eZLinkAttribute
                 $place++;
             }
 
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
 
 			$this->ID = $db->nextID( "eZLink_Attribute", "ID" );
             $res = $db->query( "INSERT INTO eZLink_Attribute
@@ -108,7 +108,7 @@ class eZLinkAttribute
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != -1  )
         {
@@ -132,9 +132,9 @@ class eZLinkAttribute
     /*!
       Retrieves every option from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $attribute_array = array();
@@ -154,7 +154,7 @@ class eZLinkAttribute
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZLink_AttributeValue WHERE AttributeID='$this->ID'" );
@@ -231,7 +231,7 @@ class eZLinkAttribute
     */
     function setValue( $link, $value )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( is_a( $link, "eZLink" ) )
         {
@@ -275,7 +275,7 @@ class eZLinkAttribute
     */
     function value( $link )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = "";
         if ( is_a( $link, "eZLink" ) )
         {
@@ -299,12 +299,12 @@ class eZLinkAttribute
     */
     function moveUp()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ID, Placement FROM eZLink_Attribute
                                   WHERE Placement<'$this->Placement' ORDER BY Placement DESC",
                                   array( "Limit" => 1 ) );
-        $listorder = $qry[ $db->fieldName( "Placement" ) ];
-        $listid = $qry[ $db->fieldName( "ID" ) ];
+        $listorder = is_array( $qry ) ? $qry[ $db->fieldName( "Placement" ) ] : null;
+        $listid    = is_array( $qry ) ? $qry[ $db->fieldName( "ID" ) ] : null;
         $db->begin();
         $db->lock( "eZLink_Attribute" );
         $res[] = $db->query( "UPDATE eZLink_Attribute SET Placement='$listorder' WHERE ID='$this->ID'" );
@@ -322,12 +322,12 @@ class eZLinkAttribute
     */
     function moveDown()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $qry, "SELECT ID, Placement FROM eZLink_Attribute
                                   WHERE Placement>'$this->Placement' ORDER BY Placement ASC",
                                   array( "Limit" => 1 ) );
-        $listorder = $qry[ $db->fieldName( "Placement" ) ];
-        $listid = $qry[ $db->fieldName( "ID" ) ];
+        $listorder = is_array( $qry ) ? $qry[ $db->fieldName( "Placement" ) ] : null;
+        $listid    = is_array( $qry ) ? $qry[ $db->fieldName( "ID" ) ] : null;
         $db->begin();
         $db->lock( "eZLink_Attribute" );
         $res[] = $db->query( "UPDATE eZLink_Attribute SET Placement='$listorder' WHERE ID='$this->ID'" );

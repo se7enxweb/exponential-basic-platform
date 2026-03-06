@@ -90,7 +90,7 @@ class eZCart
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( !isset( $this->ID ) )
@@ -152,7 +152,7 @@ class eZCart
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -199,7 +199,7 @@ if ( count( $cartshipoptions_array ) == 1 )
     */
     function getBySession( $session  )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         $cart_array = array();
@@ -228,7 +228,7 @@ if ( count( $cartshipoptions_array ) == 1 )
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $items = $this->items();
@@ -324,7 +324,7 @@ if ( count( $cartshipoptions_array ) == 1 )
     */
     function items( )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $ret = array();
        $query = "SELECT * FROM
@@ -353,7 +353,7 @@ if ( count( $cartshipoptions_array ) == 1 )
 
     function cartTotals( &$tax, &$total, $voucher=false,$checkout=false, $calcVAT=false)
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 	
         // $checkups = $ini->variable( "eZTradeMain", "UPSOFF" );
         $upscheck = $ini->variable( "eZTradeMain", "UPSXMLShipping" ) == 'enabled'?1:0;
@@ -386,7 +386,7 @@ if ( count( $cartshipoptions_array ) == 1 )
             {
                 $itemquantity = $item->Count;
 
-                $product =& $item->product();
+                $product = $item->product();
                 $vatPercentage = $product->vatPercentage();
                 
                 $tax["$vatPercentage"] = array();
@@ -407,7 +407,7 @@ if ( count( $cartshipoptions_array ) == 1 )
                 }
                 else
                 {
-                    $info =& $product->voucherInformation();
+                    $info = $product->voucherInformation();
 
                     if ( is_a ( $info, "eZVoucherInformation" ) && $info->mailMethod() == 2 )
                         $products = true;
@@ -423,7 +423,7 @@ if ( count( $cartshipoptions_array ) == 1 )
                 }
                 else if ( is_a ( $voucher, "eZVoucher" ) )
                 {
-                    $product =& $voucher->product();
+                    $product = $voucher->product();
                     $vatPercentage = $product->vatPercentage();
 
                     $exTax = $voucher->correctPrice( false );
@@ -457,7 +457,7 @@ if ( count( $cartshipoptions_array ) == 1 )
                     else
                     {
                         $type = new eZShippingType( );
-                        $shippingType =& $type->defaultType();
+                        $shippingType = $type->defaultType();
                     }
                     $shippingCost = $this->shippingCost( $shippingType );
                     $shippingVAT = $this->shippingVAT( $shippingType );
@@ -472,7 +472,7 @@ if ( count( $cartshipoptions_array ) == 1 )
 
           // $shippingVATPercentage = 6;
 
-                $user =& eZUser::currentUser();
+                $user = eZUser::currentUser();
                 $useVAT = true;
 
           if ( $shippingVATPercentage != 0 
@@ -549,7 +549,7 @@ if ( count( $cartshipoptions_array ) == 1 )
           $uspsuser = $ini->variable( "site", "UserUSPS" );
           $uspspass = $ini->variable( "site", "PassUSPS" );
           
-          $user =& eZUser::currentUser();
+          $user = eZUser::currentUser();
 
           if($user)
           {
@@ -967,18 +967,18 @@ if ( count( $cartshipoptions_array ) == 1 )
     */
     function shippingCost( $shippingType )
     {
-       $items =& $this->items( );
+       $items = $this->items( );
        $ShippingCostValues = array();
 
        foreach ( $items as $item )
        {
-           $product =& $item->product();
-           $shippingGroup =& $product->shippingGroup();
+           $product = $item->product();
+           $shippingGroup = $product->shippingGroup();
 
-           $shippingGroup =& $product->shippingGroup();
+           $shippingGroup = $product->shippingGroup();
            if ( $shippingGroup )
            {
-               $values =& $shippingGroup->startAddValue( $shippingType );
+               $values = $shippingGroup->startAddValue( $shippingType );
 
                $shipid = $shippingGroup->id();
                if( isset( $ShippingCostValues[$shipid] ) )
@@ -1039,18 +1039,18 @@ if ( count( $cartshipoptions_array ) == 1 )
 
       The argument must be a eZShippingType object.
     */
-    function &extractShippingVAT( $shippingType )
+    function extractShippingVAT( $shippingType )
     {
         $shippingVAT = 0;
         if( is_a( $shippingType, "eZShippingType" ) )
         {
-            $vatType =& $shippingType->vatType();
+            $vatType = $shippingType->vatType();
 
             $shippingCost = $this->shippingCost( $shippingType );
 
             if ( $vatType )
             {
-                $value =& $vatType->value();
+                $value = $vatType->value();
                 $shippingVAT = ( $shippingCost / ( $value + 100  ) ) * $value;
             }
         }
@@ -1062,18 +1062,18 @@ if ( count( $cartshipoptions_array ) == 1 )
 
       The argument must be a eZShippingType object.
     */
-    function &extractShippingVATPercentage( $shippingType )
+    function extractShippingVATPercentage( $shippingType )
     {
         $shippingVAT = 0;
         if( is_a( $shippingType, "eZShippingType" ) )
         {
-            $vatType =& $shippingType->vatType();
+            $vatType = $shippingType->vatType();
 
             $shippingCost = $this->shippingCost( $shippingType );
 
             if ( $vatType )
             {
-                $VATPercentage =& $vatType->value();
+                $VATPercentage = $vatType->value();
             }
         }
         return $VATPercentage;
@@ -1087,18 +1087,18 @@ if ( count( $cartshipoptions_array ) == 1 )
       If a value is given as argument this value is used for VAT calculation.
       This is used in carts where you have multiple products and prices on options.
     */
-    function &addShippingVAT( $shippingType )
+    function addShippingVAT( $shippingType )
     {
         $shippingVAT = 0;
         if( is_a( $shippingType, "eZShippingType" ) )
         {
-            $vatType =& $shippingType->vatType();
+            $vatType = $shippingType->vatType();
 
             $shippingCost = $this->shippingCost( $shippingType );
 
             if ( $vatType )
             {
-                $value =& $vatType->value();
+                $value = $vatType->value();
                 $shippingVAT = ( $shippingCost * $value ) / 100;
             }
         }
@@ -1111,7 +1111,7 @@ if ( count( $cartshipoptions_array ) == 1 )
     */
     function clear()
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $db->begin();
 
        $items = $this->items();
@@ -1145,7 +1145,7 @@ if ( count( $cartshipoptions_array ) == 1 )
     if (!$shipservice){$shipservice=0;}
 
     if (!$addressid){$addressid=0;}
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->array_query( $cartshipoptions_array, "SELECT * FROM eZTrade_CartShipOptions WHERE CartID='$this->ID'" );
         $ss = "SELECT * FROM eZTrade_CartShipOptions WHERE CartID='$this->ID'";

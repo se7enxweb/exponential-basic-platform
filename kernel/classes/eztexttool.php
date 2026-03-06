@@ -86,7 +86,7 @@ class eZTextTool
           $string = "";
         }
 
-        $string =& wordwrap( $string, 60, "\n" );
+        $string = wordwrap( $string, 60, "\n" );
         return preg_replace( "#^#m", "$char ", $string );
     }
 
@@ -239,7 +239,7 @@ class eZTextTool
                 {
                     if ( $attr->type == 2 )
                     {
-                        $part[$attr->name] =& $attr->content;
+                        $part[$attr->name] = $attr->content;
                     }
                 }
             }

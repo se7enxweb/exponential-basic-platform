@@ -33,7 +33,7 @@
 
   \code
   // fetch the database for the current connection.
-  $db =& eZDB::globalDatabase();
+  $db = eZDB::globalDatabase();
 
   // Create a table
   $db->query( "DROP TABLE TableA" );
@@ -47,7 +47,7 @@
   // get the next ID
   $id = $db->nextID( "TableA", "ID" );
 
-  $string =& $db->escapeString( "This is a text string" );
+  $string = $db->escapeString( "This is a text string" );
 
   $count = 100+$i;
   $dateTime = new eZDateTime( 1977, 9, 2, 14, 30, 42 );
@@ -130,7 +130,7 @@ class eZDB
       Returns a reference to the global database object, if it doesn't exists it is initialized.
       This is safe to call without an object since it does not access member variables.
     */
-    static public function &globalDatabase()
+    static public function globalDatabase()
     {
         $impl =& $GLOBALS["eZDB"];
 
@@ -145,13 +145,13 @@ class eZDB
 
         if ( $impl == null || !preg_match( "/ez.+?db/", $class ) )
         {
-            $ini =& eZINI::instance( 'site.ini' );
+            $ini = eZINI::instance( 'site.ini' );
 
-            $server =& $ini->variable( "site", "Server" );
-            $db =& $ini->variable( "site", "Database" );
-            $user =& $ini->variable( "site", "User" );
-            $password =& $ini->variable( "site", "Password" );
-            $databaseImplementation =& $ini->variable( "site", "DatabaseImplementation" );
+            $server = $ini->variable( "site", "Server" );
+            $db = $ini->variable( "site", "Database" );
+            $user = $ini->variable( "site", "User" );
+            $password = $ini->variable( "site", "Password" );
+            $databaseImplementation = $ini->variable( "site", "DatabaseImplementation" );
 
             switch ( $databaseImplementation )
             {

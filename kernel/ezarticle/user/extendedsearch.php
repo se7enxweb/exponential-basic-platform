@@ -31,7 +31,7 @@
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
 // include_once( "ezarticle/classes/ezarticle.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 
@@ -48,7 +48,7 @@ $t->set_block( "search_item_tpl", "category_item_tpl", "category_item" );
 $t->set_block( "extended_search_tpl", "article_list_tpl", "article_list" );
 $t->set_block( "article_list_tpl", "article_item_tpl", "article_item" );
 
-$contents =& eZArticle::shortContents();
+$contents = eZArticle::shortContents();
 $t->set_var( "category_item", "" );
 foreach( $contents as $content )
 {
@@ -80,7 +80,7 @@ if ( isset( $Search ) )
         if ( $keyword != "" )
             $keywords[] = $keyword;
     }
-    $articles =& eZArticle::searchByShortContent( $Category, $keywords, $Offset, $Max );
+    $articles = eZArticle::searchByShortContent( $Category, $keywords, $Offset, $Max );
     $t->set_var( "article_item", "" );
     $t->set_var( "category", $Category == "" ? "+" : $Category );
     foreach( $articles as $article )
@@ -88,7 +88,7 @@ if ( isset( $Search ) )
         $t->set_var( "article_id", $article->id() );
         $t->set_var( "article_name", $article->name() );
         $t->set_var( "article_page", 1 );
-        $cats =& $article->categories( false );
+        $cats = $article->categories( false );
         $t->set_var( "article_category", $cats[0] );
         $t->parse( "article_item", "article_item_tpl", true );
     }

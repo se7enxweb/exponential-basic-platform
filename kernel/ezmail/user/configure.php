@@ -34,7 +34,7 @@
 // include_once( "ezmail/classes/ezmailfolder.php" );
 // include_once( "ezmail/classes/ezmailfilterrule.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if( isset( $Ok ) || isset( $NewAccount ) || isset( $NewFilter ) ||
     isset( $DeleteAccounts ) )
@@ -108,7 +108,7 @@ if( isset( $DeleteAccounts ) && isset( $FilterArrayID ) && count( $FilterArrayID
 }
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMailMain", "Language" ); 
 
 $t = new eZTemplate( "kernel/ezmail/user/" . $ini->variable( "eZMailMain", "TemplateDir" ),
@@ -131,18 +131,18 @@ $t->set_var( "delete_checked", "" );
 $t->set_var( "signature", "" );
 if( $user )
 {
-    $del_var =& eZPreferences::variable( "eZMail_OnDel" );
+    $del_var = eZPreferences::variable( "eZMail_OnDel" );
     if( $del_var == "del" )
     {
         $t->set_var( "trash_checked", "" );
         $t->set_var( "delete_checked", "checked" );
     }
-    $signature =& eZPreferences::variable( "eZMail_Signature" );
+    $signature = eZPreferences::variable( "eZMail_Signature" );
     if( $signature )
         $t->set_var( "signature", htmlspecialchars( $signature ) );
     
     $t->set_var( "signature_checked", "" );
-    $auto_signature =& eZPreferences::variable( "eZMail_AutoSignature" );
+    $auto_signature = eZPreferences::variable( "eZMail_AutoSignature" );
     if( $auto_signature && $auto_signature == "true" )
         $t->set_var( "signature_checked", "checked" );
 

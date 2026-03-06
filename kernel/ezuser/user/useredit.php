@@ -33,14 +33,14 @@ require( "kernel/ezuser/user/usercheck.php" );
 // include_once( "classes/eztexttool.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $AnonymousUserGroup = $ini->variable( "eZUserMain", "AnonymousUserGroup" );
 
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezuser/classes/ezusergroup.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( $Action == "Insert" )
 {
@@ -139,7 +139,7 @@ if ( $Action == "Insert" )
 
 if ( $Action == "Update" )
 {
-    $user =& eZUser::currentuser();
+    $user = eZUser::currentuser();
     if ( !$user )
     {
         eZHTTPTool::header( "Location: /" );
@@ -242,7 +242,7 @@ $actionValue = "insert";
 
 if ( isset( $Action ) && $Action == "Edit" )
 {
-    $user =& eZUser::currentuser();
+    $user = eZUser::currentuser();
     if ( !$user )
     {
         eZHTTPTool::header( "Location: /" );
@@ -250,7 +250,7 @@ if ( isset( $Action ) && $Action == "Edit" )
     }
     if ( !isset( $UserID ) )
     {
-        $getUser =& eZUser::currentUser();
+        $getUser = eZUser::currentUser();
         if ( !$getUser )
         {
             eZHTTPTool::header( "Location: /user/login" );

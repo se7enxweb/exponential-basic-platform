@@ -39,7 +39,7 @@ class eZArticleRenderer
         $this->Article =& $article;
         $this->Template = $template;
 
-        $contents =& $this->Article->contents();
+        $contents = $this->Article->contents();
 
         //print( nl2br( htmlspecialchars( $contents ) ) );
 
@@ -101,9 +101,9 @@ class eZArticleRenderer
     /*!
       Returns the intro of the article.
     */
-    function &renderIntro( )
+    function renderIntro( )
     {
-        $generator =& $this->generator();
+        $generator = $this->generator();
         
         return $generator->renderIntro();
     }    
@@ -114,9 +114,9 @@ class eZArticleRenderer
 
       It is up to the renderer to handle the page argument.
     */
-    function &renderPage( $page=0 )
+    function renderPage( $page=0 )
     {
-        $generator =& $this->generator();
+        $generator = $this->generator();
 //        print( "Using renderer: " . $this->RendererClass . "<br>");
               
         return $generator->renderPage( $page );
@@ -127,7 +127,7 @@ class eZArticleRenderer
     */
     function usedImageList()
     {
-        $generator =& $this->generator();
+        $generator = $this->generator();
 
         return $generator->usedImageList();
     }
@@ -136,7 +136,7 @@ class eZArticleRenderer
       \private
       Private function to return the generator class.
     */
-    function &generator()
+    function generator()
     {
         if (  isset( $this->RendererFile ) && $this->Generator == false )
         {

@@ -43,7 +43,7 @@ $t->set_var( "site_style", $SiteDesign );
 $module = new eZBugModule( $ParentID );
 $t->set_var( "this_id", $ParentID );
 
-$moduleList =& $module->getByParent( $module );
+$moduleList = $module->getByParent( $module );
 
 if ( count( $moduleList ) == 0 )
 {

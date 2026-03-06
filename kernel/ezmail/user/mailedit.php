@@ -139,7 +139,7 @@ if ( isset( $CcButton ) )
 if ( isset( $BccButton ) )
     $showbcc = true;
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMailMain", "Language" ); 
 
 $t = new eZTemplate( "kernel/ezmail/user/" . $ini->variable( "eZMailMain", "TemplateDir" ),
@@ -197,15 +197,15 @@ $t->set_var( "bcc_single", "" );
 // New mail, lets insert some default values 
 if ( isset( $MailID ) && $MailID == 0 )
 {
-    $auto_signature =& eZPreferences::variable( "eZMail_AutoSignature" );
-    $signature =& eZPreferences::variable( "eZMail_Signature" );
+    $auto_signature = eZPreferences::variable( "eZMail_AutoSignature" );
+    $signature = eZPreferences::variable( "eZMail_Signature" );
     if( $auto_signature && $auto_signature == "true" && $signature != "" )
     {
         $comp_sign = "--\n$signature";
         $t->set_var( "mail_body", htmlspecialchars( $comp_sign  ) );
     }
 }
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $t->set_var( "from_value", $user->email() );
 
 // We are editing an allready existant mail... lets insert it's values 
@@ -222,7 +222,7 @@ if ( isset( $MailID ) && $MailID != 0 && eZMail::isOwner( $user, $MailID ) ) // 
 
     if( isset( $Signature ) )
     {
-        $signature =& eZPreferences::variable( "eZMail_Signature" );
+        $signature = eZPreferences::variable( "eZMail_Signature" );
         $mail_body = $mail->body();
         $comp_sign = "$mail_body\n\n--\n$signature";
         $t->set_var( "mail_body", htmlspecialchars( $comp_sign  ) );
@@ -276,7 +276,7 @@ else if ( isset( $MailID ) && $MailID == 0 && ( isset( $showcc ) && $showcc || i
     $t->set_var( "subject_value",  htmlspecialchars( $Subject ) );
     if( $Signature )
     {
-        $signature =& eZPreferences::variable( "eZMail_Signature" );
+        $signature = eZPreferences::variable( "eZMail_Signature" );
         if( $signature != "" )
         {
             $comp_sign = "$MailBody\n\n--\n$signature";

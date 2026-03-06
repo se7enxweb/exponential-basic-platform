@@ -42,7 +42,7 @@ class eZDOMDocument
     /*!
       Returns a XML string of the DOM document
     */
-    function &toString()
+    function toString()
     {
         $ret = "<?xml version=\"1.0\"?>";
 

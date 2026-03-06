@@ -29,7 +29,7 @@
 
 // include_once( "ezpoll/classes/ezpoll.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZPollMain", "Language" );
 

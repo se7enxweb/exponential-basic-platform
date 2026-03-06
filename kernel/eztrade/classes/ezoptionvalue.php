@@ -69,7 +69,7 @@ class eZOptionValue
     function store()
     {
         $ini = eZINI::instance( "site.ini" );
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $qry_array = array();
         $ret = array();
@@ -122,7 +122,7 @@ class eZOptionValue
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "-1" )
         {
@@ -146,9 +146,9 @@ class eZOptionValue
     /*!
       Returns every optionValue stored in the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_array = array();
         $optionValue_array = array();
 
@@ -168,11 +168,11 @@ class eZOptionValue
 
       The values are sorted by name. Returns 0 if no values are found.
     */
-    function &getByOption( &$value, $as_object = true )
+    function getByOption( &$value, $as_object = true )
     {
         if ( is_a( $value, "eZOption" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $return_array = array();
             $optionValue_array = array();
@@ -200,7 +200,7 @@ class eZOptionValue
     function setTotalQuantity( $quantity )
     {
         $id = $this->ID;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = array();
         $db->begin();
 
@@ -251,7 +251,7 @@ class eZOptionValue
     {
         if ( !$id )
             $id = $this->ID;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $qry_array,
                           "SELECT Q.Quantity
                            FROM eZTrade_Quantity AS Q, eZTrade_ValueQuantityDict AS VQD
@@ -290,9 +290,9 @@ class eZOptionValue
       Returns all descriptions connected to this option value.
       It is returned as an array with strings.
     */
-    function &descriptions( $id = false )
+    function descriptions( $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( !$id )
             $id = $this->ID;
         $db->array_query( $qry_array,
@@ -311,7 +311,7 @@ class eZOptionValue
     */
     function removeDescriptions( $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( !$id )
             $id = $this->ID;
         $db->begin();
@@ -324,7 +324,7 @@ class eZOptionValue
     */
     function addDescription( $description, $id = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if ( !$id )
             $id = $this->ID;
@@ -364,7 +364,7 @@ class eZOptionValue
         if ( !$id )
             $id = $this->ID;
         $ret = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $ret[] = $db->query( "DELETE FROM eZTrade_OptionValue
@@ -381,7 +381,7 @@ class eZOptionValue
     */
     function getByRemoteID( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $value = false;
 
@@ -416,9 +416,9 @@ class eZOptionValue
     /*!
       Returns the correct localized price of the product.
     */
-    function &localePrice( $calcVAT, $inProduct )
+    function localePrice( $calcVAT, $inProduct )
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $inLanguage = $ini->variable( "eZTradeMain", "Language" );
 
         $locale = new eZLocale( $inLanguage );
@@ -435,7 +435,7 @@ class eZOptionValue
     */
     function correctPrice( $calcVAT, $inProduct, $withPriceGroups=true )
     {
-        $inUser =& eZUser::currentUser();
+        $inUser = eZUser::currentUser();
         $vat = $inProduct->vatPercentage();
         $productHasVAT = $inProduct->includesVAT();
 
@@ -475,9 +475,9 @@ class eZOptionValue
     /*!
       Returns the correct localized savings of the product.
     */
-    function &localeSavings( $calcVAT, $inProduct )
+    function localeSavings( $calcVAT, $inProduct )
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $inLanguage = $ini->variable( "eZTradeMain", "Language" );
 
         $locale = new eZLocale( $inLanguage );
@@ -495,7 +495,7 @@ class eZOptionValue
     */
     function correctSavings( $calcVAT, $inProduct )
     {
-        $inUser =& eZUser::currentUser();
+        $inUser = eZUser::currentUser();
         $vat = $inProduct->vatPercentage();
         $productHasVAT = $inProduct->includesVAT();
 

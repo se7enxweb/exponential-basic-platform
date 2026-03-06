@@ -40,7 +40,7 @@ if ( isset ( $DeleteCategories ) )
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/eztemplate.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTipMain", "Language" );
 
 // include_once( "eztip/classes/eztip.php" );

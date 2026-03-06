@@ -50,7 +50,7 @@ if ( isset ( $Cancel ) )
     exit();
 }
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZSiteManagerMain", "Language" );
 $move_item = true;
 $languageINI = new eZINI( "kernel/ezsitemanager/admin/intl/" . $Language . "/sectionedit.php.ini", false );
@@ -138,7 +138,7 @@ if ( ( $Action == "Insert" ) || ( $Action == "Update" ) && ( $user ) )
     {
         if ( eZPBFile::is_dir( "design/" . $Name ) == false );
         {
-            $session =& eZSession::globalSession();
+            $session = eZSession::globalSession();
             $session->setVariable( "DirNotExists", "true" );
         }
     }
@@ -243,19 +243,19 @@ else
 
 if ( isset( $section ) && $section )
     $rows = $section->frontPageRows();
-$settingNames =& eZSectionFrontPage::settingNames();
+$settingNames = eZSectionFrontPage::settingNames();
 
 
 if ( isset( $rows ) && count ( $rows ) > 0 )
 {
     $tree = new eZArticleCategory();
-    $articleTreeArray =& $tree->getTree();
+    $articleTreeArray = $tree->getTree();
 
     $category = new eZProductCategory();
-    $productCategoryArray =& $category->getTree( );
+    $productCategoryArray = $category->getTree( );
 
     $ad = new eZAdCategory();
-    $adCategoryArray =& $ad->getTree();
+    $adCategoryArray = $ad->getTree();
 
     $i=0;
     $count = count( $rows );

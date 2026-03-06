@@ -47,7 +47,7 @@ class eZAppointmentType
     */
     function __construct( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != -1 )
         {
@@ -61,7 +61,7 @@ class eZAppointmentType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( !isset( $this->ID ) )
@@ -93,7 +93,7 @@ class eZAppointmentType
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if ( isset( $this->ID ) )
         {
@@ -108,7 +108,7 @@ class eZAppointmentType
     */
     function get( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -133,9 +133,9 @@ class eZAppointmentType
 
       The categories are returned as an array of eZAppointmentType objects.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $AppointmentType_array = array();
@@ -158,11 +158,11 @@ class eZAppointmentType
 
       The categories are returned as an array of eZAppointmentType objects.
     */
-    function &getByParent( $parent, $showAll=false, $sortby="name" )
+    function getByParent( $parent, $showAll=false, $sortby="name" )
     {
         if ( is_a( $parent, "eZAppointmentType" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $return_array = array();
             $appointmenttype_array = array();
@@ -232,11 +232,11 @@ class eZAppointmentType
     /*!
       Returns the categories sorted as a tree.
     */
-    function &getTree( $parentID=0, $level=0 )
+    function getTree( $parentID=0, $level=0 )
     {
         $AppointmentType = new eZAppointmentType( $parentID );
 
-        $AppointmentTypeList =& $AppointmentType->getByParent( $AppointmentType, true );
+        $AppointmentTypeList = $AppointmentType->getByParent( $AppointmentType, true );
 
         $tree = array();
         $level++;

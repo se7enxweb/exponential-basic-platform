@@ -28,7 +28,7 @@
 // include_once( "classes/ezlist.php" );
 // include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZLinkMain", "Language" );
 $AdminLimit = $ini->variable( "eZLinkMain", "AdminAcceptLimit" );
@@ -62,7 +62,7 @@ if ( !isset( $Offset ) )
 
 $link = new eZLink();
 
-$linkList =& $link->getNotAccepted( $Offset, $AdminLimit );
+$linkList = $link->getNotAccepted( $Offset, $AdminLimit );
 $linkCount = $link->unAcceptedCount();
 
 $category = new eZLinkCategory();

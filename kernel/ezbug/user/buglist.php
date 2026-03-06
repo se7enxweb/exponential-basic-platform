@@ -35,7 +35,7 @@
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZBugMain", "Language" );
 
@@ -70,7 +70,7 @@ $t->set_var( "current_module_name", $module->name() );
 $t->set_var( "current_module_description", $module->description() );
 
 // check user rights
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $gotRights = false;
 
 if ( eZObjectPermission::hasPermission( $module->id(), "bug_module", "w", $user ) )
@@ -105,7 +105,7 @@ foreach ( $pathArray as $path )
     $t->parse( "path_item", "path_item_tpl", true );
 }
 
-$moduleList =& $module->getByParent( $module, true );
+$moduleList = $module->getByParent( $module, true );
 
 
 // categories
@@ -117,7 +117,7 @@ foreach ( $moduleList as $moduleItem )
 
     $t->set_var( "module_name", $moduleItem->name() );
 
-    $parent =& $moduleItem->parent();
+    $parent = $moduleItem->parent();
 
     $totalCount = $moduleItem->countBugs( true, false , true );
     $t->set_var( "bug_count", $totalCount );
@@ -149,7 +149,7 @@ else
 
 
 // bugs
-$bugList =& $module->bugs( "time", true );
+$bugList = $module->bugs( "time", true );
 $locale = new eZLocale( $Language );
 $i=0;
 $t->set_var( "bug_list", "" );
@@ -158,8 +158,8 @@ foreach ( $bugList as $bug )
     $t->set_var( "bug_id", $bug->id() );
     $t->set_var( "bug_name", $bug->name() );
 
-    $pri =& $bug->priority();
-    $status =& $bug->status();
+    $pri = $bug->priority();
+    $status = $bug->status();
     
     if ( $pri )
     {    

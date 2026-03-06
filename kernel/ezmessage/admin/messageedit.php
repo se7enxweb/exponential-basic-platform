@@ -65,7 +65,7 @@ if ( isset( $SendMessage ) )
             $toUser = eZUser::getUser( $user );
             $message->setToUser( $toUser );
 
-            $fromUser =& eZUser::currentUser();
+            $fromUser = eZUser::currentUser();
             $message->setFromUser( $fromUser );
 
             $message->store();

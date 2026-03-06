@@ -28,7 +28,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
@@ -136,10 +136,10 @@ $t->set_block( "group_item_tpl", "type_group_item_tpl", "type_group_item" );
 
 
 $shippingGroup = new eZShippingGroup();
-$groups =& $shippingGroup->getAll();
+$groups = $shippingGroup->getAll();
 
 $shippingType = new eZShippingType();
-$shippingTypes =& $shippingType->getAll();
+$shippingTypes = $shippingType->getAll();
 
 
 $t->set_var( "type_item", "" );
@@ -156,11 +156,11 @@ foreach ( $shippingTypes as $type )
         $t->set_var( "default_checked", "" );
 
 
-    $currentVATType =& $type->vatType();
+    $currentVATType = $type->vatType();
 
     $vatType = new eZVATType();
 
-    $types =& $vatType->getAll();
+    $types = $vatType->getAll();
 
     $i=0;
     $t->set_var( "vat_item", "" );
@@ -214,7 +214,7 @@ foreach ( $groups as $group )
     $t->set_var( "type_group_item", "" );
     foreach ( $shippingTypes as $type )
     {
-        $values =& $group->startAddValue( $type );
+        $values = $group->startAddValue( $type );
 
         $t->set_var( "value_group_id", $group->id() );
         $t->set_var( "value_type_id", $type->id() );

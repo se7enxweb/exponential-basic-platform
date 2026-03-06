@@ -39,7 +39,7 @@ if ( !isset( $CategoryID ) )
 $GlobalSectionID = eZArticleCategory::sectionIDStatic( $CategoryID );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $ForceCategoryDefinition = $ini->variable( "eZArticleMain", "ForceCategoryDefinition" );
@@ -147,7 +147,7 @@ if ( $article->get( $ArticleID ) )
         exit();
     }
 
-    $categories =& $article->categories( false );
+    $categories = $article->categories( false );
 
     // path
     if ( !in_array( $CategoryID, $categories ) )
@@ -159,7 +159,7 @@ if ( $article->get( $ArticleID ) )
         $category = new eZArticleCategory( $CategoryID );
     }
 
-    $pathArray =& $category->path();
+    $pathArray = $category->path();
     
     $t->set_var( "path_item", "" );
     foreach ( $pathArray as $path )
@@ -208,7 +208,7 @@ if ( $article->get( $ArticleID ) )
     
     $t->set_var( "author_id", $article->contentsWriter( false ) );
     
-    $categoryDef =& $article->categoryDefinition();
+    $categoryDef = $article->categoryDefinition();
 
     $t->set_var( "category_definition_name", $categoryDef->name() );
 
@@ -243,7 +243,7 @@ if ( $article->get( $ArticleID ) )
 
     $usedImages = $renderer->usedImageList();
 
-    $images =& $article->images();
+    $images = $article->images();
 
     
     {
@@ -271,7 +271,7 @@ if ( $article->get( $ArticleID ) )
                 $t->set_var( "image_id", $image->id() );
                 $t->set_var( "article_id", $ArticleID );
 
-                $variation =& $image->requestImageVariation( 150, 150 );
+                $variation = $image->requestImageVariation( 150, 150 );
 
                 $t->set_var( "image_url", "/" .$variation->imagePath() );
                 $t->set_var( "image_width", $variation->width() );

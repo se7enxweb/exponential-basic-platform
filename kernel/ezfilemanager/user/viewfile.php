@@ -30,7 +30,7 @@
 // include_once( "ezfilemanager/classes/ezvirtualfile.php" );
 // include_once( "ezfilemanager/classes/ezvirtualfolder.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
 
 
@@ -73,7 +73,7 @@ if ( $FileID != 0 )
 
 $folder = new eZVirtualFolder( $FolderID );
 
-$folderList =& $folder->getByParent( $folder );
+$folderList = $folder->getByParent( $folder );
 
 foreach ( $folderList as $folder )
 {

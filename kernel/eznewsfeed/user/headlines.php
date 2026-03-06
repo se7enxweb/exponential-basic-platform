@@ -62,12 +62,12 @@ if( !function_exists( 'printNewsHeaderList' ) )
             if ( $CategoryID != "" )
             {
                 $category = new eZNewsCategory( $CategoryID );
-                $newsList =& $category->newsList( "time", "no", 0, 5 );
+                $newsList = $category->newsList( "time", "no", 0, 5 );
                 $t->set_var( "category_name", $category->name() );    }
             else
             {
                 print( "to" );
-//        $newsList =& $news->newsList();
+//        $newsList = $news->newsList();
             }
     
             $locale = new eZLocale();
@@ -80,7 +80,7 @@ if( !function_exists( 'printNewsHeaderList' ) )
                 $t->set_var( "head_line_origin", $newsItem->origin() );
         
                 $published = $newsItem->originalPublishingDate();
-                $date =& $published->date();            
+                $date = $published->date();            
                 $t->set_var( "head_line_date", $locale->format( $date ) );
         
                 $t->parse( "head_line_item", "head_line_item_tpl", true );

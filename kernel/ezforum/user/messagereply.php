@@ -26,7 +26,7 @@
 // include_once( "ezmail/classes/ezmail.php" );
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $wwwDir = $ini->WWWDir;
 $index = $ini->Index;
 $Language = $ini->variable( "eZForumMain", "Language" );
@@ -138,7 +138,7 @@ if ( $StartAction == "reply" )
             {
                 if ( ( $message->treeID() > $msg->treeID() ) && $message->emailNotice() )
                 {
-                    $user =& eZUser::currentUser();
+                    $user = eZUser::currentUser();
                     $headersInfo = ( getallheaders() );
 
                     // $user may be false (answering an anonymous forum, with user not logged in)
@@ -169,7 +169,7 @@ if ( $StartAction == "reply" )
 
                     $mail->setSubject( $subject_line );
 
-                    $author =& $message->user();
+                    $author = $message->user();
 
                     $mail->setTo( $author->email() );
                     $mail->setBody( $bodyText );
@@ -227,7 +227,7 @@ if ( $StartAction == "moderatorapprove" )
             {
                 if ( ( $message->treeID() > $msg->treeID() ) && $message->emailNotice() )
                 {
-                    $user =& eZUser::currentUser();
+                    $user = eZUser::currentUser();
                     $headersInfo = ( getallheaders() );
 
                     // $user may be false (answering an anonymous forum, with user not logged in)
@@ -258,7 +258,7 @@ if ( $StartAction == "moderatorapprove" )
 
                     $mail->setSubject( $subject_line );
 
-                    $author =& $message->user();
+                    $author = $message->user();
 
                     $mail->setTo( $author->email() );
                     $mail->setBody( $bodyText );

@@ -64,7 +64,7 @@ class eZBulkMail
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $bodytext = $db->escapeString( $this->BodyText );
         $subject = $db->escapeString( $this->Subject );
@@ -120,7 +120,7 @@ class eZBulkMail
     */
     function delete( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         if ( $id == -1 )
@@ -146,7 +146,7 @@ class eZBulkMail
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -177,7 +177,7 @@ class eZBulkMail
     */
     static public function getAll( $draftsOnly = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $mail_array = array();
@@ -342,7 +342,7 @@ class eZBulkMail
        if ( is_a( $value, "eZBulkMailCategory" ) )
            $value = $value->id();
 
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        if ( $value == false )
        {
@@ -380,7 +380,7 @@ class eZBulkMail
      */
     function categories( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $category_array = array();
         $result_array = array();
 
@@ -401,7 +401,7 @@ class eZBulkMail
      */
     function useTemplate( $templateID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
         $result = $db->query( "DELETE FROM eZBulkMail_MailTemplateLink WHERE MailID='$this->ID'" );
@@ -428,7 +428,7 @@ class eZBulkMail
      */
     function template( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $template_array = array();
 
         $db->array_query( $template_array, "SELECT TemplateID FROM eZBulkMail_MailTemplateLink WHERE MailID='$this->ID'" );
@@ -562,9 +562,9 @@ class eZBulkMail
             }
             $this->store();
             // The mail was sent.. now lets set the timestamp
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
             $result = $db->query( "UPDATE eZBulkMail_Mail SET SentDate='$timeStamp' WHERE ID='$this->ID'" );
             if ( $result == false )
                 $db->rollback( );
@@ -575,7 +575,7 @@ class eZBulkMail
 
     function sendDelayedMail( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $categoryID = $this->ID();
         $subscribe_array = array();
@@ -658,7 +658,7 @@ class eZBulkMail
      */
     function haveSentHourly( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
         $db->query_single( $offset, "SELECT Hour FROM eZBulkMail_Offset" );
 
@@ -678,7 +678,7 @@ class eZBulkMail
      */
     function haveSentDaily( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
         $db->query_single( $offset, "SELECT Daily FROM eZBulkMail_Offset" );
 
@@ -696,7 +696,7 @@ class eZBulkMail
      */
     function haveSentWeekly( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
         $db->query_single( $offset, "SELECT Weekly FROM eZBulkMail_Offset" );
 
@@ -714,7 +714,7 @@ class eZBulkMail
      */
     function haveSentMonthly( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
         $db->query_single( $offset, "SELECT Monthly FROM eZBulkMail_Offset" );
 
@@ -765,9 +765,9 @@ class eZBulkMail
         $bulkMail->store();
 
         // The mail was sent.. now lets set the timestamp
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
-        $timeStamp =& (new eZDateTime())->timeStamp( true );
+        $timeStamp = (new eZDateTime())->timeStamp( true );
         $id = $bulkMail->id();
         $result = $db->query( "UPDATE eZBulkMail_Mail SET SentDate='$timeStamp' WHERE ID='$id'");
         if ( $result == false )
@@ -782,10 +782,10 @@ class eZBulkMail
     */
     function setOffset( $delay )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZBulkMail_Offset" );
-        $timeStamp =& (new eZDateTime())->timeStamp( true );
+        $timeStamp = (new eZDateTime())->timeStamp( true );
 
         if ( $delay == 1 )
             $delay = "Hour";
@@ -822,11 +822,11 @@ class eZBulkMail
     */
     function addLogEntry( $mail )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZBulkMail_SentLog" );
         $nextID = $db->nextID( "eZBulkMail_SentLog", "ID" );
-        $timeStamp =& (new eZDateTime())->timeStamp( true );
+        $timeStamp = (new eZDateTime())->timeStamp( true );
 
         $result = $db->query( "INSERT INTO eZBulkMail_SentLog
                   ( ID, SentDate, Mail, MailID )
@@ -850,7 +850,7 @@ class eZBulkMail
         $db->begin();
         $db->lock( "eZBulkMail_CategoryDelay" );
         $nextID = $db->nextID( "eZBulkMail_CategoryDelay", "ID" );
-        $timeStamp =& (new eZDateTime())->timeStamp( true );
+        $timeStamp = (new eZDateTime())->timeStamp( true );
 
         $mailID = $this->ID;
         $result = $db->query( "INSERT INTO eZBulkMail_CategoryDelay
@@ -872,7 +872,7 @@ class eZBulkMail
      */
     function isSent( $mail )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $result, "SELECT COUNT( ID ) as Count FROM eZBulkMail_SentLog WHERE Mail='$mail' AND MailID='$this->ID'" );
         if ( $result[$db->fieldName( "Count" )] > 0 )
             return true;

@@ -134,7 +134,7 @@ class eZGroupEventType
 
       The categories are returned as an array of eZGroupEventType objects.
     */
-    function &getAll()
+    function getAll()
     {
         $this->dbInit();
         
@@ -159,7 +159,7 @@ class eZGroupEventType
 
       The categories are returned as an array of eZGroupEventType objects.      
     */
-    function &getByParent( $parent, $showAll=false, $sortby="name" )
+    function getByParent( $parent, $showAll=false, $sortby="name" )
     {
         if ( is_a( $parent, "eZGroupEventType" ) )
         {
@@ -235,12 +235,12 @@ class eZGroupEventType
     /*!
       Returns the categories sorted as a tree.
     */
-    function &getTree( $parentID=0, $level=0 )
+    function getTree( $parentID=0, $level=0 )
     {
 
         $EventType = new eZGroupEventType( $parentID );
 
-        $EventTypeList =& $EventType->getByParent( $EventType, true );
+        $EventTypeList = $EventType->getByParent( $EventType, true );
         
         $tree = array();
         $level++;

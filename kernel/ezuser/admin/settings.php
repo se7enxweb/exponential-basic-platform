@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 // $DOC_ROOT = $ini->variable( "eZUserMain", "DocumentRoot" );
 
@@ -70,7 +70,7 @@ $t->set_block( "settings", "module_tab_item_tpl", "module_tab_item" );
 
 $t->set_var( "ref_url", $url );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( !$user ) 
 {
     eZHTTPTool::header( "Location: /user/login/" );

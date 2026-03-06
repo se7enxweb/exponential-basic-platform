@@ -37,8 +37,8 @@ function deleteCache( $ProductID, $CategoryID, $CategoryArray )
 {
     if ( get_class( $ProductID ) == "ezproduct" )
     {
-        $CategoryID =& $ProductID->categoryDefinition( false );
-        $CategoryArray =& $ProductID->categories( false );
+        $CategoryID = $ProductID->categoryDefinition( false );
+        $CategoryArray = $ProductID->categories( false );
         $ProductID = $ProductID->id();
     }
 
@@ -58,7 +58,7 @@ function deleteCache( $ProductID, $CategoryID, $CategoryArray )
 }
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $Limit = $ini->variable( "eZTradeMain", "AdminProductLimit" );
@@ -75,16 +75,16 @@ $t = new eZTemplate( "eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTem
 // Set detail or normal mode
 if ( isSet ( $DetailView ) )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->setVariable( "TradeViewMode", "Detail" );
 }
 if ( isSet ( $NormalView ) )
 {
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->setVariable( "TradeViewMode", "Normal" );
 }
 
-$checkMode =& eZSession::globalSession();
+$checkMode = eZSession::globalSession();
 
 if ( $checkMode->variable( "TradeViewMode" ) == "Detail" )
 {
@@ -184,7 +184,7 @@ if ( $category->sortMode() == "absolute_placement" )
 }
 
 // path
-$pathArray =& $category->path();
+$pathArray = $category->path();
 
 $t->set_var( "path_item", "" );
 foreach ( $pathArray as $path )
@@ -198,7 +198,7 @@ foreach ( $pathArray as $path )
 
 
 
-$categoryList =& $category->getByParent( $category );
+$categoryList = $category->getByParent( $category );
 
 // categories
 $i = 0;
@@ -245,8 +245,8 @@ if ( !isset( $Limit ) or !is_numeric( $Limit ) )
 // Display Product List Bulk Editor Mode
 
 // Products
-$TotalTypes =& $category->productCount( $category->sortMode(), true, true );
-$productList =& $category->products( $category->sortMode(), true, $Offset, $Limit, true );
+$TotalTypes = $category->productCount( $category->sortMode(), true, true );
+$productList = $category->products( $category->sortMode(), true, $Offset, $Limit, true );
 
 $locale = new eZLocale( $Language );
 $i = 0;
@@ -313,7 +313,7 @@ foreach ( $productList as $product )
 
     if  ( $image )
     {
-        $thumbnail =& $image->requestImageVariation( $hotDealImageWidth, $hotDealImageHeight );
+        $thumbnail = $image->requestImageVariation( $hotDealImageWidth, $hotDealImageHeight );
         
         if ( $thumbnail )
         {
@@ -336,7 +336,7 @@ foreach ( $productList as $product )
 
     if  ( $image )
     {
-        $thumbnail =& $image->requestImageVariation( $hotDealImageWidth, $hotDealImageHeight );
+        $thumbnail = $image->requestImageVariation( $hotDealImageWidth, $hotDealImageHeight );
         
         if ( $thumbnail )
         {
@@ -394,7 +394,7 @@ foreach ( $productList as $product )
     $t->set_var( "vat_select", "" );
 	$vat = new eZVATType();
 	$vatTypes = $vat->getAll();
-	$VatType =& $product->vatType();
+	$VatType = $product->vatType();
 
 	foreach ( $vatTypes as $type )
 	{
@@ -417,7 +417,7 @@ foreach ( $productList as $product )
         $t->set_var( "box_select", "" );
 	$box = new eZBoxType();
 	$boxTypes = $box->getAll();
-	$BoxType =& $product->boxType();
+	$BoxType = $product->boxType();
 	foreach ( $boxTypes as $type )
 	{
     	if ( $BoxType  and  ( $BoxType->id() == $type->id() ) )
@@ -434,8 +434,8 @@ foreach ( $productList as $product )
 
     $t->set_var( "shipping_select", "" );
 	$group = new eZShippingGroup();
-	$groups =& $group->getAll();
-	$ShippingGroup =& $product->shippingGroup();  
+	$groups = $group->getAll();
+	$ShippingGroup = $product->shippingGroup();  
 
 	foreach ( $groups as $group )
 	{
@@ -539,14 +539,14 @@ if ( $ShowQuantity )
     $t->set_var( "keywords_value", $product->keywords() );
     
     $priceArray = "";
-    $options =& $product->options();
+    $options = $product->options();
     $high = 0;
     $low = 0;
     foreach ( $options as $option )
     {
         if ( get_class( $option ) == "ezoption" )
         {
-            $optionValues =& $option->values();
+            $optionValues = $option->values();
             if ( count( $optionValues ) > 1 )
             {
                 $j=0;
@@ -665,14 +665,14 @@ if ( isSet ( $DetailView ) )
    }
 // link list
 $module_link = new eZModuleLink( "eZTrade", "Product", $product->id() );
-$sections =& $module_link->sections();
+$sections = $module_link->sections();
 $t->set_var( "section_item", "" );
 foreach ( $sections as $section )
 {
     $t->set_var( "link_item", "" );
     $t->set_var( "section_name", $section->name() );
     $t->set_var( "section_id", $section->id() );
-    $links =& $section->links();
+    $links = $section->links();
     foreach ( $links as $link )
     {
         $t->set_var( "link_name", $link->name() );

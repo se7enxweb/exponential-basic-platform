@@ -27,7 +27,7 @@
 // include_once( "ezlink/classes/ezlink.php" );
 // include_once( "ezlink/classes/ezhit.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 if ( $Action == "addhit" )
 {
@@ -39,7 +39,7 @@ if ( $Action == "addhit" )
 }
 
 $link = new eZLink( $LinkID );
-$location =& $link->url();
+$location = $link->url();
 
 if ( !preg_match( "%^([a-z]+://)%", $location ) )
     $location = "http://" . $location;

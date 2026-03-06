@@ -29,12 +29,12 @@
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezmediacatalogue/classes/ezmediacategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZMediaCatalogueMain", "DefaultSection" );
 
 function writeAtAll()
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if( eZObjectPermission::getObjects( "mediacatalogue_category", 'w', true ) < 1
         && !eZPermission::checkPermission( $user, "eZMediaCatalogue", "WriteToRoot" ) )
     {
@@ -46,7 +46,7 @@ function writeAtAll()
     return true;
 }
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 switch ( $url_array[2] )
 {

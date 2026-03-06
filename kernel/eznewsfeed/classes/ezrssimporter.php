@@ -56,10 +56,10 @@ class eZRSSImporter
     /*!
       Returns the news items as an array.
     */
-    function &news( )
+    function news( )
     {
         $source ="";
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_array = array();
 
 	if (!($fp = @fopen($this->Site, "r"))) {

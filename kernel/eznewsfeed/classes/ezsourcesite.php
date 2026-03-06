@@ -64,7 +64,7 @@ class eZSourceSite
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $name = $db->escapeString( $this->Name );
@@ -123,7 +123,7 @@ class eZSourceSite
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -156,7 +156,7 @@ class eZSourceSite
     */
     function delete( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if( $id == -1 )
             $id = $this->ID;
 
@@ -174,7 +174,7 @@ class eZSourceSite
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $source_site_array = array();
@@ -201,7 +201,7 @@ class eZSourceSite
     /*!
       Returns the source site name.
     */
-    function &name()
+    function name()
     {
       return htmlspecialchars( $this->Name );
     }
@@ -209,7 +209,7 @@ class eZSourceSite
     /*!
       Returns the url to the source site.
     */
-    function &url()
+    function url()
     {
        return $this->URL;
     }
@@ -217,7 +217,7 @@ class eZSourceSite
     /*!
       Returns the login to the source site.
     */
-    function &login()
+    function login()
     {
        return $this->Login;
     }
@@ -225,7 +225,7 @@ class eZSourceSite
     /*!
       Returns the password to the source site.
     */
-    function &password()
+    function password()
     {
        return $this->Password;
     }
@@ -233,7 +233,7 @@ class eZSourceSite
     /*!
       Returns the decoder to use on the source site.
     */
-    function &decoder()
+    function decoder()
     {
        return $this->Decoder;
     }
@@ -241,7 +241,7 @@ class eZSourceSite
     /*!
       Returns the category to import the news to.
     */
-    function &category()
+    function category()
     {
        $ret = new eZNewsCategory( $this->CategoryID );
 
@@ -251,7 +251,7 @@ class eZSourceSite
     /*!
       Returns the isActive, return true if succsessfull.
     */
-    function &isActive()
+    function isActive()
     {
        $ret = false;
        if ( $this->IsActive == "1" )

@@ -30,7 +30,7 @@
 
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $ShowQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
@@ -62,7 +62,7 @@ if ( !$session->fetch() )
 
 
 // your own wishlist
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( !$user )
 {
@@ -90,15 +90,15 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
     $productAddedToWishlist = false;
     {
         // fetch the cart items
-        $items =& $wishlist->items( );
+        $items = $wishlist->items( );
 
         foreach ( $items as $item )
         {
-            $productItem =& $item->product();
+            $productItem = $item->product();
             // the same product
             if ( ( $ProductID == $productItem->id() ) && ( $productAddedToWishlist == false ) )
             {
-                $optionValues =& $item->optionValues();
+                $optionValues = $item->optionValues();
 
                 if ( count( $optionValues ) > 0 )
                 { // product with options
@@ -106,8 +106,8 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
                     
                     foreach ( $optionValues as $optionValue )
                     {
-                        $option =& $optionValue->option();
-                        $value =& $optionValue->optionValue();                        
+                        $option = $optionValue->option();
+                        $value = $optionValue->optionValue();                        
 
                         $optionValueFound = false;
                         
@@ -244,12 +244,12 @@ if ( isset( $Action ) && $Action == "MoveToCart" )
         $Quantity = $product->totalQuantity();
         if ( !$product->hasPrice() )
         {
-            $optionValues =& $wishListItem->optionValues();
+            $optionValues = $wishListItem->optionValues();
             $Quantity = 0;
             foreach ( $optionValues as $optionValue )
             {
-                $option =& $optionValue->option();
-                $value =& $optionValue->optionValue();
+                $option = $optionValue->option();
+                $value = $optionValue->optionValue();
                 $value_quantity = $value->totalQuantity();
                 if ( $value_quantity > 0 )
                     $Quantity = $value_quantity;
@@ -328,15 +328,15 @@ foreach ( $items as $item )
 {
     $t->set_var( "td_class", ( $i % 2 ) == 0 ? "bglight" : "bgdark" );
 
-    $product =& $item->product();
+    $product = $item->product();
 
     $t->set_var( "wishlist_item_id", $item->id() );
 
-    $image =& $product->thumbnailImage();
+    $image = $product->thumbnailImage();
 
     if ( $image )
     {
-        $thumbnail =& $image->requestImageVariation( $TinyImageWidth, $TinyImageHeight );
+        $thumbnail = $image->requestImageVariation( $TinyImageWidth, $TinyImageHeight );
 
         $t->set_var( "product_image_path", "/" . $thumbnail->imagePath() );
         $t->set_var( "product_image_width", $thumbnail->width() );
@@ -369,7 +369,7 @@ foreach ( $items as $item )
     $t->set_var( "product_id", $product->id() );
     $t->set_var( "product_name", $product->name() );
 
-    $optionValues =& $item->optionValues();
+    $optionValues = $item->optionValues();
 
     $Quantity = $product->totalQuantity();
     if ( !$product->hasPrice() )
@@ -377,8 +377,8 @@ foreach ( $items as $item )
         $Quantity = 0;
         foreach ( $optionValues as $optionValue )
         {
-            $option =& $optionValue->option();
-            $value =& $optionValue->optionValue();
+            $option = $optionValue->option();
+            $value = $optionValue->optionValue();
             $value_quantity = $value->totalQuantity();
             if ( $value_quantity > 0 )
                 $Quantity = $value_quantity;
@@ -401,13 +401,13 @@ foreach ( $items as $item )
     $min_quantity = $Quantity;
     foreach ( $optionValues as $optionValue )
     {
-        $option =& $optionValue->option();
-        $value =& $optionValue->optionValue();
+        $option = $optionValue->option();
+        $value = $optionValue->optionValue();
         $value_quantity = $value->totalQuantity();
 
         $t->set_var( "option_name", $option->name() );
 
-        $descriptions =& $value->descriptions();
+        $descriptions = $value->descriptions();
         if ( count( $descriptions ) > 0 )
             $t->set_var( "option_value", $descriptions[0] );
         else

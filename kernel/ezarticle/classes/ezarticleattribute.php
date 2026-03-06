@@ -64,7 +64,7 @@ class eZArticleAttribute
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -76,7 +76,7 @@ class eZArticleAttribute
             $db->lock( "eZArticle_Attribute" );
 
             $nextID = $db->nextID( "eZArticle_Attribute", "ID" );
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
 
             $db->array_query( $attribute_array, "SELECT Placement FROM eZArticle_Attribute" );
 
@@ -119,7 +119,7 @@ class eZArticleAttribute
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != -1  )
         {
@@ -142,9 +142,9 @@ class eZArticleAttribute
     /*!
       Retrieves every option from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $attribute_array = array();
@@ -167,7 +167,7 @@ class eZArticleAttribute
      */
     function getByName( $name )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $topic = new eZArticleAttribute();
 
@@ -192,7 +192,7 @@ class eZArticleAttribute
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query( "DELETE FROM eZArticle_AttributeValue WHERE AttributeID='$this->ID'" );
         $db->query( "DELETE FROM eZArticle_Attribute WHERE ID='$this->ID'" );
@@ -252,7 +252,7 @@ class eZArticleAttribute
     {
        if ( is_a( $article, "eZArticle" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
 
            $db->begin( );
 
@@ -307,7 +307,7 @@ class eZArticleAttribute
        $ret = "";
        if ( is_a( $article, "eZArticle" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
 
            $articleID = $article->id();
 
@@ -329,7 +329,7 @@ class eZArticleAttribute
     */
     function moveUp()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $query = "SELECT ID, Placement FROM eZArticle_Attribute
                                   WHERE Placement<'$this->Placement' AND TypeID = '$this->TypeID' ORDER BY Placement DESC LIMIT 1";
@@ -370,7 +370,7 @@ class eZArticleAttribute
     */
     function moveDown()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query_single( $qry, "SELECT ID, Placement FROM eZArticle_Attribute
                                   WHERE Placement>'$this->Placement' AND TypeID = '$this->TypeID'  ORDER BY Placement ASC" );

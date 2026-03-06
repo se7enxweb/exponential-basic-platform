@@ -49,7 +49,7 @@ class eZXMLRPCBool
     /*!
       This function will encode the sting into a valid XML-RPC value.
     */
-    function &serialize( )
+    function serialize( )
     {
         if ( $this->Value == true )
         {

@@ -28,7 +28,7 @@
 
 $forms = array();
 
-$formList =& eZForm::getAll( 0, false );
+$formList = eZForm::getAll( 0, false );
 foreach ( $formList as $form )
 {
     $forms[] = new eZXMLRPCStruct( array( "URL" => createURLStruct( "ezform",

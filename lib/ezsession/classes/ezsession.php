@@ -119,7 +119,7 @@ class eZSession
      * @since 5.0
      * @return byRef session array to use
      */
-    static private function &sessionArray()
+    static private function sessionArray()
     {
         if ( self::$namespace !== null )
         {
@@ -138,7 +138,7 @@ class eZSession
      * @param null|mixed $defaultValue Return this if not null and session has not started
      * @return mixed|null $defaultValue if key does not exist, otherwise session value depending on $key
      */
-    static public function &get( $key = null, $defaultValue = null )
+    static public function get( $key = null, $defaultValue = null )
     {
         if ( self::$hasStarted === false )
         {
@@ -146,7 +146,7 @@ class eZSession
                 return $defaultValue;
             self::start();
         }
-        $session =& self::sessionArray();
+        $session = self::sessionArray();
 
         if ( $key === null )
             return $session;
@@ -168,7 +168,7 @@ class eZSession
         {
             self::start();
         }
-        $session =& self::sessionArray();
+        $session = self::sessionArray();
         $session[$key] = $value;
 
         return true;
@@ -211,7 +211,7 @@ class eZSession
                 return null;
             self::start();
         }
-        $session =& self::sessionArray();
+        $session = self::sessionArray();
 
         if ( !isset( $session[$key] ) )
             return false;

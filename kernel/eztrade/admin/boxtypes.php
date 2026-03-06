@@ -28,7 +28,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
@@ -81,7 +81,7 @@ $t->set_block( "box_types_tpl", "box_item_tpl", "box_item" );
 
 $type = new eZBoxType();
 
-$types =& $type->getAll();
+$types = $type->getAll();
 
 $i=0;
 foreach ( $types as $item )

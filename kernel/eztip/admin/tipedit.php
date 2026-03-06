@@ -138,7 +138,7 @@ if ( $Action == "Insert" )
     {
         $tipID = $tip->id();
         
-        $session =& eZSession::globalSession();
+        $session = eZSession::globalSession();
         $session->setVariable( "SelectImages", "single" );
         $session->setVariable( "ImageListReturnTo", "/tip/tip/edit/$tipID/" );
         $session->setVariable( "NameInBrowse", $tip->name() );
@@ -236,7 +236,7 @@ if ( $Action == "Update" )
     {
         $tipID = $tip->id();
         
-        $session =& eZSession::globalSession();
+        $session = eZSession::globalSession();
         $session->setVariable( "SelectImages", "single" );
         $session->setVariable( "ImageListReturnTo", "/tip/tip/edit/$tipID/" );
         $session->setVariable( "NameInBrowse", $tip->name() );
@@ -281,7 +281,7 @@ if ( $Action == "DeleteTips" )
 }
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTipMain", "Language" );
 $ImageDir = $ini->variable( "eZTipMain", "ImageDir" );
 

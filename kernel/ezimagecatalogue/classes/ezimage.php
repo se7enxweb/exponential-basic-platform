@@ -114,7 +114,7 @@ class eZImage
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
 
@@ -129,7 +129,7 @@ class eZImage
         {
             $db->lock( "eZImageCatalogue_Image" );
 
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
 
             $this->ID = $db->nextID( "eZImageCatalogue_Image", "ID" );
             $res = $db->query( "INSERT INTO eZImageCatalogue_Image
@@ -163,7 +163,7 @@ class eZImage
         {
             if ( $this->NewImage )
             {
-                $variationArray =& $this->variations();
+                $variationArray = $this->variations();
 
                 foreach ( $variationArray as $variation )
                 {
@@ -193,22 +193,22 @@ class eZImage
     }
 
     /*
-    function &search( $name, $literal = false )
+    function search( $name, $literal = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $res = array();
 
         $query = new eZQuery( array( "Name", "Caption", "Description", "Keywords" ),
                               $name );
         $query->setIsLiteral( $literal );
-        $where =& $query->buildQuery();
+        $where = $query->buildQuery();
 
         $db->array_query( $image_array,
                           "SELECT ID FROM eZImageCatalogue_Image WHERE $where" );
 
         foreach( $image_array as $image )
         {
-            $res[] =& new eZImage( $image[$db->fieldName("ID")] );
+            $res[] = new eZImage( $image[$db->fieldName("ID")] );
         }
         return $res;
         }*/
@@ -219,13 +219,13 @@ class eZImage
     */
     static public function search( &$queryText, $offset = 0, $limit = 30, $userID = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $returnArray = array();
         if ( $userID > -1 )
             $user = new eZUser( $userID );
         else
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
         $groupString = "AND i.ID=p.ObjectID AND c.ID=icl.CategoryID AND icl.ImageID=i.ID AND cp.ObjectID=c.ID AND cp.ReadPermission='1' AND ( ( ( (p.GroupID='-1' AND cp.GroupID='-1')";
         if ( $user )
         {
@@ -267,7 +267,7 @@ class eZImage
     */
     static public function searchCount( $name, $literal = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $fileArray = array();
         $returnArray = array();
@@ -283,7 +283,7 @@ class eZImage
         if ( $userID > -1 )
             $user = new eZUser( $userID );
         else
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
         $groupString = "AND i.ID=p.ObjectID AND c.ID=icl.CategoryID AND icl.ImageID=i.ID AND cp.ObjectID=c.ID AND cp.ReadPermission='1' AND ( ( ( (p.GroupID='-1' AND cp.GroupID='-1')";
         if ( $user )
         {
@@ -321,11 +321,11 @@ class eZImage
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
-            $variationArray =& $this->variations();
+            $variationArray = $this->variations();
 
             foreach ( $variationArray as $variation )
             {
@@ -352,7 +352,7 @@ class eZImage
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -389,7 +389,7 @@ class eZImage
     */
     static public function getByOriginalFileName( $id = "" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = new eZImage();
         if ( $id != "" )
         {
@@ -415,7 +415,7 @@ class eZImage
        $ret = false;
        if ( is_a( $category, "eZImageCategory" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
            $catID = $category->id();
 
            $db->array_query( $ret_array, "SELECT ID FROM eZImageCatalogue_ImageCategoryLink
@@ -437,7 +437,7 @@ class eZImage
     {
         if ( is_a( $value, "eZImageCategory" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->begin();
 
@@ -469,7 +469,7 @@ class eZImage
     */
     function categoryDefinition( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $res, "SELECT CategoryID FROM
                                             eZImageCatalogue_ImageCategoryDefinition
@@ -493,9 +493,9 @@ class eZImage
 
       The images are returned as an array of eZImage objects.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_array = array();
         $category_array = array();
         $db->array_query( $category_array, "SELECT ID FROM eZImageCatalogue_Image ORDER BY Name" );
@@ -513,7 +513,7 @@ class eZImage
      */
     static public function getUnassigned( $offset = -1, $limit = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $returnArray = array();
         $imageArray = array();
 
@@ -541,7 +541,7 @@ class eZImage
      */
     static public function countUnassigned()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query_single( $image, "SELECT COUNT(Image.ID) as Count, Link.ImageID
                                         FROM eZImageCatalogue_Image AS Image
@@ -588,11 +588,11 @@ class eZImage
             {
                 if ( $this->UserID != 0 )
                 {
-                    $currentGroups =& $currentUser->groups();
+                    $currentGroups = $currentUser->groups();
                     foreach ( $currentGroups as $Groups )
                     {
                         $user = new eZUser( $this->UserID );
-                        $userGroups =& $user->groups();
+                        $userGroups = $user->groups();
 
                         foreach ( $userGroups as $userGroup )
                         {
@@ -661,11 +661,11 @@ class eZImage
             {
                 if ( $this->UserID != 0 )
                 {
-                    $currentGroups =& $currentUser->groups();
+                    $currentGroups = $currentUser->groups();
                     foreach ( $currentGroups as $Groups )
                     {
                         $user = new eZUser( $this->UserID );
-                        $userGroups =& $user->groups();
+                        $userGroups = $user->groups();
 
                         foreach ( $userGroups as $userGroup )
                         {
@@ -711,7 +711,7 @@ class eZImage
     /*!
       Returns the name of the image.
     */
-    function &name( $html = true )
+    function name( $html = true )
     {
         if ( $this->Name )
         {
@@ -818,7 +818,7 @@ class eZImage
     /*
     * Checks for a watermark version of the image, creates one if it doesn't exist, and returns the path.
     */
-    function &watermarkPath( $relative = false )
+    function watermarkPath( $relative = false )
     {
        $relPath = "ezimagecatalogue/catalogue/fullwatermarks/" . $this->FileName;
 
@@ -842,8 +842,8 @@ class eZImage
        return $path;
     }
     
-    function &createWatermark() {
-	    $ini =& eZINI::instance( 'site.ini' );
+    function createWatermark() {
+	    $ini = eZINI::instance( 'site.ini' );
 		$sitePath = $ini->variable("site", "SitePath");
     	    if ( $ini->hasVariable( "watermark", "watermarkImage" ) )
              $watermark_image = $ini->variable( "watermark", "watermarkImage" );
@@ -1223,7 +1223,7 @@ class eZImage
     */
     function variations()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
 
@@ -1244,7 +1244,7 @@ class eZImage
     */
     function categories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $res = array();
         $db->array_query( $res, "SELECT CategoryID, ImageID FROM
@@ -1275,7 +1275,7 @@ class eZImage
         if ( !is_a( $user, "eZUser" ) )
             return false;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT UserID from eZImageCatalogue_Image WHERE ID='$image'");
         $userID = $res[$db->fieldName("UserID")];
         if(  $userID == $user->id() )
@@ -1327,7 +1327,7 @@ class eZImage
     */
     function articles()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $res = array();
         $db->array_query( $res, "SELECT ArticleID FROM
@@ -1348,7 +1348,7 @@ class eZImage
     */
     function products()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $res = array();
         $db->array_query( $res, "SELECT ProductID FROM
@@ -1369,7 +1369,7 @@ class eZImage
     */
     public static function randomImage( $categoryID=0 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $res = array();
 
         if( $db->isA() == "mysql" )
@@ -1414,7 +1414,7 @@ class eZImage
     */
     function hasMap()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $res = array();
         $db->array_query( $res, "SELECT * FROM eZImageCatalogue_ImageMap WHERE ImageID='$this->ID'" );
@@ -1430,7 +1430,7 @@ class eZImage
     */
     function forum( $as_object = true )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $res, "SELECT ForumID FROM
                                             eZImageCatalogue_ImageForumLink
@@ -1454,7 +1454,7 @@ class eZImage
 
             $forum->store();
 			
-			$ini =& eZINI::instance( 'site.ini' );
+			$ini = eZINI::instance( 'site.ini' );
 			$linkModules = $ini->variable( "eZForumMain", "LinkModules" );
 			$module_array = explode(',', $linkModules );
 			unset ($linkModules);
@@ -1503,7 +1503,7 @@ class eZImage
      */
     function imageIDFromForum( $ForumID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ImageID = 0;
 

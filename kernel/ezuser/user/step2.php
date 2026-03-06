@@ -8,7 +8,7 @@ include_once( "classes/ezhttptool.php" );
 include_once( "ezsession/classes/ezsession.php" );
 include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $SelectCountry = $ini->variable( "eZUserMain", "SelectCountry" );
 $SelectRegion = $ini->variable( "eZUserMain", "SelectRegion" );
@@ -16,7 +16,7 @@ $AnonymousUserGroup = $ini->variable( "eZUserMain", "AnonymousUserGroup" );
 
 $AutoCookieLogin = eZHTTPTool::getVar( "AutoCookieLogin" );
 
-$session =& eZSession::globalSession();
+$session = eZSession::globalSession();
 
 include_once( "ezuser/classes/ezuser.php" );
 include_once( "ezuser/classes/ezusergroup.php" );
@@ -27,7 +27,7 @@ include_once( "ezmail/classes/ezmail.php" );
 
 
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $mainAddress = eZAddress::mainAddress( $user );    
 $addressList = $user->addresses();
 $form_type = "Account Registration";
@@ -38,9 +38,9 @@ if($user){
 $default_country = 240; // 240 = U.S.
 $canada = 39;
 
-$countryList =& eZCountry::getAllArray();
-$stateList =& eZRegion::getCountryArray($default_country); 
-$castateList =& eZRegion::getCountryArray($canada); 
+$countryList = eZCountry::getAllArray();
+$stateList = eZRegion::getCountryArray($default_country); 
+$castateList = eZRegion::getCountryArray($canada); 
 $stateList = array_merge($stateList, $castateList);
 
 $states = array();

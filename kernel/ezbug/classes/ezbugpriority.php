@@ -71,7 +71,7 @@ class eZBugPriority
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $name = $db->escapeString( $this->Name );
         if ( !isset( $this->ID ) )
@@ -101,7 +101,7 @@ class eZBugPriority
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if ( isset( $this->ID ) )
         {
@@ -119,7 +119,7 @@ class eZBugPriority
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         if ( $id != "" )
         {
@@ -143,7 +143,7 @@ class eZBugPriority
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         
         $return_array = array();
         $priority_array = array();

@@ -31,7 +31,7 @@
 // include_once( "classes/ezdatetime.php" );
 // include_once( "classes/ezcachefile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 $Language = $ini->variable( "eZGroupEventCalendarMain", "Language" );
@@ -46,7 +46,7 @@ if ( $Year == false )
     $Year = $today->year();
 
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 $templateDirTmp = $sectionObject->templateStyle();
@@ -74,7 +74,7 @@ if ( $t->hasCache() )
 {
 //    print( "cached<br />" );
     $file = new eZCacheFile( "ezgroupeventcalendar/user/cache", array( "yearview.tpl", "default", $Language, $Year ), "cache", "-" );
-    $dt =& $file->lastModified();
+    $dt = $file->lastModified();
 
     if ( $Year == $today->year() && $dt->day() != $today->day() )
     {
@@ -103,7 +103,7 @@ if ( $build == true )
 
 	$t->set_var( "sitedesign", $SiteDesign );
 
-    $session =& eZSession::globalSession();
+    $session = eZSession::globalSession();
     $session->fetch();
 
     $date = new eZDate();

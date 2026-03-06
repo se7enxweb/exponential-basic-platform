@@ -61,7 +61,7 @@ class eZVote
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin();
 
@@ -94,7 +94,7 @@ class eZVote
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != -1 )
         {
@@ -121,7 +121,7 @@ class eZVote
     */
     function getAll( $id )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $vote_array = array();
@@ -218,7 +218,7 @@ class eZVote
 
         $vote_array = array();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $vote_array, "SELECT * FROM eZPoll_Vote
                                                     WHERE UserID='$userID' AND PollID='$pollID'" );
@@ -240,7 +240,7 @@ class eZVote
 
         $vote_array = array();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $vote_array, "SELECT * FROM eZPoll_Vote
                                                     WHERE VotingIP='$IP' AND PollID='$pollID'" );

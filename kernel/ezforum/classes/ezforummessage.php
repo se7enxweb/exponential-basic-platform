@@ -63,7 +63,7 @@ class eZForumMessage
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin( );
         if ( !isset( $this->ID ) )
         {
@@ -251,7 +251,7 @@ class eZForumMessage
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query( "DELETE FROM eZForum_Message WHERE ID='$this->ID'" );
         $db->query( "DELETE FROM eZForum_MessageWordLink WHERE MessageID='$this->ID'" );
         return true;
@@ -261,7 +261,7 @@ class eZForumMessage
     /*!
       Clones this eZForumMessage object.
     */
-    function &cloneObject()
+    function cloneObject()
     {
         $tmp = new eZForumMessage( $this->ID );
         unset( $tmp->ID );
@@ -273,7 +273,7 @@ class eZForumMessage
     */
     function get( $id = "" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
         $message_array = array();
 
@@ -327,7 +327,7 @@ class eZForumMessage
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = array();
         $message_array = array();
 
@@ -380,7 +380,7 @@ class eZForumMessage
         // strip multiple whitespaces
         $contents = preg_replace("(\s+)", " ", $contents );
 
-        $contents_array =& preg_split( "/ /", $contents );
+        $contents_array = preg_split( "/ /", $contents );
 
         $totalWordCount = count( $contents_array );
         $wordCount = array_count_values( $contents_array );
@@ -398,7 +398,7 @@ class eZForumMessage
 
         $this->Keywords = $keywords;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = array();
 
         $ret[] = $db->query( "DELETE FROM  eZForum_MessageWordLink WHERE MessageID='$this->ID'" );
@@ -551,7 +551,7 @@ class eZForumMessage
 
       If the message is a top level message false is returned.
     */
-    function &parent()
+    function parent()
     {
        $ret = false;
 
@@ -572,7 +572,7 @@ class eZForumMessage
     /*!
       Returns the topic of the message.
     */
-    function &topic( $htmlchars = true )
+    function topic( $htmlchars = true )
     {
        if ( !is_null( $this->Topic ) && $htmlchars == true )
        {
@@ -607,7 +607,7 @@ class eZForumMessage
     /*!
       Returns the body of the forum message.
     */
-    function &body()
+    function body()
     {
         if ( !is_null( $this->Body ) )
         {
@@ -657,7 +657,7 @@ class eZForumMessage
     /*!
       Returns the user as a eZUser object.
     */
-    function &user()
+    function user()
     {
        $owner = new eZUser( $this->UserID );
 
@@ -728,7 +728,7 @@ class eZForumMessage
     /*!
       Returns the postimg time as a eZTimeDate object.
     */
-    function &postingTime()
+    function postingTime()
     {
        $dateTime = new eZDateTime();
 
@@ -763,7 +763,7 @@ class eZForumMessage
     */
     static public function threadMessageCount( $threadID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $message_array,
                           "SELECT COUNT(*) AS Count
@@ -781,7 +781,7 @@ class eZForumMessage
     */
     static public function countMessages( $ID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $message_array,
                           "SELECT COUNT(ID) AS Messages
@@ -797,7 +797,7 @@ class eZForumMessage
      */
     static public function countReplies( $ID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $message_array,
         "SELECT COUNT(ID) AS Replies FROM eZForum_Message WHERE Parent='$ID' AND IsTemporary='0'" );
@@ -812,13 +812,13 @@ class eZForumMessage
      */
     function threadTop( &$msg )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = 0;
 
         if ( $msg->parent() != 0 )
         {
-            $parent =& $msg->parent();
+            $parent = $msg->parent();
             $ret = $this->threadTop( $parent  );
         }
         else
@@ -834,7 +834,7 @@ class eZForumMessage
     */
     function getAllUnApproved( $Offset=0, $Limit=10 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = array();
 
@@ -855,7 +855,7 @@ class eZForumMessage
     */
     function unApprovedCount( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $message_array, "SELECT COUNT(ID) as Count FROM eZForum_Message WHERE IsApproved='0' AND IsTemporary='0'" );
 
@@ -867,7 +867,7 @@ class eZForumMessage
     */
     function getAllTemporary( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = array();
 
@@ -888,12 +888,12 @@ class eZForumMessage
       The returned array has the following values
       array( "ID" => $id, "Topic" => $topic );
     */
-    public static function &lastMessages( $limit, $user = false, $userid = false )
+    public static function lastMessages( $limit, $user = false, $userid = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( !$user )
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
 
         $query_string = "AND ( f.GroupID='0' ";
         if ( $user )

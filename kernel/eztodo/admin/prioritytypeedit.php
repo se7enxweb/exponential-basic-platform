@@ -35,7 +35,7 @@
 
 // include_once( "eztodo/classes/ezpriority.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTodoMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZTodoMain", "DocumentRoot" );
 

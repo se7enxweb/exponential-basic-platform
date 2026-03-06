@@ -58,7 +58,7 @@ class eZSlideshow
     */
     function get( $user, $category )
     {
-        $this->ImageArray =& eZImageCategory::getImages( $user, $category );
+        $this->ImageArray = eZImageCategory::getImages( $user, $category );
     }
 
     /*!

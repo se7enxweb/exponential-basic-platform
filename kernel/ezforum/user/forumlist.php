@@ -32,7 +32,7 @@
 // include_once( "ezuser/classes/ezusergroup.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZForumMain", "Language" );
 
 
@@ -70,7 +70,7 @@ if( isset( $CategoryID ) && $CategoryID != 0 )
     $GlobalSectionID = eZForumCategory::sectionIDStatic( $CategoryID );
 
     // init the section
-    $sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+    $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
     $sectionObject->setOverrideVariables();
 
 
@@ -78,7 +78,7 @@ if( isset( $CategoryID ) && $CategoryID != 0 )
     $t->set_var( "category_name", $category->name( ) );
     $t->set_var( "category_description", $category->name( ) );
 
-    $forumList =& $category->forums( $Offset,$UserListLimit );
+    $forumList = $category->forums( $Offset,$UserListLimit );
     $forumCount = $category->forumCount();
  
     $t->set_var( "forum_item", "" );
@@ -119,14 +119,14 @@ if( isset( $CategoryID ) && $CategoryID != 0 )
         else
             $t->set_var( "td_class", "bgdark"  );
     
-        $group =& $forum->group();
+        $group = $forum->group();
 
         if ( is_a( $group, "eZUserGroup" ) )
         {
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
             if ( is_a( $user, "eZUser" ) )
             {
-                $groupList =& $user->groups();
+                $groupList = $user->groups();
 
                 foreach ( $groupList as $userGroup )
                 {

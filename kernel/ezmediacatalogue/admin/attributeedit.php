@@ -36,7 +36,7 @@ if ( isset( $Cancel ) )
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMediaMain", "Language" );
 
 // include_once( "ezmedia/classes/ezmediacategory.php" );

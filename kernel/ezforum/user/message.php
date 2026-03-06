@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZForumMain", "Language" );
 $NewMessageLimit = $ini->variable( "eZForumMain", "NewMessageLimit" );
 $AllowHTML = $ini->variable( "eZForumMain", "AllowHTML" );
@@ -66,13 +66,13 @@ $message = new eZForumMessage( $MessageID );
 
 $forum = new eZForum( $message->forumID() );
 
-$group =& $forum->group();
+$group = $forum->group();
 $viewer = $user;
 if ( ( is_a( $group, "eZUserGroup" ) ) && ( $group->id() != 0 ) )
 {
     if ( is_a( $viewer, "eZUser" ) )
     {
-        $groupList =& $viewer->groups();
+        $groupList = $viewer->groups();
 
         foreach ( $groupList as $userGroup )
         {
@@ -106,7 +106,7 @@ if ( count( $categories ) > 0 )
     $GlobalSectionID = eZForumCategory::sectionIDStatic( $category->id( )  );
 
     // init the section
-    $sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+    $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
     $sectionObject->setOverrideVariables();
 }
 
@@ -140,7 +140,7 @@ if ( $author->firstName()== "" && $author->lastName()=="" )
 $t->set_var( "main-user", $MessageAuthor );
 
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 if ( ( $MessageAuthor != $anonymous) and ($user) )
 {
 //	$user = new eZUser();
@@ -254,7 +254,7 @@ foreach ( $messages as $threadmessage )
 
     $t->set_var( "user", $MessageAuthor );
 
-    // $currentUser =& eZUser::currentUser();
+    // $currentUser = eZUser::currentUser();
 	if ( ( $MessageAuthor != $anonymous) and ($user) )
 	{
         // $user = new eZUser();

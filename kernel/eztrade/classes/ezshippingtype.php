@@ -59,14 +59,14 @@ class eZShippingType
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->Name = $db->escapeString( $this->Name );
 
         if ( !isset( $this->ID ) )
         {
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
             $db->lock( "eZTrade_ShippingType" );
             $nextID = $db->nextID( "eZTrade_ShippingType", "ID" );
             $res[] = $db->query( "INSERT INTO eZTrade_ShippingType
@@ -103,7 +103,7 @@ class eZShippingType
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != -1  )
         {
@@ -126,9 +126,9 @@ class eZShippingType
     /*!
       Retrieves all the VAT types from the database.
     */
-    function &getAll()
+    function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $shipping_array = array();
@@ -148,7 +148,7 @@ class eZShippingType
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query( "DELETE FROM eZTrade_ShippingValue WHERE ShippingTypeID='$this->ID'" );
 
@@ -160,7 +160,7 @@ class eZShippingType
     */
     function setAsDefault()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res[] = $db->query( "UPDATE eZTrade_ShippingType SET IsDefault='0', Created=Created" );
@@ -183,9 +183,9 @@ class eZShippingType
     /*!
       Returns the default shipping type.
     */
-    function &defaultType()
+    function defaultType()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $shipping_array = array();
 
@@ -252,12 +252,12 @@ class eZShippingType
 
       False if no type is assigned.
     */
-    function &vatType( )
+    function vatType( )
     {
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
         $ret = new eZVATType();
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         if ( $ini->variable( "eZTradeMain", "PricesIncVATBeforeLogin" ) == "enabled" )
             $useVAT = true;
         else
@@ -272,7 +272,7 @@ class eZShippingType
        if ( is_a ( $user, "eZUser" ) && $CountryDisc == true )
        {
 	  		$cart = new eZCart();
-			$session =& eZSession::globalSession();
+			$session = eZSession::globalSession();
 			// if no session exist create one.
 			if ( !$session->fetch() )
 		    	$session->store();

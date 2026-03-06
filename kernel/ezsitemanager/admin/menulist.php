@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlist.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZSiteManagerMain", "Language" );
 $Limit = $ini->variable( "eZSiteManagerMain", "AdminListLimit" );
 
@@ -54,12 +54,12 @@ if ( !isset( $Offset ) )
 $t->set_var( "site_style", $SiteDesign );
 $t->set_var( "menu_list", "" );
 $t->set_var( "path_item", "" );
-$menuList =& eZMenu::getByParent( $ParentID, $Offset, $Limit );
-$totalCount =& eZMenu::count( $ParentID );
+$menuList = eZMenu::getByParent( $ParentID, $Offset, $Limit );
+$totalCount = eZMenu::count( $ParentID );
 
 $menu = new eZMenu( $ParentID );
 // path
-$pathArray =& $menu->path();
+$pathArray = $menu->path();
 foreach ( $pathArray as $path )
 {
     $t->set_var( "category_id", $path[0] );

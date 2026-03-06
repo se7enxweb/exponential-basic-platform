@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZStatsMain", "Language" );
 
 // include_once( "classes/eztemplate.php" );
@@ -47,7 +47,7 @@ $t->set_block( "browser_list_tpl", "browser_tpl", "browser" );
 if ( !isset( $Offset ) or !is_numeric( $Offset ) )
     $Offset = 0;
 
-$latest =& eZPageViewQuery::topBrowsers( $ViewLimit, $Offset );
+$latest = eZPageViewQuery::topBrowsers( $ViewLimit, $Offset );
 // $ItemCount = eZPageViewQuery::topBrowsersCount();
 $ItemCount = count( $latest );
 $total_count = eZPageViewQuery::latestCount();

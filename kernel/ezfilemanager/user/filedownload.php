@@ -27,9 +27,9 @@
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $file = new eZVirtualFile( $FileID );
 
@@ -132,7 +132,7 @@ if ( ( $userID == '' ) && ($userID == 0 ) )
  // $RedirectURL = "/filemanager/download/$fileID";
 
  // Create a new session, store it to the database and set a cookie.
- //  $session =& eZSession::globalSession( );
+ //  $session = eZSession::globalSession( );
  //  $session->store();
 
   // get the session from the client

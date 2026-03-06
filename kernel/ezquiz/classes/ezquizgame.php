@@ -68,12 +68,12 @@ class eZQuizGame
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
-        $name =& $db->escapeString( $this->Name );
-        $description =& $db->escapeString( $this->Description );
-        $startDate =& $this->StartDate->timeStamp();
-        $stopDate =& $this->StopDate->timeStamp();
+        $name = $db->escapeString( $this->Name );
+        $description = $db->escapeString( $this->Description );
+        $startDate = $this->StartDate->timeStamp();
+        $stopDate = $this->StopDate->timeStamp();
 
         if ( !isset( $this->ID ) )
         {
@@ -106,9 +106,9 @@ class eZQuizGame
         if ( $catID == -1 )
             $catID = $this->ID;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
-        $questions =& $this->questions();
+        $questions = $this->questions();
         if ( is_array( $questions ) )
         {
             foreach ( $questions as $question )
@@ -128,7 +128,7 @@ class eZQuizGame
     */
     function get( $id=-1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -154,7 +154,7 @@ class eZQuizGame
     */
     function fill( &$quizArray )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $this->ID =& $quizArray[$db->fieldName( "ID" )];
         $this->Name =& $quizArray[$db->fieldName( "Name" )];
         $this->Description =& $quizArray[$db->fieldName( "Description" )];
@@ -171,9 +171,9 @@ class eZQuizGame
 
       The categories are returned as an array of eZQuizGame objects.
     */
-    static public function &getAll( $offset = 0, $limit = 20 )
+    static public function getAll( $offset = 0, $limit = 20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $returnArray = array();
         $quizArray = array();
@@ -206,7 +206,7 @@ class eZQuizGame
      */
     static public function count()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count FROM eZQuiz_Game" );
@@ -225,7 +225,7 @@ class eZQuizGame
     /*!
       Returns the name of the game.
     */
-    function &name()
+    function name()
     {
         if( !is_null( $this->Name ) )
         return htmlspecialchars( $this->Name );
@@ -236,7 +236,7 @@ class eZQuizGame
     /*!
       Returns the description of the game.
     */
-    function &description()
+    function description()
     {
         return htmlspecialchars( $this->Description );
     }
@@ -244,7 +244,7 @@ class eZQuizGame
     /*!
       Returns the start date of the game.
     */
-    function &startDate()
+    function startDate()
     {
         return $this->StartDate;
     }
@@ -252,7 +252,7 @@ class eZQuizGame
     /*!
       Returns the stop date of the game.
     */
-    function &stopDate()
+    function stopDate()
     {
         return $this->StopDate;
     }
@@ -296,7 +296,7 @@ class eZQuizGame
     */
     function isClosed()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
 
         $ret = false;
@@ -319,7 +319,7 @@ class eZQuizGame
     */
     function isFutureGame()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
 
         $ret = false;
@@ -341,10 +341,10 @@ class eZQuizGame
       Returns every questions to this quiz game
       The questions is returned as an array of eZQuizQuestion objects.
     */
-    function &questions()
+    function questions()
     {
         $returnArray = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $questionArray, "SELECT ID FROM eZQuiz_Question WHERE GameID='$this->ID'" );
 
         for ( $i = 0; $i < count( $questionArray ); $i++ )
@@ -358,9 +358,9 @@ class eZQuizGame
       Returns a specific question based on the placement (number)
       The question is returned as eZQuizQuestion objects.
     */
-    function &question( $placement )
+    function question( $placement )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $question, "SELECT ID FROM eZQuiz_Question WHERE GameID='$this->ID' AND Placement='$placement'" );
 
         $return = new eZQuizQuestion( $question[$db->fieldName( "ID" )], true );
@@ -373,9 +373,9 @@ class eZQuizGame
     /*!
       Returns the number of questions to this quiz game
     */
-    function &numberOfQuestions()
+    function numberOfQuestions()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -388,9 +388,9 @@ class eZQuizGame
     /*!
       Returns the number of players for this quiz game
     */
-    function &numberOfPlayers()
+    function numberOfPlayers()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         $db->query_single( $result, "SELECT COUNT(ID) as Count
@@ -402,9 +402,9 @@ class eZQuizGame
     /*!
       Returns all the open games
     */
-    function &openGames( $offset = 0, $limit = 20 )
+    function openGames( $offset = 0, $limit = 20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
         $returnArray = array();
         $quizArray = array();
@@ -425,9 +425,9 @@ class eZQuizGame
     /*!
       Returns the number of open games
     */
-    function &numberOfOpenGames()
+    function numberOfOpenGames()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
         $quizArray = array();
 
@@ -442,9 +442,9 @@ class eZQuizGame
     /*!
       Returns the games opening
     */
-    function &opensNext( $offset = 0, $limit = 20 )
+    function opensNext( $offset = 0, $limit = 20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
 
         $returnArray = array();
@@ -465,9 +465,9 @@ class eZQuizGame
     /*!
       Returns the closed games
     */
-    function &closedGames( $offset = 0, $limit = 20 )
+    function closedGames( $offset = 0, $limit = 20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
         $returnArray = array();
         $quizArray = array();
@@ -488,9 +488,9 @@ class eZQuizGame
     /*!
       Returns the number of closed games
     */
-    function &numberOfClosedGames()
+    function numberOfClosedGames()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $now = (new eZDateTime())->timeStamp( true );
         $quizArray = array();
 
@@ -504,9 +504,9 @@ class eZQuizGame
     /*!
       Returns all the games started within a period.
     */
-    static public function &startedInPeriod( &$inStartDate, &$inStopDate )
+    static public function startedInPeriod( &$inStartDate, &$inStopDate )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $result = array();
         $returnArray = array();
@@ -531,9 +531,9 @@ class eZQuizGame
     /*!
       Returns all the games ended within a period.
     */
-    static public function &endedInPeriod( &$inStartDate, &$inStopDate )
+    static public function endedInPeriod( &$inStartDate, &$inStopDate )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $result = array();
         $returnArray = array();
         $quizArray = array();
@@ -557,9 +557,9 @@ class eZQuizGame
      /*!
       Returns all the games which embraces this period.
     */
-    static public function &embracingPeriod( &$inStartDate, &$inStopDate )
+    static public function embracingPeriod( &$inStartDate, &$inStopDate )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $result = array();
         $returnArray = array();

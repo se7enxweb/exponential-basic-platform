@@ -36,13 +36,13 @@ if ( isset( $Store ) )
     else
         $fp = eZPBFile::fopen( "design/ecommerce/style.css", "w+");
 
-    $Contents =& str_replace ("\r", "", $Contents );
+    $Contents = str_replace ("\r", "", $Contents );
     fwrite ( $fp, $Contents );
     fclose( $fp );
 }
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZSiteManagerMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezsitemanager/admin/" . $ini->variable( "eZSiteManagerMain", "AdminTemplateDir" ),

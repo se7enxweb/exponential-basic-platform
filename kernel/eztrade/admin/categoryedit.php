@@ -40,7 +40,7 @@ if ( isset ( $DeleteCategories ) )
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/eztemplate.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
@@ -414,13 +414,13 @@ if ( isset( $Action ) && $Action == "Edit" )
 
     $sectionID = $category->sectionID();
 
-    $image =& $category->image( true );
+    $image = $category->image( true );
     if ( is_a( $image, "eZImage" ) && $image->id() != 0 )
     {
-        $imageWidth =& $ini->variable( "eZTradeMain", "CategoryImageWidth" );
-        $imageHeight =& $ini->variable( "eZTradeMain", "CategoryImageHeight" );
+        $imageWidth = $ini->variable( "eZTradeMain", "CategoryImageWidth" );
+        $imageHeight = $ini->variable( "eZTradeMain", "CategoryImageHeight" );
 
-        $variation =& $image->requestImageVariation( $imageWidth, $imageHeight );
+        $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
         $imageURL = "/" . $variation->imagePath();
         $imageWidth = $variation->width();
@@ -481,7 +481,7 @@ foreach ( $categoryArray as $catItem )
     }
 }
 
-$sectionList =& eZSection::getAll();
+$sectionList = eZSection::getAll();
 
 if ( count( $sectionList ) > 0 )
 {

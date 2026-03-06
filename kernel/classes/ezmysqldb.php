@@ -41,9 +41,9 @@ class eZMySQLDB
         $this->User = $user;
         $this->Password = $password;
 
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
 
-        $socketPath =& $ini->variable( "site", "MySQLSocket" );
+        $socketPath = $ini->variable( "site", "MySQLSocket" );
 
         if ( trim( $socketPath != "" ) && $socketPath != "disabled" )
         {
@@ -88,31 +88,22 @@ class eZMySQLDB
       Execute a query on the global MySQL database link.  If it returns an error,
       the script is halted and the attempted SQL query and MySQL error message are printed.
     */
-    function &query( $sql, $print=false, $debug=false )
+    function query( $sql, $print=false, $debug=false )
     {
+        $GLOBALS['_db_query_count'] = ( $GLOBALS['_db_query_count'] ?? 0 ) + 1;
+        $_t = hrtime( true );
+
         if ( $debug == true )
         {
             echo "Executing SQL: $sql<hr>";
-            
-            // include_once( "kernel/classes/ezbenchmark.php" );
-            
-            $bench = new eZBenchmark();
-            $bench->start();
-            
-            $result =& mysqli_query( $this->Database, $sql );
-
-            $bench->stop();
-            if ( $bench->elapsed() > 0.01 )
-            {
-                $GLOBALS["DDD"] .= $sql . "<br>";
-                $GLOBALS["DDD"] .= $bench->printResults( true ) . "<br>";
-            }
-
+            $result = mysqli_query( $this->Database, $sql );
         }
         else
         {
-            $result =& mysqli_query( $this->Database, $sql );
+            $result = mysqli_query( $this->Database, $sql );
         }
+
+        $GLOBALS['_db_query_ms'] = ( $GLOBALS['_db_query_ms'] ?? 0.0 ) + ( hrtime( true ) - $_t ) / 1e6;
 
 //          eZPBLog::writeNotice( $sql );
 
@@ -203,7 +194,7 @@ class eZMySQLDB
         {
             $sql .= " LIMIT $offset, $limit ";
         }
-        $result =& $this->query( $sql );
+        $result = $this->query( $sql );
 
         if ( $result == false )
         {
@@ -221,14 +212,14 @@ class eZMySQLDB
             {
                 for($i = 0; $i < mysqli_num_rows($result); $i++)
                 {
-                    $array[$i + $offset] =& mysqli_fetch_array($result);
+                    $array[$i + $offset] = mysqli_fetch_array($result);
                 }
             }
             else
             {
                 for($i = 0; $i < mysqli_num_rows($result); $i++)
                 {
-                    $tmp_row =& mysqli_fetch_array($result);
+                    $tmp_row = mysqli_fetch_array($result);
                     $array[$i + $offset] =& $tmp_row[$column];
                 }
             }

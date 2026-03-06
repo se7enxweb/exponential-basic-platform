@@ -5,7 +5,7 @@ include_once( "classes/eztemplate.php" );
 
 include_once( "eztrade/classes/ezproductcategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 

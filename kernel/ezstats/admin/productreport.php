@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZStatsMain", "Language" );
 
 // include_once( "classes/eztemplate.php" );
@@ -68,7 +68,7 @@ $query = new eZPageViewQuery();
 $tmpProduct = new eZProduct();
 
 // most viewed products
-$productReport =& $query->topProductRequests( );
+$productReport = $query->topProductRequests( );
 
 $productArray = array();
 foreach ( $productReport as $product )
@@ -105,7 +105,7 @@ else
 
 // mostly added to cart
 
-$productReport =& $query->topProductAddToCart( );
+$productReport = $query->topProductAddToCart( );
 
 $productArray = array();
 foreach ( $productReport as $product )
@@ -141,7 +141,7 @@ else
 
 //  // mostly added to wishlist
 
-$productReport =& $query->topProductAddToWishlist( );
+$productReport = $query->topProductAddToWishlist( );
 
 $productArray = array();
 foreach ( $productReport as $product )
@@ -179,7 +179,7 @@ else
 // Most bought product
 
 $order = new eZOrder();
-$productReport =& $order->mostPopularProduct();
+$productReport = $order->mostPopularProduct();
 
 if ( !empty( $productReport ) )
 {

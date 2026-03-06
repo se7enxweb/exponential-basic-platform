@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/INIFile.php" );
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZStatsMain", "Language" );
 
@@ -49,7 +49,7 @@ $t->set_block( "page_view_list_tpl", "page_view_tpl", "page_view" );
 if ( !isset( $Offset ) or !is_numeric( $Offset ) )
     $Offset = 0;
 
-$latest =& eZPageViewQuery::latest( $ViewLimit, $Offset );
+$latest = eZPageViewQuery::latest( $ViewLimit, $Offset );
 
 $ItemCount = eZPageViewQuery::latestCount();
 $ItemCount = count( $latest );
@@ -72,7 +72,7 @@ if ( count( $latest ) > 0 )
             $t->set_var( "bg_color", "bgdark" );
         
         $dateTime = $pageview->dateTime();
-        $time =& $dateTime->time();        
+        $time = $dateTime->time();        
         $t->set_var( "request_time", $locale->format( $dateTime ) );
         $t->set_var( "remote_ip", $pageview->remoteIP() );
         $t->set_var( "remote_host_name", $pageview->remoteHostName() );

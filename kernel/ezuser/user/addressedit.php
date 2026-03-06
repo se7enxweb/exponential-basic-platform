@@ -32,7 +32,7 @@ require( "kernel/ezuser/user/usercheck.php" );
 // include_once( "classes/eztexttool.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $SelectCountry = $ini->variable( "eZUserMain", "SelectCountry" );
 $AnonymousUserGroup = $ini->variable( "eZUserMain", "AnonymousUserGroup" );
@@ -50,7 +50,7 @@ if ( $Action == "Insert" )
     $Zip != "" &&
     $Place != "" )
     {
-        $user =& eZUser::currentUser();
+        $user = eZUser::currentUser();
 
         if ( $user )
         {
@@ -174,7 +174,7 @@ if ( $Action == "Update" )
 
 if ( $Action == "Edit" )
 {
-    $user =& eZUser::currentUser();
+    $user = eZUser::currentUser();
     if ( !$user )
         eZHTTPTool::header( "Location: /" );
     $UserID = $user->id();
@@ -265,7 +265,7 @@ $t->set_var( "region_value", $Region );
 if ( $SelectCountry == "enabled" )
 {
     $ezcountry = new eZCountry();
-    $countryList =& $ezcountry->getAllArray();
+    $countryList = $ezcountry->getAllArray();
     
     foreach ( $countryList as $country )
     {

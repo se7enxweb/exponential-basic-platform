@@ -87,7 +87,7 @@ class eZPBLog
         else
         {
             //include_once( "kernel/classes/INIFile.php" );
-            $ini =& eZINI::instance( 'site.ini' );
+            $ini = eZINI::instance( 'site.ini' );
 
             $fileName = $ini->variable( "site", "LogFileName" );
 	        $logDir = $ini->variable( "site", "LogDir" );
@@ -133,7 +133,7 @@ class eZPBLog
     */
     function notice( $notice )
     {
-        $time = date("%b %d %Y %H:%M:%S", strtotime( "now" ) );
+        $time = date( "M d Y H:i:s" );
         $notice = "[ " . $time . " ] [notice] " . $notice . "\n";
         fwrite( $this->LogFile, $notice );
     }
@@ -143,7 +143,7 @@ class eZPBLog
     */
     function warning( $warning )
     {
-        $time = date("%b %d %Y %H:%M:%S", strtotime( "now" ) );
+        $time = date( "M d Y H:i:s" );
         $warning = "[ " . $time . " ] [warning] " . $warning . "\n";
         fwrite( $this->LogFile, $warning );
     }
@@ -153,7 +153,7 @@ class eZPBLog
     */
     function error( $error )
     {
-        $time = date("%b %d %Y %H:%M:%S", strtotime( "now" ) );
+        $time = date( "M d Y H:i:s" );
         $error = "[ " . $time . " ] [error] " . $error . "\n";
         fwrite( $this->LogFile, $error );
     }

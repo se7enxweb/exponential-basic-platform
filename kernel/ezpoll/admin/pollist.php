@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezcachefile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZPollMain", "Language" );
 $errorIni = new eZINI( "kernel/ezpoll/admin/intl/" . $Language . "/pollist.php.ini", false );
 
@@ -45,7 +45,7 @@ $notClosed = $LangaugeIni->variable( "strings", "not_closed" );
 if ( isset( $Action ) && $Action == "StoreMainPoll" )
 {
     // clear the menu cache
-    $files =& eZCacheFile::files( "kernel/ezpoll/cache/",
+    $files = eZCacheFile::files( "kernel/ezpoll/cache/",
                                   array( "menubox",
                                          NULL ),
                                   "cache", "," );
@@ -73,7 +73,7 @@ if ( isset( $Action ) && $Action == "StoreMainPoll" )
 if ( isset( $Action ) && $Action == "Delete" )
 {
     // clear the menu cache
-    $files =& eZCacheFile::files( "ezpoll/cache/",
+    $files = eZCacheFile::files( "ezpoll/cache/",
                                   array( "menubox",
                                          NULL ),
                                   "cache", "," );

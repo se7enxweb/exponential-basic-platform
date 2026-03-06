@@ -111,7 +111,7 @@
 
         function getResponsesByQuestion( $OrderBy = "ID", $QuestionID = "", $LimitStart = "None", $LimitBy = "None" )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             if ( is_numeric( $LimitStart ) )
             {
@@ -119,7 +119,7 @@
 
                 if ( is_numeric( $LimitBy ) )
                 {
-                    $LimitArray =& array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
+                    $LimitArray = array_merge( $LimitArray, array( "Limit" => $LimitBy ) );
                 }
             }
             else

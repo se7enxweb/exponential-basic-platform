@@ -31,7 +31,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser", "ModuleEdit" ) == true)
 {
@@ -195,7 +195,7 @@ if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser"
 
         case "passwordchange" :
         {
-            $ini =& eZINI::instance( 'site.ini' );
+            $ini = eZINI::instance( 'site.ini' );
             $DemoSite = $ini->variable( "site", "DemoSite" );
 
             if ( $DemoSite == "enabled" ) {

@@ -42,7 +42,7 @@ class eZShuffleTranslator extends eZTranslatorHandler
      Reorders some of the characters in $text and returns the new text string.
      The maximum number of reorders is taken from MaxChars.
     */
-    function &shuffleText( $text )
+    function shuffleText( $text )
     {
         $num = mt_rand( 0, $this->MaxChars );
         for ( $i = 0; $i < $num; ++$i )

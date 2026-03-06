@@ -42,7 +42,7 @@
 // include_once( "classes/ezlinksection.php" );
 // include_once( "classes/ezlinkitem.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
@@ -104,11 +104,11 @@ $SmallImageHeight = $ini->variable( "eZTradeMain", "SmallImageHeight" );
 $GlobalSectionID = eZProductCategory::sectionIDStatic( $category->id() );
 
 // init the section
-$sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 
 if ( !eZObjectPermission::hasPermission( $category->id(), "trade_category", "r", $user ) )
@@ -346,7 +346,7 @@ if ( isset ( $Voucher ) )
 else
 $session->setVariable( "VoucherInformationID", 0 );
 
-$pathArray =& $category->path();
+$pathArray = $category->path();
 
 $t->set_var( "path", "" );
 foreach ( $pathArray as $path )
@@ -462,7 +462,7 @@ if ( $ShowPrice and $product->showPrice() == true  )
 
 // show alternative currencies
 $currency = new eZProductCurrency( );
-$currencies =& $currency->getAll();
+$currencies = $currency->getAll();
 $t->set_var( "currency_count", count( $currencies ) );
 $t->set_var( "value_price_header_item", "" );
 $t->set_var( "value_currency_header_item", "" );
@@ -591,14 +591,14 @@ if ( !$product->hasQuantity( $RequireQuantity ) )
 
 // link list
 $module_link = new eZModuleLink( "eZTrade", "Product", $product->id() );
-$sections =& $module_link->sections();
+$sections = $module_link->sections();
 $t->set_var( "section_item", "" );
 foreach ( $sections as $section )
 {
     $t->set_var( "link_item", "" );
     $t->set_var( "section_name", $section->name() );
     $t->set_var( "section_id", $section->id() );
-    $links =& $section->links();
+    $links = $section->links();
     $i = 0;
     foreach ( $links as $link )
     {
@@ -755,7 +755,7 @@ if ( $ShowPrice and $product->showPrice() == true and $product->hasPrice()  )
     // show alternative currencies
 
     $currency = new eZProductCurrency( );
-    $currencies =& $currency->getAll();
+    $currencies = $currency->getAll();
 
     if ( $product->hasOptions() )
     {
@@ -826,7 +826,7 @@ else
     $t->set_var( "price_range", "" );
     $t->set_var( "mail_method", "" );
 
-    $priceRange =& $product->priceRange();
+    $priceRange = $product->priceRange();
     $currency = new eZCurrency( );
 
     if ( ( is_a ( $priceRange, "eZProductPriceRange" ) ) && is_numeric ( $priceRange->id() ) )

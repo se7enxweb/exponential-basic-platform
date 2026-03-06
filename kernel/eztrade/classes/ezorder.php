@@ -66,7 +66,7 @@ class eZOrder
             $this->ID = $id;
             $this->get( $this->ID );
         }
-	    $ini =& eZINI::instance( 'site.ini' );
+	    $ini = eZINI::instance( 'site.ini' );
 	    $this->checkups = $ini->variable( "eZTradeMain", "UPSOFF" );
     }
 
@@ -75,7 +75,7 @@ class eZOrder
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $this->TextPaymentMethod = $db->escapeString( $this->PaymentMethod );
@@ -83,7 +83,7 @@ class eZOrder
 
         if ( !isset( $this->ID ) )
         {
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
             $db->lock( "eZTrade_Order" );
             $nextID = $db->nextID( "eZTrade_Order", "ID" );
             $ret[] = $db->query( "INSERT INTO eZTrade_Order
@@ -130,7 +130,7 @@ class eZOrder
 
             $status->setOrderID( $this->ID );
 
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
 //              print( $user->id() );
 
             $status->setAdmin( $user );
@@ -165,7 +165,7 @@ class eZOrder
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $items = $this->items();
         $db->begin();
@@ -193,7 +193,7 @@ class eZOrder
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
 
@@ -231,7 +231,7 @@ class eZOrder
 
       Note: Default limit is 40.
     */
-    function &getAll( $offset = 0, $limit = 40, $OrderBy = "Date" )
+    function getAll( $offset = 0, $limit = 40, $OrderBy = "Date" )
     {
         switch ( strtolower( $OrderBy ) )
         {
@@ -261,7 +261,7 @@ class eZOrder
                 break;
             }
         }
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $order_array = array();
@@ -290,7 +290,7 @@ class eZOrder
 
       Note: Default limit is 40.
     */
-    function &getByUser( $offset = 0, $limit = 40, $OrderBy = "Date", $user = false )
+    function getByUser( $offset = 0, $limit = 40, $OrderBy = "Date", $user = false )
     {
         switch ( strtolower( $OrderBy ) )
         {
@@ -320,7 +320,7 @@ class eZOrder
                 break;
             }
         }
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $order_array = array();
@@ -352,7 +352,7 @@ class eZOrder
 
       Note: Default limit is 40.
     */
-    function &getCountByUser( $user = false, $OrderBy = false )
+    function getCountByUser( $user = false, $OrderBy = false )
     {
         switch ( strtolower( $OrderBy ) )
         {
@@ -382,7 +382,7 @@ class eZOrder
                 break;
             }
         }
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $order_array = array();
@@ -398,9 +398,9 @@ class eZOrder
         return $res[$db->fieldName( "Count" )];
     }
 
-    static public function &getByContact( $contact, $is_person = true, $offset = 0, $limit = 40 )
+    static public function getByContact( $contact, $is_person = true, $offset = 0, $limit = 40 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $order_array = array();
@@ -426,9 +426,9 @@ class eZOrder
     /*!
       Returns every order one customer has made.
     */
-    function &getByCustomer( $user )
+    function getByCustomer( $user )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $order_array = array();
@@ -449,9 +449,9 @@ class eZOrder
     /*!
       Fetches new orders, orders which is not exported.
     */
-    function &getNew()
+    function getNew()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $order_array = array();
@@ -473,9 +473,9 @@ class eZOrder
 
       Note: Default limit is 20.
     */
-    function &search( $queryText, $offset=0, $limit=20 )
+    function search( $queryText, $offset=0, $limit=20 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $order_array = array();
@@ -497,9 +497,9 @@ class eZOrder
     /*!
       Returns the total count of a query.
     */
-    function &getSearchCount( $queryText )
+    function getSearchCount( $queryText )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $order_array, "SELECT count(eZTrade_Order.ID) as Count
                                                      FROM eZTrade_Order, eZTrade_PreOrder
@@ -518,9 +518,9 @@ class eZOrder
     /*!
       Returns the total count of orders.
     */
-    function &getTotalCount()
+    function getTotalCount()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $order_array, "SELECT count(eZTrade_Order.ID) as Count
                                                      FROM eZTrade_Order, eZTrade_PreOrder
@@ -538,7 +538,7 @@ class eZOrder
     /*!
       Returns the order date as a eZDateTime object.
     */
-    function &date()
+    function date()
     {
         $dateTime = new eZDateTime();
         $dateTime->setTimeStamp( $this->Date );
@@ -558,7 +558,7 @@ class eZOrder
 
       false (0) is returned if unsuccessful.
     */
-    function &user()
+    function user()
     {
        $ret = false;
 
@@ -588,7 +588,7 @@ class eZOrder
     /*!
       Returns the shipping address.
     */
-    function &shippingAddress()
+    function shippingAddress()
     {
        $shippingAddress = new eZAddress( $this->ShippingAddressID );
 
@@ -612,11 +612,11 @@ class eZOrder
 
       Returns false if unsuccessful.
     */
-    function &shippingUser()
+    function shippingUser()
     {
        // check the owner of the address
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $address_array = array();
 
@@ -643,7 +643,7 @@ class eZOrder
     /*!
       Returns the billing address.
     */
-    function &billingAddress()
+    function billingAddress()
     {
        $billingAddress = new eZAddress( $this->BillingAddressID );
 
@@ -653,7 +653,7 @@ class eZOrder
     /*!
       Returns the user comment.
     */
-    function &comment()
+    function comment()
     {
        return $this->Comment;
     }
@@ -663,7 +663,7 @@ class eZOrder
 
       Will return false if an error occured.
     */
-    function &shippingType()
+    function shippingType()
     {
        $ret = false;
 
@@ -780,11 +780,11 @@ class eZOrder
     {
        if ( is_a( $shippingAddress, "eZAddress" ) )
        {
-           $shippingAddress =& $shippingAddress->copy();
+           $shippingAddress = $shippingAddress->copy();
            $this->ShippingAddressID = $shippingAddress->id();
            $userID = $user->id();
 
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
            $db->begin();
 
 	   //           $userID = $user->id();
@@ -812,7 +812,7 @@ class eZOrder
     {
        if ( is_a( $billingAddress, "eZAddress" ) )
        {
-           $billingAddress =& $billingAddress->copy();
+           $billingAddress = $billingAddress->copy();
            $this->BillingAddressID = $billingAddress->id();
        }
     }
@@ -909,9 +909,9 @@ class eZOrder
     /*!
       Returns the initial status as a eZOrderStatus object.
     */
-    function &initialStatus( )
+    function initialStatus( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $statusType = new eZOrderStatusType();
 
         $statusType->getByName( "intl-order received" );
@@ -930,9 +930,9 @@ class eZOrder
     /*!
       Returns the last status change  as a eZOrderStatus object.
     */
-    function &lastStatus( )
+    function lastStatus( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $statusType = new eZOrderStatusType();
 
         $statusType->getByName( "intl-order received" );
@@ -951,9 +951,9 @@ class eZOrder
     /*!
       Returns the status history as an array of eZOrderStatus object.
     */
-    function &statusHistory()
+    function statusHistory()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $statusType = new eZOrderStatusType();
 
@@ -974,11 +974,11 @@ class eZOrder
     /*!
       Returns all the order items.
     */
-    function &items()
+    function items()
     {
         $ret = array();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $order_array, "SELECT * FROM
                                        eZTrade_OrderItem
@@ -1000,11 +1000,11 @@ class eZOrder
     /*!
       Returns the voucher for this order.
     */
-    function &usedVouchers()
+    function usedVouchers()
     {
         $ret = array();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $order_array, "SELECT ID FROM
                                        eZTrade_VoucherUsed
@@ -1030,7 +1030,7 @@ class eZOrder
     function totalPrice( $user = false )
     {
         $retPrice = 0;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $order_item_array, "SELECT Price, Count FROM
                                               eZTrade_OrderItem
@@ -1060,7 +1060,7 @@ class eZOrder
     function totalVAT()
     {
        $retPrice = 0;
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $db->array_query( $order_item_array, "SELECT VAT, Count FROM
                                                     eZTrade_OrderItem
@@ -1083,7 +1083,7 @@ class eZOrder
     */
     function isOwner( &$user )
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        $userID = $user->id();
        $ret = false;
@@ -1099,9 +1099,9 @@ class eZOrder
     /*!
       Returns the most request bought products.
     */
-    function &mostPopularProduct()
+    function mostPopularProduct()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = array();
 
         $db->array_query( $product_array,
@@ -1122,7 +1122,7 @@ class eZOrder
     /*!
 
     */
-    function &expiringOrders( $startdate, $time = 86400 )
+    function expiringOrders( $startdate, $time = 86400 )
     {
         if ( is_a( $startdate, "eZDate" ) || is_a( $startdate, "eZDateTime" ) )
         {
@@ -1130,7 +1130,7 @@ class eZOrder
         }
         $enddate = $startdate + $time;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $orders, "SELECT ID FROM eZTrade_OrderItem
                                     WHERE ExpiryDate >= '" . $startdate . "'
                                     AND ExpiryDate < '" . $enddate . "'" );
@@ -1148,7 +1148,7 @@ class eZOrder
         if ( is_a( $product, "eZProduct" ) )
             $product = $product->ID();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $res, "SELECT SUM( Count ) AS C FROM eZTrade_OrderItem WHERE ProductID='$product'" );
         return $res[0][$db->fieldName( "C" )];
@@ -1171,7 +1171,7 @@ class eZOrder
 
         foreach ( $items as $item )
         {
-            $product =& $item->product();
+            $product = $item->product();
             $vatPercentage = (int)$product->vatPercentage();
 
             $tax["$vatPercentage"] = array();
@@ -1237,11 +1237,11 @@ class eZOrder
         $total = "";
 
         if ( is_a ( $voucherItem, "eZVoucherUsed" ) )
-            $voucher =& $voucherItem->voucher();
+            $voucher = $voucherItem->voucher();
         else
             $voucher =& $voucherItem;
 
-        $product =& $voucher->product();
+        $product = $voucher->product();
         $vatPercentage = $product->vatPercentage();
         $exTax = $voucherItem->correctPrice( false );
         $incTax = $voucherItem->correctPrice( true );
@@ -1267,9 +1267,9 @@ class eZOrder
 
       The users are returned as an array of eZUser objects.
     */
-    static public function &customers( $searchText = false )
+    static public function customers( $searchText = false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $user_array = array();

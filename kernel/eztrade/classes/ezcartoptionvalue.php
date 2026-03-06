@@ -64,7 +64,7 @@ class eZCartOptionValue
     */
     function store()
     {
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $db->begin();
 
         if ( !isset( $this->ID ) )
@@ -104,7 +104,7 @@ class eZCartOptionValue
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -135,7 +135,7 @@ class eZCartOptionValue
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
 
         $res[] = $db->query( "DELETE FROM eZTrade_CartOptionValue WHERE ID='$this->ID'" );
@@ -168,7 +168,7 @@ class eZCartOptionValue
     /*!
       Returns the cart item object.
     */
-    function &cartItem()
+    function cartItem()
     {
        return new eZCartItem( $this->CartItemID );
     }
@@ -176,7 +176,7 @@ class eZCartOptionValue
     /*!
       Returns the option object.
     */
-    function &option()
+    function option()
     {
        return new eZOption( $this->OptionID );
     }
@@ -184,7 +184,7 @@ class eZCartOptionValue
     /*!
       Returns the option value object.
     */
-    function &optionValue()
+    function optionValue()
     {
        return new eZOptionValue( $this->OptionValueID );
     }

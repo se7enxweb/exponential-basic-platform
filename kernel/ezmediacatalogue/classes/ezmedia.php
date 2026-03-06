@@ -81,7 +81,7 @@ class eZMedia
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -150,7 +150,7 @@ class eZMedia
     */
     function delete( $id=false )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id == false )
         {
@@ -178,7 +178,7 @@ class eZMedia
     */
     function get( $id="" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $ret = false;
         if ( $id != "" )
@@ -214,7 +214,7 @@ class eZMedia
     */
     static public function getByOriginalFileName( $id = "" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = new eZMedia();
         if ( $id != "" )
         {
@@ -240,7 +240,7 @@ class eZMedia
        $ret = false;
        if ( is_a( $category, "eZMediaCategory" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
            $catID = $category->id();
 
            $db->array_query( $ret_array, "SELECT ID FROM eZMediaCatalogue_MediaCategoryLink
@@ -262,7 +262,7 @@ class eZMedia
     {
         if ( is_a( $value, "eZMediaCategory" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->begin( );
 
@@ -294,7 +294,7 @@ class eZMedia
     */
     function categoryDefinition( )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $res, "SELECT CategoryID FROM
                                             eZMediaCatalogue_MediaCategoryDefinition
@@ -320,7 +320,7 @@ class eZMedia
      */
     function getUnassigned()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $mediaArray, "SELECT Media.ID, Link.MediaID
                                         FROM eZMediaCatalogue_Media AS Media
@@ -341,7 +341,7 @@ class eZMedia
      */
     function countUnassigned()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->query_single( $media, "SELECT COUNT(Media.ID) as Count, Link.MediaID
                                         FROM eZMediaCatalogue_Media AS Media
@@ -575,7 +575,7 @@ class eZMedia
     */
     function categories()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $res = array();
         $db->array_query( $res, "SELECT CategoryID, MediaID FROM
@@ -605,7 +605,7 @@ class eZMedia
         if( !is_a( $user, "eZUser" ) )
             return false;
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT UserID from eZMediaCatalogue_Media WHERE ID='$media'");
         $userID = $res[$db->fieldName("UserID")];
         if(  $userID == $user->id() )
@@ -628,7 +628,7 @@ class eZMedia
     /*!
       Returns the photographer og the media
     */
-    function &photographer()
+    function photographer()
     {
         return new eZAuthor( $this->PhotographerID );
     }
@@ -640,7 +640,7 @@ class eZMedia
     {
         if ( is_a( $type, "eZMediaType" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $db->begin();
 
@@ -679,7 +679,7 @@ class eZMedia
     */
     function type()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->array_query( $res, "SELECT TypeID FROM
                                  eZMediaCatalogue_TypeLink WHERE MediaID='$this->ID'" );
@@ -699,7 +699,7 @@ class eZMedia
     */
     function removeType()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         // delete values
         $db->query( "DELETE FROM eZMediaCatalogue_AttributeValue WHERE MediaID='$this->ID'" );

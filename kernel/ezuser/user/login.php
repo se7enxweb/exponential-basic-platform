@@ -29,7 +29,7 @@
 // include_once( "classes/ezhttptool.php" );
 // include_once( "classes/eztexttool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $UserWithAddress = $ini->variable( "eZUserMain", "UserWithAddress" );
 

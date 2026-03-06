@@ -35,7 +35,7 @@
 // include_once( "ezad/classes/ezadcategory.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZAdMain", "Language" );
 $ImageDir = $ini->variable( "eZAdMain", "ImageDir" );
 
@@ -63,11 +63,11 @@ $clickCount = $ad->clickCount();
 $t->set_var( "ad_click_count", $clickCount );
 
 if ( $clickCount > 0 )
-    $clickRevenue =& $ad->totalClickRevenue();
+    $clickRevenue = $ad->totalClickRevenue();
 else
     $clickRevenue=0;
 
-$viewRevenue =& $ad->totalViewRevenue();
+$viewRevenue = $ad->totalViewRevenue();
 
 $t->set_var( "ad_view_revenue", $viewRevenue );
 $t->set_var( "ad_click_revenue", $clickRevenue );

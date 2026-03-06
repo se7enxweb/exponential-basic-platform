@@ -88,7 +88,7 @@ class eZPBFile
     function dumpDataToFile( $data, $fileName )
     {
         $this->FileName = $fileName;
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $tmpDir = $ini->variable( "site", "SiteTmpDir" );
         $tmpfileName = tempnam( $tmpDir, "att" );
         $this->TmpFileName = $tmpfileName;
@@ -104,7 +104,7 @@ class eZPBFile
   function dumpFroogleDataToFile( $data, $fileName )
   {
         $this->FileName = $fileName;
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $tmpDir = $ini->variable( "site", "SiteFroogleExportDir" );
         $tmpfileName = tempnam( $tmpDir, "att" );
         $this->TmpFileName = $tmpfileName;
@@ -119,7 +119,7 @@ class eZPBFile
   function dumpYahooDataToFile( $data, $fileName )
   {
     $this->FileName = $fileName;
-    $ini =& eZINI::instance( 'site.ini' );
+    $ini = eZINI::instance( 'site.ini' );
     $tmpDir = $ini->variable( "site", "SiteYahooExportDir" );
     $tmpfileName = tempnam( $tmpDir, "att" );
     $this->TmpFileName = $tmpfileName;
@@ -216,7 +216,7 @@ class eZPBFile
       "unit" - The unit for the shortened size, either B, KB, MB or GB
     */
 
-    public static function &siFileSize( $size )
+    public static function siFileSize( $size )
     {
         $units = array( "GB" => 10737741824,
                         "MB" => 1048576,

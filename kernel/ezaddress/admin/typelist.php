@@ -40,7 +40,7 @@
   list with extra information.
 */
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZAddressMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZAddressMain", "DocumentRoot" );
 

@@ -64,8 +64,8 @@ if ( isset( $URLQueryString ) )
 }
 
 // fetch the n next news items
-$newsList =& $news->search( $SearchText, true, $Offset, $Limit );
-$newsListCount =& $news->searchCount( $SearchText, true );
+$newsList = $news->search( $SearchText, true, $Offset, $Limit );
+$newsListCount = $news->searchCount( $SearchText, true );
 
 
 $locale = new eZLocale( $Language );

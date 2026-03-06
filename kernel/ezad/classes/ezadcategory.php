@@ -63,7 +63,7 @@ class eZAdCategory
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $db->begin( );
 
@@ -108,7 +108,7 @@ class eZAdCategory
     */
     function delete()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( isset( $this->ID ) )
         {
@@ -139,7 +139,7 @@ class eZAdCategory
     function get( $id=-1 )
     {
         $ret = false;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         if ( $id != "" )
         {
@@ -168,7 +168,7 @@ class eZAdCategory
     */
     function getAll()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $category_array = array();
@@ -192,7 +192,7 @@ class eZAdCategory
     {
         if ( is_a( $parent, "eZAdCategory" ) )
         {
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
 
             $return_array = array();
             $category_array = array();
@@ -384,7 +384,7 @@ class eZAdCategory
     {
        if ( is_a( $value, "eZAd" ) )
        {
-           $db =& eZDB::globalDatabase();
+           $db = eZDB::globalDatabase();
 
             $db->begin( );
 
@@ -417,12 +417,12 @@ class eZAdCategory
 
       It does not return unactive ads unless $fetchUnActive is set to true.
     */
-    function &adlist( $sortMode="name",
+    function adlist( $sortMode="name",
                    $fetchUnActive=false,
                    $offset=0,
                    $limit=50 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $return_array = array();
         $ad_array = array();
@@ -454,12 +454,12 @@ class eZAdCategory
 
       It does not return unactive ads unless $fetchUnActive is set to true.
     */
-    function &ads( $sortMode="name",
+    function ads( $sortMode="name",
                    $fetchUnActive=false,
                    $offset=0,
                    $limit=50 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
        $return_array = array();
        $ad_array = array();

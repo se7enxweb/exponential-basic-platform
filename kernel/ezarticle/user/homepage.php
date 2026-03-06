@@ -41,7 +41,7 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezdatetime.php" );
 		
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $PricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enabled" ? true : false;
 $Dealer = $ini->variable( "homepage", "DealerDescription" );
@@ -75,7 +75,7 @@ $t->setAllStrings();
 // get all fields from the database.
 
 // $field = new eZExample( );
-// $fieldArray =& $field->getAll();
+// $fieldArray = $field->getAll();
 
 // parse the template.
 
@@ -127,7 +127,7 @@ $distProdArray = explode(';', $DistProdCats);
 $dealerProdArray = explode(';', $DealerProdCats);
 //print_r($dealerProdArray);
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 $fei = 0;
 
 foreach ($distProdArray as $distProdCatID )
@@ -199,7 +199,7 @@ $t->parse( "dealer_image_box", "dealer_image_box_tpl", true );
 
 // products
 $product = new eZProduct();
-$productList =& $product->hotDealProducts( $HotDealsLimit );
+$productList = $product->hotDealProducts( $HotDealsLimit );
 
 $i = 0;
 foreach ($productList as $product)
@@ -260,7 +260,7 @@ $t->parse( "product_list", "product_list_tpl", true );
 $i = 0;
 if ( $i < $GalleryLimit )
 {
-	$imageCategories =& eZImageCategory::getAll($GalleryLimit);
+	$imageCategories = eZImageCategory::getAll($GalleryLimit);
 	foreach ($imageCategories as $category)
 	{
 			$images = $category->images( "time", 0, 1 );
@@ -272,7 +272,7 @@ if ( $i < $GalleryLimit )
 	$i++;
 }
 
-$imageCategories =& eZImageCategory::getAll($GalleryLimit);
+$imageCategories = eZImageCategory::getAll($GalleryLimit);
 $iei=0;
 foreach ($imageCategories as $category)
 	{
@@ -324,7 +324,7 @@ $t->parse( "image_list", "image_list_tpl", true );
 
 
 $time = new eZDateTime();
-$messages =& eZForumMessage::lastMessages( $CommentLimit );
+$messages = eZForumMessage::lastMessages( $CommentLimit );
 
 foreach ($messages as $message)  
 {	
@@ -359,7 +359,7 @@ else
 	$t->set_var( "message_list", "" );
 
 $article = new eZArticle();
-$articleList =& $article->articles( "time", false, 0, $ArticleLimit );
+$articleList = $article->articles( "time", false, 0, $ArticleLimit );
 
 foreach($articleList as $article)
 {
@@ -367,10 +367,10 @@ foreach($articleList as $article)
 		$t->set_var( "category_id", $article->categoryDefinition( false ) );
 	    $t->set_var( "title", $article->name() );
 		
-	    $thumbnailImage =& $article->thumbnailImage();
+	    $thumbnailImage = $article->thumbnailImage();
 		if ( $thumbnailImage )
 		{
-			$variation =& $thumbnailImage->requestImageVariation( $ArticleThumbWidth, $ArticleThumbHeight );
+			$variation = $thumbnailImage->requestImageVariation( $ArticleThumbWidth, $ArticleThumbHeight );
 			$t->set_var( "thumbnail_image_uri", $variation->imagePath() );
 			$t->set_var( "thumbnail_image_width", $variation->width() );
 			$t->set_var( "thumbnail_image_height", $variation->height() );
@@ -383,9 +383,9 @@ foreach($articleList as $article)
     $renderer = new eZArticleRenderer( $article );
     $t->set_var( "article_intro", $renderer->renderIntro( ) );
 
-    $published =& $article->published();
-    $publishedDateValue =& $published->date();
-    $publishedTimeValue =& $published->time();
+    $published = $article->published();
+    $publishedDateValue = $published->date();
+    $publishedTimeValue = $published->time();
 
     $t->set_var( "article_published", $locale->format( $publishedDateValue )."&nbsp;".$locale->format( $publishedTimeValue ) );
 

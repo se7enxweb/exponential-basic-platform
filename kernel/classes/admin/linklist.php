@@ -60,7 +60,7 @@
 // include_once( "kernel/classes/ezhttptool.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( $INIGroup, "Language" );
 $Modules = $ini->variable( $INIGroup, "ModuleList" );
 
@@ -198,7 +198,7 @@ foreach( $Modules as $module )
         include( $file );
         if ( isset( $Supplier ) and get_class( $Supplier ) )
         {
-            $types =& $Supplier->urlTypes();
+            $types = $Supplier->urlTypes();
             $t->set_var( "type_level", "" );
             $t->set_var( "selected", $LinkType == $module_lower ? "selected" : "" );
             $t->set_var( "module_type", $module_lower );
@@ -223,7 +223,7 @@ $t->set_var( "item_id", $ItemID );
 
 $t->set_var( "section_item", "" );
 $module_link = new eZModuleLink( $ClientModuleName, $ClientModuleType, $ItemID );
-$sections =& $module_link->sections();
+$sections = $module_link->sections();
 $item = 0;
 if ( !isset( $SectionID ) or ( $SectionID <= 0 ) )
 {
@@ -238,7 +238,7 @@ foreach( $sections as $section )
     $t->set_var( "section_name", $section->name() );
     $t->set_var( "section_id", $section->id() );
     $t->set_var( "section_checked", $section->id() == $SectionID ? "checked" : "" );
-    $links =& $section->links();
+    $links = $section->links();
     $i = 0;
     foreach( $links as $link )
     {

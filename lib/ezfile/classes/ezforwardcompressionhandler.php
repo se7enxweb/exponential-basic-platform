@@ -35,7 +35,7 @@ class eZForwardCompressionHandler extends eZCompressionHandler
     /*!
      \return the current handler which all requests are forwarded to.
     */
-    function &forwardHandler()
+    function forwardHandler()
     {
         return $this->ForwardHandler;
     }

@@ -29,7 +29,7 @@
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/ezcurrency.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
@@ -47,7 +47,7 @@ $PricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enab
 // include_once( "ezimagecatalogue/classes/ezimage.php" );
 // include_once( "classes/ezlist.php" );
 
-$user =& eZUser::currentUser();
+$user = eZUser::currentUser();
 
 $t = new eZTemplate( "kernel/eztrade/user/" . $ini->variable( "eZTradeMain", "TemplateDir" ) ,
                      "kernel/eztrade/user/intl/", $Language, "productsearch.php" );
@@ -98,7 +98,7 @@ if ( isset( $URLQueryString ) )
 
 if ( isset( $Query ) && $Query )
 {
-    $productList =& $product->activeProductSearch( $Query, $Offset, $Limit );
+    $productList = $product->activeProductSearch( $Query, $Offset, $Limit );
     $total_count = $product->activeProductSearchCount( $Query );
 }
 else
@@ -132,7 +132,7 @@ if ( isset( $productList ) && isset( $Query ) && ( count ( $productList ) > 0 ) 
         $thumbnailImage = $product->thumbnailImage();
         if ( $thumbnailImage )
         {
-            $variation =& $thumbnailImage->requestImageVariation( $SmallImageWidth, $SmallImageHeight );
+            $variation = $thumbnailImage->requestImageVariation( $SmallImageWidth, $SmallImageHeight );
 
             $t->set_var( "thumbnail_image_uri", "/" . $variation->imagePath() );
             $t->set_var( "thumbnail_image_width", $variation->width() );
@@ -186,13 +186,13 @@ if ( isset( $productList ) && isset( $Query ) && ( count ( $productList ) > 0 ) 
         else
         {
             $priceArray = "";
-            $options =& $product->options();
+            $options = $product->options();
             if ( count( $options ) == 1 )
             {
                 $option = $options[0];
                 if ( is_a( $option, "eZOption" ) )
                 {
-                    $optionValues =& $option->values();
+                    $optionValues = $option->values();
                     if ( count( $optionValues ) > 1 )
                     {
                         $i=0;

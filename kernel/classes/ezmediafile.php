@@ -101,7 +101,7 @@ class eZMediaFile extends eZFile
       "media-type" - The media type, for instance: media/jpeg, media/png or media/gif
       "support" - True if the media type is supported.
     */
-    function &information( $file, $use_default = false )
+    function information( $file, $use_default = false )
     {
         $ret = array();
         $suffix = "";
@@ -136,7 +136,7 @@ class eZMediaFile extends eZFile
       Returns the default media info structure, which uses the mpeg format.
       This is used for returning a standard info structure if the file format is unsupported.
     */
-    function &defaultInformation()
+    function defaultInformation()
     {
         $ret = array( "suffix" => "mpg",
                       "dot-suffix" => ".mpg",

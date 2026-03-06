@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
@@ -47,11 +47,11 @@ $t->set_file( array(
 ////////////////
 // BEGIN random image block added by admin [at] riderhaus [dot] com
 
-$RandImageCategory =& $ini->variable( "eZImageCatalogueMain", "RandImageCategory" );
-$width =& $ini->variable( "eZImageCatalogueMain", "ThumbnailViewWidth" );
-$height =& $ini->variable( "eZImageCatalogueMain", "ThumbnailViewHight" );
+$RandImageCategory = $ini->variable( "eZImageCatalogueMain", "RandImageCategory" );
+$width = $ini->variable( "eZImageCatalogueMain", "ThumbnailViewWidth" );
+$height = $ini->variable( "eZImageCatalogueMain", "ThumbnailViewHight" );
 $randimage = eZImage::randomImage( $RandImageCategory );
-$variation =& $randimage->requestImageVariation( $width, $height );
+$variation = $randimage->requestImageVariation( $width, $height );
 $t->set_var( "image_src", "/" . $variation->imagePath() );
 $t->set_var( "image_file_name", $randimage->name() );
 $t->set_var( "image_category", $RandImageCategory );

@@ -30,7 +30,7 @@
 // include_once( "classes/ezcachefile.php" );
 // include_once( "classes/ezhttptool.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $StdHeaders = $ini->variable( "eZTradeMain", "StandardOptionHeaders" );
 $MinHeaders = $ini->variable( "eZTradeMain", "MinimumOptionHeaders" );

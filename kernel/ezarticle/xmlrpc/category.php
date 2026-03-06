@@ -142,7 +142,7 @@ else if( $Command == "storedata" ) // save the category data!
         foreach( $Data["WriteGroups"]->value() as $writeGroup )
             eZObjectPermission::setPermission( $writeGroup->value(), $ID, "article_category", 'w' );
 
-        $par =& createPath( $category, "ezarticle", "category", false );
+        $par = createPath( $category, "ezarticle", "category", false );
 
         $add_categories = array();
         $cur_categories = array();
@@ -151,9 +151,9 @@ else if( $Command == "storedata" ) // save the category data!
         $remove_categories = array_diff( array( $old_category ), array( $parent->id() ) );
         $cur_categories = array_intersect( array( $parent->id() ), array( $old_category ) );
 
-        $add_locs =& createURLArray( $add_categories, "ezarticle", "category" );
-        $cur_locs =& createURLArray( $cur_categories, "ezarticle", "category" );
-        $old_locs =& createURLArray( $remove_categories, "ezarticle", "category" );
+        $add_locs = createURLArray( $add_categories, "ezarticle", "category" );
+        $cur_locs = createURLArray( $cur_categories, "ezarticle", "category" );
+        $old_locs = createURLArray( $remove_categories, "ezarticle", "category" );
 
         $ReturnData = new eZXMLRPCStruct( array( "Location" => createURLStruct( "ezarticle", "category", $ID ),
                                                  "Name" => new eZXMLRPCString( $category->name( false ) ),
@@ -176,7 +176,7 @@ else if( $Command == "delete" )
 {
     // create the path array
     $category = new eZArticleCategory( $ID );
-    $path =& $category->path();
+    $path = $category->path();
     if ( $category->id() != 0 )
     {
         $par[] = createURLStruct( "ezarticle", "category", 0 );

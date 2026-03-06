@@ -30,7 +30,7 @@
 // include_once( "ezad/classes/ezad.php" );
 // include_once( "ezad/classes/ezadcategory.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZAdMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezad/admin/" . $ini->variable( "eZAdMain", "AdminTemplateDir" ),
@@ -121,7 +121,7 @@ else
 
 
 // ads
-$adList =& $category->adlist( "time", true );
+$adList = $category->adlist( "time", true );
 
 $locale = new eZLocale( $Language );
 $i=0;

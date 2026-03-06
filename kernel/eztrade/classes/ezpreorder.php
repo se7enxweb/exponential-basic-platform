@@ -63,13 +63,13 @@ class eZPreOrder
     */
     function store()
     {
-        $db =& eZDB::globaldatabase();
+        $db = eZDB::globaldatabase();
         $db->begin();
         if ( !isset( $this->ID ) )
         {
             $db->lock( "eZTrade_PreOrder" );
             $nextID = $db->nextID( "eZTrade_PreOrder", "ID" );
-            $timeStamp =& (new eZDateTime())->timeStamp( true );
+            $timeStamp = (new eZDateTime())->timeStamp( true );
             $ret[] = $db->query( "INSERT INTO eZTrade_PreOrder
                                ( ID,
 		                         OrderID,
@@ -98,7 +98,7 @@ class eZPreOrder
     */
     function delete()
     {
-        $db =& eZDB::globaldatabase();
+        $db = eZDB::globaldatabase();
         $db->begin();
         
         $ret[] = $db->query( "DELETE FROM eZTrade_PreOrder WHERE ID='$this->ID'" );
@@ -114,7 +114,7 @@ class eZPreOrder
     */
     function get( $id="" )
     {
-        $db =& eZDB::globaldatabase();
+        $db = eZDB::globaldatabase();
         $ret = false;
         
         if ( $id != "" )
@@ -142,7 +142,7 @@ class eZPreOrder
     */
     function getByOrderID( $orderID )
     {
-        $db =& eZDB::globaldatabase();
+        $db = eZDB::globaldatabase();
         $ret = false;
         
         if ( $orderID != "" )

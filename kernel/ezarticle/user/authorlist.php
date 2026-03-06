@@ -28,7 +28,7 @@
 
 // include_once( "ezarticle/classes/ezarticle.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
 $Limit = $ini->variable( "eZArticleMain", "AuthorLimit" );
@@ -48,8 +48,8 @@ if ( !isset( $Limit ) or !is_numeric( $Limit ) )
 if ( !isset( $SortOrder ) )
     $SortOrder = "name";
 
-$authors =& eZArticle::authorList( $Offset, $Limit, $SortOrder );
-$db =& eZDB::globalDatabase();
+$authors = eZArticle::authorList( $Offset, $Limit, $SortOrder );
+$db = eZDB::globalDatabase();
 
 $t->set_var( "author_item", "" );
 $i = 0;

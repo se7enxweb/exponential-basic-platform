@@ -34,7 +34,7 @@
 // include_once( "ezmail/classes/ezmail.php" );
 
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 if( isset( $Cancel ) )
 {
@@ -79,12 +79,12 @@ $t->set_var( "form_completed_page", $form->completedPage() );
 $t->set_var( "form_instruction_page", $form->instructionPage() );
 
 $renderer = new eZFormRenderer( $form );
-$output =& $renderer->renderForm( $form );
+$output = $renderer->renderForm( $form );
 $t->set_var( "form", $output );
 
 if( isset( $OK ) )
 {
-    $output =& $renderer->verifyForm();
+    $output = $renderer->verifyForm();
     if( $output == "" )
     {
         $renderer->sendForm();

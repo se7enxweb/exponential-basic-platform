@@ -29,7 +29,7 @@
 // include_once( "classes/eztexttool.php" );
 // include_once( "ezuser/classes/ezusergroup.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 

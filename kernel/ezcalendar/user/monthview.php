@@ -33,13 +33,13 @@
 // include_once( "ezcalendar/classes/ezappointment.php" );
 // include_once( "eztodo/classes/eztodo.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZCalendarMain", "Language" );
 $Locale = new eZLocale( $Language );
 
-$user =& eZUser::currentUser();
-$session =& eZSession::globalSession();
+$user = eZUser::currentUser();
+$session = eZSession::globalSession();
 $session->fetch();
 
 if ( $user == false )
@@ -155,7 +155,7 @@ else
                     $tmpDate->setYear( $date->year() );
                     $tmpDate->setMonth( $date->month() );
                     $tmpDate->setDay( $date->day() );
-                    $appointments =& $tmpAppointment->getByDate( $tmpDate, $appOwnerUser, true );
+                    $appointments = $tmpAppointment->getByDate( $tmpDate, $appOwnerUser, true );
 
                     $t->set_var( "public_appointment", "" );
                     $t->set_var( "private_appointment", "" );
@@ -185,7 +185,7 @@ else
                     if ( !$userID )
                         $todos = array();
                     else
-                        $todos =& eZTodo::getByDate( $userID, $tmpDate );
+                        $todos = eZTodo::getByDate( $userID, $tmpDate );
 
                     foreach ( $todos as $todo )
                     {
@@ -302,7 +302,7 @@ else
     }
     else
     {
-        $user_array =& eZUser::getAll();
+        $user_array = eZUser::getAll();
     }
     foreach ( $user_array as $userItem )
     {

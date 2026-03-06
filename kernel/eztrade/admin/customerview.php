@@ -35,7 +35,7 @@
 // include_once( "eztrade/classes/ezvoucherused.php" );
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
@@ -83,14 +83,14 @@ if ( $customer->accountNumber() != "" )
   $t->set_var( "customer_account_number", "N/A" );
 }
 $order = new eZOrder();
-$orders =& $order->getByCustomer( $customer );
+$orders = $order->getByCustomer( $customer );
 
 $locale = new eZLocale( $Language );
 $currency = new eZCurrency();
 
 // address list
 
-$addressArray =& $customer->addresses();
+$addressArray = $customer->addresses();
 
 foreach ( $addressArray as $address )
 {    
@@ -145,20 +145,20 @@ foreach ( $orders as $order )
 }
 
 $wishlistObject  =new eZWishList();
-$wishlist =& $wishlistObject->getByUser( $customer );
+$wishlist = $wishlistObject->getByUser( $customer );
 
 $t->set_var( "wish_count", "0" );
 $t->set_var( "wish_list", "" );
 if ( $wishlist )
 {
-    $items =& $wishlist->items();
+    $items = $wishlist->items();
     $count = count ( $items );
     $i=0;
     if ( $count > 0 )
     {
         foreach ( $items as $item )
         {
-            $product =& $item->product();
+            $product = $item->product();
             if ( $product )
             {
                 if ( ( $i % 2 ) == 0 )
@@ -166,7 +166,7 @@ if ( $wishlist )
                 else
                     $t->set_var( "td_class", "bglight" );
                 
-                $image =& $product->thumbnailImage();
+                $image = $product->thumbnailImage();
                 
                 $t->set_var( "product_id", $product->id() );
                 $t->set_var( "product_name", $product->name() );
@@ -175,7 +175,7 @@ if ( $wishlist )
                 
                 if ( $image )
                 {
-                    $thumbnail =& $image->requestImageVariation( 35, 35 );
+                    $thumbnail = $image->requestImageVariation( 35, 35 );
                     
                     $t->set_var( "product_image_path", "/" . $thumbnail->imagePath() );
                     $t->set_var( "product_image_width", $thumbnail->width() );
@@ -212,16 +212,16 @@ if ( $wishlist )
 
                 $t->set_var( "wishlist_item_option", "" );
 
-                $optionValues =& $item->optionValues();
+                $optionValues = $item->optionValues();
 
                 foreach ( $optionValues as $optionValue )
                 {
-                    $option =& $optionValue->option();
-                    $value =& $optionValue->optionValue();
+                    $option = $optionValue->option();
+                    $value = $optionValue->optionValue();
                         
                     $t->set_var( "option_name", $option->name() );
                         
-                    $descriptions =& $value->descriptions();
+                    $descriptions = $value->descriptions();
                     $t->set_var( "option_value", $descriptions[0] );
                         
                     $t->parse( "wishlist_item_option", "wishlist_item_option_tpl", true );
@@ -239,7 +239,7 @@ if ( $wishlist )
 $t->set_var( "voucher_list", "" );
 $vouchers = "0";
 $voucherObject = new eZVoucherUsed();
-$vouchers =& $voucherObject->getByUser( $customer );
+$vouchers = $voucherObject->getByUser( $customer );
 $count = count ( $vouchers );
 $t->set_var( "voucher_count", $count );
 $t->set_var( "used_item", "" );
@@ -257,13 +257,13 @@ if ( $count > 0 )
         $t->set_var( "used_price", $locale->format( $currency ) );
         $t->set_var( "used_used", $locale->format( $used->used() ) );
 
-        $localUser =& $used->user();
+        $localUser = $used->user();
 
         $t->set_var( "user_name", $localUser->firstName() . " " . $localUser->lastName() );
         $t->set_var( "user_id", $localUser->id() );
 
-        $order =& $used->order();
-        $voucher =& $used->voucher( false );
+        $order = $used->order();
+        $voucher = $used->voucher( false );
         $t->set_var( "voucher_id", $voucher );
 
         $t->set_var( "order_id", $order->id() );

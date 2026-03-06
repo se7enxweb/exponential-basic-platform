@@ -85,7 +85,7 @@ class eZMail
     */
     function delete( $id = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         if ( $id == -1 )
             $id = $this->ID;
@@ -103,7 +103,7 @@ class eZMail
     */
     function store()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
 
         $to = $db->escapeString( $this->To );
         $from = $db->escapeString( $this->From );
@@ -169,7 +169,7 @@ class eZMail
 
     function removeContacts( $mailID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $res[] = $db->query( "DELETE FROM eZMail_MailContactLink WHERE MailID='$mailID'" );
         eZDB::finish( $res, $db );
@@ -181,7 +181,7 @@ class eZMail
             $contact = "CompanyID";
         else
             $contact = "PersonID";
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $db->lock( "eZMail_MailContactLink" );
         $nextID = $db->nextID( "eZMail_MailContactLink", "ID" );
@@ -198,7 +198,7 @@ class eZMail
     */
     function get( $id = "" )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
@@ -562,7 +562,7 @@ class eZMail
     function setStatus( $status, $directWrite = false )
     {
         $this->Status = $status;
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         if ( $directWrite == true )
             $db->query( "UPDATE eZMail_Mail SET Status='$status' where ID='$this->ID'" );
     }
@@ -571,9 +571,9 @@ class eZMail
       \static
       Splits a list of email addresses into an array where each entry is an email address.
     */
-    static public function &splitList( $emails )
+    static public function splitList( $emails )
     {
-        $emails =& preg_split( "/[,;]/", $emails );
+        $emails = preg_split( "/[,;]/", $emails );
         return $emails;
     }
 
@@ -581,11 +581,11 @@ class eZMail
       \static
       Merges an array of email addresses into a list of email addresses.
     */
-    static public function &mergeList( $emails )
+    static public function mergeList( $emails )
     {
         if ( !is_array( $emails ) )
             return false;
-        $emails =& implode( ",", $emails );
+        $emails = implode( ",", $emails );
         return $emails;
     }
 
@@ -626,7 +626,7 @@ class eZMail
     */
     static public function isDownloaded( $mailident, $userID )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT count(*) as Count FROM eZMail_FetchedMail WHERE UserID='$userID' AND MessageID='$mailident'" );
 
         $ret = true;
@@ -641,7 +641,7 @@ class eZMail
      */
     function markAsDownloaded()
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->begin();
         $result = $db->query( "INSERT INTO eZMail_FetchedMail
                                (UserID, MessageID)
@@ -659,7 +659,7 @@ class eZMail
     function folder( $as_object = true )
     {
         $res = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $res, "SELECT FolderID FROM eZMail_MailFolderLink WHERE MailID='$this->ID'" );
 
         if ( count( $res ) > 0 )
@@ -680,7 +680,7 @@ class eZMail
     static public function getByUser( $user = false, $onlyUnread = false )
     {
         if ( !is_a( $user, "eZUser" ) )
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
 
         $unreadOnlySQL = "";
         if ( $onlyUnread == false )
@@ -691,7 +691,7 @@ class eZMail
         $return_array = array();
         $res = array();
         $userid = $user->id();
-        $database =& eZDB::globalDatabase();
+        $database = eZDB::globalDatabase();
         $query = "SELECT ID FROM eZMail_Mail WHERE UserID='$userid' $unreadOnlySQL";
         $database->array_query( $res, $query );
 
@@ -710,13 +710,13 @@ class eZMail
     static public function getByContact( $ContactID, $CompanyEdit, $Offset, $Limit, $user = false )
     {
         if ( !is_a( $user, "eZUser" ) )
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
         if ( $CompanyEdit )
             $field = "CompanyID";
         else
             $field = "PersonID";
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $res, "SELECT MailID FROM eZMail_MailContactLink
                                  WHERE $field='$ContactID'" );
 
@@ -738,7 +738,7 @@ class eZMail
         $return_array = array();
         $return_array["PersonID"] = array();
         $return_array["CompanyID"] = array();
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->array_query( $res, "SELECT * FROM eZMail_MailContactLink WHERE MailID='$mailID'" );
         foreach ( $res as $resItem )
         {
@@ -757,7 +757,7 @@ class eZMail
     function addFile( $file )
     {
        $this->FilesAttached = true;
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
 
        if ( is_a( $file, "eZVirtualFile" ) )
        {
@@ -781,7 +781,7 @@ class eZMail
         {
             $fileID = $file->id();
             $file->delete();
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->query( "DELETE FROM eZMail_MailAttachmentLink WHERE MailID='$this->ID' AND FileID='$fileID'" );
             $this->calculateSize();
         }
@@ -798,7 +798,7 @@ class eZMail
            return $return_array;
 
        $file_array = array();
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $db->array_query( $file_array, "SELECT FileID FROM eZMail_MailAttachmentLink WHERE MailID='$this->ID'" );
 
        for ( $i = 0; $i < count( $file_array ); $i++ )
@@ -817,7 +817,7 @@ class eZMail
         if ( is_a( $image, "eZImage" ) )
         {
             $imageID = $image->id();
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             $res[] = $db->query( "INSERT INTO eZMail_MailImageLink (MailID, ImageID ) VALUES ('$this->ID', '$imageID')" );
             eZDB::finish( $res, $db );
@@ -833,7 +833,7 @@ class eZMail
         {
             $imageID = $image->id();
             $image->delete();
-            $db =& eZDB::globalDatabase();
+            $db = eZDB::globalDatabase();
             $db->begin();
             $res[] = $db->query( "DELETE FROM eZMail_MailImageLink WHERE MailID='$this->ID' AND ImageID='$imageID'" );
             eZDB::finish( $res, $db );
@@ -848,7 +848,7 @@ class eZMail
        $return_array = array();
        $image_array = array();
 
-       $db =& eZDB::globalDatabase();
+       $db = eZDB::globalDatabase();
        $db->array_query( $image_array, "SELECT ImageID FROM eZMail_MailImageLink WHERE MailID='$this->ID'" );
 
        for ( $i = 0; $i < count( $image_array ); $i++ )
@@ -868,7 +868,7 @@ class eZMail
         if ( is_a( $user, "eZUser" ) )
             $user = $user->id();
 
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT UserID from eZMail_Mail WHERE ID='$mailID'" );
         if ( $res[$db->fieldName( "UserID" )] == $user )
             return true;
@@ -883,9 +883,9 @@ class eZMail
       NOTE: The returned mail is not member of any folders. Set a folder for this mail
       or it will be LOST.
      */
-    function &copyMail( $copyType = "normal", $attachments = false )
+    function copyMail( $copyType = "normal", $attachments = false )
     {
-        $ini =& eZINI::instance( 'site.ini' );
+        $ini = eZINI::instance( 'site.ini' );
         $copy = new eZMail();
         $copy->UserID = $this->UserID;
 
@@ -1104,9 +1104,9 @@ class eZMail
 //        global $GlobalSectionID;
 //
 //        // include_once("ezsitemanager/classes/ezsection.php");
-//        $sectionObject =& eZSection::globalSectionObject( $GlobalSectionID );
+//        $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 //        $Locale = new eZLocale( $sectionObject->language() );
-//        $iso =& $Locale->languageISO();
+//        $iso = $Locale->languageISO();
 
 //        $subj = $this->subject();
 //        $subj = "=?$iso?B?" . trim( chunk_split( base64_encode( $subj ))) . "?=";
@@ -1148,10 +1148,10 @@ class eZMail
     */
     static public function search( $text, $user = -1 )
     {
-        $db =& eZDB::globalDatabase();
+        $db = eZDB::globalDatabase();
         $return_array = array();
         if ( $user == -1 )
-            $user =& eZUser::currentUser();
+            $user = eZUser::currentUser();
 
         $db->array_query( $id_array, "SELECT ID FROM eZMail_Mail WHERE
                                           (ToField LIKE '%$text%' OR

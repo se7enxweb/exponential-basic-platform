@@ -30,7 +30,7 @@
 
 // include_once( "ezuser/classes/ezuser.php" );
 
-$ini =& eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $ShowQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
 $ShowNamedQuantity = $ini->variable( "eZTradeMain", "ShowNamedQuantity" ) == "true";
@@ -60,7 +60,7 @@ if ( $Action == "MoveToCart" )
         // only delete if the user owns the wishlist
         $tmpWishlist = $wishListItem->wishlist();
         $tmpUser = $tmpWishlist->user();
-        $curUser =& eZUser::currentUser();
+        $curUser = eZUser::currentUser();
 
         if ( $curUser && ( $tmpUser->id() == $curUser->id() ) )
         {        
@@ -174,7 +174,7 @@ foreach ( $items as $item )
 
     if ( $image )
     {
-        $thumbnail =& $image->requestImageVariation( 35, 35 );
+        $thumbnail = $image->requestImageVariation( 35, 35 );
 
         $t->set_var( "product_image_path", "/" . $thumbnail->imagePath() );
         $t->set_var( "product_image_width", $thumbnail->width() );
@@ -210,8 +210,8 @@ foreach ( $items as $item )
         $Quantity = 0;
         foreach ( $optionValues as $optionValue )
         {
-            $option =& $optionValue->option();
-            $value =& $optionValue->optionValue();
+            $option = $optionValue->option();
+            $value = $optionValue->optionValue();
             $value_quantity = $value->totalQuantity();
             if ( $value_quantity > 0 )
                 $Quantity = $value_quantity;
@@ -230,19 +230,19 @@ foreach ( $items as $item )
     
     $t->set_var( "product_price", $locale->format( $currency ) );
 
-    $optionValues =& $item->optionValues();
+    $optionValues = $item->optionValues();
 
     $t->set_var( "wishlist_item_option", "" );
     $min_quantity = $Quantity;
     foreach ( $optionValues as $optionValue )
     {
-        $option =& $optionValue->option();
-        $value =& $optionValue->optionValue();
+        $option = $optionValue->option();
+        $value = $optionValue->optionValue();
         $value_quantity = $value->totalQuantity();
 
         $t->set_var( "option_name", $option->name() );
 
-        $descriptions =& $value->descriptions();
+        $descriptions = $value->descriptions();
         $t->set_var( "option_value", $descriptions[0] );
 
         $t->set_var( "wishlist_item_option_availability", "" );
