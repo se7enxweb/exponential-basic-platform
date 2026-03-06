@@ -1,4 +1,4 @@
-<?
+<?php
 // 
 // $Id: ezvoucherpricerange.php 7124 2001-09-10 12:39:28Z ce $
 //

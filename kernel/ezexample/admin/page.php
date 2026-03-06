@@ -3,7 +3,7 @@
 <hr noshade="noshade" size="4" />
 <br />
 
-<form action="<? print $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/example/page/" method="post">
+<form action="<?php print $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/example/page/" method="post">
 
 <input type="text" name="Value" value="" />
 
@@ -13,7 +13,7 @@
 </form>
 
 
-<?
+<?php
 if ( isset( $Value ) )
 {
     print( "<pre>" . $Value . "</pre>" );

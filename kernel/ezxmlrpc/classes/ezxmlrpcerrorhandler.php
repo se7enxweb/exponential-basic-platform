@@ -1,4 +1,4 @@
-<?
+<?php
 // 
 // $Id: ezxmlrpcerrorhandler.php 6023 2001-07-05 09:57:04Z matta $
 //

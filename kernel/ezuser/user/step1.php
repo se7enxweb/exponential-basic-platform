@@ -123,12 +123,12 @@ Complete both Account Registration Steps 1 & 2 to checkout or obtain
 accurate shipping and handling prices for items in your shopping cart.
 </p>
 
-<? if( isset( $next ) && $next ): ?>
+<?php if( isset( $next ) && $next ): ?>
 <p style="color:red;">
 <?= isset( $all_fields_error ) && $all_fields_error ?>
 <?= isset( $password_error ) && $password_error ?>
 </p>
-<? endif; ?>
+<?php endif; ?>
 
 <form method="post">
 <table border="0" cellspacing="2" cellpadding="2" class="boxtext" style="font-size=13;">

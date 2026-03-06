@@ -1,4 +1,4 @@
-<?
+<?php
 include_once( "kernel/ezgroupeventcalendar/classes/ezgroupevent.php" );
 
 $ini =& eZINI::instance( 'site.ini' );

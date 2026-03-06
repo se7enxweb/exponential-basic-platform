@@ -1,4 +1,4 @@
-<?
+<?php
 // 
 // $Id: groupdisplay.php,v 1.1 2001/04/24 09:39:43 bf Exp $
 //

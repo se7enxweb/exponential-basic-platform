@@ -237,19 +237,19 @@ fields are required.
 <tr>
 <td>State : </td><td>
 <select name="bill_state">
-<? foreach($states as $k=>$v): ?>
-<? $check_state = ($k == $default_bill_state) ? 'selected' : ''; ?>
+<?php foreach($states as $k=>$v): ?>
+<?php $check_state = ($k == $default_bill_state) ? 'selected' : ''; ?>
 <option value="<?= $k ?>" <?= $check_state ?>><?= substr($v, 0, 26) ?></option>
-<? endforeach; ?>
+<?php endforeach; ?>
 </select>
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>State : </td><td>
 <select name="ship_state">
-<? foreach($states as $k=>$v): ?>
-<? $check_state = ($k == $default_ship_state) ? 'selected' : ''; ?>
+<?php foreach($states as $k=>$v): ?>
+<?php $check_state = ($k == $default_ship_state) ? 'selected' : ''; ?>
 <option value="<?= $k ?>" <?= $check_state ?>><?= substr($v, 0, 26) ?></option>
-<? endforeach; ?>
+<?php endforeach; ?>
 </select>
 </td>
 </tr>
@@ -264,19 +264,19 @@ fields are required.
 <td>Country : </td>
 <td>
 <select name="bill_country">
-<? foreach($countryList as $country): ?>
-<? $check_country = ($country['ID'] == $default_bill_country) ? 'selected' : ''; ?>
+<?php foreach($countryList as $country): ?>
+<?php $check_country = ($country['ID'] == $default_bill_country) ? 'selected' : ''; ?>
 <option value="<?= $country['ID'] ?>" <?= $check_country ?>><?= substr($country['Name'], 0, 26) ?></option>
-<? endforeach; ?>
+<?php endforeach; ?>
 </select>
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>Country : </td><td>
 <select name="ship_country">
-<? foreach($countryList as $country): ?>
-<? $check_country = ($country['ID'] == $default_ship_country) ? 'selected' : ''; ?>
+<?php foreach($countryList as $country): ?>
+<?php $check_country = ($country['ID'] == $default_ship_country) ? 'selected' : ''; ?>
 <option value="<?= $country['ID'] ?>" <?= $check_country ?>><?= substr($country['Name'], 0, 26) ?></option>
-<? endforeach; ?>
+<?php endforeach; ?>
 </select>
 </td>
 </tr>

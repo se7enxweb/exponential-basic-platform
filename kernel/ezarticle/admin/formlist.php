@@ -1,4 +1,4 @@
-<?
+<?php
 // 
 // $Id: formlist.php 6206 2001-07-19 12:19:22Z jakobn $
 //

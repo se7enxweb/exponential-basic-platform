@@ -1,4 +1,4 @@
-<?
+<?php
 // include_once( "classes/INIFile.php" );
 
 $ini =& eZINI::instance( 'site.ini' );
@@ -23,12 +23,12 @@ if ($referer){
 </div>
 
 <div id="contentWrap">
-  <h1 class="mainHeading"><? echo $account_header ?></h1>
+  <h1 class="mainHeading"><?php echo $account_header ?></h1>
 
   <table border="0" cellspacing="5" cellpadding="8" width="" style="font-size:10;">
   <tr>
     <td align="right" width="">
-      <a href="<? print $shost ?>/user/edit"><< Edit Account</a>
+      <a href="<?php print $shost ?>/user/edit"><< Edit Account</a>
     </td>
     <td align="left">
       <a href="/shop">Continue Shopping >></a>
@@ -36,10 +36,10 @@ if ($referer){
    </tr> 
    <tr>
     <td align="right">
-      <a href="<? print $shost ?>/user/withaddress"><< Edit Addresses</a>
+      <a href="<?php print $shost ?>/user/withaddress"><< Edit Addresses</a>
     </td>
     <td align="left">
-      <a href="<? print $shost ?>/trade/checkout/">Proceed to Checkout >></a>
+      <a href="<?php print $shost ?>/trade/checkout/">Proceed to Checkout >></a>
     </td>
    </tr>
   </table>
@@ -66,7 +66,7 @@ if ($referer){
 </td>
 </tr>
 
-<? /* 
+<?php /* 
 <!--
 <tr>
 <tr>
@@ -133,7 +133,7 @@ if ($referer){
 
 </div>
 
-<? /*
+<?php /*
 <td>
 <input type="button" value="< Return Home&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" onClick="window.location='/';"></td>
 

@@ -1,4 +1,4 @@
-<?
+<?php
 // 
 // $Id: typelist.php,v 1.3 2001/02/19 22:13:10 gl Exp $
 //

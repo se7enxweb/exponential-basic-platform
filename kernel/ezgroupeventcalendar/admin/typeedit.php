@@ -1,4 +1,4 @@
-<?
+<?php
 // 
 // $Id: typeedit.php,v 1.5 2001/02/20 12:33:38 gl Exp $
 //

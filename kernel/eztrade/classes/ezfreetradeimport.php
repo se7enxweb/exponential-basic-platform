@@ -1,4 +1,4 @@
-<?
+<?php
 //
 // $Id: ezfreetradeimport.php 6849 2001-09-03 11:13:38Z ce $
 //

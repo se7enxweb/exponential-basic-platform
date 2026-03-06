@@ -1,4 +1,4 @@
-<?
+<?php
 // 
 // $Id: eventedit.php,v 1.36 2001/03/12 13:55:47 fh Exp $
 //

@@ -1,4 +1,4 @@
-<? 
+<?php 
 // 
 // $Id: ezinformixdb.php 6200 2001-07-19 11:33:57Z jakobn $
 //

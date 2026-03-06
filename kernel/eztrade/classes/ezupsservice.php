@@ -176,7 +176,7 @@ class ezups {
 <Service>
 <Code>$ser</Code>
 </Service>";
-            // <? just a syntax highlighting restart
+            // <?php just a syntax highlighting restart
             $inc = 0;
             $gettotarr = $this->totalarr;
             $boxesarr = $gettotarr['box'];

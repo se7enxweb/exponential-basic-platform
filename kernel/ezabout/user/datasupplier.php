@@ -31,7 +31,7 @@ $version = eZPublish::version();
 <a href="https://basic.exponential.earth/"><h1>About Exponential Basic</h1></a>
 <h2>Content Management System</h2>
 
-<a href="https://basic.exponential.earth/"><h2>Version: <? echo $version; ?></h2></a>
+<a href="https://basic.exponential.earth/"><h2>Version: <?php echo $version; ?></h2></a>
 <hr noshade="noshade" size="4" />
 
 <p>

@@ -1,4 +1,4 @@
-<?
+<?php
 // 
 // $Id: ezcheckoutsuppliergateway.php,v 1.2 2001/02/20 16:12:48 bf Exp $
 //

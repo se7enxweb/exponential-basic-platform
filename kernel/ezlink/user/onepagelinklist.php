@@ -1,4 +1,4 @@
-<?
+<?php
 // 
 // $Id: onepagelinklist.php 6951 2001-09-05 08:29:58Z br $
 //

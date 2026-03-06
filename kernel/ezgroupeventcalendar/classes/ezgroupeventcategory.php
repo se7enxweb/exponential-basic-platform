@@ -1,4 +1,4 @@
-<?
+<?php
 //
 // Definition of eZGroupEventCategory class
 //

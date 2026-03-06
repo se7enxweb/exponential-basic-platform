@@ -1,5 +1,5 @@
 #!/usr/local/bin/php -q
-<?
+<?php
 // 
 // $Id: cron_alert.php,v 1.14.2.8 2004/09/29 05:58:00 ghb Exp $
 //

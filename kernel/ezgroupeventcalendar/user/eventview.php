@@ -1,4 +1,4 @@
-<?
+<?php
 // 
 // $Id: eventview.php,v 1.10 2001/02/01 11:25:55 gl Exp $
 //
