@@ -1,6 +1,14 @@
 Exponential Basic changelog:
 ---------------------
 
+Changes from 2.4.0.1 to 2.4.0.2
+---------------------------
+
+- Updated: Added example store site design, 'ecommerce' to convert from short php tags to full php tags within design templates in php.
+
+- Updated: Refactored entire source code to convert from short php tags to full php tags within all php files.
+
+
 Changes from 2.4.0.0 to 2.4.0.1
 ---------------------------
 
@@ -19,6 +27,10 @@ Changes from 2.4.0.0 to 2.4.0.1
 - Replaced: Replaced key index.php front / admin controller kernel implementation to use Exponential 6.x's most simple possible implementation (to start and in theory gain possible platform support with Exponential Platform Legacy implementations customized further on). This results in a very clean index that uses a class to do the work.
 
 - Refactored all kernel modules to perform without fatal or functional errors. This resulted in a lot of smaller bugfixes.
+
+- Moved all uploaded file storage from the kernel out into the var dir structure ie: kernel/(module)/(storagedir) to var/site/storage/(module)
+
+- Moved all cache file storage from kernel out into the var dir structure: ie: kernel/(module)/cache to var/cache/ini/kernel/(module)/(admin|user)/**
 
 - Added to Kernel and Lib: Exponential 6.x PHP class libraries to replace now deprecated and renamed to prevent conflict yet remain available 2.x kernel php classes. Some community modules may need to refactor their php to use the replacement libraries or the renamed libraries.
 
