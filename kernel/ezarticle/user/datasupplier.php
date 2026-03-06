@@ -77,7 +77,12 @@ switch ( $url_array[2] )
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
         $user = eZUser::currentUser();
-        $userID = $user->ID;
+
+        if( is_a( $user, "eZUser" ) )
+            $userID = $user->id();
+        else
+            $userID = null;
+
         $groupstr = "";
         $cacheFile = false;
 
@@ -92,8 +97,8 @@ switch ( $url_array[2] )
                 $first = false;
             }
         }
-        //else
-         //   $user = 0;
+        else
+            $user = null;
 
         //$userID = ( $user && is_object( $user ) ) ? $user->id() : null;
 
@@ -105,7 +110,7 @@ switch ( $url_array[2] )
 
             $cachedFile = $file->filename( true );
 
-            if ( $file->exists() && ( /* isset( $userID ) && */ $userID !== null ) )
+            if ( $file->exists() && $userID !== null )
             {
                 include( $cachedFile );
             }
