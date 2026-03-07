@@ -167,7 +167,8 @@ DefaultSection=1
 
 # Site cache now works on simple sites, with no user specific data. E.g. an pure article site.
 # SiteCache=enabled
-SiteCache=disabled
+# SiteCache=disabled
+SiteCache=enabled
 # How long before a cache times out, cache timeout setting in minutes. Default: 2 Hours;
 SiteCacheTimeout=120
 
@@ -760,6 +761,7 @@ TemplateDir=templates/ecommerce/
 
 ImageDir=/images/standard/
 Language=en_US
+PageCaching=enabled
 PageCaching=disabled
 #Order Disclaimer
 OrderDisclaimer=enabled
@@ -888,6 +890,8 @@ StateTaxBilling=enabled
 StateTaxShipping=enabled
 
 CategoryListProductImages=enabled
+ShowProductOptions=disabled
+
 
 [Checkout]
 #PaymentMethods=allowed payment methods, Name1|file1.php;Name2|file2.php
