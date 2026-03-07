@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: optionedit.php 8119 2001-10-31 11:19:09Z ce $
+// $id: optionedit.php 8119 2001-10-31 11:19:09Z ce $
 //
 // Created on: <20-Sep-2000 10:18:33 bf>
 //
@@ -31,12 +31,12 @@
 // include_once( "classes/ezhttptool.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
-$StdHeaders = $ini->variable( "eZTradeMain", "StandardOptionHeaders" );
-$MinHeaders = $ini->variable( "eZTradeMain", "MinimumOptionHeaders" );
-$MinValues = $ini->variable( "eZTradeMain", "MinimumOptionValues" );
-$SimpleOptionHeaders = $ini->variable( "eZTradeMain", "SimpleOptionHeaders" ) == "true" ? true : false;
-$ShowQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
+$language = $ini->variable( "eZTradeMain", "Language" );
+$stdHeaders = $ini->variable( "eZTradeMain", "StandardOptionHeaders" );
+$minHeaders = $ini->variable( "eZTradeMain", "MinimumOptionHeaders" );
+$minValues = $ini->variable( "eZTradeMain", "MinimumOptionValues" );
+$simpleOptionHeaders = $ini->variable( "eZTradeMain", "SimpleOptionHeaders" ) == "true" ? true : false;
+$showQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
@@ -44,93 +44,93 @@ $ShowQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
 // include_once( "eztrade/classes/ezoptionvalue.php" );
 // include_once( "eztrade/classes/ezpricegroup.php" );
 
-if ( !isset( $OptionPrice ) or !is_array( $OptionPrice ) )
-    $OptionPrice = array();
-if ( !isset( $OptionValueDescription ) or !is_array( $OptionValueDescription ) )
-    $OptionValueDescription = array();
-if ( isset( $DeleteOption ) )
+if ( !isset( $optionPrice ) or !is_array( $optionPrice ) )
+    $optionPrice = array();
+if ( !isset( $optionValueDescription ) or !is_array( $optionValueDescription ) )
+    $optionValueDescription = array();
+if ( isset( $deleteOption ) )
 {
-    foreach( $DeleteOptionID as $option_id )
+    foreach( $deleteOptionID as $option_id )
     {
         $option = new eZOption( $option_id );
         $option->delete();
     }
 
     $files = eZCacheFile::files( "kernel/eztrade/cache/", array( array( "productview", "productprint" ),
-                                                          $ProductID, NULL ),
+                                                          $productID, NULL ),
                                  "cache", "," );
     foreach( $files as $file )
     {
         $file->delete();
     }
 
-    eZHTTPTool::header( "Location: /trade/productedit/optionlist/$ProductID/" );
+    eZHTTPTool::header( "Location: /trade/productedit/optionlist/$productID/" );
     exit();
 }
 
-$product = new eZProduct( $ProductID );
+$product = new eZProduct( $productID );
 
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    if ( isset( $OptionDelete ) )
+    if ( isset( $optionDelete ) )
     {
-        foreach( $OptionDelete as $del )
+        foreach( $optionDelete as $del )
         {
-            unset( $OptionValue[$del] );
-            unset( $OptionValueID[$del] );
-            $OptionValueID = array_values( $OptionValueID );
-            $ValueID = $OptionValueID;
-            unset( $OptionPrice[$del] );
-            unset( $OptionMainPrice[$del] );
-            unset( $OptionQuantity[$del] );
+            unset( $optionValue[$del] );
+            unset( $optionValueID[$del] );
+            $optionValueID = array_values( $optionValueID );
+            $valueID = $optionValueID;
+            unset( $optionPrice[$del] );
+            unset( $optionMainPrice[$del] );
+            unset( $optionQuantity[$del] );
         }
     }
-    if ( isset( $OptionDescriptionDelete ) )
+    if ( isset( $optionDescriptionDelete ) )
     {
-        foreach( $OptionDescriptionDelete as $del )
+        foreach( $optionDescriptionDelete as $del )
         {
-            unset( $OptionValueDescription[$del] );
-            $count = count( $OptionValue );
+            unset( $optionValueDescription[$del] );
+            $count = count( $optionValue );
             for ( $i = 0; $i < $count; $i++ )
             {
-                unset( $OptionValue[$i][$del] );
+                unset( $optionValue[$i][$del] );
             }
-            $ValueCount = max( $MinHeaders, $ValueCount - 1 );
+            $valueCount = max( $minHeaders, $valueCount - 1 );
         }
     }
 }
 
 
-if ( isset( $Abort ) )
+if ( isset( $abort ) )
 {
-    eZHTTPTool::header( "Location: /trade/productedit/optionlist/$ProductID/" );
+    eZHTTPTool::header( "Location: /trade/productedit/optionlist/$productID/" );
     exit();
 }
 
-if ( isset( $OK ) )
+if ( isset( $ok ) )
 {
-    $option = new eZOption( $OptionID );
-    $option->setName( $OptionName );
-    $option->setDescription( $Description );
+    $option = new eZOption( $optionID );
+    $option->setName( $optionName );
+    $option->setDescription( $description );
 
     $option->store();
 
-    if ( !is_numeric( $OptionID ) )
+    if ( !is_numeric( $optionID ) )
         $product->addOption( $option );
 
     $option->removeHeaders();
-    $option->addHeader( $OptionValueDescription );
+    $option->addHeader( $optionValueDescription );
 
     //$option->removeValues();
     $i = 0;
     $option_ids = array();
 
-    foreach ( $OptionValue as $name )
+    foreach ( $optionValue as $name )
     {
         if ( $name != "" )
         {
-            if ( is_numeric( $OptionValueID[$i] ) and $OptionValueID[$i] > 0 )
-                $option_ids[] = $OptionValueID[$i];
+            if ( is_numeric( $optionValueID[$i] ) and $optionValueID[$i] > 0 )
+                $option_ids[] = $optionValueID[$i];
         }
         $i++;
     }
@@ -145,29 +145,29 @@ if ( isset( $OK ) )
     }
 
     $i = 0;
-    foreach ( $OptionValue as $name )
+    foreach ( $optionValue as $name )
     {
         if ( $name != "" )
         {
-            if ( !is_null( $OptionValueID[$i] ) and $OptionValueID[$i] > 0 )
-                $value = new eZOptionValue( $OptionValueID[$i] );
+            if ( !is_null( $optionValueID[$i] ) and $optionValueID[$i] > 0 )
+                $value = new eZOptionValue( $optionValueID[$i] );
             else
                 $value = new eZOptionValue();
-            $value->setPrice( $OptionMainPrice[$i] );
+            $value->setPrice( $optionMainPrice[$i] );
             $value->setOptionID( $option->id() );
             $value->store();
 
-            if ( $ShowQuantity )
+            if ( $showQuantity )
             {
-                $value->setTotalQuantity( !is_null( $OptionQuantity[$i] ) ? $OptionQuantity[$i] : false );
+                $value->setTotalQuantity( !is_null( $optionQuantity[$i] ) ? $optionQuantity[$i] : false );
             }
 
             $value->removeDescriptions();
             $value->addDescription( $name );
-            //var_dump( $OptionPrice ); die();
-            $option_price = $OptionPrice[$i];
+            //var_dump( $optionPrice ); die();
+            $option_price = $optionPrice[$i];
 
-            eZPriceGroup::removePrices( $ProductID, $option->id(), $value->id() );
+            eZPriceGroup::removePrices( $productID, $option->id(), $value->id() );
 
             if ( count( $option_price ) > 0 )
             {
@@ -177,7 +177,7 @@ if ( isset( $OK ) )
                     if ( is_numeric( $price ) )
                     {
                         $priceGroupObject = new eZPriceGroup();
-                        $priceGroupObject->addPrice( $ProductID, $group, $price, $option->id(), $value->id() );
+                        $priceGroupObject->addPrice( $productID, $group, $price, $option->id(), $value->id() );
                     }
                 }
             }
@@ -186,19 +186,19 @@ if ( isset( $OK ) )
     }
 
     $files = eZCacheFile::files( "kernel/eztrade/cache/", array( array( "productview", "productprint" ),
-                                                          $ProductID, NULL ),
+                                                          $productID, NULL ),
                                  "cache", "," );
     foreach( $files as $file )
     {
         $file->delete();
     }
 
-    eZHTTPTool::header( "Location: /trade/productedit/optionlist/$ProductID/" );
+    eZHTTPTool::header( "Location: /trade/productedit/optionlist/$productID/" );
     exit();
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "optionedit.php" );
+                     "kernel/eztrade/admin/intl/", $language, "optionedit.php" );
 
 $t->setAllStrings();
 
@@ -242,122 +242,122 @@ $count = count ( $groups );
 
 $main_price = array();
 
-if ( isset( $Action ) && $Action == "New" )
+if ( isset( $action ) && $action == "New" )
 {
-    $OptionValueDescription = $StdHeaders;
-    $OptionValue = array();
-    $OptionMainPrice = array();
-    $OptionPrice = array();
-    $NewValue = true;
+    $optionValueDescription = $stdHeaders;
+    $optionValue = array();
+    $optionMainPrice = array();
+    $optionPrice = array();
+    $newValue = true;
 }
 
-if ( isset( $Action ) && $Action == "Edit" )
+if ( isset( $action ) && $action == "Edit" )
 {
-    $option = new eZOption( $OptionID );
+    $option = new eZOption( $optionID );
     $values = $option->values();
-    $ValueID = array();
-    $OptionValueDescription = $option->descriptionHeaders();
+    $valueID = array();
+    $optionValueDescription = $option->descriptionHeaders();
     $i = 0;
-    foreach( $StdHeaders as $header )
+    foreach( $stdHeaders as $header )
     {
-        if ( !isset( $OptionValueDescription[$i] ) )
-            $OptionValueDescription[$i] = $header;
+        if ( !isset( $optionValueDescription[$i] ) )
+            $optionValueDescription[$i] = $header;
         $i++;
     }
     $hiddenArray = "";
     $valueText = "";
-    $OptionValue = array();
-    $OptionMainPrice = array();
-    $OptionPrice = array();
-    $OptionQuantity = array();
+    $optionValue = array();
+    $optionMainPrice = array();
+    $optionPrice = array();
+    $optionQuantity = array();
     $i = 0;
     foreach ( $values as $value )
     {
-        $OptionValue[$i] = $value->descriptions();
-        $OptionValue[$i][] = "";
-        $OptionMainPrice[] = $value->price();
-        $OptionValueID[$i] = $value->id();
-        $OptionQuantity[$i] = $value->totalQuantity();
+        $optionValue[$i] = $value->descriptions();
+        $optionValue[$i][] = "";
+        $optionMainPrice[] = $value->price();
+        $optionValueID[$i] = $value->id();
+        $optionQuantity[$i] = $value->totalQuantity();
         $valueid = $value->id();
-        $ValueID[] = $valueid;
-        $prices = eZPriceGroup::prices( $ProductID, $OptionID, $value->id() );
+        $valueID[] = $valueid;
+        $prices = eZPriceGroup::prices( $productID, $optionID, $value->id() );
         foreach( $groups as $group )
         {
             foreach( $prices as $price )
             {
                 if ( $price["PriceID"] == $group )
-                    $OptionPrice[$valueid][$group] = $price["Price"];
+                    $optionPrice[$valueid][$group] = $price["Price"];
             }
         }
         $i++;
     }
-    $ValueCount = max( $MinHeaders, count( $OptionValueDescription ) );
-    if ( $SimpleOptionHeaders )
-        $ValueCount = $MinHeaders;
+    $valueCount = max( $minHeaders, count( $optionValueDescription ) );
+    if ( $simpleOptionHeaders )
+        $valueCount = $minHeaders;
 
-    $OptionName = $option->name();
-    $Description = $option->description();
+    $optionName = $option->name();
+    $description = $option->description();
 }
 
-if ( isset( $NewValue ) )
+if ( isset( $newValue ) )
 {
-    $OptionValue[] = array();
-    $OptionValueID[] = "";
-    $ValueID[] = "";
+    $optionValue[] = array();
+    $optionValueID[] = "";
+    $valueID[] = "";
     $option_price = array();
     for( $i = 0; $i < $count; ++$i )
     {
         $option_price[$groups[$i]] = "";
     }
-    $OptionPrice[] = $option_price;
+    $optionPrice[] = $option_price;
 }
 
-while( max( count( $OptionValue ), count( $ValueID ), count( $OptionPrice ) ) < $MinValues )
+while( max( count( $optionValue ), count( $valueID ), count( $optionPrice ) ) < $minValues )
 {
-    $OptionValue[] = array();
-    $OptionValueID[] = "";
-    $ValueID[] = "";
+    $optionValue[] = array();
+    $optionValueID[] = "";
+    $valueID[] = "";
     $option_price = array();
     for( $i = 0; $i < $count; ++$i )
     {
         $option_price[$groups[$i]] = "";
     }
-    $OptionPrice[] = $option_price;
+    $optionPrice[] = $option_price;
 }
 
-if ( isset( $NewDescription ) )
+if ( isset( $newDescription ) )
 {
-    for( $i = 0; $i < count( $OptionValue ); $i++ )
+    for( $i = 0; $i < count( $optionValue ); $i++ )
     {
-        $OptionValue[$i][] = "";
+        $optionValue[$i][] = "";
     }
-    $OptionValueDescription[] = "";
-    $ValueCount = max( $MinHeaders, $ValueCount + 1 );
+    $optionValueDescription[] = "";
+    $valueCount = max( $minHeaders, $valueCount + 1 );
 }
 else
 {
-    $ValueCount = 0;
+    $valueCount = 0;
 }
 
-$value_count = max( $MinHeaders, $ValueCount );
+$value_count = max( $minHeaders, $valueCount );
 
 $t->set_var( "option_quantity_header", "" );
-if ( $ShowQuantity )
+if ( $showQuantity )
     $t->parse( "option_quantity_header", "option_quantity_header_tpl" );
 
 $t->set_var( "value_count", $value_count );
 
 $t->set_var( "value_headers", "" );
-if ( !$SimpleOptionHeaders )
+if ( !$simpleOptionHeaders )
 {
-    reset( $OptionValueDescription );
-    foreach( $OptionValueDescription as $header )
+    reset( $optionValueDescription );
+    foreach( $optionValueDescription as $header )
     {
         $value_header_item = $header;
     }
-    // $value_header_item = each( $OptionValueDescription );
+    // $value_header_item = each( $optionValueDescription );
     $t->parse( "value_description_item_checkbox", "value_description_item_checkbox_tpl" );
-    for ( $i = 0; $i < max( $MinHeaders, $value_count ); $i++ )
+    for ( $i = 0; $i < max( $minHeaders, $value_count ); $i++ )
     {
         if ( isset( $value_header_item[1] ) )
         {
@@ -370,7 +370,7 @@ if ( !$SimpleOptionHeaders )
         //$t->set_var( "option_description_value", $value_header_item[1] );
         $t->set_var( "value_description_index", $i );
         $t->parse( "value_description_item", "value_description_item_tpl", true );
-        foreach( $OptionValueDescription as $header )
+        foreach( $optionValueDescription as $header )
         {
             $value_header_item = $header;
         }
@@ -379,28 +379,28 @@ if ( !$SimpleOptionHeaders )
     $t->parse( "value_headers", "value_headers_tpl" );
 }
 
-reset( $OptionPrice );
+reset( $optionPrice );
 $index = 0;
 $j = 0;
 $t->set_var( "option_item", "" );
 $t->set_var( "group_count", $count );
-foreach( $OptionMainPrice as $header )
+foreach( $optionMainPrice as $header )
 {
     if( $header != "" )
         $main_price[] = $header;
 }
-//$main_price = each( $OptionMainPrice );
+//$main_price = each( $optionMainPrice );
 
-foreach ( $OptionValue as $value )
+foreach ( $optionValue as $value )
 {
     $t->set_var( "value_pos", $index + 1 );
     $t->set_var( "value_index", $index );
     $t->set_var( "number_run", $j );
-    $t->set_var( "option_value_id", $OptionValueID[$index] );
+    $t->set_var( "option_value_id", $optionValueID[$index] );
     $t->set_var( "value_item", "" );
     reset( $value );
     $value_item = array();
-    // $OptionQuantity = array();
+    // $optionQuantity = array();
 
     foreach( $value as $header )
     {
@@ -409,7 +409,7 @@ foreach ( $OptionValue as $value )
     }
 
     // $value_item = each( $value );
-    for( $i = 0; $i < max( $MinHeaders, $value_count ); $i++ )
+    for( $i = 0; $i < max( $minHeaders, $value_count ); $i++ )
     {
         // $value_item = each( $value );
         if ( isset( $value_item ) && $value_item != array()  )
@@ -432,13 +432,13 @@ foreach ( $OptionValue as $value )
     $t->set_var( "main_price_value", isset( $main_price[$index] ) ? $main_price[$index] : false );
 
     $t->set_var( "option_price_item", "" );
-    foreach( $OptionPrice as $header )
+    foreach( $optionPrice as $header )
     {
         if( $header != "" )
         $option_price[] = $header;
     }
 
-    // $option_price = each( $OptionPrice );
+    // $option_price = each( $optionPrice );
     $i = 0;
     foreach( $groups as $group )
     {
@@ -450,31 +450,31 @@ foreach ( $OptionValue as $value )
     }
 
     $t->set_var( "option_quantity_item", "" );
-    if ( $ShowQuantity )
+    if ( $showQuantity )
     {
-        $t->set_var( "quantity_value", isset( $OptionQuantity[$index] ) ? $OptionQuantity[$index] : false ); // $OptionQuantity[$index] );
+        $t->set_var( "quantity_value", isset( $optionQuantity[$index] ) ? $optionQuantity[$index] : false ); // $optionQuantity[$index] );
         $t->parse( "option_quantity_item", "option_quantity_item_tpl" );
     }
 
     $t->parse( "option_item", "option_item_tpl", true );
-    foreach( $OptionMainPrice as $header )
+    foreach( $optionMainPrice as $header )
     {
         $main_price[] = $header;
     }
-    // $main_price = each( $OptionMainPrice );
+    // $main_price = each( $optionMainPrice );
     $index++;
     $j++;
 }
 
-$t->set_var( "option_id", isset( $OptionID ) ? $OptionID : false );
-$t->set_var( "name_value", isset( $OptionName ) ? $OptionName : false );
-$t->set_var( "description_value", isset( $Description ) ? $Description : false);
+$t->set_var( "option_id", isset( $optionID ) ? $optionID : false );
+$t->set_var( "name_value", isset( $optionName ) ? $optionName : false );
+$t->set_var( "description_value", isset( $description ) ? $description : false);
 
 $t->set_var( "new_description", "" );
-if ( !$SimpleOptionHeaders )
+if ( !$simpleOptionHeaders )
     $t->parse( "new_description", "new_description_tpl" );
 
-$t->set_var( "product_id", $ProductID );
+$t->set_var( "product_id", $productID );
 
 $t->pparse( "output", "option_edit_page" );
 

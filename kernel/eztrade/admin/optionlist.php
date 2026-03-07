@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: optionlist.php 6233 2001-07-20 11:42:02Z jakobn $
+// $id: optionlist.php 6233 2001-07-20 11:42:02Z jakobn $
 //
 // Created on: <20-Sep-2000 10:18:33 bf>
 //
@@ -29,14 +29,14 @@
 // include_once( "classes/ezcurrency.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
 // include_once( "eztrade/classes/ezoption.php" );
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "optionlist.php" );
+                     "kernel/eztrade/admin/intl/", $language, "optionlist.php" );
 
 $t->setAllStrings();
 
@@ -46,9 +46,9 @@ $t->set_file( array(
 
 $t->set_block( "option_list_tpl", "option_tpl", "option" );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
-$product = new eZProduct( $ProductID );
+$product = new eZProduct( $productID );
     
 $t->set_var( "product_name", $product->name() );
 
@@ -56,7 +56,7 @@ $options = $product->options();
 
 if ( !$options )
 {
-    $noitem = new eZINI( "kernel/eztrade/admin/intl/" . $Language . "/optionlist.php.ini", false );
+    $noitem = new eZINI( "kernel/eztrade/admin/intl/" . $language . "/optionlist.php.ini", false );
     $t->set_var( "option", $noitem->variable( "strings", "no_option" ) );
 
 }
@@ -70,13 +70,13 @@ foreach ( $options as $option )
         $t->set_var( "td_class", "bgdark" );
     $t->set_var( "option_name", $option->name() );
     $t->set_var( "option_id", $option->id() );
-    $t->set_var( "product_id", $ProductID );
+    $t->set_var( "product_id", $productID );
 
     $t->parse( "option", "option_tpl", true );
     $i++;
 }
 
-$t->set_var( "product_id", $ProductID );
+$t->set_var( "product_id", $productID );
 
 $t->pparse( "output", "option_list_tpl" );
 

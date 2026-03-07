@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: sitemap.php 9394 2002-04-05 11:41:23Z br $
+// $id: sitemap.php 9394 2002-04-05 11:41:23Z br $
 //
 // Created on: <18-Oct-2000 15:04:39 bf>
 //
@@ -38,8 +38,10 @@
 // include_once( "ezarticle/classes/ezarticlegenerator.php" );
 // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
+$language = $ini->variable( "eZArticleMain", "Language" );
+
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "sitemap.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "sitemap.php" );
 
 $t->setAllStrings();
 

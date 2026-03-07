@@ -32,25 +32,87 @@ $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZMailMain", "DefaultSection" );
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 
+$accountActiveArrayID = $_POST['AccountActiveArrayID'] ?? [];
+$accountArrayID    = $_POST['AccountArrayID'] ?? [];
+$accountID         = eZHTTPTool::getVar( 'AccountID' );
+$addAttachment     = eZHTTPTool::getVar( 'AddAttachment' );
+$attachmentArrayID = $_POST['AttachmentArrayID'] ?? [];
+$autoCheckMail     = eZHTTPTool::getVar( 'AutoCheckMail' );
+$autoSignature     = eZHTTPTool::getVar( 'AutoSignature' );
+$back              = eZHTTPTool::getVar( 'Back' );
+$bcc               = eZHTTPTool::getVar( 'Bcc' );
+$bccButton         = eZHTTPTool::getVar( 'BccButton' );
+$cancel            = eZHTTPTool::getVar( 'Cancel' );
+$cc                = eZHTTPTool::getVar( 'Cc' );
+$ccButton          = eZHTTPTool::getVar( 'CcButton' );
+$checkSelect       = eZHTTPTool::getVar( 'CheckSelect' );
+$companyID         = eZHTTPTool::getVar( 'CompanyID' );
+$companyList       = eZHTTPTool::getVar( 'CompanyList' );
+$delFromServer     = eZHTTPTool::getVar( 'DelFromServer' );
+$delete            = eZHTTPTool::getVar( 'Delete' );
+$deleteAccounts    = eZHTTPTool::getVar( 'DeleteAccounts' );
+$deleteAttachments = eZHTTPTool::getVar( 'DeleteAttachments' );
+$emptyTrash        = eZHTTPTool::getVar( 'EmptyTrash' );
+$filterArrayID     = $_POST['FilterArrayID'] ?? [];
+$filterID          = eZHTTPTool::getVar( 'FilterID' );
+$folderArrayID     = $_POST['FolderArrayID'] ?? [];
+$folderID          = eZHTTPTool::getVar( 'FolderID' );
+$folderSelectID    = eZHTTPTool::getVar( 'FolderSelectID' );
+$forward           = eZHTTPTool::getVar( 'Forward' );
+$from              = eZHTTPTool::getVar( 'From' );
+$headerSelect      = eZHTTPTool::getVar( 'HeaderSelect' );
+$idList            = eZHTTPTool::getVar( 'IdList' );
+$link              = eZHTTPTool::getVar( 'Link' );
+$login             = eZHTTPTool::getVar( 'Login' );
+$mailArrayID       = $_POST['MailArrayID'] ?? [];
+$mailBody          = eZHTTPTool::getVar( 'MailBody' );
+$mailID            = eZHTTPTool::getVar( 'MailID' );
+$match             = eZHTTPTool::getVar( 'Match' );
+$move              = eZHTTPTool::getVar( 'Move' );
+$name              = eZHTTPTool::getVar( 'Name' );
+$newAccount        = eZHTTPTool::getVar( 'NewAccount' );
+$newFilter         = eZHTTPTool::getVar( 'NewFilter' );
+$newFolder         = eZHTTPTool::getVar( 'NewFolder' );
+$numMessages       = eZHTTPTool::getVar( 'NumMessages' );
+$ok                = eZHTTPTool::getVar( 'OK' ) ?? eZHTTPTool::getVar( 'Ok' );
+$onDelete          = eZHTTPTool::getVar( 'OnDelete' );
+$parentID          = eZHTTPTool::getVar( 'ParentID' );
+$password          = eZHTTPTool::getVar( 'Password' );
+$personID          = eZHTTPTool::getVar( 'PersonID' );
+$port              = eZHTTPTool::getVar( 'Port' );
+$preview           = eZHTTPTool::getVar( 'Preview' );
+$reply             = eZHTTPTool::getVar( 'Reply' );
+$replyAll          = eZHTTPTool::getVar( 'ReplyAll' );
+$save              = eZHTTPTool::getVar( 'Save' );
+$searchText        = eZHTTPTool::getVar( 'SearchText' );
+$send              = eZHTTPTool::getVar( 'Send' );
+$server            = eZHTTPTool::getVar( 'Server' );
+$showUnread        = eZHTTPTool::getVar( 'ShowUnread' );
+$signature         = eZHTTPTool::getVar( 'Signature' );
+$sortMethod        = eZHTTPTool::getVar( 'SortMethod' );
+$subject           = eZHTTPTool::getVar( 'Subject' );
+$to                = eZHTTPTool::getVar( 'To' );
+$toButton          = eZHTTPTool::getVar( 'ToButton' );
+
 switch ( $url_array[2] )
 {
     case "foldersort" : // change the sort mode of the folder list
     {
-        $FolderID = $url_array[3];
-        $SortMethod = $url_array[4];
-        $Offset = 0;
+        $folderID = $url_array[3];
+        $sortMethod = $url_array[4];
+        $offset = 0;
         include( "kernel/ezmail/user/maillist.php" );
     }
     break;
 
     case "folder" :
     {
-        $FolderID = $url_array[3];
-        $Offset = $url_array[4];
-        if ( $Offset == "" )
-            $Offset = 0;
-//        if ( $FolderID == "" )
-//            $FolderID = get INBOX.
+        $folderID = $url_array[3];
+        $offset = $url_array[4];
+        if ( $offset == "" )
+            $offset = 0;
+//        if ( $folderID == "" )
+//            $folderID = get INBOX.
         
         include( "kernel/ezmail/user/maillist.php" );
     }
@@ -58,16 +120,16 @@ switch ( $url_array[2] )
 
     case "view" :
     {
-        $MailID = $url_array[3];
+        $mailID = $url_array[3];
         include( "kernel/ezmail/user/mailview.php" );
     }
     break;
 
     case "folderedit" :
     {
-        $FolderID = $url_array[3];
-        if ( $FolderID == "" )
-            $FolderID = 0;
+        $folderID = $url_array[3];
+        if ( $folderID == "" )
+            $folderID = 0;
         include( "kernel/ezmail/user/folderedit.php" );
     }
     break;
@@ -80,18 +142,18 @@ switch ( $url_array[2] )
     
     case "mailedit" :
     {
-        $MailID = $url_array[3];
-        if ( $MailID == "" )
-            $MailID = 0;
+        $mailID = $url_array[3];
+        if ( $mailID == "" )
+            $mailID = 0;
         include( "kernel/ezmail/user/mailedit.php" );
     }
     break;
 
     case "fileedit" :
     {
-        $MailID = $url_array[3];
-        if ( $MailID == "" )
-            $MailID = 0;
+        $mailID = $url_array[3];
+        if ( $mailID == "" )
+            $mailID = 0;
         include( "kernel/ezmail/user/fileedit.php" );
     }
     break;
@@ -104,9 +166,9 @@ switch ( $url_array[2] )
 
     case "accountedit" :
     {
-        $AccountID = $url_array[3];
-        if ( $AccountID == "" )
-            $AccountID = 0;
+        $accountID = $url_array[3];
+        if ( $accountID == "" )
+            $accountID = 0;
         include( "kernel/ezmail/user/accountedit.php" );
     }
     break;
@@ -137,9 +199,9 @@ switch ( $url_array[2] )
 
     case "filteredit" :
     {
-        $FilterID = $url_array[3];
-        if ( $FilterID == "" )
-            $FilterID = 0;
+        $filterID = $url_array[3];
+        if ( $filterID == "" )
+            $filterID = 0;
         include( "kernel/ezmail/user/filteredit.php" );
     }
     break;
@@ -152,7 +214,7 @@ switch ( $url_array[2] )
 
     case "link" :
     {
-        $MailID = $url_array[3];
+        $mailID = $url_array[3];
         include( "kernel/ezmail/user/link.php" );
     }
     break;

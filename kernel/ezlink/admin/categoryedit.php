@@ -47,24 +47,24 @@ $error_msg = false;
 
 require( "kernel/ezuser/admin/admincheck.php" );
 
-if ( isset ( $DeleteCategories ) )
+if ( isset ( $deleteCategories ) )
 {
-    $Action = "DeleteCategories";
+    $action = "DeleteCategories";
 }
 
 // Get images from the image browse function.
-if ( ( isset ( $AddImages ) ) and ( is_numeric( $LinkCategoryID ) ) and ( is_numeric ( $LinkCategoryID ) ) )
+if ( ( isset ( $addImages ) ) and ( is_numeric( $linkCategoryID ) ) and ( is_numeric ( $linkCategoryID ) ) )
 {
-    $image = new eZImage( $ImageID );
-    $category = new eZLinkCategory( $LinkCategoryID );
+    $image = new eZImage( $imageID );
+    $category = new eZLinkCategory( $linkCategoryID );
     $category->setImage( $image );
     $category->update();
-    $Action = "edit";
+    $action = "edit";
 }
 
 // Insert a category.
 
-if ( isset( $Action ) && $Action == "insert" )
+if ( isset( $action ) && $action == "insert" )
 {
     // clear the menu cache
     $files = eZCacheFile::files( "kernel/ezlink/cache/",
@@ -78,15 +78,15 @@ if ( isset( $Action ) && $Action == "insert" )
 
     if ( eZPermission::checkPermission( $user, "eZLink", "LinkCategoryAdd" ) )
     {
-        if ( $Name != "" &&
-        $ParentCategory != "" )
+        if ( $name != "" &&
+        $parentCategory != "" )
         {
             $category = new eZLinkCategory();
 
-            $category->setName( $Name );
-            $category->setDescription( $Description );
-            $category->setSectionID( $SectionID );
-            $category->setParent( $ParentCategory );
+            $category->setName( $name );
+            $category->setDescription( $description );
+            $category->setSectionID( $sectionID );
+            $category->setParent( $parentCategory );
             $ttile = "";
 
             $file = new eZPBImageFile();
@@ -107,7 +107,7 @@ if ( isset( $Action ) && $Action == "insert" )
 
             $category->store();
 
-            if ( isset ( $Browse ) )
+            if ( isset ( $browse ) )
             {
                 $categoryID = $category->id();
 
@@ -118,7 +118,7 @@ if ( isset( $Action ) && $Action == "insert" )
                 eZHTTPTool::header( "Location: /imagecatalogue/browse/" );
                 exit();
             }
-            eZHTTPTool::header( "Location: /link/category/". $ParentCategory );
+            eZHTTPTool::header( "Location: /link/category/". $parentCategory );
             exit();
         }
         else
@@ -135,7 +135,7 @@ if ( isset( $Action ) && $Action == "insert" )
 }
 
 // Delete a category.
-if ( isset( $Action ) && $Action == "delete" )
+if ( isset( $action ) && $action == "delete" )
 {
     // clear the menu cache
     $files = eZCacheFile::files( "kernel/ezlink/cache/",
@@ -150,7 +150,7 @@ if ( isset( $Action ) && $Action == "delete" )
     if ( eZPermission::checkPermission( $user, "eZLink", "LinkCategoryDelete" ) )
     {
         $category = new eZLinkCategory();
-        $category->get( $LinkCategoryID );
+        $category->get( $linkCategoryID );
         $category->delete();
 
         eZHTTPTool::header( "Location: /link/category/" );
@@ -162,7 +162,7 @@ if ( isset( $Action ) && $Action == "delete" )
     }
 }
 
-if ( isset( $Action ) && $Action == "DeleteCategories" )
+if ( isset( $action ) && $action == "DeleteCategories" )
 {
     // clear the menu cache
     $files = eZCacheFile::files( "kernel/ezlink/cache/",
@@ -176,12 +176,12 @@ if ( isset( $Action ) && $Action == "DeleteCategories" )
 
     if ( eZPermission::checkPermission( $user, "eZLink", "LinkCategoryDelete" ) )
     {
-        if ( count ( $CategoryArrayID ) != 0 )
+        if ( count ( $categoryArrayID ) != 0 )
         {
-            foreach( $CategoryArrayID as $CategoryID )
+            foreach( $categoryArrayID as $categoryID )
             {
                 $category = new eZLinkCategory();
-                $category->get( $CategoryID );
+                $category->get( $categoryID );
                 $parentID = $category->parent();
                 $category->delete();
             }
@@ -196,7 +196,7 @@ if ( isset( $Action ) && $Action == "DeleteCategories" )
 }
 
 // Update a category.
-if ( isset( $Action ) && $Action == "update" )
+if ( isset( $action ) && $action == "update" )
 {
     // clear the menu cache
     $files = eZCacheFile::files( "kernel/ezlink/cache/",
@@ -210,15 +210,15 @@ if ( isset( $Action ) && $Action == "update" )
 
     if ( eZPermission::checkPermission( $user, "eZLink", "LinkCategoryModify" ) )
     {
-        if ( $Name != "" &&
-        $ParentCategory != "" )
+        if ( $name != "" &&
+        $parentCategory != "" )
         {
             $category = new eZLinkCategory();
-            $category->get( $LinkCategoryID );
-            $category->setName( $Name );
-            $category->setDescription( $Description );
-            $category->setSectionID( $SectionID );
-            $category->setParent( $ParentCategory );
+            $category->get( $linkCategoryID );
+            $category->setName( $name );
+            $category->setDescription( $description );
+            $category->setSectionID( $sectionID );
+            $category->setParent( $parentCategory );
 
             $file = new eZPBImageFile();
             if ( $file->getUploadedFile( "ImageFile" ) )
@@ -234,12 +234,12 @@ if ( isset( $Action ) && $Action == "update" )
 
             $category->update();
 
-            if ( $DeleteImage )
+            if ( $deleteImage )
             {
                 $category->deleteImage();
             }
 
-            if ( isset ( $Browse ) )
+            if ( isset ( $browse ) )
             {
                 $categoryID = $category->id();
                 $session = eZSession::globalSession();
@@ -250,7 +250,7 @@ if ( isset( $Action ) && $Action == "update" )
                 exit();
             }
 
-            eZHTTPTool::header( "Location: /link/category/$ParentCategory" );
+            eZHTTPTool::header( "Location: /link/category/$parentCategory" );
             exit();
         }
         else
@@ -284,7 +284,7 @@ $t->set_var( "category_id", "" );
 $categoryselect = new eZLinkCategory();
 $categoryLinkList = $categoryselect->getTree( );
 
-if ( $Action == "new" )
+if ( $action == "new" )
 {
     if ( !eZPermission::checkPermission( $user, "eZLink", "LinkCategoryAdd" ) )
     {
@@ -305,7 +305,7 @@ if ( $Action == "new" )
 }
 
 // Modifing a category.
-if ( $Action == "edit" )
+if ( $action == "edit" )
 {
     $languageIni = new eZINI( "kernel/ezlink/admin/intl/" . $Language . "/categoryedit.php.ini", false );
     $headline = $languageIni->variable( "strings", "headline_edit" );
@@ -317,7 +317,7 @@ if ( $Action == "edit" )
     else
     {
         $linkCategory = new eZLinkCategory();
-        $linkCategory->get( $LinkCategoryID );
+        $linkCategory->get( $linkCategoryID );
 
         $parentID = $linkCategory->parent();
         $sectionID = $linkCategory->sectionID();

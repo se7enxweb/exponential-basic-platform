@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: articleedit.php 9457 2002-04-23 15:32:42Z bf $
+// $id: articleedit.php 9457 2002-04-23 15:32:42Z bf $
 //
 // Created on: <18-Oct-2000 15:04:39 bf>
 //
@@ -45,24 +45,24 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$PublishNoticeReceiver = $ini->variable( "eZArticleMain", "PublishNoticeReceiver" );
-$PublishNoticeSender = $ini->variable( "eZArticleMain", "PublishNoticeSender" );
+$publishNoticeReceiver = $ini->variable( "eZArticleMain", "PublishNoticeReceiver" );
+$publishNoticeSender = $ini->variable( "eZArticleMain", "PublishNoticeSender" );
 
 $session = eZSession::globalSession();
 
 // insert a new article in the database
-if ( ( $Action == "Insert" ) || ( $Action == "Update" ) )
+if ( ( $action == "Insert" ) || ( $action == "Update" ) )
 {
     $user = eZUser::currentUser();
         
-    $article = new eZArticle( $ArticleID );
-    $article->setName( $Name );
+    $article = new eZArticle( $articleID );
+    $article->setName( $name );
     
     $article->setAuthor( $user );
 
     $generator = new eZArticleGenerator();
 
-    $contents = $generator->generateXML( $Contents );
+    $contents = $generator->generateXML( $postedContents );
     $article->setContents( $contents );
 
     $article->setPageCount( $generator->pageCount() );
@@ -70,10 +70,10 @@ if ( ( $Action == "Insert" ) || ( $Action == "Update" ) )
 
     // check if author exists in the database, else create
     $author = new eZAuthor();
-    if ( !$author->getByName( trim( $AuthorText ) ) )
+    if ( !$author->getByName( trim( $authorText ) ) )
     {
         $author = new eZAuthor( );
-        $author->setName( $AuthorText );
+        $author->setName( $authorText );
         $author->store();
         
         $article->setContentsWriter( $author );
@@ -83,17 +83,17 @@ if ( ( $Action == "Insert" ) || ( $Action == "Update" ) )
         $article->setContentsWriter( $author );
     }
     
-    $article->setLinkText( $LinkText );
+    $article->setLinkText( $linkText );
     $article->setStartDate( (new eZDateTime())->timeStamp(true) );
     $article->setStopDate( (new eZDateTime())->timeStamp(true) );
     $article->store(); // to get ID
 
     // remove from category if update
-    if ( $Action == "Update" )
+    if ( $action == "Update" )
         $article->removeFromCategories();
     
     // add to categories    
-    $category = new eZArticleCategory( $CategoryIDSelect );
+    $category = new eZArticleCategory( $categoryIDSelect );
     $category->addArticle( $article );
 
     $article->setCategoryDefinition( $category );
@@ -125,9 +125,9 @@ if ( ( $Action == "Insert" ) || ( $Action == "Update" ) )
         $article->store();
     
         // Go to insert item..
-        if ( isset( $AddItem ) )
+        if ( isset( $addItem ) )
         {
-            switch( $ItemToAdd )
+            switch( $itemToAdd )
             {
                 case "Image":
                 {
@@ -154,7 +154,7 @@ if ( ( $Action == "Insert" ) || ( $Action == "Update" ) )
         {
             $article->setIsPublished( true );
 
-            eZArticleTool::deleteCache( $articleID, $CategoryIDSelect, array( $CategoryIDSelect ) );
+            eZArticleTool::deleteCache( $articleID, $categoryIDSelect, array( $categoryIDSelect ) );
             eZArticleTool::notificationMessage( $article );
         }
         else
@@ -165,20 +165,20 @@ if ( ( $Action == "Insert" ) || ( $Action == "Update" ) )
         $article->store();
         
         $session->setVariable( "ArticleEditID", "" );
-        eZHTTPTool::header( "Location: /article/archive/$CategoryIDSelect/" );
+        eZHTTPTool::header( "Location: /article/archive/$categoryIDSelect/" );
         exit();
     }
     else
     {
-        $Action = "New";
-        $ErrorParsing = true;
+        $action = "New";
+        $errorParsing = true;
     }
 }
 
 
-if ( $Action == "Cancel" )
+if ( $action == "Cancel" )
 {
-    $article = new eZArticle( $ArticleID );
+    $article = new eZArticle( $articleID );
 
     $category = $article->categoryDefinition( );
     
@@ -192,19 +192,19 @@ if ( $Action == "Cancel" )
 }
 
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 // init the section
-if ( isset ($SectionIDOverride) )
+if ( isset ($sectionIDOverride) )
 {
     // include_once( "ezsitemanager/classes/ezsection.php" );
     
-    $sectionObject = eZSection::globalSectionObject( $SectionIDOverride );
+    $sectionObject = eZSection::globalSectionObject( $sectionIDOverride );
     $sectionObject->setOverrideVariables();
 }
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "articleedit.php" );
+                     "kernel/ezarticle/user/intl/", $language, "articleedit.php" );
 
 $t->setAllStrings();
 
@@ -216,7 +216,7 @@ $t->set_block( "article_edit_page_tpl", "value_tpl", "value" );
 $t->set_block( "article_edit_page_tpl", "error_message_tpl", "error_message" );
 
 
-if ( isset( $ErrorParsing ) && $ErrorParsing == true )
+if ( isset( $errorParsing ) && $errorParsing == true )
 {
     $t->parse( "error_message", "error_message_tpl" );
 }
@@ -225,39 +225,39 @@ else
     $t->set_var( "error_message", "" );
 }
 
-if ( $Action == "New" )
+if ( $action == "New" )
 {
     $user = eZUser::currentUser();
     $t->set_var( "author_text", $user->firstName() . " " . $user->lastName());
     $catDefID = false;
-    $Name = false;
-    $ContentsSet = array();
-    $ContentsSet[0] = false;
-    $ContentsSet[1] = false;
-    $AuthorText = false;
-    $LinkText = false;
+    $name = false;
+    $contentsSet = array();
+    $contentsSet[0] = false;
+    $contentsSet[1] = false;
+    $authorText = false;
+    $linkText = false;
 }
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $AuthorText = false;
-    $LinkText = false;
-    $NameSet = false;
-    $ContentsSet = array();
-    $ContentsSet[0] = false;
-    $ContentsSet[1] = false;
+    $authorText = false;
+    $linkText = false;
+    $nameSet = false;
+    $contentsSet = array();
+    $contentsSet[0] = false;
+    $contentsSet[1] = false;
 }
 
 $t->set_var( "article_id", "" );
-$t->set_var( "article_name", stripslashes( $Name ) );
-$t->set_var( "article_contents_0", stripslashes( $ContentsSet[0] ) );
-$t->set_var( "article_contents_1", stripslashes( $ContentsSet[1] ) );
-$t->set_var( "author_text", stripslashes( $AuthorText ) );
-$t->set_var( "link_text", stripslashes( $LinkText  ) );
+$t->set_var( "article_name", stripslashes( $name ) );
+$t->set_var( "article_contents_0", stripslashes( $contentsSet[0] ) );
+$t->set_var( "article_contents_1", stripslashes( $contentsSet[1] ) );
+$t->set_var( "author_text", stripslashes( $authorText ) );
+$t->set_var( "link_text", stripslashes( $linkText  ) );
 
 $t->set_var( "action_value", "insert" );
 
-if ( $Action == "New" )
+if ( $action == "New" )
 {
     $user = eZUser::currentUser();
     $t->set_var( "author_text", $user->firstName() . " " . $user->lastName());    
@@ -265,10 +265,10 @@ if ( $Action == "New" )
 
 //pBo modified this: assign the current articleID as suggested by Arne Schirmacher 
 //$articleID = $session->variable( "ArticleEditID" );
-$articleID = $ArticleID;
+$articleID = $articleID;
 //end PBo mod
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
     $article = new eZArticle( $articleID );
 
@@ -303,7 +303,7 @@ if ( $Action == "Edit" )
     $i=0;
     foreach ( $contentsArray as $content )
     {
-        if ( !isset( $Contents[$i] ) )
+        if ( !isset( $postedContents[$i] ) )
         {
             $t->set_var( "article_contents_$i", htmlspecialchars( $content ) );
         }
@@ -345,7 +345,7 @@ foreach ( $treeArray as $catItem )
     }
 }
 
-if ( isset ($SectionIDOverride) ) $t->set_var( "section_id", $SectionIDOverride );
+if ( isset ($sectionIDOverride) ) $t->set_var( "section_id", $sectionIDOverride );
 
 $t->pparse( "output", "article_edit_page_tpl" );
 

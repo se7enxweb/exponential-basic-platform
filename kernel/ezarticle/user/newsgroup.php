@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: newsgroup.php 7197 2001-09-13 14:45:41Z bf $
+// $id: newsgroup.php 7197 2001-09-13 14:45:41Z bf $
 //
 // Created on: <30-May-2001 14:06:59 bf>
 //
@@ -35,28 +35,28 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
-$CapitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
-$DefaultLinkText =  $ini->variable( "eZArticleMain", "DefaultLinkText" );
-$GrayScaleImageList = $ini->variable( "eZArticleMain", "GrayScaleImageList" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$imageDir = $ini->variable( "eZArticleMain", "ImageDir" );
+$capitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
+$defaultLinkText =  $ini->variable( "eZArticleMain", "DefaultLinkText" );
+$grayScaleImageList = $ini->variable( "eZArticleMain", "GrayScaleImageList" );
 
-$TemplateDir = $ini->variable( "eZArticleMain", "TemplateDir" );
+$templateDir = $ini->variable( "eZArticleMain", "TemplateDir" );
 
-$t = new eZTemplate( "kernel/ezarticle/user/" . $TemplateDir,
-                     "kernel/ezarticle/user/intl/", $Language, "newsgroup.php" );
+$t = new eZTemplate( "kernel/ezarticle/user/" . $templateDir,
+                     "kernel/ezarticle/user/intl/", $language, "newsgroup.php" );
 
 $articleLimit = 2;
 
 $t->setAllStrings();
 
 
-$GlobalSectionID = eZArticleCategory::sectionIDStatic( $CategoryID );
+$globalSectionID = eZArticleCategory::sectionIDStatic( $categoryID );
 
 // override template for the current category
-$override = "_override_$CategoryID";
+$override = "_override_$categoryID";
 
-if ( file_exists( "kernel/ezarticle/user/$TemplateDir/newsgroup" . $override  . ".tpl" ) )
+if ( file_exists( "kernel/ezarticle/user/$templateDir/newsgroup" . $override  . ".tpl" ) )
 {
     $t->set_file( "news_group_tpl", "newsgroup" . $override  . ".tpl"  );
 }
@@ -79,16 +79,16 @@ $t->set_block( "article_item_tpl", "article_image_tpl", "article_image" );
 $t->set_block( "article_item_tpl", "no_image_tpl", "no_image" );
 
 // makes the section ID available in articleview template
-$t->set_var( "section_id", $GlobalSectionID );
+$t->set_var( "section_id", $globalSectionID );
 
 // image dir
-$t->set_var( "image_dir", $ImageDir );
+$t->set_var( "image_dir", $imageDir );
 
-$category = new eZArticleCategory( $CategoryID );
+$category = new eZArticleCategory( $categoryID );
 
 $categoryList = $category->getByParent( $category, true, "placement", 0, 4 );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 
 $i = 0;
 foreach( $categoryList as $category )
@@ -137,7 +137,7 @@ foreach( $categoryList as $category )
             $thumbnailImage = $article->thumbnailImage();
             if ( $thumbnailImage )
             {
-                if ( $GrayScaleImageList == "enabled" )
+                if ( $grayScaleImageList == "enabled" )
                     $convertToGray = true;
                 else
                     $convertToGray = false;
@@ -172,7 +172,7 @@ foreach( $categoryList as $category )
     $i++;
 }
 
-if ( isset( $GenerateStaticPage ) and $GenerateStaticPage == "true" and $cachedFile != "" )
+if ( isset( $generateStaticPage ) and $generateStaticPage == "true" and $cachedFile != "" )
 {
     $fp = eZPBFile::fopen( $cachedFile, "w+");
 

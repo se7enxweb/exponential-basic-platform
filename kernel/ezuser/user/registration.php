@@ -1,12 +1,12 @@
 <?php
 
-require( "ezuser/user/usercheck.php" );
+require( "kernel/ezuser/user/usercheck.php" );
 
-include_once( "classes/INIFile.php" );
-include_once( "classes/eztemplate.php" );
-include_once( "classes/ezhttptool.php" );
-include_once( "ezsession/classes/ezsession.php" );
-include_once( "classes/eztexttool.php" );
+// include_once( "classes/INIFile.php" );
+// include_once( "classes/eztemplate.php" );
+// include_once( "classes/ezhttptool.php" );
+// include_once( "ezsession/classes/ezsession.php" );
+// include_once( "classes/eztexttool.php" );
 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
@@ -18,12 +18,21 @@ $AutoCookieLogin = eZHTTPTool::getVar( "AutoCookieLogin" );
 
 $session = eZSession::globalSession();
 
-include_once( "ezuser/classes/ezuser.php" );
-include_once( "ezuser/classes/ezusergroup.php" );
-include_once( "ezaddress/classes/ezaddress.php" );
-include_once( "ezaddress/classes/ezcountry.php" );
-include_once( "ezaddress/classes/ezregion.php" );
-include_once( "ezmail/classes/ezmail.php" );
+// include_once( "ezuser/classes/ezuser.php" );
+// include_once( "ezuser/classes/ezusergroup.php" );
+// include_once( "ezaddress/classes/ezaddress.php" );
+// include_once( "ezaddress/classes/ezcountry.php" );
+// include_once( "ezaddress/classes/ezregion.php" );
+// include_once( "ezmail/classes/ezmail.php" );
+
+$next = eZHTTPTool::getVar( "next" );
+$username = eZHTTPTool::getVar( "username" );
+$email = eZHTTPTool::getVar( "email" );
+$first_name = eZHTTPTool::getVar( "first_name" );
+$last_name = eZHTTPTool::getVar( "last_name" );
+$password1 = eZHTTPTool::getVar( "password1" );
+$password2 = eZHTTPTool::getVar( "password2" );
+$newsletter_ind = eZHTTPTool::getVar( "newsletter_ind" );
 
 
 
@@ -33,8 +42,8 @@ $error = array();
 
 if($next){
   // Report blank errors
-  foreach($_POST as $k=>$v){
-    $error[$k] = error_check($v);
+  foreach(['first_name','last_name','email','username','password1','password2'] as $k){
+    $error[$k] = error_check(eZHTTPTool::getVar($k));
   }
   
   // Don't change blank passwords for users
@@ -93,7 +102,6 @@ if($user){
   $form_type = "Profile";
 }
 
-print_r($user);
 ?>
 
 <div id="breadcrumbs">

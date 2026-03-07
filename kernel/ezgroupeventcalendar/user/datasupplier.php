@@ -3,15 +3,90 @@ include_once( "kernel/ezgroupeventcalendar/classes/ezgroupevent.php" );
 
 $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZGroupEventCalendarMain", "DefaultSection" );
-$UserComments = $ini->variable( "eZGroupEventCalendarMain", "UserComments" );
+$userComments = $ini->variable( "eZGroupEventCalendarMain", "UserComments" );
 
-$Title = "Calendar";
+$title = "Calendar";
+
+$action             = eZHTTPTool::getVar( 'Action' );
+$addFile            = eZHTTPTool::getVar( 'AddFile' );
+$addFiles           = eZHTTPTool::getVar( 'AddFiles' );
+$browse             = eZHTTPTool::getVar( 'Browse' );
+$cancel             = eZHTTPTool::getVar( 'Cancel' );
+$categoryID         = eZHTTPTool::getVar( 'CategoryID' );
+$debug              = eZHTTPTool::getVar( 'Debug' );
+$deleteEvents       = eZHTTPTool::getVar( 'DeleteEvents' );
+$deleteSelected     = eZHTTPTool::getVar( 'DeleteSelected' );
+$description        = eZHTTPTool::getVar( 'Description' );
+$descriptionArray   = $_POST['DescriptionArray'] ?? [];
+$encoding           = eZHTTPTool::getVar( 'Encoding' );
+$eventAlarmNotice   = eZHTTPTool::getVar( 'EventAlarmNotice' );
+$eventID            = eZHTTPTool::getVar( 'EventID' );
+$exceptSelect       = eZHTTPTool::getVar( 'ExceptSelect' );
+$fileArrayID        = $_POST['FileArrayID'] ?? [];
+$fileID             = eZHTTPTool::getVar( 'FileID' );
+$fileUploadFlag     = eZHTTPTool::getVar( 'FileUploadFlag' );
+$forumID            = eZHTTPTool::getVar( 'ForumID' );
+$getByGroup         = eZHTTPTool::getVar( 'GetByGroup' );
+$getByGroupID       = eZHTTPTool::getVar( 'GetByGroupID' );
+$getByTypeID        = eZHTTPTool::getVar( 'GetByTypeID' );
+$getByUserID        = eZHTTPTool::getVar( 'GetByUserID' );
+$goDay              = eZHTTPTool::getVar( 'GoDay' );
+$goMonth            = eZHTTPTool::getVar( 'GoMonth' );
+$goNew              = eZHTTPTool::getVar( 'GoNew' );
+$goToday            = eZHTTPTool::getVar( 'GoToday' );
+$goWeek             = eZHTTPTool::getVar( 'GoWeek' );
+$goYear             = eZHTTPTool::getVar( 'GoYear' );
+$group              = eZHTTPTool::getVar( 'Group' );
+$groupID            = eZHTTPTool::getVar( 'GroupID' );
+$host               = eZHTTPTool::getVar( 'Host' );
+$intervalStr        = eZHTTPTool::getVar( 'IntervalStr' );
+$isAllDay           = eZHTTPTool::getVar( 'IsAllDay' );
+$isEventAlarmNotice = eZHTTPTool::getVar( 'IsEventAlarmNotice' );
+$isPrivate          = eZHTTPTool::getVar( 'IsPrivate' );
+$isRecurring        = eZHTTPTool::getVar( 'IsRecurring' );
+$limit              = eZHTTPTool::getVar( 'Limit' );
+$limitDirectionForward = eZHTTPTool::getVar( 'LimitDirectionForward' );
+$link               = eZHTTPTool::getVar( 'Link' );
+$locale             = eZHTTPTool::getVar( 'Locale' );
+$location           = eZHTTPTool::getVar( 'Location' );
+$name               = eZHTTPTool::getVar( 'Name' );
+$numberOfTimes      = eZHTTPTool::getVar( 'NumberOfTimes' );
+$offset             = eZHTTPTool::getVar( 'Offset' );
+$printableVersion   = eZHTTPTool::getVar( 'PrintableVersion' );
+$priority           = eZHTTPTool::getVar( 'Priority' );
+$recurFreq          = eZHTTPTool::getVar( 'RecurFreq' );
+$recurType          = eZHTTPTool::getVar( 'RecurType' );
+$recurTypeMonth     = eZHTTPTool::getVar( 'RecurTypeMonth' );
+$recurWeekly        = eZHTTPTool::getVar( 'RecurWeekly' );
+$redirectURL        = eZHTTPTool::getVar( 'RedirectURL' );
+$repeatOptions      = eZHTTPTool::getVar( 'RepeatOptions' );
+$rssVersion         = eZHTTPTool::getVar( 'RssVersion' );
+$sitedesign         = eZHTTPTool::getVar( 'Sitedesign' );
+$siteStyle          = eZHTTPTool::getVar( 'SiteStyle' );
+$start              = eZHTTPTool::getVar( 'Start' );
+$startTime          = eZHTTPTool::getVar( 'StartTime' );
+$startTimeError     = eZHTTPTool::getVar( 'StartTimeError' );
+$startTimeStr       = eZHTTPTool::getVar( 'StartTimeStr' );
+$status             = eZHTTPTool::getVar( 'Status' );
+$stop               = eZHTTPTool::getVar( 'Stop' );
+$stopTimeError      = eZHTTPTool::getVar( 'StopTimeError' );
+$stopTimeStr        = eZHTTPTool::getVar( 'StopTimeStr' );
+$storeByGroupID     = eZHTTPTool::getVar( 'StoreByGroupID' );
+$templateDir        = eZHTTPTool::getVar( 'TemplateDir' );
+$titleError         = eZHTTPTool::getVar( 'TitleError' );
+$truncateTitle      = eZHTTPTool::getVar( 'TruncateTitle' );
+$truncateTitleSize  = eZHTTPTool::getVar( 'TruncateTitleSize' );
+$type               = eZHTTPTool::getVar( 'Type' );
+$typeID             = eZHTTPTool::getVar( 'TypeID' );
+$url                = eZHTTPTool::getVar( 'Url' ) ?? eZHTTPTool::getVar( 'URL' );
+$untilDate          = eZHTTPTool::getVar( 'UntilDate' );
+$week               = eZHTTPTool::getVar( 'Week' );
 
 /*
-if( $GetByTypeID != 0 )
-	$Type = $GetByTypeID;
+if( $getByTypeID != 0 )
+	$type = $getByTypeID;
 else
-	$Type = 0;
+	$type = 0;
 */
 
 switch ( $url_array[2] )
@@ -26,7 +101,7 @@ switch ( $url_array[2] )
 
     case "yearview" :
     {
-        $Year = $url_array[3];
+        $year = $url_array[3];
 
         include( "kernel/ezgroupeventcalendar/user/yearview.php" );
     }
@@ -34,8 +109,8 @@ switch ( $url_array[2] )
 
     case "monthview" :
     {
-        $Year = $url_array[3];
-        $Month = $url_array[4];
+        $year = $url_array[3];
+        $month = $url_array[4];
 
         include( "kernel/ezgroupeventcalendar/user/monthview.php" );
     }
@@ -43,18 +118,18 @@ switch ( $url_array[2] )
 
     case "dayview" :
     {
-        $Year = $url_array[3];
-        $Month = $url_array[4];
-        $Day = $url_array[5];
+        $year = $url_array[3];
+        $month = $url_array[4];
+        $day = $url_array[5];
 
         include( "kernel/ezgroupeventcalendar/user/dayview.php" );
     }
     break;
     case "weekview" :
     {
-        $Year = $url_array[3];
-        $Month = $url_array[4];
-        $Day = $url_array[5];
+        $year = $url_array[3];
+        $month = $url_array[4];
+        $day = $url_array[5];
 
         include( "kernel/ezgroupeventcalendar/user/weekview.php" );
     }
@@ -67,7 +142,7 @@ switch ( $url_array[2] )
 	    // filelist
 	    case "filelist" :
 	    {
-	        $EventID = $url_array[4];
+	        $eventID = $url_array[4];
 		include( "kernel/ezgroupeventcalendar/user/filelist.php" );
 		break;
 	    }
@@ -75,7 +150,7 @@ switch ( $url_array[2] )
 	    //files
 	    case "fileedit" :
 	    {
-	      if ( isSet( $Browse ) )
+	      if ( isSet( $browse ) )
 	      {
 		include( "kernel/ezfilemanager/admin/browse.php" );
 		break;
@@ -86,26 +161,26 @@ switch ( $url_array[2] )
 
 	      case "new" :
 	      {
-		  $Action = "New";
-		  $EventID = $url_array[5];
+		  $action = "New";
+		  $eventID = $url_array[5];
 		  include( "kernel/ezgroupeventcalendar/user/fileedit.php" );
 	      }
 	      break;
 
 	      case "edit" :
 	      {
-		  $Action = "Edit";
-		  $EventID = $url_array[6];
-		  $FileID = $url_array[5];
+		  $action = "Edit";
+		  $eventID = $url_array[6];
+		  $fileID = $url_array[5];
 		  include( "kernel/ezgroupeventcalendar/user/fileedit.php" );
 	      }
 	      break;
 
 	      case "delete" :
 	      {
-		  $Action = "Delete";
-		  $EventID = $url_array[6];
-		  $FileID = $url_array[5];
+		  $action = "Delete";
+		  $eventID = $url_array[6];
+		  $fileID = $url_array[5];
 		  include( "kernel/ezgroupeventcalendar/user/fileedit.php" );
 	      }
 	      break;
@@ -121,11 +196,11 @@ switch ( $url_array[2] )
 
             case "new" :
             {
-                $Action = "New";
-                $Year = $url_array[4];
-                $Month = $url_array[5];
-                $Day = $url_array[6];
-                $StartTime = $url_array[7];
+                $action = "New";
+                $year = $url_array[4];
+                $month = $url_array[5];
+                $day = $url_array[6];
+                $startTime = $url_array[7];
 
                 include( "kernel/ezgroupeventcalendar/user/eventedit.php" );
             }
@@ -133,8 +208,8 @@ switch ( $url_array[2] )
 
             case "edit" :
             {
-                $Action = "Edit";
-                $EventID = $url_array[4];
+                $action = "Edit";
+                $eventID = $url_array[4];
 
                 include( "kernel/ezgroupeventcalendar/user/eventedit.php" );
             }
@@ -142,8 +217,8 @@ switch ( $url_array[2] )
 
             case "update" :
             {
-                $Action = "Update";
-                $EventID = $url_array[4];
+                $action = "Update";
+                $eventID = $url_array[4];
 
                 include( "kernel/ezgroupeventcalendar/user/eventedit.php" );
             }
@@ -151,8 +226,8 @@ switch ( $url_array[2] )
 
             case "insert" :
             {
-                $Action = "Insert";
-                $EventID = $url_array[4];
+                $action = "Insert";
+                $eventID = $url_array[4];
 
                 include( "kernel/ezgroupeventcalendar/user/eventedit.php" );
             }
@@ -160,7 +235,7 @@ switch ( $url_array[2] )
 
             default :
             {
-                $Action = $url_array[3];
+                $action = $url_array[3];
 		include( "kernel/ezgroupeventcalendar/user/eventedit.php" );
             }
         }
@@ -169,13 +244,13 @@ switch ( $url_array[2] )
 
     case "eventview" :
     {
-        $EventID = $url_array[3];
+        $eventID = $url_array[3];
         include( "kernel/ezgroupeventcalendar/user/eventview.php" );
 
-	if  ( isset( $PrintableVersion ) && ( $PrintableVersion != "enabled" ) &&  ( $UserComments == "enabled" ) )
+	if  ( isset( $printableVersion ) && ( $printableVersion != "enabled" ) &&  ( $userComments == "enabled" ) )
 	{
-	    $RedirectURL = "/groupeventcalendar/eventview/$EventID/";
-	    $event = new eZGroupEvent( $EventID );
+	    $redirectURL = "/groupeventcalendar/eventview/$eventID/";
+	    $event = new eZGroupEvent( $eventID );
 	    if ( ( $event->id() >= 1 ) )
 	    {
 		for ( $i = 0; $i < count( $url_array ); $i++ )
@@ -183,19 +258,19 @@ switch ( $url_array[2] )
 		  if ( ( $url_array[$i] ) == "parent" )
 		  {
 		     $next = $i + 1;
-		     $Offset = $url_array[$next];
+		     $offset = $url_array[$next];
 		   }
 		}
 
 	      $forum = $event->forum();
-	      $ForumID = $forum->id();
+	      $forumID = $forum->id();
        	      include( "kernel/ezforum/user/messagesimplelist.php" );
 	    }
 	}
     }
     break;
 	
-    default;
+    default:
     {
        	eZHTTPTool::header( "Location: /error/404" );
          exit();

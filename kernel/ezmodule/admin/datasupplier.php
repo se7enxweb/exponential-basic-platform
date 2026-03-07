@@ -30,16 +30,16 @@ switch ( $url_array[2] )
 {
     case "activate":
     {
-        $ModuleName = $url_array[3];
-        $Activate = true;
+        $moduleName = $url_array[3];
+        $activate = true;
         include( "kernel/ezmodule/admin/activate.php" );
     }
     break;
 
     case "deactivate":
     {
-        $ModuleName = $url_array[3];
-        $Activate = false;
+        $moduleName = $url_array[3];
+        $activate = false;
         include( "kernel/ezmodule/admin/activate.php" );
     }
     break;

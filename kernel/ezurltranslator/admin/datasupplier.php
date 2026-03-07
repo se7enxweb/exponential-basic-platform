@@ -24,6 +24,14 @@
 //
 
 
+$deleteIDArray  = eZHTTPTool::getVar( 'DeleteIDArray' ) ?? [];
+$deleteURL      = eZHTTPTool::getVar( 'DeleteURL' );
+$destURL        = eZHTTPTool::getVar( 'DestURL' );
+$idArray        = eZHTTPTool::getVar( 'IDArray' ) ?? [];
+$newURL         = eZHTTPTool::getVar( 'NewURL' );
+$sourceURL      = eZHTTPTool::getVar( 'SourceURL' );
+$store          = eZHTTPTool::getVar( 'Store' );
+
 switch( $url_array[2] )
 {
     case "urledit" :

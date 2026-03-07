@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: orderview.php 8850 2002-01-02 21:42:12Z kaid $
+// $id: orderview.php 8850 2002-01-02 21:42:12Z kaid $
 //
 // Created on: <30-Sep-2000 13:03:13 bf>
 //
@@ -23,7 +23,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /trade/orderlist/" );
     exit();
@@ -39,10 +39,10 @@ if ( isset( $Cancel ) )
 
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
-$ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
+$language = $ini->variable( "eZTradeMain", "Language" );
+$showPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
 
-$languageINI = new eZINI( "kernel/eztrade/user/intl/" . $Language . "/orderview.php.ini", false );
+$languageINI = new eZINI( "kernel/eztrade/user/intl/" . $language . "/orderview.php.ini", false );
 
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
@@ -54,7 +54,7 @@ $languageINI = new eZINI( "kernel/eztrade/user/intl/" . $Language . "/orderview.
 // include_once( "eztrade/classes/ezorderstatustype.php" );
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "TemplateDir" ),
-                     "kernel/eztrade/user/intl/", $Language, "orderview.php" );
+                     "kernel/eztrade/user/intl/", $language, "orderview.php" );
 
 $t->setAllStrings();
 
@@ -70,7 +70,7 @@ $t->set_block( "order_item_list_tpl", "order_item_tpl", "order_item" );
 
 $t->set_block( "order_item_tpl", "order_item_option_tpl", "order_item_option" );
 
-$order = new eZOrder( $OrderID );
+$order = new eZOrder( $orderID );
 
 $user = eZUser::currentUser();
 
@@ -180,7 +180,7 @@ if ( $localUser )
     $t->set_var( "billing_zip", $billingAddress->zip() );
     $t->set_var( "billing_place", $billingAddress->place() );
 
-    $PriceGroup = eZPriceGroup::correctPriceGroup( $localUser->groups( false ), true );
+    $priceGroup = eZPriceGroup::correctPriceGroup( $localUser->groups( false ), true );
 
     $region = $billingAddress->region();
     if ( is_object( $region ) )
@@ -203,12 +203,12 @@ if ( $localUser )
     }
 }
 
-if( !isset( $OrderType ) )
-    $OrderType = false;
+if( !isset( $orderType ) )
+    $orderType = false;
 
 // fetch the order items
-$items = $order->items( $OrderType );
-$locale = new eZLocale( $Language );
+$items = $order->items( $orderType );
+$locale = new eZLocale( $language );
 $currency = new eZCurrency();
 
 $i = 0;

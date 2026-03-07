@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: sendmail.php 6927 2001-09-04 12:06:17Z jhe $
+// $id: sendmail.php 6927 2001-09-04 12:06:17Z jhe $
 //
 // Created on: <14-Aug-2001 15:43:17 jhe>
 //
@@ -27,11 +27,11 @@
 
 $toArray = array();
 
-if ( isset( $ContactArrayID ) )
+if ( isset( $contactArrayID ) )
 {
-    foreach ( $ContactArrayID as $contact )
+    foreach ( $contactArrayID as $contact )
     {
-        if ( $CompanyEdit )
+        if ( $companyEdit )
             $contact = new eZCompany( $contact );
         else
             $contact = new eZPerson( $contact );
@@ -52,7 +52,7 @@ if ( isset( $ContactArrayID ) )
         }
     }
 }
-$toArray["CompanyEdit"] = $CompanyEdit;
+$toArray["CompanyEdit"] = $companyEdit;
 include( "kernel/ezmail/user/mailedit.php" );
 
 ?>

@@ -68,6 +68,21 @@
 
 class eZProduct
 {
+    /** Maps ProductID -> ThumbnailImageID (or false). Populated by prewarmThumbnails(). */
+    static $thumbnailIDCache = [];
+
+    /** Instance cache for options(): populated once per product object. */
+    public $optionsCache = null;
+
+    /** Instance cache for vatType(): called 3-5× per product across correctPrice/correctPriceRange/localePrice. */
+    public $vatTypeCache = null;
+
+    /** Instance cache for correctPrice() results keyed by "calcVAT|withPriceGroups". */
+    public $correctPriceCache = [];
+
+    /** Instance cache for brief() XML render result. */
+    public $briefCache = null;
+
     /*!
       Constructs a new eZProduct object.
 
@@ -330,6 +345,41 @@ class eZProduct
     }
 
     /*!
+      Hydrates this product from an already-fetched DB row array.
+      Used by products() bulk-load to avoid N individual SELECT queries.
+    */
+    function hydrateRow( $row, $db )
+    {
+        $this->ID              = $row[$db->fieldName( "ID" )];
+        $this->Name            = $row[$db->fieldName( "Name" )];
+        $this->Contents        = $row[$db->fieldName( "Contents" )];
+        $this->Keywords        = $row[$db->fieldName( "Keywords" )];
+        $this->ProductNumber   = $row[$db->fieldName( "ProductNumber" )];
+        $this->CatalogNumber   = $row[$db->fieldName( "CatalogNumber" )];
+        $this->ExternalLink    = $row[$db->fieldName( "ExternalLink" )];
+        $this->Price           = $row[$db->fieldName( "Price" )];
+        $this->ListPrice       = $row[$db->fieldName( "ListPrice" )];
+        $this->IsHotDeal       = $row[$db->fieldName( "IsHotDeal" )];
+        $this->Weight          = $row[$db->fieldName( "Weight" )];
+        $this->RemoteID        = $row[$db->fieldName( "RemoteID" )];
+        $this->VATTypeID       = $row[$db->fieldName( "VATTypeID" )];
+        $this->BoxTypeID       = $row[$db->fieldName( "BoxTypeID" )];
+        $this->ShippingGroupID = $row[$db->fieldName( "ShippingGroupID" )];
+        $this->ProductType     = $row[$db->fieldName( "ProductType" )];
+        $this->ExpiryTime      = $row[$db->fieldName( "ExpiryTime" )];
+        $this->StockDate       = $row[$db->fieldName( "StockDate" )];
+        $this->IncludesVAT     = $row[$db->fieldName( "IncludesVAT" )];
+        $this->FlatUPS         = $row[$db->fieldName( "FlatUPS" )];
+        $this->FlatUSPS        = $row[$db->fieldName( "FlatUSPS" )];
+        $this->FlatCombine     = $row[$db->fieldName( "FlatCombine" )];
+        if ( $this->Price    == "NULL" ) unset( $this->Price );
+        if ( $this->ListPrice == "NULL" ) unset( $this->ListPrice );
+        $this->ShowPrice    = ( $row[$db->fieldName( "ShowPrice" )]    == 1 );
+        $this->ShowProduct  = ( $row[$db->fieldName( "ShowProduct" )]  == 1 );
+        $this->Discontinued = ( $row[$db->fieldName( "Discontinued" )] == 1 );
+    }
+
+    /*!
       Deletes a eZProduct object from the database.
 
     */
@@ -394,7 +444,7 @@ class eZProduct
     function name( )
     {
        // return htmlspecialchars( $this->Name );
-       return stripslashes( $this->Name );
+       return stripslashes( $this->Name ?? '' );
     }
 
     /*!
@@ -451,6 +501,11 @@ class eZProduct
     */
     function correctPrice( $calcVAT, $withPriceGroups = true )
     {
+        // Instance cache: called redundantly from localePrice→correctPriceRange→correctPrice
+        // and again directly from productlist.php price block.
+        $cacheKey = ( $calcVAT ? '1' : '0' ) . '|' . ( $withPriceGroups ? '1' : '0' );
+        if ( isset( $this->correctPriceCache[$cacheKey] ) ) return $this->correctPriceCache[$cacheKey];
+
         $db = eZDB::globalDatabase();
         $inUser = eZUser::currentUser();
         $price = 0;
@@ -513,6 +568,7 @@ class eZProduct
 
             }
         }
+       $this->correctPriceCache[$cacheKey] = $price;
        return $price;
     }
 
@@ -1125,11 +1181,12 @@ class eZProduct
     */
     function brief( )
     {
+        if ( $this->briefCache !== null ) return $this->briefCache;
         // include_once( "ezarticle/classes/ezarticlerenderer.php" );
         $renderer = new eZArticleRenderer( $this );
         $articleContents = $renderer->renderPage( 0 );
-        
-        return $articleContents[0];
+        $this->briefCache = $articleContents[0];
+        return $this->briefCache;
     }    
 
     function briefPlain( )
@@ -1454,6 +1511,10 @@ class eZProduct
     */
     function options()
     {
+       // Instance-level cache: options() is called multiple times per product
+       // (price range calculation + template loop both need the same data).
+       if ( $this->optionsCache !== null ) return $this->optionsCache;
+
        $return_array = array();
        $option_array = array();
        $db = eZDB::globalDatabase();
@@ -1464,6 +1525,7 @@ class eZProduct
            $return_array[$i] = new eZOption( $option_array[$i][$db->fieldName( "OptionID" )], true );
        }
 
+       $this->optionsCache = $return_array;
        return $return_array;
     }
 
@@ -1472,18 +1534,7 @@ class eZProduct
     */
     function hasOptions()
     {
-       $return_value = false;
-       $option_array = array();
-       $db = eZDB::globalDatabase();
-
-       $db->array_query( $option_array, "SELECT OptionID FROM eZTrade_ProductOptionLink WHERE ProductID='$this->ID'" );
-
-       if ( count( $option_array ) > 0 )
-       {
-           $return_value = true;
-       }
-
-       return $return_value;
+       return count( $this->options() ) > 0;
     }
 
     /*!
@@ -1747,8 +1798,48 @@ class eZProduct
     /*!
       Returns the thumbnail image of the product as a eZImage object.
     */
+    /*!
+      Batch pre-warms the thumbnail cache for a list of product IDs.
+      Loads all ProductImageDefinition rows in one IN() query, then batch-prefetches
+      the eZImage records — eliminating up to N*2 individual SELECT queries per page.
+    */
+    static function prewarmThumbnails( array $ids )
+    {
+        if ( empty( $ids ) ) return;
+        $db = eZDB::globalDatabase();
+        $idList = implode( ',', array_map( 'intval', $ids ) );
+        // Mark every requested ID as checked (default: no thumbnail)
+        foreach ( $ids as $id )
+            self::$thumbnailIDCache[$id] = false;
+
+        $res = [];
+        $db->array_query( $res, "SELECT ProductID, ThumbnailImageID FROM eZTrade_ProductImageDefinition WHERE ProductID IN ($idList)" );
+
+        $imageIDs = [];
+        foreach ( $res as $row )
+        {
+            $imageID   = $row[$db->fieldName( 'ThumbnailImageID' )];
+            $productID = $row[$db->fieldName( 'ProductID' )];
+            if ( is_numeric( $imageID ) )
+            {
+                self::$thumbnailIDCache[$productID] = $imageID;
+                $imageIDs[] = (int) $imageID;
+            }
+        }
+        // Batch-prefetch eZImage records so thumbnailImage() skips individual SELECTs
+        if ( !empty( $imageIDs ) )
+            eZImage::prefetch( $imageIDs );
+    }
+
     function thumbnailImage( )
     {
+        // Fast path: use image ID from prewarm cache if available
+        if ( array_key_exists( $this->ID, self::$thumbnailIDCache ) )
+        {
+            $imageID = self::$thumbnailIDCache[$this->ID];
+            return is_numeric( $imageID ) ? new eZImage( $imageID ) : false;
+        }
+
         $db = eZDB::globalDatabase();
         $ret = false;
 
@@ -2458,6 +2549,10 @@ class eZProduct
     */
     function vatType( )
     {
+        // Instance cache: vatType() is called many times per product per request
+        // (correctPrice, correctPriceRange, localePrice all invoke it).
+        if ( $this->vatTypeCache !== null ) return $this->vatTypeCache;
+
         $user = eZUser::currentUser();
         $ret = new eZVATType();
 
@@ -2513,6 +2608,7 @@ class eZProduct
            $ret = new eZVATType( $this->VATTypeID );
        }
 
+       $this->vatTypeCache = $ret;
        return $ret;
     }
 
@@ -2779,9 +2875,26 @@ class eZProduct
                 ORDER BY $OrderBy";
        $db->array_query( $product_array, $query, array( "Limit" => $limit, "Offset" => $offset ) );
 
+       // Batch-load all product rows in one IN() query instead of N individual get() calls
+       $batchMap = [];
+       if ( !empty( $product_array ) )
+       {
+           $idList = [];
+           foreach ( $product_array as $batchRow )
+               $idList[] = (int) $batchRow[$db->fieldName( 'ProductID' )];
+           $batchRows = [];
+           $db->array_query( $batchRows, "SELECT * FROM eZTrade_Product WHERE ID IN (" . implode( ',', $idList ) . ")" );
+           foreach ( $batchRows as $batchRow )
+               $batchMap[ $batchRow[$db->fieldName( 'ID' )] ] = $batchRow;
+       }
+
        for ( $i = 0; $i < count( $product_array ); $i++ )
        {
-           $return_array[$i] = new eZProduct( $product_array[$i][$db->fieldName( "ProductID" )], false );
+           $pid = $product_array[$i][$db->fieldName( 'ProductID' )];
+           $obj = new eZProduct();
+           if ( isset( $batchMap[$pid] ) )
+               $obj->hydrateRow( $batchMap[$pid], $db );
+           $return_array[$i] = $obj;
        }
        return $return_array;
     }

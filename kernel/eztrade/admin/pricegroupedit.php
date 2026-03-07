@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: pricegroupedit.php 9167 2002-02-07 08:39:29Z jhe $
+// $id: pricegroupedit.php 9167 2002-02-07 08:39:29Z jhe $
 //
 // Created on: <23-Feb-2001 15:32:27 amos>
 //
@@ -31,27 +31,27 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezpricegroup.php" );
 
-$price = new eZPriceGroup( $PriceID );
+$price = new eZPriceGroup( $priceID );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     // include_once( "classes/ezhttptool.php" );
     eZHTTPTool::header( "Location: /trade/pricegroups/list" );
     exit();
 }
 
-if ( isset( $OK ) )
+if ( isset( $ok ) )
 {
-    $price->setName( $Name );
-    $price->setDescription( $Description );
+    $price->setName( $name );
+    $price->setDescription( $description );
     $price->store();
 
     $price->removeUserGroups();
-    foreach ( $GroupID as $group )
+    foreach ( $groupID as $group )
     {
         $price->addUserGroup( $group );
     }
@@ -59,13 +59,13 @@ if ( isset( $OK ) )
     eZHTTPTool::header( "Location: /trade/pricegroups/list" );
     exit();
 }
-else if ( isset( $PriceID ) and is_numeric( $PriceID ) )
+else if ( isset( $priceID ) and is_numeric( $priceID ) )
 {
-    $Action = "edit";
+    $action = "edit";
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "pricegroupedit.php" );
+                     "kernel/eztrade/admin/intl/", $language, "pricegroupedit.php" );
 
 $t->setAllStrings();
 
@@ -73,26 +73,26 @@ $t->set_file( "price_group_page", "pricegroupedit.tpl" );
 
 $t->set_block( "price_group_page", "value_tpl", "value_item" );
 
-if ( $Action == "edit" )
+if ( $action == "edit" )
 {
-    $Name = $price->name();
-    $Description = $price->description();
-    $GroupID = $price->userGroups( false, false );
+    $name = $price->name();
+    $description = $price->description();
+    $groupID = $price->userGroups( false, false );
 }
 
-$t->set_var( "price_id", $PriceID );
-$t->set_var( "name", eZTextTool::htmlspecialchars( $Name ) );
-$t->set_var( "description", eZTextTool::htmlspecialchars( $Description ) );
+$t->set_var( "price_id", $priceID );
+$t->set_var( "name", eZTextTool::htmlspecialchars( $name ) );
+$t->set_var( "description", eZTextTool::htmlspecialchars( $description ) );
 
-if ( !isset( $GroupID ) )
-    $GroupID = array();
+if ( !isset( $groupID ) )
+    $groupID = array();
 
 $groups = eZUserGroup::getAll();
 foreach ( $groups as $group )
 {
     $t->set_var( "group_id", $group->id() );
     $t->set_var( "group_name", eZTextTool::htmlspecialchars( $group->name() ) );
-    $t->set_var( "selected", in_array( $group->id(), $GroupID ) ? "selected" : "" );
+    $t->set_var( "selected", in_array( $group->id(), $groupID ) ? "selected" : "" );
     $t->parse( "value_item", "value_tpl", true );
 }
 

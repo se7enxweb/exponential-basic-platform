@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: seti.php,v 0.1 2004/01/10 
+// $id: seti.php,v 0.1 2004/01/10 
 //
 // Created on: <10-Jan-2004 Bob Sims>
 //
@@ -16,15 +16,15 @@ $ini = eZINI::instance( 'site.ini' );
 $wwwDir = $ini->WWWDir;
 $indexFile = $ini->Index;
 
-$UserName = $ini->variable( "eZTradeMain", "SetiUser" );
-$Password = $ini->variable( "eZTradeMain", "SetiPassword" );
-$Code = $ini->variable( "eZTradeMain", "Code" );
-$AdminSite = $ini->variable( "site", "AdminSiteURL" );
+$userName = $ini->variable( "eZTradeMain", "SetiUser" );
+$password = $ini->variable( "eZTradeMain", "SetiPassword" );
+$code = $ini->variable( "eZTradeMain", "Code" );
+$adminSite = $ini->variable( "site", "AdminSiteURL" );
 
 if( ($_SERVER['HTTP_PORT'] != 443) || ($_SERVER['HTTPS'] != 'on') ) 
 { 
 // page is not secure, redirect
-eZHTTPTool::header( "Location: https://" . $AdminSite . "/trade/seti/" );
+eZHTTPTool::header( "Location: https://" . $adminSite . "/trade/seti/" );
 } 
 
 

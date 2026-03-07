@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: slideshow.php 9345 2002-03-06 10:34:39Z jhe $
+// $id: slideshow.php 9345 2002-03-06 10:34:39Z jhe $
 //
 // Definition of eZArticle class
 //
@@ -33,18 +33,18 @@
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZImageCatalogueMain", "Language" );
+$language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
-$SlideShowHeaderFooter = $ini->variable( "eZImageCatalogueMain", "SlideShowHeaderFooter" );
-$SlideShowOriginalImage = $ini->variable( "eZImageCatalogueMain", "SlideShowOriginalImage" );
+$slideShowHeaderFooter = $ini->variable( "eZImageCatalogueMain", "SlideShowHeaderFooter" );
+$slideShowOriginalImage = $ini->variable( "eZImageCatalogueMain", "SlideShowOriginalImage" );
 
-if ( $SlideShowHeaderFooter == "disabled" )
+if ( $slideShowHeaderFooter == "disabled" )
 {
     $PrintableVersion = "enabled";
 }
 
 $t = new eZTemplate( "kernel/ezimagecatalogue/user/" . $ini->variable( "eZImageCatalogueMain", "TemplateDir" ),
-                     "kernel/ezimagecatalogue/user/intl/", $Language, "slideshow.php" );
+                     "kernel/ezimagecatalogue/user/intl/", $language, "slideshow.php" );
 
 $t->setAllStrings();
 
@@ -55,7 +55,7 @@ $t->set_block( "slideshow_tpl", "previous_tpl", "previous" );
 $t->set_block( "slideshow_tpl", "next_tpl", "next" );
 
 
-if ( $CategoryID == 0 )
+if ( $categoryID == 0 )
     $GlobalSectionID = $ini->variable( "eZImageCatalogueMain", "DefaultSection" );
 
 if ( !$GlobalSectionID )
@@ -64,10 +64,10 @@ if ( !$GlobalSectionID )
 $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
 
-if ( $Position == "" )
-    $Position = 0;
+if ( $position == "" )
+    $position = 0;
 
-$slideshow = new eZSlideshow( $CategoryID, eZUser::currentUser(), $Position );
+$slideshow = new eZSlideshow( $categoryID, eZUser::currentUser(), $position );
 $image = $slideshow->image();
 
 if ( !$image )
@@ -76,7 +76,7 @@ if ( !$image )
 }
 else
 {
-    if ( $SlideShowOriginalImage == "enabled" )
+    if ( $slideShowOriginalImage == "enabled" )
     {    
         $variation = $image;
     }
@@ -94,7 +94,7 @@ else
 }
 
 $current = $slideshow->currentPosition();
-$t->set_var( "category", $CategoryID );
+$t->set_var( "category", $categoryID );
 
 if ( $current > 0 )
 {
@@ -109,10 +109,10 @@ else
 
 if ( $current < ( $slideshow->size() - 1 ) )
 {
-    if ( is_numeric( $RefreshTimer ) )
+    if ( is_numeric( $refreshTimer ) )
     {
-        $MetaRedirectLocation = "/imagecatalogue/slideshow/" . $CategoryID . "/" . ( $current + 1 ) . "/" . $RefreshTimer . "/";
-        $MetaRedirectTimer = $RefreshTimer;
+        $metaRedirectLocation = "/imagecatalogue/slideshow/" . $categoryID . "/" . ( $current + 1 ) . "/" . $refreshTimer . "/";
+        $metaRedirectTimer = $refreshTimer;
     }
     $t->set_var( "next_image", $current + 1 );
     $t->parse( "next", "next_tpl" );

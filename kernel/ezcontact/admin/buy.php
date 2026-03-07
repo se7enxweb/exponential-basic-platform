@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: buy.php 7216 2001-09-14 12:23:02Z jhe $
+// $id: buy.php 7216 2001-09-14 12:23:02Z jhe $
 //
 // Created on: <14-Sep-2001 15:01:24 jhe>
 //
@@ -26,8 +26,8 @@
 $cart = new eZCart();
 $session = eZSession::globalSession();
 $cart->setSession( $session );
-$cart->setCompanyID( $CompanyID );
-$cart->setPersonID( $PersonID );
+$cart->setCompanyID( $companyID );
+$cart->setPersonID( $personID );
 
 $cart->store();
 // include_once( "classes/ezhttptool.php" );

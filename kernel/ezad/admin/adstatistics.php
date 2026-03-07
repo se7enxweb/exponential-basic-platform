@@ -52,7 +52,7 @@ $t->set_block( "ad_edit_page_tpl", "image_tpl", "image" );
 $t->set_block( "ad_edit_page_tpl", "html_item_tpl", "html_item" );
 
 
-$ad = new eZAd( $AdID );
+$ad = new eZAd( $adID );
 
 $t->set_var( "ad_title", $ad->name() );
 $t->set_var( "ad_description", $ad->description() );

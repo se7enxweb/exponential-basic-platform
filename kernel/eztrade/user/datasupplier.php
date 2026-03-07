@@ -35,17 +35,82 @@ $SiteDesign = $ini->variable( "site", "SiteDesign" );
 
 $RequireUser = $ini->variable( "eZTradeMain", "RequireUserLogin" ) == "enabled" ? true : false;
 $ShowPrice = $RequireUser ? is_a( $user, "eZUser" ) : true;
-$UserReviews = $ini->variable( "eZTradeMain", "UserReviews" );
+$userReviews = $ini->variable( "eZTradeMain", "UserReviews" );
 
-$PriceGroup = 0;
+$priceGroup = 0;
 if ( is_a( $user, "eZUser" ) )
 {
-    $PriceGroup = eZPriceGroup::correctPriceGroup( $user->groups( false ) );
+    $priceGroup = eZPriceGroup::correctPriceGroup( $user->groups( false ) );
 }
 if ( !$ShowPrice )
-    $PriceGroup = -1;
+    $priceGroup = -1;
 
 $GlobalSectionID = $ini->variable( "eZTradeMain", "DefaultSection" );
+
+$accountNumber     = eZHTTPTool::getVar( 'AccountNumber' );
+$action            = eZHTTPTool::getVar( 'Action' );
+$adminSiteURL      = eZHTTPTool::getVar( 'AdminSiteURL' );
+$available         = eZHTTPTool::getVar( 'Available' );
+$back              = eZHTTPTool::getVar( 'Back' );
+$billingAddressID  = eZHTTPTool::getVar( 'BillingAddressID' );
+$ccNumber          = eZHTTPTool::getVar( 'CcNumber' );
+$cacheFile         = eZHTTPTool::getVar( 'CacheFile' );
+$cancel            = eZHTTPTool::getVar( 'Cancel' );
+$capitalizeHeadlines = eZHTTPTool::getVar( 'CapitalizeHeadlines' );
+$cartCountArray    = $_POST['CartCountArray'] ?? [];
+$cartIDArray       = $_POST['CartIDArray'] ?? [];
+$cartItemID        = eZHTTPTool::getVar( 'CartItemID' );
+$cartSelectArray   = $_POST['CartSelectArray'] ?? [];
+$categoryArray     = $_POST['CategoryArray'] ?? [];
+$categoryArrayID   = $_POST['CategoryArrayID'] ?? [];
+$categoryID        = eZHTTPTool::getVar( 'CategoryID' );
+$chargeTotal       = eZHTTPTool::getVar( 'ChargeTotal' );
+$chargeVATTotal    = eZHTTPTool::getVar( 'ChargeVATTotal' );
+$comment           = eZHTTPTool::getVar( 'Comment' );
+$description       = eZHTTPTool::getVar( 'Description' );
+$email             = eZHTTPTool::getVar( 'Email' );
+$emailError        = eZHTTPTool::getVar( 'EmailError' );
+$expireMonth       = eZHTTPTool::getVar( 'ExpireMonth' );
+$expireYear        = eZHTTPTool::getVar( 'ExpireYear' );
+$forumID           = eZHTTPTool::getVar( 'ForumID' );
+$generateStaticPage = eZHTTPTool::getVar( 'GenerateStaticPage' );
+$hotDealColumns    = eZHTTPTool::getVar( 'HotDealColumns' );
+$hotDealsPage      = eZHTTPTool::getVar( 'HotDealsPage' );
+$limit             = eZHTTPTool::getVar( 'Limit' );
+$mail              = eZHTTPTool::getVar( 'Mail' );
+$mailMethod        = eZHTTPTool::getVar( 'MailMethod' );
+$message           = eZHTTPTool::getVar( 'Message' );
+$moduleName        = eZHTTPTool::getVar( 'ModuleName' );
+$ok                = eZHTTPTool::getVar( 'OK' ) ?? eZHTTPTool::getVar( 'Ok' );
+$offset            = eZHTTPTool::getVar( 'Offset' );
+$optionIDArray     = $_POST['OptionIDArray'] ?? [];
+$optionValueArray  = $_POST['OptionValueArray'] ?? [];
+$orderBy           = eZHTTPTool::getVar( 'OrderBy' );
+$orderID           = eZHTTPTool::getVar( 'OrderID' );
+$paymentSuccess    = eZHTTPTool::getVar( 'PaymentSuccess' );
+$paymentType       = eZHTTPTool::getVar( 'PaymentType' );
+$paypalEmail       = eZHTTPTool::getVar( 'PaypalEmail' );
+$paypalMode        = eZHTTPTool::getVar( 'PaypalMode' );
+$preOrderID        = eZHTTPTool::getVar( 'PreOrderID' );
+$price             = eZHTTPTool::getVar( 'Price' );
+$productID         = eZHTTPTool::getVar( 'ProductID' );
+$purchaseProduct   = eZHTTPTool::getVar( 'PurchaseProduct' );
+$quantity          = eZHTTPTool::getVar( 'Quantity' );
+$query             = eZHTTPTool::getVar( 'Query' );
+$queryText         = eZHTTPTool::getVar( 'QueryText' );
+$redirectURL       = eZHTTPTool::getVar( 'RedirectURL' );
+$removeVoucher     = eZHTTPTool::getVar( 'RemoveVoucher' );
+$searchText        = eZHTTPTool::getVar( 'SearchText' );
+$sendOrder         = eZHTTPTool::getVar( 'SendOrder' );
+$shippingTypeID    = eZHTTPTool::getVar( 'ShippingTypeID' );
+$stock             = eZHTTPTool::getVar( 'Stock' );
+$subTotalsColumns  = eZHTTPTool::getVar( 'SubTotalsColumns' );
+$text              = eZHTTPTool::getVar( 'Text' );
+$update            = eZHTTPTool::getVar( 'Update' );
+$urlQueryString    = eZHTTPTool::getVar( 'UrlQueryString' );
+$voucher           = eZHTTPTool::getVar( 'Voucher' );
+$wishList          = eZHTTPTool::getVar( 'WishList' );
+$wishListItemID    = eZHTTPTool::getVar( 'WishListItemID' );
 
 if ( $user )
 {
@@ -63,25 +128,25 @@ switch ( $url_array[2] )
 
     case "hotdealsgallery" :
     {
-        // $RedirectURL = $RedirectURL;
-        $session->setVariable( "RedirectURL", $REQUEST_URI );
-        $CategoryID = $url_array[3];
-        $Offset = $url_array[4];
-        if ( !is_numeric( $Offset ) )
-            $Offset = 0;
+        // $redirectURL = $redirectURL;
+        $session->setVariable( "RedirectURL", $_SERVER['REQUEST_URI'] );
+        $categoryID = $url_array[3];
+        $offset = $url_array[4];
+        if ( !is_numeric( $offset ) )
+            $offset = 0;
         if ( $PageCaching == "enabled" )
         {
             //include_once( "classes/ezcachefile.php" );
-            $CacheFile = new eZCacheFile( "kernel/eztrade/cache/",
-                                            array( "hotdealsgallery", $CategoryID, $groupIDArray, $Offset, $PriceGroup ),
+            $cacheFile = new eZCacheFile( "kernel/eztrade/cache/",
+                                            array( "hotdealsgallery", $categoryID, $groupIDArray, $offset, $priceGroup ),
                                             "cache", "," );
-            if ( $CacheFile->exists() )
+            if ( $cacheFile->exists() )
             {
-                include( $CacheFile->filename( true ) );
+                include( $cacheFile->filename( true ) );
             }
             else
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
                 include( "kernel/eztrade/user/hotdealsgallery.php" );
             }
         }
@@ -94,25 +159,25 @@ switch ( $url_array[2] )
 
     case "hotdealslist" :
     {
-        // $RedirectURL = $RedirectURL;
-        $session->setVariable( "RedirectURL", $REQUEST_URI );
-        $CategoryID = $url_array[3];
-        $Offset = $url_array[4];
-        if ( !is_numeric( $Offset ) )
-            $Offset = 0;
+        // $redirectURL = $redirectURL;
+        $session->setVariable( "RedirectURL", $_SERVER['REQUEST_URI'] );
+        $categoryID = $url_array[3];
+        $offset = $url_array[4];
+        if ( !is_numeric( $offset ) )
+            $offset = 0;
         if ( $PageCaching == "enabled" )
         {
             //include_once( "classes/ezcachefile.php" );
-            $CacheFile = new eZCacheFile( "kernel/eztrade/cache/",
-                                            array( "hotdealslist", $CategoryID, $groupIDArray, $Offset, $PriceGroup ),
+            $cacheFile = new eZCacheFile( "kernel/eztrade/cache/",
+                                            array( "hotdealslist", $categoryID, $groupIDArray, $offset, $priceGroup ),
                                             "cache", "," );
-            if ( $CacheFile->exists() )
+            if ( $cacheFile->exists() )
             {
-                include( $CacheFile->filename( true ) );
+                include( $cacheFile->filename( true ) );
             }
             else
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
                 include( "kernel/eztrade/user/hotdealslist.php" );
             }
         }
@@ -125,25 +190,25 @@ switch ( $url_array[2] )
 
     case "productgallery" :
     {
-    // $RedirectURL = $RedirectURL;
-    $session->setVariable( "RedirectURL", $REQUEST_URI );
-        $CategoryID = $url_array[3];
-        $Offset = $url_array[4];
-        if ( !is_numeric( $Offset ) )
-            $Offset = 0;
+    // $redirectURL = $redirectURL;
+    $session->setVariable( "RedirectURL", $_SERVER['REQUEST_URI'] );
+        $categoryID = $url_array[3];
+        $offset = $url_array[4];
+        if ( !is_numeric( $offset ) )
+            $offset = 0;
         if ( $PageCaching == "enabled" )
         {
             // include_once( "classes/ezcachefile.php" );
-            $CacheFile = new eZCacheFile( "kernel/eztrade/cache/",
-                                            array( "productgallery", $CategoryID, $groupIDArray, $Offset, $PriceGroup ),
+            $cacheFile = new eZCacheFile( "kernel/eztrade/cache/",
+                                            array( "productgallery", $categoryID, $groupIDArray, $offset, $priceGroup ),
                                             "cache", "," );
-            if ( $CacheFile->exists() )
+            if ( $cacheFile->exists() )
             {
-                include( $CacheFile->filename( true ) );
+                include( $cacheFile->filename( true ) );
             }
             else
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
                 include( "kernel/eztrade/user/productgallery.php" );
             }
         }
@@ -156,40 +221,35 @@ switch ( $url_array[2] )
     
     case "productlist" :
     {
-        $CategoryID = $url_array[3];
-        $Offset = $url_array[4];
-        if ( !is_numeric( $Offset ) )
-            $Offset = 0;
+        $categoryID = $url_array[3];
+        $offset = $url_array[4];
+        if ( !is_numeric( $offset ) )
+            $offset = 0;
         if ( $PageCaching == "enabled" )
         {
-            if ( !isset( $groupIDArray ) || !$groupIDArray )
-                $groupIDArray = 0;
-  
-              if ( !isset( $PriceGroup ) || !$PriceGroup )
-                $PriceGroup = 0;
-
             // include_once( "classes/ezcachefile.php" );
-            $CacheFile = new eZCacheFile( "kernel/eztrade/cache/",
-                                          array( "productlist", $CategoryID, $Offset, $PriceGroup ),
+            $cacheFile = new eZCacheFile( "kernel/eztrade/cache/",
+                                          array( "productlist", $categoryID, $groupIDArray, $offset, $priceGroup ),
                                           "cache", "," );
-            if ( $CacheFile->exists() )
+            if ( $cacheFile->exists() )
             {
-                if ( $CacheFile->filename( true ) != "" )
+                if ( $cacheFile->filename( true ) != "" )
                 {
-                    include( $CacheFile->filename( true ) );
-                    // print_r( $CacheFile->filename( true ) );
+                    $generateStaticPage = "true";
+                    include( $cacheFile->filename( true ) );
+                    // print_r( $cacheFile->filename( true ) );
                 }
             }
             else
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
                 include( "kernel/eztrade/user/productlist.php" );
             }
         }
         else
         {
-            //$GenerateStaticPage = "false";
-            $GenerateStaticPage = "false";
+            //$generateStaticPage = "false";
+            $generateStaticPage = "false";
             include( "kernel/eztrade/user/productlist.php" );
         }
         break;
@@ -205,34 +265,34 @@ switch ( $url_array[2] )
         $PrintableVersion = "disabled";
         if ( $PageCaching == "enabled" )
         {
-            $ProductID = $url_array[3];
-            $CategoryID = $url_array[4];
+            $productID = $url_array[3];
+            $categoryID = $url_array[4];
 
             // include_once( "classes/ezcachefile.php" );
-            $CacheFile = new eZCacheFile( "kernel/eztrade/cache/",
-                                          array( "productview", $ProductID, $groupIDArray, $PriceGroup ),
+            $cacheFile = new eZCacheFile( "kernel/eztrade/cache/",
+                                          array( "productview", $productID, $groupIDArray, $priceGroup ),
                                           "cache", "," );
-            if ( $CacheFile->exists() )
+            if ( $cacheFile->exists() )
             {
-                include( $CacheFile->filename( true ) );
+                include( $cacheFile->filename( true ) );
             }
             else
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
                 include( "kernel/eztrade/user/productview.php" );
             }
         }
         else
         {
-            $ProductID = $url_array[3];
-            $CategoryID = $url_array[4];
+            $productID = $url_array[3];
+            $categoryID = $url_array[4];
             include( "kernel/eztrade/user/productview.php" );
         }
 
-        if  ( ( $PrintableVersion != "enabled" ) && ( $UserReviews == "enabled" ) )
+        if  ( ( $PrintableVersion != "enabled" ) && ( $userReviews == "enabled" ) )
         {
-            $RedirectURL = "/trade/productview/$ProductID/$CategoryID/";
-            $product = new eZProduct( $ProductID );
+            $redirectURL = "/trade/productview/$productID/$categoryID/";
+            $product = new eZProduct( $productID );
             if ( ( $product->id() >= 1 ) )    //  && $product->discuss() )
             {
                 for ( $i = 0; $i < count( $url_array ); $i++ )
@@ -240,11 +300,11 @@ switch ( $url_array[2] )
                     if ( ( $url_array[$i] ) == "parent" )
                     {
                         $next = $i + 1;
-                        $Offset = $url_array[$next];
+                        $offset = $url_array[$next];
                     }
                 }
                 $forum = $product->forum();
-                $ForumID = $forum->id();
+                $forumID = $forum->id();
                 include( "kernel/ezforum/user/messagereviewlist.php" );
             }
         }
@@ -256,28 +316,28 @@ switch ( $url_array[2] )
         if ( $PageCaching == "enabled" )
         {
             $PrintableVersion = "enabled";
-            $ProductID = $url_array[3];
-            $CategoryID = $url_array[4];
+            $productID = $url_array[3];
+            $categoryID = $url_array[4];
 
             // include_once( "classes/ezcachefile.php" );
-            $CacheFile = new eZCacheFile( "kernel/eztrade/cache/",
-                                          array( "productprint", $ProductID, $groupIDArray, $PriceGroup ),
+            $cacheFile = new eZCacheFile( "kernel/eztrade/cache/",
+                                          array( "productprint", $productID, $groupIDArray, $priceGroup ),
                                           "cache", "," );
-            if ( $CacheFile->exists() )
+            if ( $cacheFile->exists() )
             {
-                include( $CacheFile->filename( true ) );
+                include( $cacheFile->filename( true ) );
             }
             else
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
                 include( "kernel/eztrade/user/productview.php" );
             }
         }
         else
         {
             $PrintableVersion = "enabled";
-            $ProductID = $url_array[3];
-            $CategoryID = $url_array[4];
+            $productID = $url_array[3];
+            $categoryID = $url_array[4];
             include( "kernel/eztrade/user/productview.php" );
         }
 
@@ -287,21 +347,21 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "add" )
         {
-            $Action = "AddToBasket";
-            $ProductID = $url_array[4];
+            $action = "AddToBasket";
+            $productID = $url_array[4];
         }
 
         if ( $url_array[3] == "remove" )
         {
-            $Action = "RemoveFromBasket";
-            $CartItemID = $url_array[4];
+            $action = "RemoveFromBasket";
+            $cartItemID = $url_array[4];
         }
 
-        if ( isset( $WishList ) )
+        if ( isset( $wishList ) )
         {
             include( "kernel/eztrade/user/wishlist.php" );
 
-//               eZHTTPTool::header( "Location: /trade/wishlist/add/$ProductID" );
+//               eZHTTPTool::header( "Location: /trade/wishlist/add/$productID" );
 //              exit();
         }
         else
@@ -315,20 +375,20 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "add" )
         {
-            $Action = "AddToBasket";
-            $ProductID = $url_array[4];
+            $action = "AddToBasket";
+            $productID = $url_array[4];
         }
 
         if ( $url_array[3] == "movetocart" )
         {
-            $Action = "MoveToCart";
-            $WishListItemID = $url_array[4];
+            $action = "MoveToCart";
+            $wishListItemID = $url_array[4];
         }
 
         if ( $url_array[3] == "remove" )
         {
-            $Action = "RemoveFromWishlist";
-            $WishListItemID = $url_array[4];
+            $action = "RemoveFromWishlist";
+            $wishListItemID = $url_array[4];
         }
 
         include( "kernel/eztrade/user/wishlist.php" );
@@ -339,8 +399,8 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "movetocart" )
         {
-            $Action = "MoveToCart";
-            $WishListItemID = $url_array[4];
+            $action = "MoveToCart";
+            $wishListItemID = $url_array[4];
         }
 
         include( "kernel/eztrade/user/viewwishlist.php" );
@@ -373,7 +433,7 @@ switch ( $url_array[2] )
 
     case "orderview" :
     {
-        $OrderID = $url_array[3];
+        $orderID = $url_array[3];
         include( "kernel/eztrade/user/orderview.php" );
     }
     break;
@@ -423,9 +483,9 @@ switch ( $url_array[2] )
 
     case "voucherinformation" :
     {
-        $ProductID = $url_array[3];
+        $productID = $url_array[3];
         $PriceRange = $url_array[4];
-        $MailMethod = $url_array[5];
+        $mailMethod = $url_array[5];
 
         include( "kernel/eztrade/user/voucherinformation.php" );
     }
@@ -433,7 +493,7 @@ switch ( $url_array[2] )
 
     case "ordersendt" :
     {
-        $OrderID = $url_array[3];
+        $orderID = $url_array[3];
         include( "kernel/eztrade/user/ordersendt.php" );
     }
     break;
@@ -442,8 +502,8 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "move" )
         {
-            $Query = urldecode( $url_array[4] );
-            $Offset = urldecode ( $url_array[5] );
+            $query = urldecode( $url_array[4] );
+            $offset = urldecode ( $url_array[5] );
         }
         include( "kernel/eztrade/user/productsearch.php" );
     }
@@ -452,9 +512,9 @@ switch ( $url_array[2] )
     case "orderlist" :
     {
         if ( $url_array[3] != "" )
-            $Offset = $url_array[3];
+            $offset = $url_array[3];
         else
-            $Offset = 0;
+            $offset = 0;
 
         include( "kernel/eztrade/user/orderlist.php" );
     }
@@ -462,16 +522,16 @@ switch ( $url_array[2] )
 
     case "extendedsearch" :
     {
-        $Limit = 10;
+        $limit = 10;
         if ( $url_array[3] == "move" )
         {
-            $Text = urldecode( $url_array[4] );
+            $text = urldecode( $url_array[4] );
             $PriceRange = urldecode( $url_array[5] );
             $MainCategories = urldecode ( $url_array[6] );
-            $CategoryArray = urldecode ( $url_array[7] );
-            $Offset = urldecode ( $url_array[8] );
+            $categoryArray = urldecode ( $url_array[7] );
+            $offset = urldecode ( $url_array[8] );
 
-            $Action = "SearchButton";
+            $action = "SearchButton";
             $Next = true;
         }
 
@@ -485,11 +545,11 @@ switch ( $url_array[2] )
       {
         if ( $url_array[4] == 'download' )
 	{
-	  $Action = "export";
+	  $action = "export";
 	}
         else 
 	{
-          $Action = "export-cron";
+          $action = "export-cron";
         }
         include( "kernel/eztrade/admin/export_froogle.php" );
       }
@@ -497,16 +557,16 @@ switch ( $url_array[2] )
       {
         if ( $url_array[4] == 'download' )
 	{
-	  $Action = "export";
+	  $action = "export";
 	}
         else 
 	{
-          $Action = "export-cron";
+          $action = "export-cron";
         }
         include( "kernel/eztrade/admin/export_yahoo.php" );
       }
       else {
-	$Action = "export-cron";
+	$action = "export-cron";
 	include( "kernel/eztrade/admin/export_froogle.php" );
       }
     }

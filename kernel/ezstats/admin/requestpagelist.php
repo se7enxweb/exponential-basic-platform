@@ -45,17 +45,17 @@ $t->set_file( "request_page_tpl", "requestpagelist.tpl" );
 $t->set_block( "request_page_tpl", "request_list_tpl", "request_list" );
 $t->set_block( "request_list_tpl", "request_tpl", "request" );
 
-if ( !isset( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
 
-$latest = eZPageViewQuery::topRequests( $ViewLimit, $Offset );
-$ItemCount = eZPageViewQuery::topRequestsCount();
+$latest = eZPageViewQuery::topRequests( $viewLimit, $offset );
+$itemCount = eZPageViewQuery::topRequestsCount();
 
-$t->set_var( "item_start", $Offset + 1 );
-$t->set_var( "item_end", $Offset + $ViewLimit );
-$t->set_var( "item_count", $ItemCount );
-$t->set_var( "item_limit", $ViewLimit );
-$t->set_var( "exclude_domain", isset( $ExcludeDomain ) ? $ExcludeDomain : false );
+$t->set_var( "item_start", $offset + 1 );
+$t->set_var( "item_end", $offset + $viewLimit );
+$t->set_var( "item_count", $itemCount );
+$t->set_var( "item_limit", $viewLimit );
+$t->set_var( "exclude_domain", isset( $excludeDomain ) ? $excludeDomain : false );
 
 $headers = getallheaders();
 $request_domain = $headers["Host"];
@@ -80,7 +80,7 @@ if ( count( $latest ) > 0 )
         $t->parse( "request", "request_tpl", true );
         $i++;
     }
-    eZList::drawNavigator( $t, $ItemCount, $ViewLimit, $Offset, "request_list_tpl" );
+    eZList::drawNavigator( $t, $itemCount, $viewLimit, $offset, "request_list_tpl" );
     $t->parse( "request_list", "request_list_tpl" );
 }
 else

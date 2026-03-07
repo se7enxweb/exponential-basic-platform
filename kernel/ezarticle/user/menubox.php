@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: menubox.php 9305 2002-02-27 15:06:55Z master $
+// $id: menubox.php 9305 2002-02-27 15:06:55Z master $
 //
 //
 //
@@ -30,19 +30,21 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$PageCaching = $ini->variable( "eZArticleMain", "PageCaching" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$pageCaching = $ini->variable( "eZArticleMain", "PageCaching" );
+$globalSiteDesign = $GlobalSiteDesign ?? null;
+$globalSectionID = $GlobalSectionID ?? 0;
 
 function createArticleMenu( $menuCacheFile = false, $ini = null, 
-            $Language = null, $GlobalSiteDesign = null,
-            $GlobalSectionID = null, $CategoryID = null, $url_array = null )
+            $language = null, $globalSiteDesign = null,
+            $globalSectionID = null, $categoryID = null, $url_array = null )
 {
             // global $ini;
-            // global $Language;
-            // global $GenerateStaticPage;
-            // global $GlobalSiteDesign;
-            // global $GlobalSectionID;
-            // global $CategoryID;
+            // global $language;
+            // global $generateStaticPage;
+            // global $globalSiteDesign;
+            // global $globalSectionID;
+            // global $categoryID;
 			// global $url_array;
 
             // include_once( "classes/eztemplate.php" );
@@ -51,7 +53,7 @@ function createArticleMenu( $menuCacheFile = false, $ini = null,
             // include_once( "ezarticle/classes/ezarticle.php" );
 
             $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                                 "kernel/ezarticle/user/intl", $Language, "menubox.php" );
+                                 "kernel/ezarticle/user/intl", $language, "menubox.php" );
 
             $t->setAllStrings();
 
@@ -64,17 +66,17 @@ function createArticleMenu( $menuCacheFile = false, $ini = null,
 
             $t->set_var( "submit_article", "" );
 
-            $t->set_var( "sitedesign", $GlobalSiteDesign );
+            $t->set_var( "sitedesign", $globalSiteDesign );
 
-            $t->set_var( "section_id", $GlobalSectionID );
+            $t->set_var( "section_id", $globalSectionID );
 
             // List all categories
-            if ( !isset( $CategoryID  ) )
-                $CategoryID = 0;
+            if ( !isset( $categoryID  ) )
+                $categoryID = 0;
                 
             $target = '';
 
-            $articleCategory = new eZArticleCategory( $CategoryID );
+            $articleCategory = new eZArticleCategory( $categoryID );
 
             $articleCategory_array = $articleCategory->getByParent( $articleCategory );
 
@@ -136,7 +138,7 @@ function createArticleMenu( $menuCacheFile = false, $ini = null,
 
 
 // do the caching
-if ( $PageCaching == "enabled" )
+if ( $pageCaching == "enabled" )
 {
     $user = eZUser::currentUser();
     $groupstr = "";
@@ -156,8 +158,8 @@ if ( $PageCaching == "enabled" )
     $menuCacheFile = new eZCacheFile( "kernel/ezarticle/cache",
                                       array( "menubox",
                                              $groupstr,
-                                             $GlobalSiteDesign,
-                                             $CategoryID
+                                             $globalSiteDesign,
+                                             $categoryID
                                              ),
                                       "cache", "," );
 
@@ -166,12 +168,12 @@ if ( $PageCaching == "enabled" )
         print( $menuCacheFile->contents() );
     }
     else{
-        createArticleMenu( $menuCacheFile, $ini, $Language, $GlobalSiteDesign, $GlobalSectionID, $CategoryID, $url_array );
+        createArticleMenu( $menuCacheFile, $ini, $language, $globalSiteDesign, $globalSectionID, $categoryID, $url_array );
     }
 }
 else
 {
-    createArticleMenu( false, $ini, $Language, $GlobalSiteDesign, $GlobalSectionID, $CategoryID, $url_array );
+    createArticleMenu( false, $ini, $language, $globalSiteDesign, $globalSectionID, $categoryID, $url_array );
 }
 
 ?>

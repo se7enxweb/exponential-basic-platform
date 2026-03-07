@@ -32,9 +32,9 @@
 // include_once( "ezmail/classes/ezmailfilterrule.php" );
 // include_once( "ezmail/classes/ezmailfolder.php" );
 
-if( isset( $Ok ) )
+if( isset( $ok ) )
 {
-    if( $FilterID == 0 )
+    if( $filterID == 0 )
     {
         $filter = new eZMailFilterRule();
         $filter->setOwner( eZUser::currentUser() );
@@ -42,19 +42,19 @@ if( isset( $Ok ) )
     }
     else
     {
-        $filter = new eZMailFilterRUle( $FilterID );
+        $filter = new eZMailFilterRUle( $filterID );
     }
 
-    $filter->setHeaderType( $HeaderSelect );
-    $filter->setCheckType( $CheckSelect );
-    $filter->setFolderID( $FolderSelectID );
-    $filter->setMatch( $Match );
+    $filter->setHeaderType( $headerSelect );
+    $filter->setCheckType( $checkSelect );
+    $filter->setFolderID( $folderSelectID );
+    $filter->setMatch( $match );
     $filter->store();
     eZHTTPTool::header( "Location: /mail/config/" );
     exit();
 }
 
-if( isset( $Cancel ) )
+if( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /mail/config/" );
     exit();
@@ -81,10 +81,10 @@ $t->set_var( "match_value", "" );
 $t->set_var( "folder_item", "" );
 $t->set_var( "current_filter_id", "" );
 
-if( $FilterID != 0 ) // someone set us up the bomb
+if( $filterID != 0 ) // someone set us up the bomb
 {
-    $t->set_var( "current_filter_id", $FilterID );
-    $filter = new eZMailFilterRule( $FilterID );
+    $t->set_var( "current_filter_id", $filterID );
+    $filter = new eZMailFilterRule( $filterID );
     $t->set_var( "match_value", htmlspecialchars( $filter->match() ) );
     $headerid = $filter->headerType();
     $checkid = $filter->checkType();

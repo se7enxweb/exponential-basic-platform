@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: articlepreview.php 8216 2001-11-01 19:12:53Z bf $
+// $id: articlepreview.php 8216 2001-11-01 19:12:53Z bf $
 //
 // Created on: <18-Oct-2000 16:34:51 bf>
 //
@@ -34,10 +34,10 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "articlepreview.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "articlepreview.php" );
 
 $t->setAllStrings();
 
@@ -65,7 +65,7 @@ $t->set_block( "image_list_tpl", "image_tpl", "image" );
 
 $article = new eZArticle( );
 
-if ( !$article->get( $ArticleID ) )
+if ( !$article->get( $articleID ) )
 {
     eZHTTPTool::header( "Location: /error/404/" );
     exit();
@@ -77,7 +77,7 @@ $renderer = new eZArticleRenderer( $article );
 $t->set_var( "article_name", $article->name() );
 $t->set_var( "author_text", $article->authorText() );
 
-$articleContents = $renderer->renderPage( $PageNumber -1 );
+$articleContents = $renderer->renderPage( $pageNumber -1 );
         
 $t->set_var( "article_intro", $articleContents[0] );
 $t->set_var( "article_body", $articleContents[1] );
@@ -171,7 +171,7 @@ foreach ( $images as $imageArray ) {
 
             
         $t->set_var( "image_id", $image->id() );
-        $t->set_var( "article_id", $ArticleID );
+        $t->set_var( "article_id", $articleID );
 
         $variation = $image->requestImageVariation( 150, 150 );
 
@@ -211,9 +211,9 @@ else
     $t->set_var( "page_menu_separator", "" );
 }
 
-if ( $PageNumber > 1 )
+if ( $pageNumber > 1 )
 {
-    $t->set_var( "prev_page_number", $PageNumber - 1 );    
+    $t->set_var( "prev_page_number", $pageNumber - 1 );    
     $t->parse( "prev_page_link", "prev_page_link_tpl" );
 }
 else
@@ -221,9 +221,9 @@ else
     $t->set_var( "prev_page_link", "" );
 }
 
-if ( $PageNumber < $pageCount )
+if ( $pageNumber < $pageCount )
 {
-    $t->set_var( "next_page_number", $PageNumber + 1 );    
+    $t->set_var( "next_page_number", $pageNumber + 1 );    
     $t->parse( "next_page_link", "next_page_link_tpl" );
 }
 else

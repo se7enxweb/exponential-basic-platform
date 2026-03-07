@@ -24,7 +24,7 @@
 //
 
 
-$ModuleName = "Products";
+$moduleName = "Products";
 $SearchResult[0]["DetailedSearchPath"] = "/trade/search/";
 $SearchResult[0]["DetailedSearchVariable"] = "Query";
 $SearchResult[0]["DetailViewPath"] = "/trade/productview/";
@@ -34,7 +34,7 @@ $SearchResult[0]["IconPath"] = "/design/base/images/icons/document.gif";
 
 $product = new eZProduct();
 
-$SearchResult[0]["Result"] = $product->activeProductSearch( $SearchText, $Offset, $Limit );
-$SearchResult[0]["SearchCount"] = $product->activeProductSearchCount( $SearchText );
+$SearchResult[0]["Result"] = $product->activeProductSearch( $searchText, $offset, $limit );
+$SearchResult[0]["SearchCount"] = $product->activeProductSearchCount( $searchText );
 
 ?>

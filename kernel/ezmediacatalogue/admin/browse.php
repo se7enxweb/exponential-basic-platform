@@ -40,7 +40,7 @@ $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZMediaCatalogueMain", "Language" );
 
-$MediaDir = $ini->variable( "eZMediaCatalogueMain", "ImageDir" );
+$mediaDir = $ini->variable( "eZMediaCatalogueMain", "ImageDir" );
 
 $t = new eZTemplate( "kernel/ezmediacatalogue/admin/" . $ini->variable( "eZMediaCatalogueMain", "AdminTemplateDir" ),
                      "kernel/ezmediacatalogue/admin/intl/", $Language, "browse.php" );
@@ -86,22 +86,22 @@ $t->set_var( "delete_categories_button" , "" );
 $t->set_var( "default_new" , "" );
 $t->set_var( "default_delete" , "" );
 
-if ( !is_numeric( $CategoryID ) )
-    $CategoryID = 0;
+if ( !is_numeric( $categoryID ) )
+    $categoryID = 0;
     
-$category = new eZMediaCategory( $CategoryID );
+$category = new eZMediaCategory( $categoryID );
 
 // Check if user have permission to the current category
 
 $error = true;
 
 if ( eZObjectPermission::hasPermission( $category->id(), "mediacatalogue_category", "r", $user )
-     || eZMediaCategory::isOwner( $user, $CategoryID ) )
+     || eZMediaCategory::isOwner( $user, $categoryID ) )
 {
     $error = false;
 }
 
-if ( $CategoryID == 0 )
+if ( $categoryID == 0 )
 {
     $t->set_var( "current_category_description", "" );
     $error = false;
@@ -239,9 +239,9 @@ else
     $t->set_var( "media_list", "" );
 }
 
-$t->set_var( "media_dir", $MediaDir );
+$t->set_var( "media_dir", $mediaDir );
 
-$t->set_var( "main_category_id", $CategoryID );
+$t->set_var( "main_category_id", $categoryID );
 
 if ( $error == false )
 {

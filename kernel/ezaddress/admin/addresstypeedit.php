@@ -27,12 +27,12 @@
 // include_once( "ezaddress/classes/ezaddresstype.php" );
 
 $language_file = "addresstype.php";
-$item_type = new eZAddressType( $AddressTypeID );
+$item_type = new eZAddressType( $addressTypeID );
 $item_types = array();
 
-if ( isset( $ItemArrayID ) and is_array( $ItemArrayID ) )
+if ( isset( $itemArrayID ) and is_array( $itemArrayID ) )
 {
-    foreach( $ItemArrayID as $item_id )
+    foreach( $itemArrayID as $item_id )
     {
         $item_types[] = new eZAddressType( $item_id );
     }

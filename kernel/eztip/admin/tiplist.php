@@ -61,10 +61,10 @@ $t->set_block( "tip_item_tpl", "no_image_tpl", "no_image" );
 
 $t->set_var( "site_style", $SiteDesign );
 
-if ( !isset( $CategoryID ) || !is_numeric( $CategoryID ) )
-    $CategoryID = 0;
+if ( !isset( $categoryID ) || !is_numeric( $categoryID ) )
+    $categoryID = 0;
 
-$category = new eZTipCategory( $CategoryID );
+$category = new eZTipCategory( $categoryID );
 
 $t->set_var( "current_category_id", $category->id() );
 $t->set_var( "current_category_name", $category->name() );

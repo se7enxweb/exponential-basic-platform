@@ -26,6 +26,36 @@
 $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZTodoMain", "DefaultSection" );
 
+$action        = eZHTTPTool::getVar( 'Action' );
+$addLog        = eZHTTPTool::getVar( 'AddLog' );
+$cancel        = eZHTTPTool::getVar( 'Cancel' );
+$categoryID    = eZHTTPTool::getVar( 'CategoryID' );
+$comment       = eZHTTPTool::getVar( 'Comment' );
+$deadline      = eZHTTPTool::getVar( 'Deadline' );
+$deadlineDay   = eZHTTPTool::getVar( 'DeadlineDay' );
+$deadlineMonth = eZHTTPTool::getVar( 'DeadlineMonth' );
+$deadlineYear  = eZHTTPTool::getVar( 'DeadlineYear' );
+$delete        = eZHTTPTool::getVar( 'Delete' );
+$deleteArrayID = $_POST['DeleteArrayID'] ?? [];
+$description   = eZHTTPTool::getVar( 'Description' );
+$due           = eZHTTPTool::getVar( 'Due' );
+$edit          = eZHTTPTool::getVar( 'Edit' );
+$getByUserID   = eZHTTPTool::getVar( 'GetByUserID' );
+$isPublic      = eZHTTPTool::getVar( 'IsPublic' );
+$list          = eZHTTPTool::getVar( 'List' );
+$log           = eZHTTPTool::getVar( 'Log' );
+$name          = eZHTTPTool::getVar( 'Name' );
+$new           = eZHTTPTool::getVar( 'New' );
+$notDoneID     = eZHTTPTool::getVar( 'NotDoneID' );
+$ownerID       = eZHTTPTool::getVar( 'OwnerID' );
+$priorityID    = eZHTTPTool::getVar( 'PriorityID' );
+$sendMail      = eZHTTPTool::getVar( 'SendMail' );
+$show          = eZHTTPTool::getVar( 'Show' );
+$showButton    = eZHTTPTool::getVar( 'ShowButton' );
+$statusID      = eZHTTPTool::getVar( 'StatusID' );
+$todoID        = eZHTTPTool::getVar( 'TodoID' );
+$userID        = eZHTTPTool::getVar( 'UserID' );
+
 switch ( $url_array[2] )
 {
     case "" :
@@ -42,37 +72,37 @@ switch ( $url_array[2] )
         {
             case "new":
             {
-                $Action = "new";
+                $action = "new";
                 include( "kernel/eztodo/user/todoedit.php" );
             }
             break;
 
             case "insert":
             {
-                $Action = "insert";
+                $action = "insert";
                 include( "kernel/eztodo/user/todoedit.php" );
             }
             break;
             
             case "edit":
             {
-                $Action = "edit";
-                $TodoID = $url_array[4];
+                $action = "edit";
+                $todoID = $url_array[4];
                 include( "kernel/eztodo/user/todoedit.php" );
             }
             break;
 
             case "update":
             {
-                $Action = "update";
-                $TodoID = $url_array[4];
+                $action = "update";
+                $todoID = $url_array[4];
                 include( "kernel/eztodo/user/todoedit.php" );
             }
             break;
             case "delete":
             {
-                $Action = "delete";
-                $TodoID = $url_array[4];
+                $action = "delete";
+                $todoID = $url_array[4];
                 include( "kernel/eztodo/user/todoedit.php" );
             }
             break;
@@ -83,7 +113,7 @@ switch ( $url_array[2] )
 
     case "todoview":
     {
-        $TodoID = $url_array[3];
+        $todoID = $url_array[3];
         include( "kernel/eztodo/user/todoview.php" );
     }
     break;

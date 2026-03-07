@@ -81,9 +81,9 @@ if ( !$wishlist )
     $wishlist->store();
 }
 
-if ( isset( $Action ) && $Action == "AddToBasket" )
+if ( isset( $action ) && $action == "AddToBasket" )
 {
-    $product = new eZProduct( $ProductID );
+    $product = new eZProduct( $productID );
 
     // check if a product like this is already in the basket.
     // if so-> add the count value.
@@ -96,7 +96,7 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
         {
             $productItem = $item->product();
             // the same product
-            if ( ( $ProductID == $productItem->id() ) && ( $productAddedToWishlist == false ) )
+            if ( ( $productID == $productItem->id() ) && ( $productAddedToWishlist == false ) )
             {
                 $optionValues = $item->optionValues();
 
@@ -111,12 +111,12 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
 
                         $optionValueFound = false;
                         
-                        if ( count( $OptionValueArray ) > 0 )
+                        if ( count( $optionValueArray ) > 0 )
                         {
                             $i=0;
-                            foreach ( $OptionValueArray as $valueItem )
+                            foreach ( $optionValueArray as $valueItem )
                             {
-                                if ( ( $OptionIDArray[$i] == $option->id() )
+                                if ( ( $optionIDArray[$i] == $option->id() )
                                      && ( $valueItem == $value->id() ) )
                                 {
                                     $optionValueFound = true;
@@ -140,7 +140,7 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
                 }
                 else
                 { // product without options
-                    if ( count( $OptionValueArray ) == 0 )
+                    if ( count( $optionValueArray ) == 0 )
                     {
                         $item->setCount( $item->count() + 1 );
                         $item->store();
@@ -160,13 +160,13 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
 
         $wishlistItem->store();
 
-        if ( count( $OptionValueArray ) > 0 )
+        if ( count( $optionValueArray ) > 0 )
         {
             $i = 0;
-            foreach ( $OptionValueArray as $value )
+            foreach ( $optionValueArray as $value )
             {
 
-                $option = new eZOption( $OptionIDArray[$i] );
+                $option = new eZOption( $optionIDArray[$i] );
                 $optionValue = new eZOptionValue( $value );
 
                 $wishlistOption = new eZWishListOptionValue();
@@ -187,10 +187,10 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
 }
 
 
-if ( isset( $Action ) && $Action == "RemoveFromWishlist" )
+if ( isset( $action ) && $action == "RemoveFromWishlist" )
 {
     $wishListItem = new eZWishListItem( );
-    if ( $wishListItem->get( $WishListItemID ) )
+    if ( $wishListItem->get( $wishListItemID ) )
     {
         $wishListItem->delete();
     }
@@ -201,7 +201,7 @@ if ( isset( $Action ) && $Action == "RemoveFromWishlist" )
 }
 
 
-if ( isset( $Action ) && $Action == "Refresh" )
+if ( isset( $action ) && $action == "Refresh" )
 {
     $i=0;
     if ( count( $WishlistIDArray ) > 0 )
@@ -235,24 +235,24 @@ if ( isset( $Action ) && $Action == "Refresh" )
 }
 
 
-if ( isset( $Action ) && $Action == "MoveToCart" )
+if ( isset( $action ) && $action == "MoveToCart" )
 {
     $wishListItem = new eZWishListItem( );
-    if ( $wishListItem->get( $WishListItemID ) )
+    if ( $wishListItem->get( $wishListItemID ) )
     {
         $product = $wishListItem->product();
-        $Quantity = $product->totalQuantity();
+        $quantity = $product->totalQuantity();
         if ( !$product->hasPrice() )
         {
             $optionValues = $wishListItem->optionValues();
-            $Quantity = 0;
+            $quantity = 0;
             foreach ( $optionValues as $optionValue )
             {
                 $option = $optionValue->option();
                 $value = $optionValue->optionValue();
                 $value_quantity = $value->totalQuantity();
                 if ( $value_quantity > 0 )
-                    $Quantity = $value_quantity;
+                    $quantity = $value_quantity;
             }
         }
 
@@ -371,25 +371,25 @@ foreach ( $items as $item )
 
     $optionValues = $item->optionValues();
 
-    $Quantity = $product->totalQuantity();
+    $quantity = $product->totalQuantity();
     if ( !$product->hasPrice() )
     {
-        $Quantity = 0;
+        $quantity = 0;
         foreach ( $optionValues as $optionValue )
         {
             $option = $optionValue->option();
             $value = $optionValue->optionValue();
             $value_quantity = $value->totalQuantity();
             if ( $value_quantity > 0 )
-                $Quantity = $value_quantity;
+                $quantity = $value_quantity;
         }
     }
     $t->set_var( "product_available_item", "" );
     if ( $ShowQuantity )
     {
-        $NamedQuantity = $Quantity;
+        $NamedQuantity = $quantity;
         if ( $ShowNamedQuantity )
-            $NamedQuantity = eZProduct::namedQuantity( $Quantity );
+            $NamedQuantity = eZProduct::namedQuantity( $quantity );
         $t->set_var( "product_availability", $NamedQuantity );
         $t->parse( "product_available_item", "product_available_item_tpl" );
     }
@@ -398,7 +398,7 @@ foreach ( $items as $item )
     $t->set_var( "product_price", $locale->format( $currency ) );
 
     $t->set_var( "wishlist_item_option", "" );
-    $min_quantity = $Quantity;
+    $min_quantity = $quantity;
     foreach ( $optionValues as $optionValue )
     {
         $option = $optionValue->option();

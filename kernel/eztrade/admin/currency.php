@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: currency.php 6233 2001-07-20 11:42:02Z jakobn $
+// $id: currency.php 6233 2001-07-20 11:42:02Z jakobn $
 //
 // Created on: <23-Feb-2001 16:27:56 bf>
 //
@@ -33,21 +33,21 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
-if ( isset( $Action ) && $Action == "Store" )
+if ( isset( $action ) && $action == "Store" )
 {
     $i=0;
-    if ( isset( $CurrencyID ) && count( $CurrencyID ) > 0 )
-    foreach ( $CurrencyID as $id )
+    if ( isset( $currencyID ) && count( $currencyID ) > 0 )
+    foreach ( $currencyID as $id )
     {
         $str = "CurrencyPrefix_" . $id;
         $prefixArray = $$str;
 
         $currency = new eZProductCurrency( $id );
-        $currency->setName( $CurrencyName[$i] );
-        $currency->setSign( $CurrencySign[$i] );
-        $currency->setValue( $CurrencyValue[$i] );
+        $currency->setName( $currencyName[$i] );
+        $currency->setSign( $currencySign[$i] );
+        $currency->setValue( $currencyValue[$i] );
         
         if ( $prefixArray[0] == 1 )
             $currency->setPrefixSign( true );
@@ -67,16 +67,16 @@ if ( isset( $Action ) && $Action == "Store" )
     }
 }
 
-if ( isset( $Action ) && $Action == "AddCurrency" )
+if ( isset( $action ) && $action == "AddCurrency" )
 {
     $currency = new eZProductCurrency( );
     $currency->store();
 }
 
 
-if ( isset( $Action ) && $Action == "DeleteSelected" )
+if ( isset( $action ) && $action == "DeleteSelected" )
 {
-    foreach ( $DeleteID as $id )
+    foreach ( $deleteID as $id )
     {
         $currency = new eZProductCurrency( $id );
         $currency->delete();        
@@ -84,7 +84,7 @@ if ( isset( $Action ) && $Action == "DeleteSelected" )
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "currency.php" );
+                     "kernel/eztrade/admin/intl/", $language, "currency.php" );
 
 $t->setAllStrings();
 

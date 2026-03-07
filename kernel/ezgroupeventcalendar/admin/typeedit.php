@@ -24,7 +24,7 @@
 //
 
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     Header( "Location: /groupeventcalendar/typelist/" );
     exit();
@@ -41,15 +41,15 @@ $LanguageIni = new eZINI( "kernel/ezgroupeventcalendar/admin/intl/" . $Language 
 // include_once( "ezgroupeventcalendar/classes/ezgroupevent.php" );
 // include_once( "ezgroupeventcalendar/classes/ezgroupeventtype.php" );
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $type = new eZGroupEventType();
-    $type->setName( $Name );
-    $type->setDescription( $Description );
+    $type->setName( $name );
+    $type->setDescription( $description );
 
-    if ( $ParentID != 0 && $ParentID != $type->id() )
+    if ( $parentID != 0 && $parentID != $type->id() )
     {
-        $type->setParent( new eZGroupEventType( $ParentID ) );
+        $type->setParent( new eZGroupEventType( $parentID ) );
     }
 
     $type->store();
@@ -58,15 +58,15 @@ if ( $Action == "Insert" )
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
-    $type = new eZGroupEventType( $TypeID );
-    $type->setName( $Name );
-    $type->setDescription( $Description );
+    $type = new eZGroupEventType( $typeID );
+    $type->setName( $name );
+    $type->setDescription( $description );
 
-    if ( $ParentID != 0 && $ParentID != $type->id() )
+    if ( $parentID != 0 && $parentID != $type->id() )
     {
-        $type->setParent( new eZGroupEventType( $ParentID ) );
+        $type->setParent( new eZGroupEventType( $parentID ) );
     }
 
     $type->store();
@@ -75,13 +75,13 @@ if ( $Action == "Update" )
     exit();
 }
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    if ( count ( $TypeArrayID ) != 0 )
+    if ( count ( $typeArrayID ) != 0 )
     {
-        foreach( $TypeArrayID as $TypeID )
+        foreach( $typeArrayID as $typeID )
         {
-            $type = new eZGroupEventType( $TypeID );
+            $type = new eZGroupEventType( $typeID );
             $typeName = $type->name();
 
             $type->delete();
@@ -106,9 +106,9 @@ $t->set_block( "type_edit_tpl", "parent_item_tpl", "parent_item" );
 
 $t->set_var( "parent_is_selected", "selected" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $type = new eZGroupEventType( $TypeID );
+    $type = new eZGroupEventType( $typeID );
     if ( $type->parentID() != 0 )
         $t->set_var( "parent_is_selected", "" );
 }
@@ -136,7 +136,7 @@ foreach ( $typeList as $typeSubList )
     $t->set_var( "parent_id", $typeItem->id() );
     $t->set_var( "parent_is_selected", "" );
 
-    if ( $Action == "Edit" && $type->parentID() == $typeItem->id() )
+    if ( $action == "Edit" && $type->parentID() == $typeItem->id() )
         $t->set_var( "parent_is_selected", "selected" );
 
     if ( $type->id() != $typeItem->id() )
@@ -144,7 +144,7 @@ foreach ( $typeList as $typeSubList )
 }
 
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
     $t->set_var( "header", $LanguageIni->variable( "strings", "edit_appointment_type" ) );
     $t->set_var( "name_value", $type->name() );

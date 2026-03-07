@@ -27,7 +27,7 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$AllowHTML = $ini->variable( "eZForumMain", "AllowHTML" );
+$allowHTML = $ini->variable( "eZForumMain", "AllowHTML" );
 $Language = $ini->variable( "eZForumMain", "Language" );
 
 // include_once( "classes/ezlocale.php" );
@@ -47,7 +47,7 @@ $t->set_file( "message_tpl", "message.tpl"  );
 $t->set_block( "message_tpl", "message_item_tpl", "message_item" );
 $t->set_var( "site_style", $SiteDesign );
 
-$message = new eZForumMessage( $MessageID );
+$message = new eZForumMessage( $messageID );
 $forum = new eZForum( $message->forumID() );
 
 $categories = $forum->categories();
@@ -73,18 +73,18 @@ else
 
 if ( $author->id() == 0 )
 {
-    $MessageAuthor = $anonymous;
+    $messageAuthor = $anonymous;
 }
 else
 {
-    $MessageAuthor = $author->firstName() . " " . $author->lastName();
+    $messageAuthor = $author->firstName() . " " . $author->lastName();
 }
 
-$t->set_var( "user", $MessageAuthor );
+$t->set_var( "user", $messageAuthor );
 $t->set_var( "topic", $message->topic() );
 $t->set_var( "postingtime", $message->postingTime() );
 
-if ( $AllowHTML == "enabled" )
+if ( $allowHTML == "enabled" )
     $t->set_var( "body", $message->body( true ) );
 else
     $t->set_var( "body", nl2br( $message->body( false ) ) );
@@ -132,21 +132,21 @@ foreach ( $messages as $message )
     
     if ( $author->id() == 0 )
     {
-        $MessageAuthor = $anonymous;
+        $messageAuthor = $anonymous;
     }
     else
     {
-        $MessageAuthor = $author->firstName() . " " . $author->lastName();
+        $messageAuthor = $author->firstName() . " " . $author->lastName();
     }
 
-    $t->set_var( "user", $MessageAuthor );
+    $t->set_var( "user", $messageAuthor );
 
     $t->parse( "message_item", "message_item_tpl", true );
     $i++;
 }
 
-$t->set_var( "message_id", $MessageID );
-if ( isset( $GenerateStaticPage ) && $GenerateStaticPage == "true" )
+$t->set_var( "message_id", $messageID );
+if ( isset( $generateStaticPage ) && $generateStaticPage == "true" )
 {
     $fp = eZPBFile::fopen( $cachedFile, "w+");
 

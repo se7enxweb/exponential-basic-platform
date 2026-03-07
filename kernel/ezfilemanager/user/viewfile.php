@@ -44,7 +44,7 @@ $t->setAllStrings();
 $t->set_block( "file_view", "value_tpl", "value" );
 $t->set_block( "file_view", "view_tpl", "view" );
 
-if ( $FileID != 0 )
+if ( $fileID != 0 )
 {
     $file = new eZVirtualFile();
 
@@ -71,7 +71,7 @@ if ( $FileID != 0 )
 }
 
 
-$folder = new eZVirtualFolder( $FolderID );
+$folder = new eZVirtualFolder( $folderID );
 
 $folderList = $folder->getByParent( $folder );
 

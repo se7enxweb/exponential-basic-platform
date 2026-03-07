@@ -32,7 +32,7 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/ezlist.php" );
 
-if( isset( $Ok ) || isset( $New ) )
+if( isset( $ok ) || isset( $new ) )
 {
     eZHTTPTool::header( "Location: /bulkmail/subscriptionlist/" );
     exit();
@@ -60,12 +60,12 @@ $t->set_var( "bulkmail_item", "" );
 
 
 
-if( is_numeric( $CategoryID ) && $CategoryID > 0 )
+if( is_numeric( $categoryID ) && $categoryID > 0 )
 {
-    $category = new eZBulkMailCategory( $CategoryID );
+    $category = new eZBulkMailCategory( $categoryID );
     $t->set_var( "current_category_name", $category->name() );
     $t->set_var( "current_category_id", $category->id() );
-    $mail = $category->mail($Offset, 20, false );
+    $mail = $category->mail($offset, 20, false );
     $mailCount = $category->mailCount();
     $i = 0;
     foreach( $mail as $mailItem )
@@ -98,7 +98,7 @@ if( is_numeric( $CategoryID ) && $CategoryID > 0 )
 
 }
 
-eZList::drawNavigator( $t, $mailCount, 20, $Offset, "bulk_list_tpl" );
+eZList::drawNavigator( $t, $mailCount, 20, $offset, "bulk_list_tpl" );
 $t->pparse( "output", "bulk_list_tpl" );
 
 ?>

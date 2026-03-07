@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: companyedit.php 6318 2001-07-31 11:33:12Z jhe $
+// $id: companyedit.php 6318 2001-07-31 11:33:12Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -28,7 +28,7 @@
   it has so many similar elements.
 */
 
-$CompanyEdit = true;
+$companyEdit = true;
 
 include( "kernel/ezcontact/admin/personedit.php" );
 

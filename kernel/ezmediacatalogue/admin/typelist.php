@@ -35,9 +35,9 @@ $Language = $ini->variable( "eZMediaCatalogueMain", "Language" );
 // include_once( "ezmediacatalogue/classes/ezmedia.php" );
 // include_once( "ezmediacatalogue/classes/ezmediatype.php" );
 
-if( isset( $Delete ) )
+if( isset( $delete ) )
 {
-    foreach( $DeleteArrayID as $typeid )
+    foreach( $deleteArrayID as $typeid )
     {
         $typed = new eZMediaType( $typeid );
         $typed->delete();

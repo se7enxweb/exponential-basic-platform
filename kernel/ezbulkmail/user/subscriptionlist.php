@@ -58,18 +58,18 @@ else
 
 
 
-if( isset ( $Ok ) )
+if( isset ( $ok ) )
 {
     $subscriptionaddress->unsubscribe( true );
 
-    foreach( $CategoryArrayID as $categoryID )
+    foreach( $categoryArrayID as $categoryID )
     {
         $subscriptionaddress->subscribe( $categoryID );
     }
 
-    for( $i=0;$i<count($CategoryAll);$i++ )
+    for( $i=0;$i<count($categoryAll);$i++ )
     {
-        $subscriptionaddress->addDelay( $CategoryAll[$i], $SendDelay[$i] );
+        $subscriptionaddress->addDelay( $categoryAll[$i], $sendDelay[$i] );
     }
 
     /** TODO: Create a confirmation dialog to send the user to... let him either edit or do nothing...**/

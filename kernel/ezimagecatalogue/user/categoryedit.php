@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: categoryedit.php 9450 2002-04-22 12:58:55Z jhe $
+// $id: categoryedit.php 9450 2002-04-22 12:58:55Z jhe $
 //
 // Created on: <08-Jan-2001 11:13:29 ce>
 //
@@ -38,7 +38,7 @@
 
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /imagecatalogue/image/list/" );
     exit();
@@ -54,10 +54,10 @@ if ( !$user )
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZImageCatalogueMain", "Language" );
+$language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezimagecatalogue/user/" . $ini->variable( "eZImageCatalogueMain", "TemplateDir" ),
-                     "kernel/ezimagecatalogue/user/intl/", $Language, "categoryedit.php" );
+                     "kernel/ezimagecatalogue/user/intl/", $language, "categoryedit.php" );
 
 $t->set_file( "category_edit_tpl", "categoryedit.tpl" );
 
@@ -71,8 +71,8 @@ $t->set_block( "category_edit_tpl", "read_group_item_tpl", "read_group_item" );
 $t->set_block( "category_edit_tpl", "upload_group_item_tpl", "upload_group_item" );
 
 $t->set_var( "errors", "" );
-$t->set_var( "category_name", "$Name" );
-$t->set_var( "category_description", "$Description" );
+$t->set_var( "category_name", "$name" );
+$t->set_var( "category_description", "$description" );
 
 $t->set_block( "errors_tpl", "error_write_permission", "error_write" );
 $t->set_var( "error_write", "" );
@@ -97,13 +97,13 @@ $permissionCheck = true;
 $nameCheck = true;
 $descriptionCheck = true;
 
-if ( $Action == "Insert" || $Action == "Update" )
+if ( $action == "Insert" || $action == "Update" )
 {
     // Check if the user have write access to the category
     if ( $permissionCheck )
     {
         // Parent is null, need only check for write to root
-        if ( $ParentID == 0 )
+        if ( $parentID == 0 )
         {
             if ( !eZPermission::checkPermission( $user, "eZImageCatalogue", "WriteToRoot"  ) )
                 $error = true;
@@ -111,12 +111,12 @@ if ( $Action == "Insert" || $Action == "Update" )
         else
         {
             // new category, check parent permissions
-            if ( $CategoryID == 0 && !eZObjectPermission::hasPermission( $ParentID, "imagecatalogue_category", "w", $user ) &&
-                 !eZObjectPermission::hasPermission( $ParentID, "imagecatalogue_category", 'u', $user ) )
+            if ( $categoryID == 0 && !eZObjectPermission::hasPermission( $parentID, "imagecatalogue_category", "w", $user ) &&
+                 !eZObjectPermission::hasPermission( $parentID, "imagecatalogue_category", 'u', $user ) )
                 $error = true;
 
-            if ( $Action == "Update" && !eZObjectPermission::hasPermission( $CategoryID, "imagecatalogue_category", 'w' ) &&
-                eZImageCategory::isOwner($user, $CategoryID) )
+            if ( $action == "Update" && !eZObjectPermission::hasPermission( $categoryID, "imagecatalogue_category", 'w' ) &&
+                eZImageCategory::isOwner($user, $categoryID) )
                 $error = true;
         }
         if ( $error )
@@ -124,9 +124,9 @@ if ( $Action == "Insert" || $Action == "Update" )
     }
 
     // Check if parent is the same as category.
-    if ( $Action == "Update" )
+    if ( $action == "Update" )
     {
-        if ( $ParentID == $CategoryID )
+        if ( $parentID == $categoryID )
         {
             $t->parse( "error_parent_check", "error_parent_check_tpl" );
             $error = true;
@@ -136,7 +136,7 @@ if ( $Action == "Insert" || $Action == "Update" )
     // Check if name is empty.
     if ( $nameCheck )
     {
-        if ( empty( $Name ) )
+        if ( empty( $name ) )
         {
             $t->parse( "error_name", "error_name_tpl" );
             $error = true;
@@ -146,7 +146,7 @@ if ( $Action == "Insert" || $Action == "Update" )
     // Check if description is empty.
     if ( $descriptionCheck )
     {
-        if ( empty( $Description ) )
+        if ( empty( $description ) )
         {
             $t->parse( "error_description", "error_description_tpl" );
             $error = true;
@@ -162,29 +162,29 @@ if ( $Action == "Insert" || $Action == "Update" )
 }
 
 // Insert or update a category
-if ( ( $Action == "Insert" || $Action == "Update" ) && $error == false )
+if ( ( $action == "Insert" || $action == "Update" ) && $error == false )
 {
-    if ( $Action == "Insert" )
+    if ( $action == "Insert" )
     {
         $category = new eZImageCategory();
         $category->setUser( $user );
     }
     else
     {
-        $category = new eZImageCategory( $CategoryID );
+        $category = new eZImageCategory( $categoryID );
     }
 
-    $category->setName( $Name );
-    $category->setDescription( $Description );
+    $category->setName( $name );
+    $category->setDescription( $description );
 
     
-    $parent = new eZImageCategory( $ParentID );
+    $parent = new eZImageCategory( $parentID );
     $category->setParent( $parent );
 
     // Set section id.
-    if ( $ParentID > 0 )
+    if ( $parentID > 0 )
     {
-        $sectionID = $parent->sectionID( $ParentID );
+        $sectionID = $parent->sectionID( $parentID );
     }
     else
     {
@@ -193,18 +193,18 @@ if ( ( $Action == "Insert" || $Action == "Update" ) && $error == false )
     $category->setSectionID( $sectionID );
 
     $category->store();
-    $CategoryID = $category->id();
-    changePermissions( $CategoryID, $ReadGroupArrayID, 'r' );
-    changePermissions( $CategoryID, $WriteGroupArrayID, 'w' );
-    changePermissions( $CategoryID, $UploadGroupArrayID, 'u' );
+    $categoryID = $category->id();
+    changePermissions( $categoryID, $readGroupArrayID, 'r' );
+    changePermissions( $categoryID, $writeGroupArrayID, 'w' );
+    changePermissions( $categoryID, $uploadGroupArrayID, 'u' );
 
     // check if user uploaded a dir and had upload permission only and is not owner.
-    if ( $Action == "Insert" && eZObjectPermission::hasPermission( $ParentID, "imagecatalogue_category", 'w' ) == false &&
+    if ( $action == "Insert" && eZObjectPermission::hasPermission( $parentID, "imagecatalogue_category", 'w' ) == false &&
     $parent->user( false ) != $user->id() )
     {
-        changePermissions( $CategoryID, eZObjectPermission::getGroups( $ParentID, "imagecatalogue_category", 'r', false ), 'r' );
-        changePermissions( $CategoryID, eZObjectPermission::getGroups( $ParentID, "imagecatalogue_category", 'w', false ), 'w' );
-        changePermissions( $CategoryID, eZObjectPermission::getGroups( $ParentID, "imagecatalogue_category", 'u', false ), 'u' );
+        changePermissions( $categoryID, eZObjectPermission::getGroups( $parentID, "imagecatalogue_category", 'r', false ), 'r' );
+        changePermissions( $categoryID, eZObjectPermission::getGroups( $parentID, "imagecatalogue_category", 'w', false ), 'w' );
+        changePermissions( $categoryID, eZObjectPermission::getGroups( $parentID, "imagecatalogue_category", 'u', false ), 'u' );
         $category->setUser( $parent->user() );
         $category->store();
     }
@@ -212,7 +212,7 @@ if ( ( $Action == "Insert" || $Action == "Update" ) && $error == false )
     // TODO: this part has to be extended on imagefolder to support images in multiple categories..
     // update is not possible anymore...
     /*
-    if ( $Action == "Update" && eZObjectPermission::hasPermission( $ParentID, "imagecatalogue_category", 'w' ) == false
+    if ( $action == "Update" && eZObjectPermission::hasPermission( $parentID, "imagecatalogue_category", 'w' ) == false
     && $parent->user( false ) != $user->id() )
     {
         // recursivly edit permissions on all file and folders...
@@ -242,25 +242,25 @@ if ( ( $Action == "Insert" || $Action == "Update" ) && $error == false )
         }
     }
     */
-    eZHTTPTool::header( "Location: /imagecatalogue/image/list/$ParentID" );
+    eZHTTPTool::header( "Location: /imagecatalogue/image/list/$parentID" );
     exit();
 }
 
 // Delete the selected categories.
-if ( $Action == "Delete" && $error == false )
+if ( $action == "Delete" && $error == false )
 {
-    if ( count( $CategoryArrayID ) > 0 )
+    if ( count( $categoryArrayID ) > 0 )
     {
-        foreach ( $CategoryArrayID as $CategoryID )
+        foreach ( $categoryArrayID as $categoryID )
         {
-            $category = new eZImageCategory( $CategoryID );
+            $category = new eZImageCategory( $categoryID );
             $category->delete();
         }
     }
 }
     
 // Insert default values when creating a new category.
-if ( $Action == "New" || $error )
+if ( $action == "New" || $error )
 {
     $t->set_var( "action_value", "insert" );
     $t->set_var( "category_id", "" );
@@ -270,9 +270,9 @@ if ( $Action == "New" || $error )
 }
 
 // Insert the category values when editing.
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $category = new eZImageCategory( $CategoryID );
+    $category = new eZImageCategory( $categoryID );
 
     $t->set_var( "category_name", $category->name() );
     $t->set_var( "category_id", $category->id() );
@@ -281,7 +281,7 @@ if ( $Action == "Edit" )
     $parent = $category->parent();
     $sectionID = $category->sectionID();
     if ( $parent )
-        $CurrentCategoryID = $parent->id();
+        $currentCategoryID = $parent->id();
 
     $t->set_var( "action_value", "update" );
 
@@ -370,9 +370,9 @@ foreach ( $categoryList as $categoryItem )
 
         $t->set_var( "is_selected", "" );
 
-        if ( $CurrentCategoryID != 0 )
+        if ( $currentCategoryID != 0 )
         {
-            if ( $categoryItem[0]->id() == $CurrentCategoryID )
+            if ( $categoryItem[0]->id() == $currentCategoryID )
             {
                 $t->set_var( "is_selected", "selected" );
             }

@@ -25,7 +25,7 @@
     $offset = $url_array[4];
     
     // Eliminar surveys
-    if ( isset( $DeleteSelected ) && isset( $formDelete ) )
+    if ( isset( $deleteSelected ) && isset( $formDelete ) )
     {
         foreach( $formDelete as $formDelete )
         {

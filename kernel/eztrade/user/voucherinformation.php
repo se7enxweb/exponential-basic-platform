@@ -74,20 +74,20 @@ $t->set_var( "from_email", "" );
 
 $user = eZUser::currentUser();
 
-$product = new eZProduct( $ProductID );
+$product = new eZProduct( $productID );
 
-if ( $product && isset( $OK ) )
+if ( $product && isset( $ok ) )
 {
     $voucherInfo = new eZVoucherInformation();
             
-    if ( $Mail == 1 )
+    if ( $mail == 1 )
     {
         $online = new eZOnline();
-        $online->setUrl( $Email );
+        $online->setUrl( $email );
         $online->store();
         $voucherInfo->setEmail( $online );
     }
-    else if ( $Mail == 2 )
+    else if ( $mail == 2 )
     {
         $toAddress = new eZAddress();
         $toAddress->setName( $ToName );
@@ -112,21 +112,21 @@ if ( $product && isset( $OK ) )
     $online->setUrl( $FromEmail );
     $online->store();
     $voucherInfo->setFromEmail( $online );
-    $voucherInfo->setMailMethod( $Mail );
+    $voucherInfo->setMailMethod( $mail );
     $voucherInfo->setFromName( $FromName );
     $voucherInfo->setFromName( $FromName );
     $voucherInfo->setToName( $ToName );
     $voucherInfo->setProduct( $product );
     
-    $voucherInfo->setDescription( $Description );
+    $voucherInfo->setDescription( $description );
 
-    if ( $Price == 0 )
+    if ( $price == 0 )
     {
         $priceRange = $product->priceRange();
         $voucherInfo->setPrice( $priceRange->min() );
     }
     else
-        $voucherInfo->setPrice( $Price );
+        $voucherInfo->setPrice( $price );
 
 
     $voucherInfo->store();
@@ -135,9 +135,9 @@ if ( $product && isset( $OK ) )
 
     $session->setVariable( "VoucherInformationID", $voucherInformationID );
 
-    if ( isset ( $OK ) && $voucherInformationID )
+    if ( isset ( $ok ) && $voucherInformationID )
     {
-        eZHTTPTool::header( "Location: /trade/cart/add/$ProductID/" );
+        eZHTTPTool::header( "Location: /trade/cart/add/$productID/" );
         exit();
     }
 }
@@ -156,22 +156,22 @@ else if ( $product )
 
     if ( $error )
     {
-        eZHTTPTool::header( "Location: /trade/productview/$ProductID/" );
+        eZHTTPTool::header( "Location: /trade/productview/$productID/" );
         exit();
     }
 
-    if ( $MailMethod == 1 )
+    if ( $mailMethod == 1 )
     {
         $t->set_var( "smail", "" );
         $t->parse( "email", "email_tpl" );
     }
-    else if ( $MailMethod == 2 )
+    else if ( $mailMethod == 2 )
     {
         $t->set_var( "email", "" );
         $t->parse( "smail", "smail_tpl" );
     }
 
-    $t->set_var( "mail_method", $MailMethod );
+    $t->set_var( "mail_method", $mailMethod );
     $t->set_var( "product_name", $product->name() );
     $t->set_var( "product_id", $product->id() );
 

@@ -31,26 +31,26 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/INIFile.php" );
 
-if( isset( $Cancel ) ) // cancel pressed, redirect to categorylist page...
+if( isset( $cancel ) ) // cancel pressed, redirect to categorylist page...
 {
     eZHTTPTool::header( "Location: /bulkmail/categorylist/" );
     exit();
 }
 
-if( isset( $Ok ) ) // cancel pressed, redirect to categorylist page...
+if( isset( $ok ) ) // cancel pressed, redirect to categorylist page...
 {
-    if( $CategoryID == 0 )
+    if( $categoryID == 0 )
     {
         $category = new eZBulkMailCategory();
     }
     else
     {
-        $category = new eZBulkMailCategory( $CategoryID );
+        $category = new eZBulkMailCategory( $categoryID );
     }
-    $category->setDescription( $Description );
-    $category->setName( $Name );
+    $category->setDescription( $description );
+    $category->setName( $name );
 
-    if( isset( $PublicList ) )
+    if( isset( $publicList ) )
         $category->setIsPublic( true );
     else
         $category->setIsPublic( false );
@@ -58,9 +58,9 @@ if( isset( $Ok ) ) // cancel pressed, redirect to categorylist page...
     $category->store();
 
     $category->removeGroupSubscription( true );
-    if( count( $SubscriptionGroupsArrayID ) > 0 )
+    if( count( $subscriptionGroupsArrayID ) > 0 )
     {
-        foreach( $SubscriptionGroupsArrayID as $groupID )
+        foreach( $subscriptionGroupsArrayID as $groupID )
             $category->addGroupSubscription( $groupID );
     }
     $id = $category->id();
@@ -81,14 +81,14 @@ $t->set_var( "site_style", $SiteDesign );
 
 $t->set_var( "category_name", "" );
 $t->set_var( "description", "" );
-$t->set_var( "category_id", $CategoryID );
+$t->set_var( "category_id", $categoryID );
 $t->set_var( "subscribe_group_item", "" );
 $t->set_var( "checked", "checked" );
 
 $subscribedGroups = array();
-if( $CategoryID != 0  )
+if( $categoryID != 0  )
 {
-    $category = new eZBulkMailCategory( $CategoryID );
+    $category = new eZBulkMailCategory( $categoryID );
     if( is_object( $category ) )
     {
         $t->set_var( "category_name", $category->name() );

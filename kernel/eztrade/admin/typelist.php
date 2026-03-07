@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: typelist.php 6233 2001-07-20 11:42:02Z jakobn $
+// $id: typelist.php 6233 2001-07-20 11:42:02Z jakobn $
 //
 // Created on: <20-Dec-2000 18:18:28 bf>
 //
@@ -29,15 +29,15 @@
 // include_once( "classes/ezcurrency.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
 // include_once( "eztrade/classes/ezproducttype.php" );
 
-if( isset( $Delete ) )
+if( isset( $delete ) )
 {
-    foreach( $DeleteArrayID as $typeid )
+    foreach( $deleteArrayID as $typeid )
     {
         $typed = new eZProductType( $typeid );
         $typed->delete();
@@ -45,7 +45,7 @@ if( isset( $Delete ) )
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "typelist.php" );
+                     "kernel/eztrade/admin/intl/", $language, "typelist.php" );
 
 $t->setAllStrings();
 
@@ -58,7 +58,7 @@ $t->set_file( array(
 $t->set_block( "type_list_page_tpl", "type_list_tpl", "type_list" );
 $t->set_block( "type_list_tpl", "type_item_tpl", "type_item" );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
 $type = new eZProductType(  );
 

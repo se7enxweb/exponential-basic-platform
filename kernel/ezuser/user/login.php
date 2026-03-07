@@ -33,6 +33,12 @@ $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
 $UserWithAddress = $ini->variable( "eZUserMain", "UserWithAddress" );
 
+$Forgot = eZHTTPTool::getVar( "Forgot" );
+$Register = eZHTTPTool::getVar( "Register" );
+$Username = eZHTTPTool::getVar( "Username" );
+$Password = eZHTTPTool::getVar( "Password" );
+$RedirectURL = eZHTTPTool::getVar( "RedirectURL" );
+
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezmodule.php" );
@@ -47,7 +53,7 @@ if ( isset( $Forgot ) )
 
 if ( isset( $Register ) )
 {
-    if ( $UserWidthAddress == "enabled" )
+    if ( $UserWithAddress == "enabled" )
     {
         eZHTTPTool::header( "Location: /user/userwithaddress/new/" );
     }
@@ -80,7 +86,7 @@ $t->set_var( "buttons", "" );
 if ( isset( $Action ) && $Action == "login" )
 {
     $user = new eZUser();
-    $user = $user->validateUser( $_REQUEST['Username'], $_REQUEST['Password'] );    
+    $user = $user->validateUser( $Username, $Password );    
 
     if ( $user )
     {
@@ -100,7 +106,7 @@ if ( isset( $Action ) && $Action == "login" )
             
             if ( ( $MaxLogins  == "0" ) || ( $logins < $MaxLogins ) )
             {
-                eZPBLog::writeNotice( "User login: $Username from IP: $REMOTE_ADDR" );
+                eZPBLog::writeNotice( "User login: $Username from IP: " . $_SERVER['REMOTE_ADDR'] );
                 eZUser::loginUser( $user );
                 
                 if ( $user->cookieLogin() == true )
@@ -114,9 +120,9 @@ if ( isset( $Action ) && $Action == "login" )
                     eZHTTPTool::header( "Location: " . $mainGroup->groupURL() );
                     exit();
                 }
-                else if ( isset( $_REQUEST['RedirectURL'] ) )
+                else if ( $RedirectURL )
                 {
-                    $stringTmp = preg_split( "/", $_REQUEST['RedirectURL'] );
+                    $stringTmp = explode( '/', $RedirectURL );
                     
                     if ( $stringTmp[2] == "norights" )
                     {
@@ -125,12 +131,12 @@ if ( isset( $Action ) && $Action == "login" )
                     }
                     else
                     {
-                        if ( $_REQUEST['RedirectURL'] == "" )
+                        if ( $RedirectURL == "" )
                         {
-                            $_REQUEST['RedirectURL'] = "/";
+                            $RedirectURL = "/";
                         }
 
-                        eZHTTPTool::header( "Location: ".$_REQUEST['RedirectURL'] );
+                        eZHTTPTool::header( "Location: ".$RedirectURL );
                         exit();
                     }
                 }
@@ -142,30 +148,25 @@ if ( isset( $Action ) && $Action == "login" )
             }
             else
             {
-                eZPBLog::writeWarning( "Max limit reached: $Username from IP: $REMOTE_ADDR" );
+                eZPBLog::writeWarning( "Max limit reached: $Username from IP: " . $_SERVER['REMOTE_ADDR'] );
                 eZHTTPTool::header( "Location: /user/norights/?Error=MaxLogins&RedirectURL=$RedirectURL" );
                 exit();
             }
         }
         else
         {
-            eZPBLog::writeError( "Couldn't recieve userinformastion on : $Username from IP: $REMOTE_ADDR" );
+            eZPBLog::writeError( "Couldn't recieve userinformastion on : $Username from IP: " . $_SERVER['REMOTE_ADDR'] );
             eZHTTPTool::header( "Location: /user/norights/?Error=UnknownError&RedirectURL=$RedirectURL" );
             exit();
         }
     }
     else
     {
-        eZPBLog::writeWarning( "Bad login: $Username from IP: $REMOTE_ADDR" );
+        eZPBLog::writeWarning( "Bad login: $Username from IP: " . $_SERVER['REMOTE_ADDR'] );
         eZHTTPTool::header( "Location: /user/norights/?Error=WrongPassword&RedirectURL=$RedirectURL" );
         exit();
     }
     
-}
-else
-{
-    if( !isset( $RedirectURL ) )
-        $RedirectURL = false;
 }
 
 if ( isset( $Action ) && $Action == "logout" )

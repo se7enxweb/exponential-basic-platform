@@ -34,14 +34,14 @@
 // include_once( "ezmail/classes/ezmailfolder.php" );
 
 /** If user wants to move folders **/
-if( isset( $Move ) && count( $FolderArrayID ) > 0 && $FolderSelectID != -1)
+if( isset( $move ) && count( $folderArrayID ) > 0 && $folderSelectID != -1)
 {
-    foreach( $FolderArrayID as $folderID )
+    foreach( $folderArrayID as $folderID )
     {
         $folder = new eZMailFolder( $folderID );
-        if( $folder->folderType() == USER && $folder->id() != $FolderSelectID )
+        if( $folder->folderType() == USER && $folder->id() != $folderSelectID )
         {
-            $folder->setParent( $FolderSelectID );
+            $folder->setParent( $folderSelectID );
             $folder->store();
         }
     }
@@ -50,21 +50,21 @@ if( isset( $Move ) && count( $FolderArrayID ) > 0 && $FolderSelectID != -1)
 }
 
 /** If user wants to delete folders **/
-if( isset( $Delete ) && count( $FolderArrayID ) > 0 )
+if( isset( $delete ) && count( $folderArrayID ) > 0 )
 {
-    foreach( $FolderArrayID as $folderID )
+    foreach( $folderArrayID as $folderID )
         eZMailFolder::delete( $folderID );
 }
 
 /** If user wants to create a folder **/
-if( isset( $NewFolder ) )
+if( isset( $newFolder ) )
 {
     eZHTTPTool::header( "Location: /mail/folderedit/" );
     exit();
 }
 
 /** User pressed EmptyTrash **/
-if( isset( $EmptyTrash ) )
+if( isset( $emptyTrash ) )
 {
     $trash = eZMailFolder::getSpecialFolder( TRASH );
     $trash->deleteAll();

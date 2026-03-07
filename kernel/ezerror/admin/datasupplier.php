@@ -25,8 +25,11 @@
 
 ////////////////////////////////////////////
 // Set Redirect (Keep Site Errors Clean by Redirecting Away from It After 7 Seconds
-$MetaRedirectLocation = "http://". $ini->variable( "site", "UserSiteURL" ) ."/";
-$MetaRedirectTimer = "5";
+$metaRedirectLocation = "http://". $ini->variable( "site", "UserSiteURL" ) ."/";
+$metaRedirectTimer = "5";
+
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$info = eZHTTPTool::getVar( 'Info' );
 
 
 switch( $url_array[2] )

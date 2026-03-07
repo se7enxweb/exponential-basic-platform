@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: topiclist.php 6206 2001-07-19 12:19:22Z jakobn $
+// $id: topiclist.php 6206 2001-07-19 12:19:22Z jakobn $
 //
 // Created on: <01-Jun-2001 11:58:53 bf>
 //
@@ -30,16 +30,19 @@
 
 // include_once( "ezarticle/classes/eztopic.php" );
 
-if ( isset( $NewTopic ) )
+$ini = eZINI::instance( 'site.ini' );
+$language = $ini->variable( "eZArticleMain", "Language" );
+
+if ( isset( $newTopic ) )
 {
     $i=0;
-    if ( count( $IDArray ) > 0 )
+    if ( count( $iDArray ) > 0 )
     {
-        foreach ( $IDArray as $id )
+        foreach ( $iDArray as $id )
         {
             $topic = new eZTopic( $id );
-            $topic->setDescription( $Description[$i] );
-            $topic->setName( $Name[$i] );
+            $topic->setDescription( $description[$i] );
+            $topic->setName( $name[$i] );
             $topic->store();
 
             $i++;
@@ -49,25 +52,25 @@ if ( isset( $NewTopic ) )
     $topic->store();    
 }
 
-if ( isset( $DeleteTopic ) )
+if ( isset( $deleteTopic ) )
 {
-    foreach ( $DeleteIDArray as $id )
+    foreach ( $deleteIDArray as $id )
     {
         $topic = new eZTopic( $id );
         $topic->delete();
     }
 }
 
-if ( isset( $Store ) )
+if ( isset( $store ) )
 {
     $i=0;
-    if ( count( $IDArray ) > 0 )
+    if ( count( $iDArray ) > 0 )
     {
-        foreach ( $IDArray as $id )
+        foreach ( $iDArray as $id )
         {
             $topic = new eZTopic( $id );
-            $topic->setDescription( $Description[$i] );
-            $topic->setName( $Name[$i] );
+            $topic->setDescription( $description[$i] );
+            $topic->setName( $name[$i] );
             $topic->store();
 
             $i++;
@@ -76,9 +79,9 @@ if ( isset( $Store ) )
 }
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZUserMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl", $Language, "topiclist.php" );
+                     "kernel/ezarticle/admin/intl", $language, "topiclist.php" );
 
-$locale = new eZLocale( $Language ); 
+$locale = new eZLocale( $language ); 
 
 $t->set_file( "topic_page_tpl", "topiclist.tpl" );
 

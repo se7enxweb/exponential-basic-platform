@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: consultationtypelist.php 6927 2001-09-04 12:06:17Z jhe $
+// $id: consultationtypelist.php 6927 2001-09-04 12:06:17Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -47,7 +47,7 @@ $language_file = "consultationtype.php";
 $page_path = "/contact/consultationtype";
 $item_type_array = eZConsultationType::findTypes();
 $move_item = true;
-$SortPage = "/contact/consultationtype/edit";
+$sortPage = "/contact/consultationtype/edit";
 
 include( "kernel/ezcontact/admin/typelist.php" );
 

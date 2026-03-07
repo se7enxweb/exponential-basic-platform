@@ -28,23 +28,23 @@ $PageCaching = $ini->variable( "eZTradeMain", "PageCaching");
 
 $PureStatic = "false";
 
-unset( $CacheFile );
+unset( $cacheFile );
 
-$GenerateStaticPage = "false";
+$generateStaticPage = "false";
 if ( $PageCaching == "enabled" )
 {
     // include_once( "classes/ezcachefile.php" );
-    $CacheFile = new eZCacheFile( "kernel/eztrade/cache/",
-                                  array( "smallproductlist", $CategoryID, $GlobalSiteDesign ), 
+    $cacheFile = new eZCacheFile( "kernel/eztrade/cache/",
+                                  array( "smallproductlist", $categoryID, $GlobalSiteDesign ), 
                                   "cache", "," );
-    if ( $CacheFile->exists() )
+    if ( $cacheFile->exists() )
     {
-        include( $CacheFile->filename( true ) );
+        include( $cacheFile->filename( true ) );
         $PureStatic = "true";
     }
     else
     {
-        $GenerateStaticPage = "true";
+        $generateStaticPage = "true";
     }
 }
 
@@ -76,11 +76,11 @@ if ( $PureStatic != "true" )
 
     $t->setAllStrings();
 
-    $category = new eZProductCategory( $CategoryID );
+    $category = new eZProductCategory( $categoryID );
 
-    $productList = $category->activeProducts( $category->sortMode(), 0, $Limit, $CategoryID );
+    $productList = $category->activeProducts( $category->sortMode(), 0, $limit, $categoryID );
     $t->set_var( "sitedesign", $GlobalSiteDesign );
-    $t->set_var( "category_id", $CategoryID );
+    $t->set_var( "category_id", $categoryID );
     $t->set_var( "category_name", $category->name() );
     $user = eZUser::currentUser();
 
@@ -118,12 +118,12 @@ if ( $PureStatic != "true" )
         $t->parse( "product_list", "product_list_tpl" );
     }
 
-    if ( $GenerateStaticPage == "true" )
+    if ( $generateStaticPage == "true" )
     {
         $output = $t->parse( "output", "product_list_page_tpl" );
         // print the output the first time while printing the cache file.
         print( $output );
-        $CacheFile->store( $output );
+        $cacheFile->store( $output );
     }
     else
     {

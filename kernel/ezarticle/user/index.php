@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: index.php 7506 2001-09-27 10:26:56Z bf $
+// $id: index.php 7506 2001-09-27 10:26:56Z bf $
 //
 // Created on: <27-Apr-2001 10:15:40 amos>
 //
@@ -32,10 +32,10 @@
 // include_once( "ezarticle/classes/ezarticle.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "index.php" );
+                     "kernel/ezarticle/user/intl/", $language, "index.php" );
 
 $t->setAllStrings();
 
@@ -50,12 +50,12 @@ $t->set_var( "index_item", "" );
 
 $letterArray = eZArticle::keywordFirstLetters();
 
-if (  !in_array( $CurrentIndex, $letterArray ) )
+if (  !in_array( $currentIndex, $letterArray ) )
 {
-    $CurrentIndex = $letterArray[0];
+    $currentIndex = $letterArray[0];
 }
 
-$t->set_var( "current_letter", $CurrentIndex );
+$t->set_var( "current_letter", $currentIndex );
 
 
 foreach ( $letterArray as $letter )
@@ -65,7 +65,7 @@ foreach ( $letterArray as $letter )
 }
 
 
-$indexes = eZArticle::manualKeywordIndex( $CurrentIndex );
+$indexes = eZArticle::manualKeywordIndex( $currentIndex );
 foreach( $indexes as $indexKeyword )
 {
     $t->set_var( "article_item", "" );
@@ -88,7 +88,7 @@ foreach( $indexes as $indexKeyword )
     $t->parse( "index_item", "index_item_tpl", true);
 }
 
-if ( $GenerateStaticPage == "true" and $cachedFile != "" )
+if ( $generateStaticPage == "true" and $cachedFile != "" )
 {
     $fp = eZPBFile::fopen( $cachedFile, "w+");
     $output = $t->parse( "output", "index_tpl" );

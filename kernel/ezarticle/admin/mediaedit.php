@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: mediaedit.php 8206 2001-11-01 18:13:26Z ce $
+// $id: mediaedit.php 8206 2001-11-01 18:13:26Z ce $
 //
 // Created on: <21-Sep-2000 10:32:36 bf>
 //
@@ -34,39 +34,39 @@
 // include_once( "ezuser/classes/ezauthor.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
 // include_once( "ezarticle/classes/ezarticle.php" );
 
-if ( isset ( $OK ) )
+if ( isset ( $ok ) )
 {
     $file = new eZMediaFile();
 
-    $article = new eZArticle( $ArticleID );
-    if ( is_numeric( $MediaID ) )
-        $media = new eZMedia( $MediaID );
+    $article = new eZArticle( $articleID );
+    if ( is_numeric( $mediaID ) )
+        $media = new eZMedia( $mediaID );
     else
         $media = new eZMedia( );
 
-    if ( trim( $NewCreatorName ) != "" &&
-         trim( $NewCreatorEmail ) != ""
+    if ( trim( $newCreatorName ) != "" &&
+         trim( $newCreatorEmail ) != ""
          )
     {
         $author = new eZAuthor( );
-        $author->setName( $NewCreatorName );
-        $author->setEmail( $NewCreatorEmail );
+        $author->setName( $newCreatorName );
+        $author->setEmail( $newCreatorEmail );
         $author->store();
         $media->setPhotographer( $author );
     }
     else
     {
-        $media->setPhotographer( $PhotoID );
+        $media->setPhotographer( $photoID );
     }
 
-    $media->setName( $Name );
-    $media->setCaption( $Caption );
-    $media->setDescription( $Description );
+    $media->setName( $name );
+    $media->setCaption( $caption );
+    $media->setDescription( $description );
     if ( $file->getUploadedFile( "userfile" ) )
     {
         $media->setMedia( $file );
@@ -78,7 +78,7 @@ if ( isset ( $OK ) )
 	eZObjectPermission::setPermission( -1, $media->id(), "mediacatalogue_media", "r" );
 	eZObjectPermission::setPermission( 1, $media->id(), "mediacatalogue_media", "w" );
 
-    if ( $TypeID == -1 )
+    if ( $typeID == -1 )
     {
         $media->removeType();
     }
@@ -86,14 +86,14 @@ if ( isset ( $OK ) )
     {
         $media->removeType();
 
-        $media->setType( new eZMediaType( $TypeID ) );
+        $media->setType( new eZMediaType( $typeID ) );
 
         $i = 0;
-        if ( count( $AttributeValue ) > 0 )
+        if ( count( $attributeValue ) > 0 )
         {
-            foreach ( $AttributeValue as $attribute )
+            foreach ( $attributeValue as $attribute )
             {
-                $att = new eZMediaAttribute( $AttributeID[$i] );
+                $att = new eZMediaAttribute( $attributeID[$i] );
 
                 $att->setValue( $media, $attribute );
 
@@ -102,37 +102,37 @@ if ( isset ( $OK ) )
         }
     }
 
-    if ( !is_numeric( $MediaID ) )
+    if ( !is_numeric( $mediaID ) )
         $article->addMedia( $media );
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /article/articleedit/medialist/" . $ArticleID . "/" );
+    eZHTTPTool::header( "Location: /article/articleedit/medialist/" . $articleID . "/" );
     exit();
 }
 
-if ( isset ( $DeleteSelected ) )
+if ( isset ( $deleteSelected ) )
 {
-    $article = new eZArticle( $ArticleID );
+    $article = new eZArticle( $articleID );
 
-    if ( count ( $MediaArrayID ) != 0 )
+    if ( count ( $mediaArrayID ) != 0 )
     {
-        foreach( $MediaArrayID as $MediaID )
+        foreach( $mediaArrayID as $mediaID )
         {
-            $media = new eZMedia( $MediaID );
+            $media = new eZMedia( $mediaID );
             $article->deleteMedia( $media );
         }
     }
 
     // include_once( "classes/ezhttptool.php" );
-    if ( !isset( $Update ) )
+    if ( !isset( $update ) )
     {
-        eZHTTPTool::header( "Location: /article/articleedit/medialist/" . $ArticleID . "/" );
+        eZHTTPTool::header( "Location: /article/articleedit/medialist/" . $articleID . "/" );
         exit();
     }
 }
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "mediaedit.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "mediaedit.php" );
 
 $t->setAllStrings();
 
@@ -156,10 +156,10 @@ $t->set_var( "media_size", "" );
 $t->set_var( "media_id", "" );
 
 //default values
-if ( is_numeric( $MediaID ) )
+if ( is_numeric( $mediaID ) )
 {
-    $article = new eZArticle( $ArticleID );
-    $media = new eZMedia( $MediaID );
+    $article = new eZArticle( $articleID );
+    $media = new eZMedia( $mediaID );
 
     $t->set_var( "media_id", $media->id() );
     $t->set_var( "name_value", $media->name() );
@@ -169,7 +169,7 @@ if ( is_numeric( $MediaID ) )
     $mediaType = $media->type();
 
     $photographer = $media->photographer();
-    $PhotographerID = $photographer->id();
+    $photographerID = $photographer->id();
 
     if ( $media->fileExists( true ) )
     {
@@ -200,9 +200,9 @@ if ( is_numeric( $MediaID ) )
 }
 else
 {
-    $t->set_var( "name_value", "$Name" );
-    $t->set_var( "caption_value", "$Caption" );
-    $t->set_var( "description_value", "$Description" );
+    $t->set_var( "name_value", "$name" );
+    $t->set_var( "caption_value", "$caption" );
+    $t->set_var( "description_value", "$description" );
     $t->set_var( "action_value", "Insert" );
     $t->set_var( "option_id", "" );
     $t->set_var( "media", "" );
@@ -213,7 +213,7 @@ else
     $authorArray = $author->getAll();
     foreach ( $authorArray as $author )
     {
-        if ( $PhotographerID == $author->id() )
+        if ( $photographerID == $author->id() )
         {
             $t->set_var( "selected", "selected" );
         }
@@ -231,8 +231,8 @@ else
 $type = new eZMediaType();
 $types = $type->getAll();
 
-if ( isset( $TypeID ) )
-    $mediaType = new eZMediaType( $TypeID );
+if ( isset( $typeID ) )
+    $mediaType = new eZMediaType( $typeID );
 
 foreach ( $types as $typeItem )
 {
@@ -286,7 +286,7 @@ else
 }
 
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
 
 $t->set_var( "article_name", $article->name() );
 $t->set_var( "article_id", $article->id() );

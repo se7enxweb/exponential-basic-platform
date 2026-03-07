@@ -71,7 +71,7 @@ if ( !$wishlist )
     exit();    
 }
 
-if ( isset( $Action ) && $Action == "SendWishlist" )
+if ( isset( $action ) && $action == "SendWishlist" )
 {
     $SendToArray = explode( ",", $SendTo );
 
@@ -112,7 +112,7 @@ if ( isset( $Action ) && $Action == "SendWishlist" )
         $subject = $mailTemplate->parse( "dummy", "subject_tpl" );
         $mailTemplate->set_var( "subject", "" );
 
-        $mailTemplate->set_var( "message", $Message );
+        $mailTemplate->set_var( "message", $message );
 
 
         $items = $wishlist->items();
@@ -143,7 +143,7 @@ if ( isset( $Action ) && $Action == "SendWishlist" )
     }
     else
     {
-        $EmailError = true;
+        $emailError = true;
         print( "Email error" );
         
     }

@@ -42,7 +42,17 @@ $AnonymousUserGroup = $ini->variable( "eZUserMain", "AnonymousUserGroup" );
 
 $user = eZUser::currentUser();
 
-if ( $Action == "Insert" )
+$Login = eZHTTPTool::getVar( "Login" );
+$Email = eZHTTPTool::getVar( "Email" );
+$FirstName = eZHTTPTool::getVar( "FirstName" );
+$LastName = eZHTTPTool::getVar( "LastName" );
+$Password = eZHTTPTool::getVar( "Password" );
+$VerifyPassword = eZHTTPTool::getVar( "VerifyPassword" );
+$InfoSubscription = eZHTTPTool::getVar( "InfoSubscription" );
+$UserGroups = eZHTTPTool::getVar( "UserGroups" );
+$AppendAnon = eZHTTPTool::getVar( "AppendAnon" );
+$RedirectURL = eZHTTPTool::getVar( "RedirectURL" );
+$EmailError = false;
 {
     // check for valid data
     if ( $Login != "" &&
@@ -99,8 +109,8 @@ if ( $Action == "Insert" )
                     // log in the user
                     $user->loginUser( $user );
 
-                    eZPBLog::writeNotice( "Anonyous user created: $FirstName $LastName ($Login) $Email from IP: $REMOTE_ADDR" );                    
-                    eZPBLog::writeNotice( "User login: $Login from IP: $REMOTE_ADDR" );
+                    eZPBLog::writeNotice( "Anonyous user created: $FirstName $LastName ($Login) $Email from IP: " . $_SERVER['REMOTE_ADDR'] );                    
+                    eZPBLog::writeNotice( "User login: $Login from IP: " . $_SERVER['REMOTE_ADDR'] );
 
 		            $RedirectURL="/user/withaddress/";  
 		    

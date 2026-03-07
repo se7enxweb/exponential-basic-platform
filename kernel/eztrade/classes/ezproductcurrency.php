@@ -141,11 +141,18 @@ class eZProductCurrency
         $return_array = array();
         $currency_array = array();
         
-        $db->array_query( $currency_array, "SELECT ID FROM eZTrade_AlternativeCurrency ORDER BY Created" );
+        // Single query fetching all columns instead of N+1 (ID fetch + get() per row)
+        $db->array_query( $currency_array, "SELECT * FROM eZTrade_AlternativeCurrency ORDER BY Created" );
         
         for ( $i=0; $i < count($currency_array); $i++ )
         {
-            $return_array[$i] = new eZProductCurrency( $currency_array[$i][$db->fieldName( "ID" )], 0 );
+            $obj = new eZProductCurrency();
+            $obj->ID         = $currency_array[$i][$db->fieldName( "ID" )];
+            $obj->Name       = $currency_array[$i][$db->fieldName( "Name" )];
+            $obj->Value      = $currency_array[$i][$db->fieldName( "Value" )];
+            $obj->Sign       = $currency_array[$i][$db->fieldName( "Sign" )];
+            $obj->PrefixSign = $currency_array[$i][$db->fieldName( "PrefixSign" )];
+            $return_array[$i] = $obj;
         }
         
         return $return_array;

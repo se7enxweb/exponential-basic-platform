@@ -48,28 +48,28 @@ function shortenText($text, $chars=25) {
   return $text;
 }
 
-$ini = &eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 $Language   = $ini->variable( "eZGroupEventCalendarMain", "Language" );
-$Sitedesign = $ini->variable( "site", "SiteDesign" );
-$TruncateTitle = $ini->variable( "eZGroupEventCalendarMain", "TruncateTitle" );
+$sitedesign = $ini->variable( "site", "SiteDesign" );
+$truncateTitle = $ini->variable( "eZGroupEventCalendarMain", "TruncateTitle" );
 
-$TemplateDir = $ini->variable( "eZGroupEventCalendarMain", "TemplateDir" );
+$templateDir = $ini->variable( "eZGroupEventCalendarMain", "TemplateDir" );
 $GlobalSectionID = $ini->variable( "eZGroupEventCalendarMain", "DefaultSection" );
 
-$Locale     = new eZLocale( $Language );
+$locale     = new eZLocale( $Language );
 
 $user = eZUser::currentUser();
 $session = eZSession::globalSession();
 $session->fetch();
 
-$URL = explode( "/", $_SERVER['REQUEST_URI'] );
+$url = explode( "/", $_SERVER['REQUEST_URI'] );
 
-if( count( $URL ) <= 5 )
+if( count( $url ) <= 5 )
 {
-	if ( is_numeric( $URL[3] ) )
-		$groupID = $URL[3];
+	if ( is_numeric( $url[3] ) )
+		$groupID = $url[3];
 	else
 		$groupID = 0;
 }
@@ -79,62 +79,62 @@ else
 	$groupID = $readGroup->id();
 }
 
-if( !isset( $GetByGroupID ) )
-	$GetByGroupID = $groupID;
+if( !isset( $getByGroupID ) )
+	$getByGroupID = $groupID;
 else	
 {
-	$GetByGroupID = 0;
+	$getByGroupID = 0;
 }
 	
-if ( $GetByGroupID == false )
-    $GetByGroupID = $groupID;
+if ( $getByGroupID == false )
+    $getByGroupID = $groupID;
 
 
-if ( ( $session->variable( "ShowOtherCalendarGroups" ) == false ) || ( isSet( $GetByGroup ) ) )
+if ( ( $session->variable( "ShowOtherCalendarGroups" ) == false ) || ( isSet( $getByGroup ) ) )
 {
-    $session->setVariable( "ShowOtherCalendarGroups", $GetByGroupID );
+    $session->setVariable( "ShowOtherCalendarGroups", $getByGroupID );
 }
 
 $eventGroup = new eZUserGroup( $session->variable( "ShowOtherCalendarGroups" ) );
 
 //Get the TYPE session data
-if ( ( $session->variable( "ShowOtherCalendarTypes" ) == false ) || ( isSet( $GetByTypeID ) ) )
+if ( ( $session->variable( "ShowOtherCalendarTypes" ) == false ) || ( isSet( $getByTypeID ) ) )
 {
-	if( !isSet( $GetByTypeID ) )
-		$GetByTypeID = 0;
+	if( !isSet( $getByTypeID ) )
+		$getByTypeID = 0;
 
-	$session->setVariable( "ShowOtherCalendarTypes", $GetByTypeID );
+	$session->setVariable( "ShowOtherCalendarTypes", $getByTypeID );
 }
 
 $type = new eZGroupEventType( $session->variable( "ShowOtherCalendarTypes" ) );
 
-if( !isSet( $GetByTypeID ) )
-	$GetByTypeID = $type->id();
+if( !isSet( $getByTypeID ) )
+	$getByTypeID = $type->id();
 
 $date = new eZDate();
 
-if ( $Year != "" && $Month != "" && $Day != "" )
+if ( $year != "" && $month != "" && $day != "" )
 {
-    $date->setYear( $Year );
-    $date->setMonth( $Month );
-    $date->setDay( $Day );
+    $date->setYear( $year );
+    $date->setMonth( $month );
+    $date->setDay( $day );
 }
 else
 {
-    $Year = $date->year();
-    $Month = $date->month();
-    $Day = $date->day();
+    $year = $date->year();
+    $month = $date->month();
+    $day = $date->day();
 }
 
-$Week = date("W",$date->timestamp());
+$week = date("W",$date->timestamp());
 
-$session->setVariable( "Year", $Year );
-$session->setVariable( "Month", $Month );
-$session->setVariable( "Day", $Day );
-$session->setVariable ( "Week", $Week );
+$session->setVariable( "Year", $year );
+$session->setVariable( "Month", $month );
+$session->setVariable( "Day", $day );
+$session->setVariable ( "Week", $week );
 
-$zMonth = addZero($Month);
-$isMyCalendar = ( $groupID && $groupID == $GetByGroupID )? "-private" :"";
+$zMonth = addZero($month);
+$isMyCalendar = ( $groupID && $groupID == $getByGroupID )? "-private" :"";
 
 
 // init the section
@@ -145,16 +145,16 @@ $templateDirTmp = $sectionObject->templateStyle();
 
 if ( $templateDirTmp != null && trim( $templateDirTmp ) != "" )
 {
-    $TemplateDir = "kernel/ezgroupeventcalendar/user/" . preg_replace( "/(.+)\/.+(\/?)/", "/\\1/$templateDirTmp\\2", $TemplateDir );
+    $templateDir = "kernel/ezgroupeventcalendar/user/" . preg_replace( "/(.+)\/.+(\/?)/", "/\\1/$templateDirTmp\\2", $templateDir );
 }
 else
 {
-    $TemplateDir = "kernel/ezgroupeventcalendar/user/" . $ini->variable( "eZGroupEventCalendarMain", "TemplateDir" );
+    $templateDir = "kernel/ezgroupeventcalendar/user/" . $ini->variable( "eZGroupEventCalendarMain", "TemplateDir" );
 }
 
-$t = new eZTemplate( $TemplateDir,
+$t = new eZTemplate( $templateDir,
                      "kernel/ezgroupeventcalendar/user/intl", $Language, "weekview.php",
-                     "default", "kernel/ezgroupeventcalendar" . "/user", "$Year-$zMonth-$Day-$GetByGroupID" . $isMyCalendar );
+                     "default", "kernel/ezgroupeventcalendar" . "/user", "$year-$zMonth-$day-$getByGroupID" . $isMyCalendar );
 
 $t->set_file( "week_view_page_tpl", "weekview.tpl" );
 $nextDate = $date;
@@ -246,15 +246,15 @@ if( $user )
     $t->set_block( "day_tpl", "no_new_event_link_tpl", "no_new_event_link" );
 
     $t->set_var( "sitedesign", $SiteDesign );
-	$t->set_var( "month_name", $Locale->monthName( $date->monthName(), false ) );
-    $t->set_var( "month_number", $Month );
-    $t->set_var( "current_year_number", $Year );
+	$t->set_var( "month_name", $locale->monthName( $date->monthName(), false ) );
+    $t->set_var( "month_number", $month );
+    $t->set_var( "current_year_number", $year );
     $t->set_var( "week", "" );
-	$t->set_var( "sitedesign", $Sitedesign );
+	$t->set_var( "sitedesign", $sitedesign );
     $t->set_var("date_month", $date->month());
     $t->set_var("date_year", $date->year());
     $t->set_var("date_day", $date->day());
-    $t->set_var( "week_num", $Week );
+    $t->set_var( "week_num", $week );
 
 
 	if( $new_event_link == true )
@@ -285,7 +285,7 @@ if( $user )
     // Draw the week day header.
     $headerDate = new eZDate();
     $headerDate->setYear( 2001 );
-    if ( $Locale->mondayFirst() )
+    if ( $locale->mondayFirst() )
     {
         // January 2001 starts on a Monday
         $headerDate->setMonth( 1 );
@@ -299,7 +299,7 @@ if( $user )
     for ( $week_day=1; $week_day<=7; $week_day++ )
     {
         $headerDate->setDay( $week_day );
-        $t->set_var( "week_day_name", $Locale->dayName( $headerDate->dayName( $Locale->mondayFirst() ), false ) );
+        $t->set_var( "week_day_name", $locale->dayName( $headerDate->dayName( $locale->mondayFirst() ), false ) );
 
         $t->parse( "week_day", "week_day_tpl", true );
     }
@@ -315,9 +315,9 @@ if( $user )
  /*       if ( ( ( $week * 7 ) - $firstDay + 1 ) < ( $date->daysInMonth()  ) )
         {
             $date->setDay( 1 );
-            $firstDay = $date->dayOfWeek( $Locale->mondayFirst() );
+            $firstDay = $date->dayOfWeek( $locale->mondayFirst() );
    */
-          $tmpMove = moveToWeekBegin($date, $Locale->mondayFirst());
+          $tmpMove = moveToWeekBegin($date, $locale->mondayFirst());
             $date->move(0,0, -$tmpMove);
             for ( $day=1; $day<=7; $day++ )
             {
@@ -397,8 +397,8 @@ if( $user )
                     }
 
                     $t->set_var( "day_number", $tmpDate->day() );
-                    $t->set_var( "month_number_p", $Month );
-                    $t->set_var( "year_number", $Year );
+                    $t->set_var( "month_number_p", $month );
+                    $t->set_var( "year_number", $year );
 
 		    $t->set_var( "day_link", "" );
 
@@ -478,7 +478,7 @@ if( $user )
 		$t->set_var( "type_id", $type->id() );
 		$t->set_var( "type_name", $type->name( true ) );
 
-		if( $type->id() == $GetByTypeID )
+		if( $type->id() == $getByTypeID )
 		{
 			$t->set_var( "selected_type_id", $type->id() );
 			$t->set_var( "type_is_selected", "selected" );

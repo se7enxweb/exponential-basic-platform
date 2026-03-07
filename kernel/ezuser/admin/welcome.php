@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: welcome.php 8869 2002-01-04 09:15:05Z bf $
+// $id: welcome.php 8869 2002-01-04 09:15:05Z bf $
 //
 // Created on: <13-Nov-2000 10:57:15 bf>
 //
@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZUserMain", "Language" );
+$language = $ini->variable( "eZUserMain", "Language" );
 
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezuser/classes/ezusergroup.php" );
@@ -38,7 +38,7 @@ $Language = $ini->variable( "eZUserMain", "Language" );
 
 // Template
 $t = new eZTemplate( "kernel/ezuser/admin/" . $ini->variable( "eZUserMain", "AdminTemplateDir" ),
-                     "kernel/ezuser/admin/intl", $Language, "welcome.php" );
+                     "kernel/ezuser/admin/intl", $language, "welcome.php" );
 $t->setAllStrings();
 
 

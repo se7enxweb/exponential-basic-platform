@@ -34,6 +34,11 @@ else
     $GlobalSectionID = $ini->variable( "eZUserMain", "DefaultSection" );
 }
 
+$Action     = eZHTTPTool::getVar( 'Action' );
+$Hash       = eZHTTPTool::getVar( 'Hash' );
+$UserID     = eZHTTPTool::getVar( 'UserID' );
+$RedirectURL = eZHTTPTool::getVar( 'RedirectURL' );
+
 switch ( $url_array[2] )
 {
    case "step1" :

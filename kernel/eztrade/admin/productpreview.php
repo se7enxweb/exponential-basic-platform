@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: productpreview.php 6746 2001-08-29 14:31:58Z bf $
+// $id: productpreview.php 6746 2001-08-29 14:31:58Z bf $
 //
 // Created on: <22-Sep-2000 16:13:32 bf>
 //
@@ -43,28 +43,28 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$PriceGroup = 1;
-$ShowPrice = true;
-$Language = $ini->variable( "eZTradeMain", "Language" );
-$ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
-$RequireUserLogin = $ini->variable( "eZTradeMain", "RequireUserLogin" ) == "true";
-$SimpleOptionHeaders = $ini->variable( "eZTradeMain", "SimpleOptionHeaders" ) == "true";
-$ShowQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
-$ShowNamedQuantity = $ini->variable( "eZTradeMain", "ShowNamedQuantity" ) == "true";
-$RequireQuantity = $ini->variable( "eZTradeMain", "RequireQuantity" ) == "true";
-$ShowOptionQuantity = $ini->variable( "eZTradeMain", "ShowOptionQuantity" ) == "true";
-$locale = new eZLocale( $Language );
+$priceGroup = 1;
+$showPrice = true;
+$language = $ini->variable( "eZTradeMain", "Language" );
+$showPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
+$requireUserLogin = $ini->variable( "eZTradeMain", "RequireUserLogin" ) == "true";
+$simpleOptionHeaders = $ini->variable( "eZTradeMain", "SimpleOptionHeaders" ) == "true";
+$showQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
+$showNamedQuantity = $ini->variable( "eZTradeMain", "ShowNamedQuantity" ) == "true";
+$requireQuantity = $ini->variable( "eZTradeMain", "RequireQuantity" ) == "true";
+$showOptionQuantity = $ini->variable( "eZTradeMain", "ShowOptionQuantity" ) == "true";
+$locale = new eZLocale( $language );
 
-$CapitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
+$capitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
 
-$MainImageWidth = $ini->variable( "eZTradeMain", "MainImageWidth" );
-$MainImageHeight = $ini->variable( "eZTradeMain", "MainImageHeight" );
+$mainImageWidth = $ini->variable( "eZTradeMain", "MainImageWidth" );
+$mainImageHeight = $ini->variable( "eZTradeMain", "MainImageHeight" );
 
-$SmallImageWidth = $ini->variable( "eZTradeMain", "SmallImageWidth" );
-$SmallImageHeight = $ini->variable( "eZTradeMain", "SmallImageHeight" );
+$smallImageWidth = $ini->variable( "eZTradeMain", "SmallImageWidth" );
+$smallImageHeight = $ini->variable( "eZTradeMain", "SmallImageHeight" );
 
 $t = new eZTemplate( "kernel/eztrade/admin/". $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "productpreview.php" );
+                     "kernel/eztrade/admin/intl/", $language, "productpreview.php" );
 
 $t->setAllStrings();
 
@@ -125,30 +125,30 @@ $t->set_block( "product_view_tpl", "print_page_link_tpl", "print_page_link" );
 $t->set_block( "product_view_tpl", "section_item_tpl", "section_item" );
 $t->set_block( "section_item_tpl", "link_item_tpl", "link_item" );
 
-if ( !isset( $ModuleName ) )
-    $ModuleName = "trade";
-if ( !isset( $ModuleList ) )
-    $ModuleList = "categorylist/parent";
-if ( !isset( $ModuleView ) )
-    $ModuleView = "productedit/productpreview";
-if ( !isset( $ModulePrint ) )
-    $ModulePrint = "productedit/productprint";
+if ( !isset( $moduleName ) )
+    $moduleName = "trade";
+if ( !isset( $moduleList ) )
+    $moduleList = "categorylist/parent";
+if ( !isset( $moduleView ) )
+    $moduleView = "productedit/productpreview";
+if ( !isset( $modulePrint ) )
+    $modulePrint = "productedit/productprint";
 
-$t->set_var( "module", $ModuleName );
-$t->set_var( "module_list", $ModuleList );
-$t->set_var( "module_view", $ModuleView );
-$t->set_var( "module_print", $ModulePrint );
+$t->set_var( "module", $moduleName );
+$t->set_var( "module_list", $moduleList );
+$t->set_var( "module_view", $moduleView );
+$t->set_var( "module_print", $modulePrint );
 
-$product = new eZProduct( $ProductID );
+$product = new eZProduct( $productID );
 
-if ( !isset( $CategoryID ) )
+if ( !isset( $categoryID ) )
 {
     $category = $product->categoryDefinition();
 }
 else
 {
     $category = new eZProductCategory();
-    $category->get( $CategoryID );
+    $category->get( $categoryID );
 }
 
 $pathArray = $category->path();
@@ -183,7 +183,7 @@ else
     $t->set_var( "main_image", "" );    
 }
 
-if ( $CapitalizeHeadlines == "enabled" )
+if ( $capitalizeHeadlines == "enabled" )
 {
     // include_once( "classes/eztexttool.php" );
     $t->set_var( "title_text", eZTextTool::capitalize( $product->name() ) );
@@ -220,9 +220,9 @@ foreach ( $images as $imageArray )
         $t->set_var( "image_title", $image->name() );
         $t->set_var( "image_caption", $image->caption() );
         $t->set_var( "image_id", $image->id() );
-        $t->set_var( "product_id", $ProductID );
+        $t->set_var( "product_id", $productID );
 
-        $variation = $image->requestImageVariation( $SmallImageWidth, $SmallImageHeight );
+        $variation = $image->requestImageVariation( $smallImageWidth, $smallImageHeight );
     
         $t->set_var( "image_url", "/" .$variation->imagePath() );
         $t->set_var( "image_width", $variation->width() );
@@ -253,7 +253,7 @@ $t->set_var( "value_currency_header_item", "" );
 
 $t->parse( "value_price_header_item", "value_price_header_item_tpl" );
 
-if ( $ShowPrice and $product->showPrice() == true  )
+if ( $showPrice and $product->showPrice() == true  )
     $t->parse( "value_price_header", "value_price_header_tpl" );
     
 if ( count( $currencies ) > 0 )
@@ -261,7 +261,7 @@ if ( count( $currencies ) > 0 )
 
 $can_checkout = false;
 
-$currency_locale = new eZLocale( $Language );
+$currency_locale = new eZLocale( $language );
 foreach ( $options as $option )
 {
     $values = $option->values();
@@ -270,7 +270,7 @@ foreach ( $options as $option )
     $i = 0;
     $headers = $option->descriptionHeaders();
     $t->set_var( "value_description_header", "" );
-    if ( $SimpleOptionHeaders )
+    if ( $simpleOptionHeaders )
     {
         $t->set_var( "description_header", $headers[0] );
         $t->parse( "value_description_header", "value_description_header_tpl" );
@@ -287,18 +287,18 @@ foreach ( $options as $option )
     foreach ( $values as $value )
     {
         $value_quantity = $value->totalQuantity();
-        if ( $ShowOptionQuantity or ( is_bool( $value_quantity ) and !$value_quantity ) or
-             !$RequireQuantity or ( $RequireQuantity and $value_quantity > 0 ) )
+        if ( $showOptionQuantity or ( is_bool( $value_quantity ) and !$value_quantity ) or
+             !$requireQuantity or ( $requireQuantity and $value_quantity > 0 ) )
         {
             if ( ( is_bool( $value_quantity ) and !$value_quantity ) or
-                 !$RequireQuantity or ( $RequireQuantity and $value_quantity > 0 ) )
+                 !$requireQuantity or ( $requireQuantity and $value_quantity > 0 ) )
                 $can_checkout = true;
             $t->set_var( "value_td_class", ( $i % 2 ) == 0 ? "bglight" : "bgdark" );
             $id = $value->id();
 
             $descriptions = $value->descriptions();
             $t->set_var( "value_description", "" );
-            if ( $SimpleOptionHeaders )
+            if ( $simpleOptionHeaders )
             {
                 $t->set_var( "value_id", $value->id() );
 
@@ -317,13 +317,13 @@ foreach ( $options as $option )
             $t->set_var( "value_price", "" );
             $t->set_var( "value_price_item", "" );
             $t->set_var( "value_price_currency_list", "" );
-            if ( $ShowPrice and $product->showPrice() == true  )
+            if ( $showPrice and $product->showPrice() == true  )
             {
                 $found_price = false;
                 
-                if ( $ShowPriceGroups and $PriceGroup > 0 )
+                if ( $showPriceGroups and $priceGroup > 0 )
                 {
-                    $price = eZPriceGroup::correctPrice( $product->id(), $PriceGroup,
+                    $price = eZPriceGroup::correctPrice( $product->id(), $priceGroup,
                                                      $option->id(), $value->id() );
                     if ( $price )
                     {
@@ -367,7 +367,7 @@ foreach ( $options as $option )
             {
 
                 $named_quantity = $value_quantity;
-                if ( $ShowNamedQuantity )
+                if ( $showNamedQuantity )
                     $named_quantity = eZProduct::namedQuantity( $value_quantity );
                 $t->set_var( "value_availability", $named_quantity );
                 $t->parse( "value_availability_item", "value_availability_item_tpl" );
@@ -381,7 +381,7 @@ foreach ( $options as $option )
     $t->set_var( "option_name", $option->name() );
     $t->set_var( "option_description", $option->description() );
     $t->set_var( "option_id", $option->id() );
-    $t->set_var( "product_id", $ProductID );
+    $t->set_var( "product_id", $productID );
 
     $t->parse( "option", "option_tpl", true );
 }
@@ -487,19 +487,19 @@ else {
 */
 
 
-$Quantity = $product->totalQuantity();
-if ( is_bool( $Quantity ) and !$Quantity )
-    $ShowQuantity = false;
+$quantity = $product->totalQuantity();
+if ( is_bool( $quantity ) and !$quantity )
+    $showQuantity = false;
 $t->set_var( "quantity_item", "" );
 
-if ( $ShowQuantity and $product->hasPrice() )
+if ( $showQuantity and $product->hasPrice() )
 {
-    $NamedQuantity = $Quantity;
-    if ( $ShowNamedQuantity )
+    $namedQuantity = $quantity;
+    if ( $showNamedQuantity )
     {
-        $NamedQuantity = eZProduct::namedQuantity( $Quantity );
+        $namedQuantity = eZProduct::namedQuantity( $quantity );
     }
-    $t->set_var( "product_quantity", $NamedQuantity );
+    $t->set_var( "product_quantity", $namedQuantity );
     $t->parse( "quantity_item", "quantity_item_tpl" );
 }
 
@@ -507,12 +507,12 @@ $t->set_var( "price", "" );
 $t->set_var( "add_to_cart", "" );
 
 if ( 
-     $ShowPrice and $product->showPrice() == true and $product->hasPrice()  )
+     $showPrice and $product->showPrice() == true and $product->hasPrice()  )
 {
     $found_price = false;
-    if ( $ShowPriceGroups and $PriceGroup > 0 )
+    if ( $showPriceGroups and $priceGroup > 0 )
     {
-        $price = eZPriceGroup::correctPrice( $product->id(), $PriceGroup );
+        $price = eZPriceGroup::correctPrice( $product->id(), $priceGroup );
         if ( $price )
         {
             $found_price = true;
@@ -563,10 +563,10 @@ if (
     $t->parse( "price", "price_tpl" );
 }
 
-if ( $can_checkout or !$RequireQuantity or ( $RequireQuantity and $Quantity > 0 ) )
+if ( $can_checkout or !$requireQuantity or ( $requireQuantity and $quantity > 0 ) )
     $t->parse( "add_to_cart", "add_to_cart_tpl" );
 
-if ( isset( $PrintableVersion ) && $PrintableVersion == "enabled" )
+if ( isset( $printableVersion ) && $printableVersion == "enabled" )
 {
     $t->parse( "numbered_page_link", "numbered_page_link_tpl" );
     $t->set_var( "print_page_link", "" );
@@ -581,12 +581,12 @@ if ( isset( $func_array ) and is_array( $func_array ) )
 {
     foreach( $func_array as $func )
     {
-        $func( $t, $ProductID );
+        $func( $t, $productID );
     }
 }
 
 //sold products
-$t->set_var( "sold_items", eZOrder::soldProducts( $ProductID ) );
+$t->set_var( "sold_items", eZOrder::soldProducts( $productID ) );
 
 $t->parse( "edit_this", "edit_this_tpl" );
 

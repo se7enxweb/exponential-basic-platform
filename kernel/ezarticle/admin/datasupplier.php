@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: datasupplier.php 9560 2002-05-22 13:35:33Z bf $
+// $id: datasupplier.php 9560 2002-05-22 13:35:33Z bf $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -41,6 +41,138 @@ if ( eZPermission::checkPermission( $user, "eZArticle", "ModuleEdit" ) == false 
     exit();
 }
 
+// --- Explicit POST/GET extraction (replaces register_globals hack for this module) ---
+$action              = eZHTTPTool::getVar( 'Action' );
+$actionValue         = eZHTTPTool::getVar( 'ActionValue' );
+$cancel              = eZHTTPTool::getVar( 'Cancel' );
+$name                = eZHTTPTool::getVar( 'Name' );
+$description         = eZHTTPTool::getVar( 'Description' );
+$parentID            = eZHTTPTool::getVar( 'ParentID' );
+$categoryID          = eZHTTPTool::getVar( 'CategoryID' );
+$sectionID           = eZHTTPTool::getVar( 'SectionID' );
+$articleID           = eZHTTPTool::getVar( 'ArticleID' );
+$imageID             = eZHTTPTool::getVar( 'ImageID' );
+$fileID              = eZHTTPTool::getVar( 'FileID' );
+$mediaID             = eZHTTPTool::getVar( 'MediaID' );
+$attributeID         = eZHTTPTool::getVar( 'AttributeID' );
+$topicID             = eZHTTPTool::getVar( 'TopicID' );
+$typeID              = eZHTTPTool::getVar( 'TypeID' );
+$editorGroupID       = eZHTTPTool::getVar( 'EditorGroupID' );
+$ownerID             = eZHTTPTool::getVar( 'OwnerID' );
+$bulkMailID          = eZHTTPTool::getVar( 'BulkMailID' );
+$listLimit           = eZHTTPTool::getVar( 'ListLimit' );
+$sortMode            = eZHTTPTool::getVar( 'SortMode' );
+$excludeFromSearch   = eZHTTPTool::getVar( 'ExcludeFromSearch' );
+$deleteImage         = eZHTTPTool::getVar( 'DeleteImage' );
+$deleteSelected      = eZHTTPTool::getVar( 'DeleteSelected' );
+$deleteArticles      = eZHTTPTool::getVar( 'DeleteArticles' );
+$deleteCategories    = eZHTTPTool::getVar( 'DeleteCategories' );
+$deleteArrayID       = eZHTTPTool::getVar( 'DeleteArrayID' );
+$deleteIDArray       = eZHTTPTool::getVar( 'DeleteIDArray' );
+$deleteTopic         = eZHTTPTool::getVar( 'DeleteTopic' );
+$deleteAttributes    = eZHTTPTool::getVar( 'DeleteAttributes' );
+$articleArrayID      = eZHTTPTool::getVar( 'ArticleArrayID' );
+$categoryArrayID     = eZHTTPTool::getVar( 'CategoryArrayID' );
+$imageArrayID        = eZHTTPTool::getVar( 'ImageArrayID' );
+$fileArrayID         = eZHTTPTool::getVar( 'FileArrayID' );
+$mediaArrayID        = eZHTTPTool::getVar( 'MediaArrayID' );
+$typeArrayID         = eZHTTPTool::getVar( 'TypeArrayID' );
+$idArray             = eZHTTPTool::getVar( 'IDArray' );
+$groupArray          = eZHTTPTool::getVar( 'GroupArray' );
+$writeGroupArray     = eZHTTPTool::getVar( 'WriteGroupArray' );
+$postedCategoryArray = eZHTTPTool::getVar( 'CategoryArray' );
+$articleSelection    = eZHTTPTool::getVar( 'ArticleSelection' );
+$postedContents      = eZHTTPTool::getVar( 'Contents' );
+$postedKeywords      = eZHTTPTool::getVar( 'Keywords' );
+$postedUrltranslator = eZHTTPTool::getVar( 'Urltranslator' );
+$urltranslatorEnabled= eZHTTPTool::getVar( 'UrltranslatorEnabled' );
+$authorText          = eZHTTPTool::getVar( 'AuthorText' );
+$authorEmail         = eZHTTPTool::getVar( 'AuthorEmail' );
+$newAuthorName       = eZHTTPTool::getVar( 'NewAuthorName' );
+$newAuthorEmail      = eZHTTPTool::getVar( 'NewAuthorEmail' );
+$newCreatorName      = eZHTTPTool::getVar( 'NewCreatorName' );
+$newCreatorEmail     = eZHTTPTool::getVar( 'NewCreatorEmail' );
+$newPhotographerName = eZHTTPTool::getVar( 'NewPhotographerName' );
+$newPhotographerEmail= eZHTTPTool::getVar( 'NewPhotographerEmail' );
+$photographerID      = eZHTTPTool::getVar( 'PhotographerID' );
+$contentsWriterID    = eZHTTPTool::getVar( 'ContentsWriterID' );
+$linkText            = eZHTTPTool::getVar( 'LinkText' );
+$linkID              = eZHTTPTool::getVar( 'LinkID' );
+$caption             = eZHTTPTool::getVar( 'Caption' );
+$newImage            = eZHTTPTool::getVar( 'NewImage' );
+$addImages           = eZHTTPTool::getVar( 'AddImages' );
+$addFiles            = eZHTTPTool::getVar( 'AddFiles' );
+$addMedia            = eZHTTPTool::getVar( 'AddMedia' );
+$addItem             = eZHTTPTool::getVar( 'AddItem' );
+$itemToAdd           = eZHTTPTool::getVar( 'ItemToAdd' );
+$preview             = eZHTTPTool::getVar( 'Preview' );
+$publishArticle      = eZHTTPTool::getVar( 'PublishArticle' );
+$isPublished         = eZHTTPTool::getVar( 'IsPublished' );
+$discuss             = eZHTTPTool::getVar( 'Discuss' );
+$noFrontImage        = eZHTTPTool::getVar( 'NoFrontImage' );
+$searchText          = eZHTTPTool::getVar( 'SearchText' );
+$store               = eZHTTPTool::getVar( 'Store' );
+$storeSelection      = eZHTTPTool::getVar( 'StoreSelection' );
+$update              = eZHTTPTool::getVar( 'Update' );
+$ok                  = eZHTTPTool::getVar( 'OK' ) ?? eZHTTPTool::getVar( 'Ok' );
+$moveCategoryUp      = eZHTTPTool::getVar( 'MoveCategoryUp' );
+$moveCategoryDown    = eZHTTPTool::getVar( 'MoveCategoryDown' );
+$moveUp              = eZHTTPTool::getVar( 'MoveUp' );
+$moveDown            = eZHTTPTool::getVar( 'MoveDown' );
+$moveImageUp         = eZHTTPTool::getVar( 'MoveImageUp' );
+$moveImageDown       = eZHTTPTool::getVar( 'MoveImageDown' );
+$startStamp          = eZHTTPTool::getVar( 'StartStamp' );
+$stopStamp           = eZHTTPTool::getVar( 'StopStamp' );
+$startDay            = eZHTTPTool::getVar( 'StartDay' );
+$startMonth          = eZHTTPTool::getVar( 'StartMonth' );
+$startYear           = eZHTTPTool::getVar( 'StartYear' );
+$startHour           = eZHTTPTool::getVar( 'StartHour' );
+$startMinute         = eZHTTPTool::getVar( 'StartMinute' );
+$stopDay             = eZHTTPTool::getVar( 'StopDay' );
+$stopMonth           = eZHTTPTool::getVar( 'StopMonth' );
+$stopYear            = eZHTTPTool::getVar( 'StopYear' );
+$stopHour            = eZHTTPTool::getVar( 'StopHour' );
+$stopMinute          = eZHTTPTool::getVar( 'StopMinute' );
+$newTopic            = eZHTTPTool::getVar( 'NewTopic' );
+$newType             = eZHTTPTool::getVar( 'NewType' );
+$newAttribute        = eZHTTPTool::getVar( 'NewAttribute' );
+$attributeName       = eZHTTPTool::getVar( 'AttributeName' );
+$attributeValue      = eZHTTPTool::getVar( 'AttributeValue' );
+$values              = eZHTTPTool::getVar( 'Values' );
+$photoID             = eZHTTPTool::getVar( 'PhotoID' );
+$siteDesign          = eZHTTPTool::getVar( 'SiteDesign' ) ?? $siteDesign;
+$siteStyle           = eZHTTPTool::getVar( 'SiteStyle' );
+$preferencesSetting  = eZHTTPTool::getVar( 'PreferencesSetting' );
+$recursive           = eZHTTPTool::getVar( 'Recursive' );
+$copyCategories      = eZHTTPTool::getVar( 'CopyCategories' );
+$currentCategoryID   = eZHTTPTool::getVar( 'CurrentCategoryID' );
+$goTo                = eZHTTPTool::getVar( 'GoTo' );
+$goToCategoryID      = eZHTTPTool::getVar( 'GoToCategoryID' );
+$objectID            = eZHTTPTool::getVar( 'ObjectID' );
+$objectType          = eZHTTPTool::getVar( 'ObjectType' );
+$productID           = eZHTTPTool::getVar( 'ProductID' );
+$vatType             = eZHTTPTool::getVar( 'VatType' );
+$quantity            = eZHTTPTool::getVar( 'Quantity' );
+$stock               = eZHTTPTool::getVar( 'Stock' );
+$stockDay            = eZHTTPTool::getVar( 'StockDay' );
+$stockMonth          = eZHTTPTool::getVar( 'StockMonth' );
+$stockYear           = eZHTTPTool::getVar( 'StockYear' );
+$pricesIncludeVAT    = eZHTTPTool::getVar( 'PricesIncludeVAT' );
+$showQuantity        = eZHTTPTool::getVar( 'ShowQuantity' );
+$shippingGroup       = eZHTTPTool::getVar( 'ShippingGroup' );
+$clientModuleName    = eZHTTPTool::getVar( 'ClientModuleName' );
+$clientModuleType    = eZHTTPTool::getVar( 'ClientModuleType' );
+$detailView          = eZHTTPTool::getVar( 'DetailView' );
+$normalView          = eZHTTPTool::getVar( 'NormalView' );
+$showModuleLinker    = eZHTTPTool::getVar( 'ShowModuleLinker' );
+$log                 = eZHTTPTool::getVar( 'Log' );
+$logMessage          = eZHTTPTool::getVar( 'LogMessage' );
+$funcs               = eZHTTPTool::getVar( 'Funcs' );
+$browse              = eZHTTPTool::getVar( 'Browse' );
+$boxType             = eZHTTPTool::getVar( 'BoxType' );
+// URL-routing vars are set explicitly in the switch below and override extracted values
+// -----------------------------------------------------------------------------------
+
 switch ( $url_array[2] )
 {
     case "export":
@@ -58,48 +190,48 @@ switch ( $url_array[2] )
     
     case "archive":
     {
-        if ( !is_numeric( $CategoryID=eZHTTPTool::getVar( "CategoryID", true ) ) )
+        if ( !is_numeric( $categoryID=eZHTTPTool::getVar( "CategoryID", true ) ) )
         {
-            $CategoryID = $url_array[3];
-            if  ( !isset( $CategoryID ) || ( $CategoryID == "" ) )
-                $CategoryID = 0;
+            $categoryID = $url_array[3];
+            if  ( !isset( $categoryID ) || ( $categoryID == "" ) )
+                $categoryID = 0;
         }
         
         if ( isset($url_array[4]) && $url_array[4] == "parent" )
-            $Offset = $url_array[5];
+            $offset = $url_array[5];
 
-        if ( $CategoryID == 0 || eZObjectPermission::hasPermission( $CategoryID, "article_category", 'r' )  ||
-             eZArticleCategory::isOwner( $user, $CategoryID ) )
+        if ( $categoryID == 0 || eZObjectPermission::hasPermission( $categoryID, "article_category", 'r' )  ||
+             eZArticleCategory::isOwner( $user, $categoryID ) )
             include( "kernel/ezarticle/admin/articlelist.php" );
     }
     break;
 
     case "unpublished":
     {
-        $CategoryID = $url_array[3];
-        if  ( !isset( $CategoryID ) || ( $CategoryID == "" ) )
-            $CategoryID = 0;
+        $categoryID = $url_array[3];
+        if  ( !isset( $categoryID ) || ( $categoryID == "" ) )
+            $categoryID = 0;
 
         if ( $url_array[4] == "parent" )
-            $Offset = $url_array[5];
+            $offset = $url_array[5];
 
-        if ( $CategoryID == 0 || eZObjectPermission::hasPermission( $CategoryID, "article_category", 'r' ) ||
-             eZArticleCategory::isOwner( $user, $CategoryID) )
+        if ( $categoryID == 0 || eZObjectPermission::hasPermission( $categoryID, "article_category", 'r' ) ||
+             eZArticleCategory::isOwner( $user, $categoryID) )
             include( "kernel/ezarticle/admin/unpublishedlist.php" );
     }
     break;
 
     case "pendinglist":
     {
-        $CategoryID = $url_array[3];
-        if ( !isset( $CategoryID ) || ( $CategoryID == "" ) )
-            $CategoryID = 0;
+        $categoryID = $url_array[3];
+        if ( !isset( $categoryID ) || ( $categoryID == "" ) )
+            $categoryID = 0;
 
         if ( $url_array[4] == "parent" )
-            $Offset = $url_array[5];
+            $offset = $url_array[5];
 
-        if ( $CategoryID == 0 || eZObjectPermission::hasPermission( $CategoryID, "article_category", 'r' ) ||
-             eZArticleCategory::isOwner( $user, $CategoryID) )
+        if ( $categoryID == 0 || eZObjectPermission::hasPermission( $categoryID, "article_category", 'r' ) ||
+             eZArticleCategory::isOwner( $user, $categoryID) )
             include( "kernel/ezarticle/admin/pendinglist.php" );
     }
     break;
@@ -112,22 +244,22 @@ switch ( $url_array[2] )
         }
         else
         {
-            $Offset = 0;
+            $offset = 0;
             if ( $url_array[3] == "parent" )
             {
-                $SearchText = urldecode( $url_array[4] );
+                $searchText = urldecode( $url_array[4] );
                 if ( $url_array[5] != urlencode( "+" ) )
-                    $StartStamp = urldecode( $url_array[5] );
+                    $startStamp = urldecode( $url_array[5] );
                 if ( $url_array[6] != urlencode( "+" ) )
-                    $StopStamp = urldecode( $url_array[6] );
+                    $stopStamp = urldecode( $url_array[6] );
                 if ( $url_array[7] != urlencode( "+" ) )
-                    $CategoryArray = explode( "-", urldecode( $url_array[7] ) );
+                    $categoryArray = explode( "-", urldecode( $url_array[7] ) );
                 if ( $url_array[8] != urlencode( "+" ) )
-                    $ContentsWriterID = urldecode( $url_array[8] );
+                    $contentsWriterID = urldecode( $url_array[8] );
                 if ( $url_array[9] != urlencode( "+" ) )
-                    $PhotographerID = urldecode( $url_array[9] );
+                    $photographerID = urldecode( $url_array[9] );
                 
-                $Offset = $url_array[10];
+                $offset = $url_array[10];
             }
             include( "kernel/ezarticle/admin/search.php" );
         }
@@ -138,22 +270,22 @@ switch ( $url_array[2] )
     case "articleview":
     case "articlepreview":
     {
-        $ArticleID = $url_array[3];
-        $PageNumber= $url_array[4];
-        if ( !isset( $PageNumber ) || ( $PageNumber == "" ) )
-            $PageNumber= 1;
+        $articleID = $url_array[3];
+        $pageNumber= $url_array[4];
+        if ( !isset( $pageNumber ) || ( $pageNumber == "" ) )
+            $pageNumber= 1;
 
-        if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'r' ) ||
-             eZArticle::isAuthor( $user, $ArticleID ) )
+        if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'r' ) ||
+             eZArticle::isAuthor( $user, $articleID ) )
             include( "kernel/ezarticle/admin/articlepreview.php" );
     }
     break;
 
     case "articlelog" :
     {
-        $ArticleID = $url_array[3];
-        if ( eZObjectPermission::hasPermission(  $ArticleID, "article_article", 'w' ) ||
-             eZArticle::isAuthor( $user, $ArticleID ) )
+        $articleID = $url_array[3];
+        if ( eZObjectPermission::hasPermission(  $articleID, "article_article", 'w' ) ||
+             eZArticle::isAuthor( $user, $articleID ) )
             include( "kernel/ezarticle/admin/articlelog.php" );
     }
     break;
@@ -181,48 +313,48 @@ switch ( $url_array[2] )
            
             case "insert" :
             {
-                $Action = "Insert";
-                $ArticleID = $url_array[4];
+                $action = "Insert";
+                $articleID = $url_array[4];
                 include( "kernel/ezarticle/admin/articleedit.php" );
             }
             break;
 		
             case "new" :
             {
-                $Action = "New";
+                $action = "New";
                 include( "kernel/ezarticle/admin/articleedit.php" );
             }
             break;
 
             case "update" :
             {
-                $Action = "Update";
-                $ArticleID = $url_array[4];
+                $action = "Update";
+                $articleID = $url_array[4];
 
-                if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                     eZArticle::isAuthor( $user, $ArticleID ) )
+                if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                     eZArticle::isAuthor( $user, $articleID ) )
                     include( "kernel/ezarticle/admin/articleedit.php" );
             }
             break;
 
             case "cancel" :
             {
-                $Action = "Cancel";
-                $ArticleID = $url_array[4];
+                $action = "Cancel";
+                $articleID = $url_array[4];
 
-                if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                     eZArticle::isAuthor( $user, $ArticleID ) )
+                if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                     eZArticle::isAuthor( $user, $articleID ) )
                     include( "kernel/ezarticle/admin/articleedit.php" );
             }
             break;
                         
             case "edit" :
             {
-                $Action = "Edit";
-                $ArticleID = $url_array[4];
+                $action = "Edit";
+                $articleID = $url_array[4];
 
-                if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                     eZArticle::isAuthor( $user, $ArticleID ) )
+                if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                     eZArticle::isAuthor( $user, $articleID ) )
                     include( "kernel/ezarticle/admin/articleedit.php" );
                 else
                     print("Not allowed");
@@ -231,11 +363,11 @@ switch ( $url_array[2] )
 
             case "delete" :
             {
-                $Action = "Delete";
-                $ArticleID = $url_array[4];
+                $action = "Delete";
+                $articleID = $url_array[4];
 
-                if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                     eZArticle::isAuthor( $user , $ArticleID ) )
+                if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                     eZArticle::isAuthor( $user , $articleID ) )
                     include( "kernel/ezarticle/admin/articleedit.php" );
             }
             break;
@@ -244,9 +376,9 @@ switch ( $url_array[2] )
             {
             	eZHTTPTool::extractVar(array('MoveImageUp','MoveImageDown','AddImages', 
             		'ImageArrayID' ));
-                $ArticleID = $url_array[4];
-                if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                     eZArticle::isAuthor( $user, $ArticleID ) )
+                $articleID = $url_array[4];
+                if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                     eZArticle::isAuthor( $user, $articleID ) )
                     include( "kernel/ezarticle/admin/imagelist.php" );
             }
             break;
@@ -255,9 +387,9 @@ switch ( $url_array[2] )
             {
             	eZHTTPTool::extractVar(array('MoveImageUp','MoveImageDown','AddMedia', 
             		'MediaArrayID' ));
-            	$ArticleID = $url_array[4];
-                if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                     eZArticle::isAuthor( $user, $ArticleID ) )
+            	$articleID = $url_array[4];
+                if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                     eZArticle::isAuthor( $user, $articleID ) )
                     include( "kernel/ezarticle/admin/medialist.php" );
             }
             break;
@@ -266,26 +398,26 @@ switch ( $url_array[2] )
             {
             	eZHTTPTool::extractVar(array('MoveImageUp','MoveImageDown','AddFile', 
             		'FileArrayID' ));
-            	$ArticleID = $url_array[4];
-                if ( eZObjectPermission::hasPermission(  $ArticleID, "article_article", 'w' ) ||
-                     eZArticle::isAuthor( $user, $ArticleID ) )
+            	$articleID = $url_array[4];
+                if ( eZObjectPermission::hasPermission(  $articleID, "article_article", 'w' ) ||
+                     eZArticle::isAuthor( $user, $articleID ) )
                     include( "kernel/ezarticle/admin/filelist.php" );
             }
             break;
 
            case "link" :
             {
-                $ItemID = $url_array[5];
+                $itemID = $url_array[5];
                 include_once( "ezarticle/classes/ezarticle.php" );
                 include_once( "ezarticle/classes/ezarticletool.php" );
 
-                $INIGroup = "eZArticleMain";
-                $DefaultSectionsName = "ArticleLinkSections";
-                $PreferencesSetting = "ArticleLinkType";
-                $ClientModuleName = "eZArticle";
-                $ClientModuleType = "Article";
+                $iniGroup = "eZArticleMain";
+                $defaultSectionsName = "ArticleLinkSections";
+                $preferencesSetting = "ArticleLinkType";
+                $clientModuleName = "eZArticle";
+                $clientModuleType = "Article";
                 $root = "/article/articleedit";
-                $URLS = array( "back" => "$root/edit/%s",
+                $urls = array( "back" => "$root/edit/%s",
                                "linklist" => "$root/link/list/%s",
                                "linkmoveup" => "$root/link/moveup/link/%d/%d/%d",
                                "linkmovedown" => "$root/link/movedown/link/%d/%d/%d",
@@ -296,11 +428,11 @@ switch ( $url_array[2] )
                                "linkselect_std" => "$root/link/select/%s/%s/%s/%s/%s",
                                "urledit" => "$root/link/select/%s/%s/%s/%s",
                                "linkedit" => "$root/link/select/%s/%s/%s/0/0/%s" );
-                $Funcs = array( "delete" => "deleteCacheHelper" );
+                $funcs = array( "delete" => "deleteCacheHelper" );
 
-                function deleteCacheHelper( $ArticleID )
+                function deleteCacheHelper( $articleID )
                     {
-                        eZArticleTool::deleteCache( $ArticleID, $CategoryID, $CategoryArray );
+                        eZArticleTool::deleteCache( $articleID, $categoryID, $categoryArray );
                     }  
 
                 switch( $url_array[4] )
@@ -313,33 +445,33 @@ switch ( $url_array[2] )
                     case "select":
                     {
                         if ( isset( $url_array[6] ) )
-                            $ModuleName = $url_array[6];
+                            $moduleName = $url_array[6];
                         if ( isset( $url_array[7] ) )
-                            $Type = $url_array[7];
+                            $type = $url_array[7];
                         if ( isset( $url_array[8] ) )
-                            $SectionID = $url_array[8];
+                            $sectionID = $url_array[8];
                         if ( isset( $url_array[9] ) )
-                            $Category = $url_array[9];
+                            $category = $url_array[9];
                         if ( isset( $url_array[10] ) )
-                            $Offset = $url_array[10];
+                            $offset = $url_array[10];
                         if ( isset( $url_array[11] ) )
-                            $LinkID = $url_array[11];
+                            $linkID = $url_array[11];
 
                         include( "classes/admin/linkselect.php" );
                         break;
                     }
                     case "moveup":
-                        $MoveUp = true;
+                        $moveUp = true;
                     case "movedown":
                     {
                         if ( isset( $url_array[5] ) )
-                            $ObjectType = $url_array[5];
+                            $objectType = $url_array[5];
                         if ( isset( $url_array[6] ) )
-                            $ItemID = $url_array[6];
+                            $itemID = $url_array[6];
                         if ( isset( $url_array[7] ) )
-                            $ObjectID = $url_array[7];
+                            $objectID = $url_array[7];
                         if ( isset( $url_array[8] ) )
-                            $LinkID = $url_array[8];
+                            $linkID = $url_array[8];
                         include( "classes/admin/linkmove.php" );
                         break;
                     }
@@ -358,22 +490,22 @@ switch ( $url_array[2] )
                 {
                     case "edit" :
                     {
-                        $ArticleID = $url_array[6];
-                        $ImageID = $url_array[5];
-                        $Action = "Edit";
-                        if ( eZObjectPermission::hasPermission(  $ArticleID, "article_article", 'w' ) ||
-                             eZArticle::isAuthor( $user, $ArticleID ) )
+                        $articleID = $url_array[6];
+                        $imageID = $url_array[5];
+                        $action = "Edit";
+                        if ( eZObjectPermission::hasPermission(  $articleID, "article_article", 'w' ) ||
+                             eZArticle::isAuthor( $user, $articleID ) )
                             include( "kernel/ezarticle/admin/imagemap.php" );
                     }
                     break;
                     
                     case "store" :
                     {
-                        $ArticleID = $url_array[6];
-                        $ImageID = $url_array[5];
-                        $Action = "Store";
-                        if ( eZObjectPermission::hasPermission(  $ArticleID, "article_article", 'w' ) ||
-                             eZArticle::isAuthor( $user, $ArticleID ) )
+                        $articleID = $url_array[6];
+                        $imageID = $url_array[5];
+                        $action = "Store";
+                        if ( eZObjectPermission::hasPermission(  $articleID, "article_article", 'w' ) ||
+                             eZArticle::isAuthor( $user, $articleID ) )
                             include( "kernel/ezarticle/admin/imagemap.php" );
                     }
                     break;
@@ -383,20 +515,20 @@ switch ( $url_array[2] )
             
             case "attributelist" :
             {
-                $ArticleID = $url_array[4];
-                if ( eZObjectPermission::hasPermission(  $ArticleID, "article_article", 'w' ) ||
-                     eZArticle::isAuthor( $user, $ArticleID ) )
+                $articleID = $url_array[4];
+                if ( eZObjectPermission::hasPermission(  $articleID, "article_article", 'w' ) ||
+                     eZArticle::isAuthor( $user, $articleID ) )
                     include( "kernel/ezarticle/admin/attributelist.php" );
             }
             break;
 
             case "attributeedit" :
             {
-                $Action = $url_array[4];
-                if ( !isset( $TypeID ) ) 
-                    $TypeID = $url_array[5];
-                if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                     eZArticle::isAuthor( $user, $ArticleID ) )
+                $action = $url_array[4];
+                if ( !isset( $typeID ) ) 
+                    $typeID = $url_array[5];
+                if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                     eZArticle::isAuthor( $user, $articleID ) )
                     include( "kernel/ezarticle/admin/attributeedit.php" );
             }
             break;
@@ -404,9 +536,9 @@ switch ( $url_array[2] )
             
             case "formlist" :
             {
-            	$ArticleID = $url_array[4];
-                if( eZObjectPermission::hasPermission(  $ArticleID, "article_article", 'w' ) ||
-                    eZArticle::isAuthor( $user, $ArticleID ) )
+            	$articleID = $url_array[4];
+                if( eZObjectPermission::hasPermission(  $articleID, "article_article", 'w' ) ||
+                    eZArticle::isAuthor( $user, $articleID ) )
                     include( "kernel/ezarticle/admin/formlist.php" );
             }
             break;
@@ -414,8 +546,11 @@ switch ( $url_array[2] )
             
             case "imageedit" :
             {
-                if ( isset( $Browse ) )
+                if ( isset( $browse ) )
                 {
+                    // Compatibility aliases for ezimagecatalogue/browse.php (not yet refactored)
+                    $CategoryID = $categoryID;
+                    $SearchText = $searchText;
                     include ( "kernel/ezimagecatalogue/admin/browse.php" );
                     break;
                 }
@@ -423,41 +558,41 @@ switch ( $url_array[2] )
                 {
                     case "new" :
                     {
-                        $Action = "New";
-                        $ArticleID = $url_array[5];
-                        if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                             eZArticle::isAuthor( $user, $ArticleID ) )
+                        $action = "New";
+                        $articleID = $url_array[5];
+                        if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                             eZArticle::isAuthor( $user, $articleID ) )
                             include( "kernel/ezarticle/admin/imageedit.php" );
                     }
                     break;
 
                     case "edit" :
                     {
-                        $Action = "Edit";
-                        $ArticleID = $url_array[6];
-                        $ImageID = $url_array[5];
-                        if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                             eZArticle::isAuthor( $user, $ArticleID ) )
+                        $action = "Edit";
+                        $articleID = $url_array[6];
+                        $imageID = $url_array[5];
+                        if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                             eZArticle::isAuthor( $user, $articleID ) )
                             include( "kernel/ezarticle/admin/imageedit.php" );
                     }
                     break;
 
                     case "storedef" :
                     {
-                        $Action = "StoreDef";
-                        if ( isset( $DeleteSelected ) )
-                            $Action = "Delete";
-                        $ArticleID = $url_array[5];
-                        if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                             eZArticle::isAuthor( $user, $ArticleID ) )
+                        $action = "StoreDef";
+                        if ( isset( $deleteSelected ) )
+                            $action = "Delete";
+                        $articleID = $url_array[5];
+                        if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                             eZArticle::isAuthor( $user, $articleID ) )
                             include( "kernel/ezarticle/admin/imageedit.php" );
                     }
                     break;
 
                     default :
                     {
-                        if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                             eZArticle::isAuthor( $user, $ArticleID ) )
+                        if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                             eZArticle::isAuthor( $user, $articleID ) )
                             include( "kernel/ezarticle/admin/imageedit.php" );
                     }
                 }
@@ -466,23 +601,27 @@ switch ( $url_array[2] )
 
             case "mediaedit" :
             {
-                if ( isset ( $Browse ) )
+                if ( isset ( $browse ) )
                 {
+                    // Compatibility aliases for ezmediacatalogue/browse.php (not yet refactored)
+                    $CategoryID = $categoryID;
                     include ( "kernel/ezmediacatalogue/admin/browse.php" );
                     break;
                 }
-                $ArticleID = $url_array[4];
-                $MediaID = $url_array[5];
-                if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                     eZArticle::isAuthor( $user, $ArticleID ) )
+                $articleID = $url_array[4];
+                $mediaID = $url_array[5];
+                if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                     eZArticle::isAuthor( $user, $articleID ) )
                     include( "kernel/ezarticle/admin/mediaedit.php" );
             }
             break;
 
             case "fileedit" :
             {
-                if ( isset( $Browse ) )
+                if ( isset( $browse ) )
                 {
+                    // Compatibility aliases for ezfilemanager/browse.php (not yet refactored)
+                    $FolderID = eZHTTPTool::getVar( 'FolderID' );
                     include( "kernel/ezfilemanager/admin/browse.php" );
                     break;
                 }
@@ -490,40 +629,40 @@ switch ( $url_array[2] )
                 {
                     case "new" :
                     {
-                        $Action = "New";
-                        $ArticleID = $url_array[5];
-                        if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                             eZArticle::isAuthor( $user, $ArticleID ) )
+                        $action = "New";
+                        $articleID = $url_array[5];
+                        if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                             eZArticle::isAuthor( $user, $articleID ) )
                             include( "kernel/ezarticle/admin/fileedit.php" );
                     }
                     break;
 
                     case "edit" :
                     {
-                        $Action = "Edit";
-                        $ArticleID = $url_array[6];
-                        $FileID = $url_array[5];
-                        if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                             eZArticle::isAuthor( $user, $ArticleID ) )
+                        $action = "Edit";
+                        $articleID = $url_array[6];
+                        $fileID = $url_array[5];
+                        if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                             eZArticle::isAuthor( $user, $articleID ) )
                             include( "kernel/ezarticle/admin/fileedit.php" );
                     }
                     break;
 
                     case "delete" :
                     {
-                        $Action = "Delete";
-                        $ArticleID = $url_array[6];
-                        $FileID = $url_array[5];
-                        if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                             eZArticle::isAuthor( $user, $ArticleID ) )
+                        $action = "Delete";
+                        $articleID = $url_array[6];
+                        $fileID = $url_array[5];
+                        if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                             eZArticle::isAuthor( $user, $articleID ) )
                             include( "kernel/ezarticle/admin/fileedit.php" );
                     }
                     break;
                     
                     default :
                     {
-                        if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' ) ||
-                             eZArticle::isAuthor( $user, $ArticleID ) )
+                        if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) ||
+                             eZArticle::isAuthor( $user, $articleID ) )
                             include( "kernel/ezarticle/admin/fileedit.php" );
                     }
                 }
@@ -539,42 +678,42 @@ switch ( $url_array[2] )
         // make switch
         if ( $url_array[3] == "cancel" )        
         {
-            $Action = "Cancel";
-            $CategoryID = $url_array[4];
-            eZHTTPTool::header( "Location: /article/archive/$CategoryID/" );
+            $action = "Cancel";
+            $categoryID = $url_array[4];
+            eZHTTPTool::header( "Location: /article/archive/$categoryID/" );
             exit();
         }        
 
         if ( $url_array[3] == "insert" )
         {
-            $Action = "insert";
+            $action = "insert";
             include( "kernel/ezarticle/admin/categoryedit.php" );
         }
         if ( $url_array[3] == "new" )
         {
-            $Action = "new";
+            $action = "new";
             include( "kernel/ezarticle/admin/categoryedit.php" );
         }
         if ( $url_array[3] == "update" )
         {
-            $CategoryID = $url_array[4];
-            $Action = "update";
-            if ( eZObjectPermission::hasPermission( $CategoryID, "article_category", 'w' ) ||
-                 eZArticleCategory::isOwner( $user, $CategoryID) )
+            $categoryID = $url_array[4];
+            $action = "update";
+            if ( eZObjectPermission::hasPermission( $categoryID, "article_category", 'w' ) ||
+                 eZArticleCategory::isOwner( $user, $categoryID) )
                 include( "kernel/ezarticle/admin/categoryedit.php" );
         }
         if ( $url_array[3] == "delete" )
         {
-            $CategoryID = $url_array[4];
-            $Action = "delete";
-            if ( eZObjectPermission::hasPermission( $CategoryID, "article_category", 'w' )  ||
-                 eZArticleCategory::isOwner( $user, $CategoryID) )
+            $categoryID = $url_array[4];
+            $action = "delete";
+            if ( eZObjectPermission::hasPermission( $categoryID, "article_category", 'w' )  ||
+                 eZArticleCategory::isOwner( $user, $categoryID) )
                 include( "kernel/ezarticle/admin/categoryedit.php" );
         }
         if ( $url_array[3] == "edit" )
         {
-            $CategoryID = $url_array[4];
-            $Action = "edit";
+            $categoryID = $url_array[4];
+            $action = "edit";
             include( "kernel/ezarticle/admin/categoryedit.php" );
         }
 
@@ -605,20 +744,20 @@ switch ( $url_array[2] )
             case "up":
             case "down":
             {
-                if ( !isset( $Action ) )
-                    $Action = $url_array[3];
-                if ( isset( $TypeID ) && is_numeric( $TypeID ) )
+                if ( !isset( $action ) )
+                    $action = $url_array[3];
+                if ( isset( $typeID ) && is_numeric( $typeID ) )
                 {
-                    $ActionValue = "update";
+                    $actionValue = "update";
                 }
                 else
                 {
-                    $TypeID = $url_array[4];
+                    $typeID = $url_array[4];
                 }
                 
-                if ( !isset( $AttributeID ) )
+                if ( !isset( $attributeID ) )
                 {
-                    $AttributeID = $url_array[5];
+                    $attributeID = $url_array[5];
                 }
                 include( "kernel/ezarticle/admin/typeedit.php" );
             }

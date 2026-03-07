@@ -1,9 +1,9 @@
 <?php
 
-include_once( "classes/INIFile.php" );
-include_once( "classes/eztemplate.php" );
+// include_once( "classes/INIFile.php" );
+// include_once( "classes/eztemplate.php" );
 
-include_once( "eztrade/classes/ezproductcategory.php" );
+// include_once( "eztrade/classes/ezproductcategory.php" );
 
 $ini = eZINI::instance( 'site.ini' );
 

@@ -218,7 +218,7 @@ foreach( $Modules as $module )
         }
     }
 }
-$t->set_var( "url", $REQUEST_URI );
+$t->set_var( "url", $_SERVER['REQUEST_URI'] );
 $t->set_var( "item_id", $ItemID );
 
 $t->set_var( "section_item", "" );

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: linklist.php 6233 2001-07-20 11:42:02Z jakobn $
+// $id: linklist.php 6233 2001-07-20 11:42:02Z jakobn $
 //
 // Created on: <16-Mar-2001 14:41:10 amos>
 //
@@ -28,24 +28,24 @@
 //  // include_once( "eztrade/classes/ezproduct.php" );
 //  // include_once( "eztrade/classes/ezproducttool.php" );
 
-//  $INIGroup = "eZTradeMain";
-//  $PreferencesSetting = "ProductLinkType";
-//  $ClientModuleName = "eZTrade";
-//  $ClientModuleType = "Product";
-//  $ItemID = $ProductID;
+//  $iniGroup = "eZTradeMain";
+//  $preferencesSetting = "ProductLinkType";
+//  $clientModuleName = "eZTrade";
+//  $clientModuleType = "Product";
+//  $itemID = $productID;
 //  $root = "/trade/productedit";
-//  $URLS = array( "back" => "$root/edit/%s",
+//  $urls = array( "back" => "$root/edit/%s",
 //                 "linklist" => "$root/link/list/%s",
 //                 "linkselect" => "$root/link/select/%s/%s/%s/%s/%s/0/%s",
 //                 "linkselect_basic" => "$root/link/select/",
 //                 "linkselect_std" => "$root/link/select/%s/%s/%s/%s/%s",
 //                 "urledit" => "$root/link/select/%s/%s/%s/%s",
 //                 "linkedit" => "$root/link/select/%s/%s/%s/0/0/%s" );
-//  $Funcs = array( "delete" => "deleteCacheHelper" );
+//  $funcs = array( "delete" => "deleteCacheHelper" );
 
-//  function deleteCacheHelper( $ProductID )
+//  function deleteCacheHelper( $productID )
 //  {
-//      eZProductTool::deleteCache( $ProductID );
+//      eZProductTool::deleteCache( $productID );
 //  }
 
 //  include( "classes/admin/linklist.php" );

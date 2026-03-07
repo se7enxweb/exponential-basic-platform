@@ -35,31 +35,31 @@
 // include_once( "eznewsfeed/classes/eznews.php" );
 // include_once( "eznewsfeed/classes/eznewscategory.php" );
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $category = new eZNewsCategory();
-    $category->setName( $CategoryName );
-    $category->setDescription( $CategoryDescription );
+    $category->setName( $categoryName );
+    $category->setDescription( $categoryDescription );
     $category->store();
     
     eZHTTPTool::header( "Location: /newsfeed/archive/" );
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
-    $category = new eZNewsCategory( $CategoryID );
-    $category->setName( $CategoryName );
-    $category->setDescription( $CategoryDescription );
+    $category = new eZNewsCategory( $categoryID );
+    $category->setName( $categoryName );
+    $category->setDescription( $categoryDescription );
     $category->store();
 
     eZHTTPTool::header( "Location: /newsfeed/archive/" );
     exit();
 }
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    $category = new eZNewsCategory( $CategoryID );
+    $category = new eZNewsCategory( $categoryID );
     $category->delete();
 
     eZHTTPTool::header( "Location: /newsfeed/archive/" );
@@ -88,9 +88,9 @@ $t->set_var( "category_description_value", "" );
 $t->set_var( "action_value", "Insert" );
 $t->set_var( "category_id", "" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $category = new eZNewsCategory( $CategoryID );
+    $category = new eZNewsCategory( $categoryID );
     $t->set_var( "action_value", "Update" );
     $t->set_var( "category_id", $category->id() );
 

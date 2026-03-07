@@ -816,7 +816,7 @@ class eZForumMessage
 
         $ret = 0;
 
-        if ( $msg->parent() != 0 )
+        if ( $msg->parent() !== false )
         {
             $parent = $msg->parent();
             $ret = $this->threadTop( $parent  );

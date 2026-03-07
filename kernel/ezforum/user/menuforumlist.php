@@ -43,7 +43,7 @@ $t->set_file( "menuforum_list_tpl", "menuforumlist.tpl"  );
 $t->set_block( "menuforum_list_tpl", "forum_item_tpl", "forum_item" );
 $t->setAllStrings();
 
-$category = new eZForumCategory( $CategoryID );
+$category = new eZForumCategory( $categoryID );
 $forumList = $category->forums();
 $t->set_var( "forum_category_name", $category->name() );
 

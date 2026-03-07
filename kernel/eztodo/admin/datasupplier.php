@@ -23,8 +23,17 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-//print $REQUEST_URI;
-$url_array = explode( "/", $REQUEST_URI );
+//print $_SERVER['REQUEST_URI'];
+$url_array = explode( "/", $_SERVER['REQUEST_URI'] );
+
+$action       = eZHTTPTool::getVar( 'Action' );
+$cancel       = eZHTTPTool::getVar( 'Cancel' );
+$categoryID   = eZHTTPTool::getVar( 'CategoryID' );
+$categoryName = eZHTTPTool::getVar( 'CategoryName' );
+$name         = eZHTTPTool::getVar( 'Name' );
+$priorityID   = eZHTTPTool::getVar( 'PriorityID' );
+$priorityName = eZHTTPTool::getVar( 'PriorityName' );
+
 switch ( $url_array[2] )
 {
     case "categorytypelist":
@@ -39,39 +48,39 @@ switch ( $url_array[2] )
         {
             case "new":
             {
-                $Action = "new";
+                $action = "new";
                 include( "kernel/eztodo/admin/categorytypeedit.php" );
             }
             break;
             
             case "insert":
             {
-                $CategoryID = $url_array[4];
-                $Action = "insert";
+                $categoryID = $url_array[4];
+                $action = "insert";
                 include( "kernel/eztodo/admin/categorytypeedit.php" );
             }
             break;
             
             case "edit":
             {
-                $CategoryID = $url_array[4];
-                $Action = "edit";
+                $categoryID = $url_array[4];
+                $action = "edit";
                 include( "kernel/eztodo/admin/categorytypeedit.php" );
             }
             break;
             
             case "update":
             {
-                $CategoryID = $url_array[4];
-                $Action = "update";
+                $categoryID = $url_array[4];
+                $action = "update";
                 include( "kernel/eztodo/admin/categorytypeedit.php" );
             }
             break;
             
             case "delete":
             {
-                $CategoryID = $url_array[4];
-                $Action = "delete";
+                $categoryID = $url_array[4];
+                $action = "delete";
                 include( "kernel/eztodo/admin/categorytypeedit.php" );
             }
             break;
@@ -91,39 +100,39 @@ switch ( $url_array[2] )
         {
             case "new":
             {
-                $Action = "new";
+                $action = "new";
                 include( "kernel/eztodo/admin/prioritytypeedit.php" );
             }
             break;
 
             case "insert":
             {
-                $PriorityID = $url_array[4];
-                $Action = "insert";
+                $priorityID = $url_array[4];
+                $action = "insert";
                 include( "kernel/eztodo/admin/prioritytypeedit.php" );
             }
             break;
 
             case "edit":
             {
-                $PriorityID = $url_array[4];
-                $Action = "edit";
+                $priorityID = $url_array[4];
+                $action = "edit";
                 include( "kernel/eztodo/admin/prioritytypeedit.php" );
             }
             break;
 
             case "update":
             {
-                $PriorityID = $url_array[4];
-                $Action = "update";
+                $priorityID = $url_array[4];
+                $action = "update";
                 include( "kernel/eztodo/admin/prioritytypeedit.php" );
             }
             break;
 
             case "delete":
             {
-                $PriorityID = $url_array[4];
-                $Action = "delete";
+                $priorityID = $url_array[4];
+                $action = "delete";
                 include( "kernel/eztodo/admin/prioritytypeedit.php" );
             }
             break;
@@ -143,39 +152,39 @@ switch ( $url_array[2] )
         {
             case "new":
             {
-                $Action = "new";
+                $action = "new";
                 include( "kernel/eztodo/admin/statustypeedit.php" );
             }
             break;
             
             case "insert":
             {
-                $CategoryID = $url_array[4];
-                $Action = "insert";
+                $categoryID = $url_array[4];
+                $action = "insert";
                 include( "kernel/eztodo/admin/statustypeedit.php" );
             }
             break;
             
             case "edit":
             {
-                $CategoryID = $url_array[4];
-                $Action = "edit";
+                $categoryID = $url_array[4];
+                $action = "edit";
                 include( "kernel/eztodo/admin/statustypeedit.php" );
             }
             break;
             
             case "update":
             {
-                $CategoryID = $url_array[4];
-                $Action = "update";
+                $categoryID = $url_array[4];
+                $action = "update";
                 include( "kernel/eztodo/admin/statustypeedit.php" );
             }
             break;
             
             case "delete":
             {
-                $CategoryID = $url_array[4];
-                $Action = "delete";
+                $categoryID = $url_array[4];
+                $action = "delete";
                 include( "kernel/eztodo/admin/statustypeedit.php" );
             }
             break;

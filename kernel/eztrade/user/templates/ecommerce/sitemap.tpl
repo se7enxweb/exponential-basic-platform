@@ -17,7 +17,7 @@
 <table border="0" cellspacing="0" cellpadding="1" width="100%">
 <!-- BEGIN sitemap_line_tpl -->
 <tr>
-<td>{ident}- <a href="/index.php/trade/productlist/{id}/">{name}</a></td>
+<td>{ident}- <a href="/trade/productlist/{id}/">{name}</a></td>
 </tr>
 <!-- END sitemap_line_tpl -->
 </table>

@@ -37,19 +37,19 @@ $Language = $ini->variable( "eZBugMain", "Language" );
 $session = new eZSession();
 
 // Turns out this is not needed.
-// $BugID = $session->variable( "BugID" );
+// $bugID = $session->variable( "BugID" );
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $file = new eZPBFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     { 
-        $bug = new eZBug( $BugID );
+        $bug = new eZBug( $bugID );
 
         $uploadedFile = new eZVirtualFile();
-        $uploadedFile->setName( $Name );
-        $uploadedFile->setDescription( $Description );
+        $uploadedFile->setName( $name );
+        $uploadedFile->setDescription( $description );
 
         $uploadedFile->setFile( $file );
         
@@ -57,7 +57,7 @@ if ( $Action == "Insert" )
 
         $bug->addFile( $uploadedFile );
 
-        eZPBLog::writeNotice( "File added to bug $BugID  from IP: $REMOTE_ADDR" );
+        eZPBLog::writeNotice( "File added to bug $bugID  from IP: $REMOTE_ADDR" );
     }
     else
     {
@@ -65,13 +65,13 @@ if ( $Action == "Insert" )
     }
 
     // include_once( "classes/ezhttptool.php" );
-    echo "Location: /bug/report/edit/" . $BugID . "/";
+    echo "Location: /bug/report/edit/" . $bugID . "/";
     die();
-    eZHTTPTool::header( "Location: /bug/report/edit/" . $BugID . "/" );
+    eZHTTPTool::header( "Location: /bug/report/edit/" . $bugID . "/" );
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
 //      $file = new eZFilerFile();
     
@@ -83,8 +83,8 @@ if ( $Action == "Update" )
 //          $article->deleteFiler( $oldFiler );
         
 //          $filer = new eZFiler();
-//          $filer->setName( $Name );
-//          $filer->setCaption( $Caption );
+//          $filer->setName( $name );
+//          $filer->setCaption( $caption );
 
 //          $filer->setFiler( $file );
         
@@ -95,26 +95,26 @@ if ( $Action == "Update" )
 //      else
 //      {
 //          $filer = new eZFiler( $FilerID );
-//          $filer->setName( $Name );
-//          $filer->setCaption( $Caption );
+//          $filer->setName( $name );
+//          $filer->setCaption( $caption );
 //          $filer->store();
 //      }
     
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /bug/edit/edit/" . $BugID . "/" );
+    eZHTTPTool::header( "Location: /bug/edit/edit/" . $bugID . "/" );
     exit();
 }
 
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    $bug = new eZBug( $BugID );
-    $file = new eZVirtualFile( $FileID );
+    $bug = new eZBug( $bugID );
+    $file = new eZVirtualFile( $fileID );
         
     $bug->deleteFile( $file );
     
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /bug/edit/" . $BugID . "/" );
+    eZHTTPTool::header( "Location: /bug/edit/" . $bugID . "/" );
     exit();    
 }
 
@@ -136,10 +136,10 @@ $t->set_var( "action_value", "Insert" );
 $t->set_var( "option_id", "" );
 $t->set_var( "file", "" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $bug = new eZBug( $BugID );
-    $file = new eZVirtualFile( $FileID );
+    $bug = new eZBug( $bugID );
+    $file = new eZVirtualFile( $fileID );
 
     $t->set_var( "bug_name", $bug->name() );
 
@@ -149,7 +149,7 @@ if ( $Action == "Edit" )
     $t->set_var( "action_value", "Update" );
 }
 
-$bug = new eZBug( $BugID );
+$bug = new eZBug( $bugID );
     
 $t->set_var( "bug_name", $bug->name() );
 $t->set_var( "bug_id", $bug->id() );

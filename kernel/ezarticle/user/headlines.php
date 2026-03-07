@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: headlines.php 9827 2003-06-02 10:46:23Z jhe $
+// $id: headlines.php 9827 2003-06-02 10:46:23Z jhe $
 //
 // Created on: <30-Nov-2000 14:35:24 bf>
 //
@@ -29,31 +29,33 @@
 // include_once( "classes/ezcachefile.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$imageDir = $ini->variable( "eZArticleMain", "ImageDir" );
+$globalSiteDesign = $GlobalSiteDesign ?? null;
+$globalSectionID = $GlobalSectionID ?? 0;
 
-if ( !isset( $Limit ) ) $Limit = null;
-if ( !isset( $CategoryID ) ) $CategoryID = null;
+if ( !isset( $limit ) ) $limit = null;
+if ( !isset( $categoryID ) ) $categoryID = null;
 
 if ( !function_exists( "createHeadlinesMenu" )  )
 {
-    function createHeadlinesMenu( $menuCacheFile=false, $ini = null, $Language = null, $GlobalSiteDesign = null,
-            $GlobalSectionID = null, $CategoryID = null, $Limit = null )
+    function createHeadlinesMenu( $menuCacheFile=false, $ini = null, $language = null, $globalSiteDesign = null,
+            $globalSectionID = null, $categoryID = null, $limit = null )
         {
             // global $ini;
-            // global $Language;
-            // global $GlobalSiteDesign;
-            // global $CategoryID;
-            // global $Limit;
+            // global $language;
+            // global $globalSiteDesign;
+            // global $categoryID;
+            // global $limit;
 
-            $ImageDir = '';
+            $imageDir = '';
 
             // include_once( "ezarticle/classes/ezarticlecategory.php" );
             // include_once( "ezarticle/classes/ezarticle.php" );
             // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
             $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                                 "kernel/ezarticle/user/intl/", $Language, "headlines.php" );
+                                 "kernel/ezarticle/user/intl/", $language, "headlines.php" );
 
             $t->setAllStrings();
 
@@ -69,44 +71,44 @@ if ( !function_exists( "createHeadlinesMenu" )  )
 
 
             // image dir
-            $t->set_var( "image_dir", $ImageDir );
+            $t->set_var( "image_dir", $imageDir );
 
-            if ( !isset( $Limit ) )
+            if ( !isset( $limit ) )
             {
-                $Limit = 10;
+                $limit = 10;
             }
 
-            if ( !isset( $HeadlineOffset ) )
+            if ( !isset( $headlineOffset ) )
             {
-                $HeadlineOffset = 0;
+                $headlineOffset = 0;
             }
 
-            $category = new eZArticleCategory( $CategoryID );
+            $category = new eZArticleCategory( $categoryID );
 
-            if ( $CategoryID == 0 )
+            if ( $categoryID == 0 )
             {
                 // do not set offset for the main page news
                 // always sort by publishing date is the merged category
                 $article = new eZArticle();
-                $articleList = $article->articles( "time", false, $HeadlineOffset, $Limit );
+                $articleList = $article->articles( "time", false, $headlineOffset, $limit );
                 $articleCount = $article->articleCount( false );
             }
             else
             {
-                $articleList = $category->articles( $category->sortMode(), false, true, $HeadlineOffset, $Limit );
+                $articleList = $category->articles( $category->sortMode(), false, true, $headlineOffset, $limit );
                 $articleCount = $category->articleCount( false, true  );
             }
 
 
             // should we allow currentuser to go get articles with permissions or should we not??
-            //$articleList = $category->articles( $SortMode, false, true, 0, 5 );
+            //$articleList = $category->articles( $sortMode, false, true, 0, 5 );
 
-            $locale = new eZLocale( $Language );
+            $locale = new eZLocale( $language );
             $i=0;
             $t->set_var( "article_list", "" );
             foreach ( $articleList as $article )
             {
-                $t->set_var( "category_id", $CategoryID );
+                $t->set_var( "category_id", $categoryID );
 
                 $t->set_var( "article_id", $article->id() );
                 $t->set_var( "article_name", $article->name() );
@@ -190,7 +192,7 @@ if ( !function_exists( "createHeadlinesMenu" )  )
 
 unset( $menuCachedFile );
 // do the caching
-if ( $PageCaching == "enabled" )
+if ( $pageCaching == "enabled" )
 {
     $user = eZUser::currentUser();
     $groupstr = "";
@@ -209,7 +211,7 @@ if ( $PageCaching == "enabled" )
         $user = 0;
 
     $menuCacheFile = new eZCacheFile( "kernel/ezarticle/cache",
-                                      array( "menubox_headlines", $GlobalSiteDesign, $CategoryID, $groupstr ),
+                                      array( "menubox_headlines", $globalSiteDesign, $categoryID, $groupstr ),
                                       "cache", "," );
 
     if ( $menuCacheFile->exists() )
@@ -218,12 +220,12 @@ if ( $PageCaching == "enabled" )
     }
     else
     {
-        createHeadlinesMenu( $menuCacheFile, $ini, $Language, $GlobalSiteDesign, $GlobalSectionID, $CategoryID, $Limit );
+        createHeadlinesMenu( $menuCacheFile, $ini, $language, $globalSiteDesign, $globalSectionID, $categoryID, $limit );
     }
 }
 else
 {
-    createHeadlinesMenu(false, $ini, $Language, $GlobalSiteDesign, $GlobalSectionID, $CategoryID, $Limit );
+    createHeadlinesMenu(false, $ini, $language, $globalSiteDesign, $globalSectionID, $categoryID, $limit );
 }
 
 ?>

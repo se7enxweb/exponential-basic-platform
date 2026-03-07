@@ -33,17 +33,17 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "ezmail/classes/ezmail.php" );
 
-$PaypalEmail = $ini->variable( "Checkout", "PaypalEmail" );
-$PaypalMode = $ini->variable( "Checkout", "PaypalMode" );
+$paypalEmail = $ini->variable( "Checkout", "PaypalEmail" );
+$paypalMode = $ini->variable( "Checkout", "PaypalMode" );
 $SiteURL = $ini->variable( "Site", "SiteURL" );
 
 // IPN validation modes, choose: 1, 2, or 3
 
-if ( $PaypalMode == 'Sandbox')
+if ( $paypalMode == 'Sandbox')
 	$postmode=3;
-elseif ( $PaypalMode == 'EliteWeaver' )
+elseif ( $paypalMode == 'EliteWeaver' )
 	$postmode=2;
-elseif ( $PaypalMode == 'Paypal' )
+elseif ( $paypalMode == 'Paypal' )
 	$postmode=1;
 	
            //* 1 = Live Via PayPal Network
@@ -256,7 +256,7 @@ else
 	
 if( ( variableAudit( 'mc_gross', $totalCost ) ||
 		variableAudit( 'payment_gross', $totalCost ) ) &&
-     variableAudit('receiver_email',$PaypalEmail) &&
+     variableAudit('receiver_email',$paypalEmail) &&
      variableAudit('payment_status','Completed') &&
 	 ( $orderID == $sessionOrderID ) &&
 	 !$paypal->isDuplicate($_PAYPAL['txn_id']) )
@@ -298,7 +298,7 @@ if ( $orderID != "" && is_numeric($orderID) )
 
 $mail = new eZMail();
 $mail->setFrom( $ini->variable( "eZTradeMain", "OrderSenderEmail" ) );
-$mail->setTo( $PaypalEmail );
+$mail->setTo( $paypalEmail );
 $mail->setSubject( "Paypal payment warning from ".$SiteURL );
 $mail->setBody( $warningMail );
 $mail->send();
@@ -379,7 +379,7 @@ $paypal->store();
 	
 	$mail = new eZMail();
 	$mail->setFrom( $ini->variable( "eZTradeMain", "OrderSenderEmail" ) );
-	$mail->setTo( $PaypalEmail );
+	$mail->setTo( $paypalEmail );
 	$mail->setSubject( "Warning: INVALID payment attempt at ".$SiteURL );
 	$mail->setBody( $warningMail );
 	$mail->send();

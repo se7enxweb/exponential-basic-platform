@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: cron.php 6378 2001-08-03 14:08:19Z jhe $
+// $id: cron.php 6378 2001-08-03 14:08:19Z jhe $
 //
 // Created on: <03-Aug-2001 11:33:51 jhe>
 //
@@ -34,7 +34,7 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 $expireTime = $ini->variable( "eZTradeMain", "EmailBeforeExpire" );
 
@@ -55,7 +55,7 @@ if ( $expireTime > -1 )
 
         // Setup the template for email
         $mailTemplate = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "TemplateDir" ),
-                                        "kernel/eztrade/admin/intl", $Language, "productexpire.php" );
+                                        "kernel/eztrade/admin/intl", $language, "productexpire.php" );
         
         $mailTemplate->set_file( "product_expires_tpl", "productexpire.tpl" );
         $mailTemplate->setAllStrings();
@@ -79,7 +79,7 @@ if ( $expireTime > -1 )
         $mailTemplate->set_var( "expire_date", $locale->format( $expiryObject ) );
                                 
         $mailBody = $mailTemplate->parse( "dummy", "product_expires_tpl" );
-        $mail->setFrom( $OrderSenderEmail );
+        $mail->setFrom( $orderSenderEmail );
         
         $mail->setTo( $user->email() );
         $mail->setSubject( "Product expires" );

@@ -30,23 +30,23 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/INIFile.php" );
 
-if ( isset( $Cancel ) ) // cancel pressed, redirect to templatelist page...
+if ( isset( $cancel ) ) // cancel pressed, redirect to templatelist page...
 {
     eZHTTPTool::header( "Location: /bulkmail/templatelist/" );
     exit();
 }
 
-if ( isset( $Ok ) ) // cancel pressed, redirect to templatelist page...
+if ( isset( $ok ) ) // cancel pressed, redirect to templatelist page...
 {
-    if ( $TemplateID == 0 )
+    if ( $templateID == 0 )
         $template = new eZBulkMailTemplate();
     else
-        $template = new eZBulkMailTemplate( $TemplateID );
+        $template = new eZBulkMailTemplate( $templateID );
 
-    $template->setName( $Name );
-    $template->setDescription( $Description );
-    $template->setHeader( $Header );
-    $template->setFooter( $Footer );
+    $template->setName( $name );
+    $template->setDescription( $description );
+    $template->setHeader( $header );
+    $template->setFooter( $footer );
     
     $template->store();
     eZHTTPTool::header( "Location: /bulkmail/templatelist/" );
@@ -63,12 +63,12 @@ $t->set_var( "site_style", $SiteDesign );
 
 $t->set_var( "template_name", "" );
 $t->set_var( "description", "" );
-$t->set_var( "template_id", $TemplateID );
+$t->set_var( "template_id", $templateID );
 $t->set_var( "template_footer", "" );
 $t->set_var( "template_header", "" );
-if ( $TemplateID != 0  )
+if ( $templateID != 0  )
 {
-    $template = new eZBulkMailTemplate( $TemplateID );
+    $template = new eZBulkMailTemplate( $templateID );
     if ( is_object( $template ) )
     {
         $t->set_var( "template_name", $template->name() );

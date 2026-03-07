@@ -114,7 +114,7 @@ $t->set_block( "full_cart_tpl", "tax_total_tpl", "tax_total" );
 $t->set_block( "tax_specification_tpl", "tax_item_tpl", "tax_item" );
 
 
-$order = new eZOrder( $OrderID );
+$order = new eZOrder( $orderID );
 unset( $user );
 
 // get the customer
@@ -254,7 +254,7 @@ if ( $user )
 
     $region = $shippingAddress->region();
 
-	if ( $shippingRegion )
+	if ( $region )
 		{
 			if ( $region->hasVAT() )
 				$vat = true;
@@ -319,9 +319,9 @@ $totalVAT = 0.0;
 //     {
 //         $found_price = false;
 // 
-//         if ( $ShowPriceGroups and $PriceGroup > 0 )
+//         if ( $ShowPriceGroups and $priceGroup > 0 )
 //         {
-//             $price = eZPriceGroup::correctPrice( $product->id(), $PriceGroup );
+//             $price = eZPriceGroup::correctPrice( $product->id(), $priceGroup );
 //             if ( $price )
 //             {
 //                 if ( $PricesIncludeVAT == "enabled" )
@@ -569,7 +569,7 @@ if ( $ShowCart == true )
         $ColSpanSizeTotals--;
     }
     
-    $SubTotalsColumns = $ColSpanSizeTotals;
+    $subTotalsColumns = $ColSpanSizeTotals;
     
     if ( $ShowExTaxColumn == true )
     {
@@ -610,7 +610,7 @@ if ( $ShowCart == true )
     
     if ( $ShowIncTaxColumn and $ShowExTaxColumn and $ShowExTaxTotal )
     {
-        $t->set_var( "subtotals_span_size", $SubTotalsColumns - 1 );
+        $t->set_var( "subtotals_span_size", $subTotalsColumns - 1 );
     }
     else
     {
@@ -737,7 +737,7 @@ $getnames =array (
 
    );
 
-   if (!$getnames["$shippingType"])
+   if (!isset($getnames["$shippingType"]) || !$getnames["$shippingType"])
    {
      $service_name=$shippingType;
    }
@@ -764,7 +764,7 @@ $t->set_var( "order_sum", $locale->format( $currency ) );
 $currency->setValue( $totalVAT + $shippingVAT );
 $t->set_var( "order_vat_sum", $locale->format( $currency ) );
 
-$t->set_var( "order_id", $OrderID );
+$t->set_var( "order_id", $orderID );
 
 
 // graham@brookinsconsulting.com - 12-19-2001:11:45
@@ -783,15 +783,15 @@ if ( $PrintableVersion = $ini->variable( "eZTradeMain", "ShowPrintableRecieptLin
 {
 switch ($PrintableVersion) {
     case "enabled":
-        $printable_reciept_link = "http://$HTTP_HOST/trade/ordersendt/$OrderID/?PrintableVersion=disabled";
+        $printable_reciept_link = "http://$HTTP_HOST/trade/ordersendt/$orderID/?PrintableVersion=disabled";
         $printable_reciept_text = $translation->variable( "Strings", "web_reciept" );
         break;
     case "disabled":
-        $printable_reciept_link = "http://$HTTP_HOST/trade/ordersendt/$OrderID/?PrintableVersion=enabled";
+        $printable_reciept_link = "http://$HTTP_HOST/trade/ordersendt/$orderID/?PrintableVersion=enabled";
         $printable_reciept_text = $translation->variable( "Strings", "printable_reciept" );
         break;
     case "":
-        $printable_reciept_link = "http://$HTTP_HOST/trade/ordersendt/$OrderID/?PrintableVersion=enabled";
+        $printable_reciept_link = "http://$HTTP_HOST/trade/ordersendt/$orderID/?PrintableVersion=enabled";
         $printable_reciept_text = $translation->variable( "Strings", "printable_reciept" );
         break;
     }

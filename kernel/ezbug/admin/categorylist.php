@@ -48,22 +48,22 @@ $t->set_block( "category_page", "category_item_tpl", "category_item" );
 
 $t->set_var( "site_style", $SiteDesign );
 
-if( isset( $Ok ) || isset( $AddCategory ) )
+if( isset( $ok ) || isset( $addCategory ) )
 {
     $i = 0;
-    if( count( $CategoryID ) > 0 )
+    if( count( $categoryID ) > 0 )
     {
-        foreach( $CategoryID as $itemID )
+        foreach( $categoryID as $itemID )
         {
             $category = new eZBugCategory( $itemID );
-            $category->setName( $CategoryName[$i] );
+            $category->setName( $categoryName[$i] );
             $category->store();
             $i++;
         }
     }
 }
 
-if( isset( $AddCategory ) )
+if( isset( $addCategory ) )
 {
     $newItem = new eZBugCategory();
     $newName = $LanguageIni->variable( "strings", "newcategory" );
@@ -71,13 +71,13 @@ if( isset( $AddCategory ) )
     $newItem->store();
 }
 
-if( isset( $DeleteCategories ) )
+if( isset( $deleteCategories ) )
 {
-    if( count( $CategoryArrayID ) > 0 )
+    if( count( $categoryArrayID ) > 0 )
     {
-        foreach( $CategoryArrayID as $deleteItemID )
+        foreach( $categoryArrayID as $deleteItemID )
         {
-            $item = new eZBugCategory( $CategoryID[ $deleteItemID ] );
+            $item = new eZBugCategory( $categoryID[ $deleteItemID ] );
             $item->delete();
         }
     }

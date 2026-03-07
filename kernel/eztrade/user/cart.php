@@ -73,8 +73,8 @@ $ShowSavingsColumn = false;
 
 if ( isset( $DeleteSelected ) )
 {
-    if ( isset( $CartSelectArray ) && count( $CartSelectArray ) > 0 )
-    foreach ( $CartSelectArray as $cartID )
+    if ( isset( $cartSelectArray ) && count( $cartSelectArray ) > 0 )
+    foreach ( $cartSelectArray as $cartID )
     {
         $cartItem = new eZCartItem( $cartID );
         $optionValues = $cartItem->optionValues();
@@ -91,14 +91,14 @@ if ( isset( $DeleteSelected ) )
     exit();
 }
 
-if ( ( isset( $Action ) && $Action == "Refresh" ) || isset( $DoCheckOut ) )
+if ( ( isset( $action ) && $action == "Refresh" ) || isset( $DoCheckOut ) )
 {
     $i = 0;
     $delete = false;
-    if ( isset( $CartCountArray ) && count( $CartIDArray ) > 0 )
-    foreach ( $CartIDArray as $cartID )
+    if ( isset( $cartCountArray ) && count( $cartIDArray ) > 0 )
+    foreach ( $cartIDArray as $cartID )
     {
-        if ( $CartCountArray[$i] < 1 )
+        if ( $cartCountArray[$i] < 1 )
         {
             $cartItem = new eZCartItem( $cartID );
             $optionValues = $cartItem->optionValues();
@@ -128,7 +128,7 @@ if ( ( isset( $Action ) && $Action == "Refresh" ) || isset( $DoCheckOut ) )
                 $totalQuantity = $value->totalQuantity();
                 
                 if ( $totalQuantity != false and
-                    $totalQuantity < $CartCountArray[$i] )
+                    $totalQuantity < $cartCountArray[$i] )
                 {
                     if ( $maxInStock == false or $totalQuantity < $maxInStock )
                     {
@@ -140,7 +140,7 @@ if ( ( isset( $Action ) && $Action == "Refresh" ) || isset( $DoCheckOut ) )
             $totalQuantity = $product->totalQuantity();
             
             if ( $totalQuantity != false and
-                $totalQuantity < $CartCountArray[$i] )
+                $totalQuantity < $cartCountArray[$i] )
             {
                 if ( $maxInStock == false or $totalQuantity < $maxInStock )
                 {
@@ -153,25 +153,25 @@ if ( ( isset( $Action ) && $Action == "Refresh" ) || isset( $DoCheckOut ) )
             {
                 $value = $optionValue->optionValue();
 
-                if ( ( $CartCountArray[$i] > $maxInStock ) and ( $value->totalQuantity() != false ) and ( $maxInStock != false ) )
+                if ( ( $cartCountArray[$i] > $maxInStock ) and ( $value->totalQuantity() != false ) and ( $maxInStock != false ) )
                 {
                     $optionValue->setCount( $maxInStock );
                 }
                 else
                 {
-                    $optionValue->setCount( $CartCountArray[$i] );
+                    $optionValue->setCount( $cartCountArray[$i] );
                 }
 
                 $optionValue->store();
             }
 
-            if ( ( $CartCountArray[$i] > $maxInStock ) and ( $product->totalQuantity() != false ) and ( $maxInStock != false ) )
+            if ( ( $cartCountArray[$i] > $maxInStock ) and ( $product->totalQuantity() != false ) and ( $maxInStock != false ) )
             {
                 $cartItem->setCount( $maxInStock );
             }
             else
             {
-                $cartItem->setCount( $CartCountArray[$i] );
+                $cartItem->setCount( $cartCountArray[$i] );
             }
 
             $cartItem->store();
@@ -212,10 +212,10 @@ if ( !$cartBySession )
 $items = $cart->items( );
 
 
-if ( isset( $Action ) && $Action == "AddToBasket" )
+if ( isset( $action ) && $action == "AddToBasket" )
 {
     $product = new eZProduct();
-    if ( !$product->get( $ProductID ) )
+    if ( !$product->get( $productID ) )
     {
         eZHTTPTool::header( "Location: /error/404/" );
         exit();
@@ -223,7 +223,7 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
 
     // check if a product like this is already in the basket.
     // if so-> add the count value.
-    $Quantity = $product->totalQuantity();
+    $quantity = $product->totalQuantity();
     if ( $product->hasQuantity( $RequireQuantity ) )
     {
         $productAddedToBasket = false;
@@ -235,7 +235,7 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
             {
                 $productItem =  $item->product();
                 // the same product
-                if ( ( $ProductID == $productItem->id() ) && ( $productAddedToBasket == false ) )
+                if ( ( $productID == $productItem->id() ) && ( $productAddedToBasket == false ) )
                 {
                     $optionValues = $item->optionValues();
 
@@ -250,12 +250,12 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
 
                             $optionValueFound = false;
 
-                            if ( count( $OptionValueArray ) > 0 )
+                            if ( count( $optionValueArray ) > 0 )
                             {
                                 $i=0;
-                                foreach ( $OptionValueArray as $valueItem )
+                                foreach ( $optionValueArray as $valueItem )
                                 {
-                                    if ( ( $OptionIDArray[$i] == $option->id() )
+                                    if ( ( $optionIDArray[$i] == $option->id() )
                                          && ( $valueItem == $value->id() ) )
                                     {
                                         $optionValueFound = true;
@@ -279,7 +279,7 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
                     }
                     else
                     { // product without options
-                        if ( isset( $OptionValueArray ) && count( $OptionValueArray ) == 0 )
+                        if ( isset( $optionValueArray ) && count( $optionValueArray ) == 0 )
                         {
                             $item->setCount( $item->count() + 1 );
                             $item->store();
@@ -296,9 +296,9 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
             if ( !$product->hasQuantity( $RequireQuantity ) )
                 $can_add = false;
 
-            if ( isset( $OptionValueArray ) && count( $OptionValueArray ) > 0 )
+            if ( isset( $optionValueArray ) && count( $optionValueArray ) > 0 )
             {
-                foreach ( $OptionValueArray as $value )
+                foreach ( $optionValueArray as $value )
                 {
                     $optionValue = new eZOptionValue( $value );
                     if ( !$optionValue->hasQuantity( $RequireQuantity ) )
@@ -321,12 +321,12 @@ if ( isset( $Action ) && $Action == "AddToBasket" )
 
                 $cartItem->store();
 
-                if ( isset( $OptionValueArray ) && count( $OptionValueArray ) > 0 )
+                if ( isset( $optionValueArray ) && count( $optionValueArray ) > 0 )
                 {
                     $i = 0;
-                    foreach ( $OptionValueArray as $value )
+                    foreach ( $optionValueArray as $value )
                     {
-                        $option = new eZOption( $OptionIDArray[$i] );
+                        $option = new eZOption( $optionIDArray[$i] );
                         $optionValue = new eZOptionValue( $value );
                         if ( $optionValue->hasQuantity( $RequireQuantity ) )
                         {
@@ -568,6 +568,7 @@ $vat=false;
 if ($user)
 {
   $address = new eZAddress();
+  $taxaddressID = null;
   if (isset( $cart->AddressID ) ){
     $taxaddressID = $cart->AddressID;
   }elseif( eZHTTPTool::getVar( "ShippingAddressID") ){
@@ -718,7 +719,7 @@ if ( $ShowCart == true )
         $ColSpanSizeTotals--;
     }
     
-    $SubTotalsColumns = $ColSpanSizeTotals;
+    $subTotalsColumns = $ColSpanSizeTotals;
     
     if ( $ShowExTaxColumn == true )
     {
@@ -759,7 +760,7 @@ if ( $ShowCart == true )
     
     if ( $ShowIncTaxColumn and $ShowExTaxColumn and $ShowExTaxTotal )
     {
-        $t->set_var( "subtotals_span_size", $SubTotalsColumns - 1 );
+        $t->set_var( "subtotals_span_size", $subTotalsColumns - 1 );
     }
     else
     {

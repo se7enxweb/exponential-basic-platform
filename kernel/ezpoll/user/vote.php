@@ -32,7 +32,7 @@ $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZPollMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZPollMain", "DocumentRoot" );
 if ( $ini->variable( "eZPollMain", "AllowDoubleVotes" ) == "enabled" )
-   $AllowDoubleVotes = true;
+   $allowDoubleVotes = true;
 
 
 // include_once( "ezpoll/classes/ezpoll.php" );
@@ -46,15 +46,15 @@ if( !$session->fetch() )
     $session->store();
 
 // Check if poll is closed.
-$poll = new eZPoll( $PollID );
+$poll = new eZPoll( $pollID );
 if ( $poll->isClosed() )
 {
-    eZHTTPTool::header( "Location: /poll/result/$PollID" );
+    eZHTTPTool::header( "Location: /poll/result/$pollID" );
     exit();
 }
 
 // Check if the poll is anonymous or not.
-$poll = new eZPoll( $PollID );
+$poll = new eZPoll( $pollID );
 if ( !$poll->anonymous() )
 {
     $pollUser = eZUser::currentUser();
@@ -70,35 +70,35 @@ else
     $vote = new eZVote();
     //check if user has or can vote twice
 
-    if ( $AllowDoubleVotes )
+    if ( $allowDoubleVotes )
     {
-        $Voted = false;
+        $voted = false;
     }
     else
     {
         if ( $ini->variable( "eZPollMain", "DoubleVoteCheck" ) == "ip" )
         {
-            if ( $vote->ipHasVoted( $REMOTE_ADDR, $PollID ) == true )
+            if ( $vote->ipHasVoted( $REMOTE_ADDR, $pollID ) == true )
             {
-                $Voted = true;
+                $voted = true;
             }
             else
             {
-                $Voted = false;
+                $voted = false;
             }
         }
         else
         {
-            if ( $GLOBALS["eZPollVote$PollID"] == "voted" )
+            if ( $GLOBALS["eZPollVote$pollID"] == "voted" )
             {
-                $Voted = true;                
+                $voted = true;                
             }
             else
             {
-                $Voted = false;
+                $voted = false;
             }
 
-            setcookie ( "eZPollVote$PollID", "voted", time() + ( 3600 * 24 * 365 ), "/",  "", 0 )
+            setcookie ( "eZPollVote$pollID", "voted", time() + ( 3600 * 24 * 365 ), "/",  "", 0 )
                 or print( "Error: could not set cookie." );
         }
 
@@ -109,25 +109,25 @@ else
 if ( $pollUser )
 {
     $checkvote = new eZVote();
-    if ( $checkvote->isVoted( $pollUser->id(), $PollID  ))
-        $Voted = true;
+    if ( $checkvote->isVoted( $pollUser->id(), $pollID  ))
+        $voted = true;
     else
-        $Voted = false;
+        $voted = false;
 }
 
-if ( !$Voted )
+if ( !$voted )
 {
     $vote = new eZVote();
-    $vote->setPollID( $PollID );
-    $vote->setChoiceID( $ChoiceID );
+    $vote->setPollID( $pollID );
+    $vote->setChoiceID( $choiceID );
     $vote->setVotingIP( $REMOTE_ADDR );
     if ( $pollUser )
         $vote->setUserID( $pollUser->id() );
-    if ( !$ChoiceID == 0 )
+    if ( !$choiceID == 0 )
     $vote->store();
 }
 
-eZHTTPTool::header( "Location: /poll/result/" . $PollID );
+eZHTTPTool::header( "Location: /poll/result/" . $pollID );
 exit();
 
 ?>

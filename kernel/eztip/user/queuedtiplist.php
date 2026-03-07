@@ -40,13 +40,13 @@ $user = eZUser::currentUser();
 // if adList not have been set before.
 if ( !$queuedTipListCheck )
 {
-    if ( !isset( $Limit ) )
-        $Limit = 1;
-    if ( !isset( $Offset ) )
-        $Offset = 0;
+    if ( !isset( $limit ) )
+        $limit = 1;
+    if ( !isset( $offset ) )
+        $offset = 0;
     
     // tips
-    $tipList = $category->tips( "count", false, $Offset, $Limit );
+    $tipList = $category->tips( "count", false, $offset, $limit );
     $queuedTipListCheck = 1;
 }
 

@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: projecttypeedit.php 9529 2002-05-14 11:17:05Z jhe $
+// $id: projecttypeedit.php 9529 2002-05-14 11:17:05Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -45,7 +45,7 @@ if ( !eZPermission::checkPermission( $user, "eZContact", "TypeAdmin" ) )
 }
 
 $language_file = "projecttype.php";
-$item_type = new eZProjectType( $ProjectTypeID );
+$item_type = new eZProjectType( $projectTypeID );
 $page_path = "/contact/projecttype";
 
 include( "kernel/ezcontact/admin/typeedit.php" );

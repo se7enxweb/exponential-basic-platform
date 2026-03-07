@@ -34,15 +34,15 @@
 // include_once( "ezlink/classes/ezlinktype.php" );
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
-if ( !isset( $LinkCategoryID ) )
-    $LinkCategoryID = false;
+if ( !isset( $linkCategoryID ) )
+    $linkCategoryID = false;
 
 // List all the categories
 $linkCategory = new eZLinkCategory();
-$linkCategory->get( $LinkCategoryID );
+$linkCategory->get( $linkCategoryID );
 
 // section
 
@@ -58,7 +58,7 @@ if ( is_numeric( $linkCategory->sectionID() ) )
 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZLinkMain", "Language" );
-$UserLimit = $ini->variable( "eZLinkMain", "UserLinkLimit" );
+$userLimit = $ini->variable( "eZLinkMain", "UserLinkLimit" );
 $languageIni = new eZINI( "kernel/ezlink/user/intl/". $Language . "/linkcategorylist.php.ini", false );
 
 
@@ -116,7 +116,7 @@ else
     $t->set_var( "headline_item", "" );
 }	 
 
-$linkCategory_array = $linkCategory->getByParent( $LinkCategoryID );
+$linkCategory_array = $linkCategory->getByParent( $linkCategoryID );
 
 if ( empty( $linkCategory_array ) or count( $linkCategory_array ) == 0 )
 {
@@ -177,11 +177,11 @@ else
 
 
 // List all the links in the category
-$links = $linkCategory->links( $Offset, $UserLimit );
+$links = $linkCategory->links( $offset, $userLimit );
 $linkCount = $linkCategory->linkCount();
 if ( count( $links ) == 0 )
 {
-    if ( $LinkCategoryID == 0 )
+    if ( $linkCategoryID == 0 )
     {
         $t->set_var( "link_list", "" );
     }
@@ -290,13 +290,13 @@ else
     $t->parse( "link_list", "link_list_tpl", true );
 }
 
-eZList::drawNavigator( $t, $linkCount, $UserLimit, $Offset, "link_page_tpl" );
+eZList::drawNavigator( $t, $linkCount, $userLimit, $offset, "link_page_tpl" );
 
-$t->set_var( "link_start", $Offset + 1 );
-$t->set_var( "link_end", min( $Offset + $UserLimit, $linkCount ) );
+$t->set_var( "link_start", $offset + 1 );
+$t->set_var( "link_end", min( $offset + $userLimit, $linkCount ) );
 $t->set_var( "link_total", $linkCount );
 
-$t->set_var( "linkcategory_id", $LinkCategoryID );
+$t->set_var( "linkcategory_id", $linkCategoryID );
                        
 $t->pparse( "output", "link_page_tpl" );    
 

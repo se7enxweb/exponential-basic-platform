@@ -273,7 +273,7 @@ class eZCompany
 
       The companies are returned as an array of eZCompany objects.
     */
-    function getByCategory( $categoryID, $offset = 0, $limit = -1, $order = "name" )
+    static function getByCategory( $categoryID, $offset = 0, $limit = -1, $order = "name" )
     {
         $db = eZDB::globalDatabase();
 

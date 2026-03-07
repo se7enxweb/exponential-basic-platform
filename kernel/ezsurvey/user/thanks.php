@@ -13,9 +13,9 @@
     $t->set_file( "thanks_tpl", "thanks.tpl" );
     $t->setAllStrings();
     
-    $SurveyID = $url_array[4];
+    $surveyID = $url_array[4];
     
-    $survey = new eZSurvey( $SurveyID );
+    $survey = new eZSurvey( $surveyID );
     
     $t->set_var( "thanks_head", $survey->thankHead() );
     $t->set_var( "thanks_body", $survey->thankBody() );

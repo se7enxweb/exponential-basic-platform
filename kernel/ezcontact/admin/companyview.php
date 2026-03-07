@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: companyview.php 9529 2002-05-14 11:17:05Z jhe $
+// $id: companyview.php 9529 2002-05-14 11:17:05Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -30,13 +30,13 @@
 // include_once( "classes/INIFile.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZContactMain", "Language" );
-$CompanyViewLogin = $ini->variable( "eZContactMain", "CompanyViewLogin" ) == "true";
-$CompanyEditLogin = $ini->variable( "eZContactMain", "CompanyEditLogin" ) == "true";
-$ShowCompanyContact = $ini->variable( "eZContactMain", "ShowCompanyContact" ) == "true";
-$ShowCompanyStatus = $ini->variable( "eZContactMain", "ShowCompanyStatus" ) == "true";
-$SiteURL = $ini->variable( "Site", "SiteURL" );
-$AdminSiteURL = $ini->variable( "Site", "AdminSiteURL" );
+$language = $ini->variable( "eZContactMain", "Language" );
+$companyViewLogin = $ini->variable( "eZContactMain", "CompanyViewLogin" ) == "true";
+$companyEditLogin = $ini->variable( "eZContactMain", "CompanyEditLogin" ) == "true";
+$showCompanyContact = $ini->variable( "eZContactMain", "ShowCompanyContact" ) == "true";
+$showCompanyStatus = $ini->variable( "eZContactMain", "ShowCompanyStatus" ) == "true";
+$siteURL = $ini->variable( "Site", "SiteURL" );
+$adminSiteURL = $ini->variable( "Site", "AdminSiteURL" );
 
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlocale.php" );
@@ -69,14 +69,14 @@ $AdminSiteURL = $ini->variable( "Site", "AdminSiteURL" );
 
 $user = eZUser::currentUser();
 
-if ( $CompanyViewLogin and !is_a( $user, "eZUser" ) )
+if ( $companyViewLogin and !is_a( $user, "eZUser" ) )
 {
     // include_once( "classes/ezhttptool.php" );
     eZHTTPTool::header( "Location: /contact/nopermission/login" );
     exit();
 }
 
-if ( $CompanyViewLogin and !eZPermission::checkPermission( $user, "eZContact", "CompanyView" ) )
+if ( $companyViewLogin and !eZPermission::checkPermission( $user, "eZContact", "CompanyView" ) )
 {
     // include_once( "classes/ezhttptool.php" );
     eZHTTPTool::header( "Location: /contact/nopermission/company/view" );
@@ -84,8 +84,8 @@ if ( $CompanyViewLogin and !eZPermission::checkPermission( $user, "eZContact", "
 }
 
 $t = new eZTemplate( "kernel/ezcontact/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ),
-                     "kernel/ezcontact/admin/intl", $Language, "companyview.php" );
-$intl = new eZINI( "kernel/ezcontact/admin/intl/$Language/companyview.php.ini", false );
+                     "kernel/ezcontact/admin/intl", $language, "companyview.php" );
+$intl = new eZINI( "kernel/ezcontact/admin/intl/$language/companyview.php.ini", false );
 $t->setAllStrings();
 
 $t->set_file( "company_edit", "companyview.tpl" );
@@ -147,16 +147,16 @@ $t->set_var( "company_edit_button", "" );
 $t->set_var( "company_information", "" );
 $t->set_var( "no_company", "" );
 
-$t->set_var( "company_id", $CompanyID );
+$t->set_var( "company_id", $companyID );
 
-if ( !eZCompany::exists( $CompanyID ) )
+if ( !eZCompany::exists( $companyID ) )
 {
     $t->parse( "no_company", "no_company_tpl" );
 }
 else
 {
     $company = new eZCompany();
-    $company->get( $CompanyID );
+    $company->get( $companyID );
 
     $t->set_var( "name", eZTextTool::htmlspecialchars( $company->name() ) );
     $t->set_var( "description", eZTextTool::htmlspecialchars( $company->comment() ) );
@@ -269,17 +269,17 @@ else
     }
 
 // Online list
-    $OnlineList = $company->onlines( $company->id() );
-    $count = count( $OnlineList );
+    $onlineList = $company->onlines( $company->id() );
+    $count = count( $onlineList );
     if ( $count != 0)
     {
         for ( $i = 0; $i < $count; $i++ )
         {
-            $t->set_var( "online_id", $OnlineList[$i]->id() );
-            $onlineType = $OnlineList[$i]->onlineType();
+            $t->set_var( "online_id", $onlineList[$i]->id() );
+            $onlineType = $onlineList[$i]->onlineType();
             $prefix = $onlineType->urlPrefix();
             $vis_prefix = $prefix;
-            $url = $OnlineList[$i]->URL();
+            $url = $onlineList[$i]->URL();
             if ( $onlineType->prefixLink() )
             {
                 if ( strncasecmp( $url, $prefix, strlen( $prefix ) ) == 0 )
@@ -305,7 +305,7 @@ else
 
             $t->set_var( "online_prefix", $prefix );
             $t->set_var( "online_visual_prefix", $vis_prefix );
-            $t->set_var( "online", eZTextTool::htmlspecialchars( $OnlineList[$i]->URL() ) );
+            $t->set_var( "online", eZTextTool::htmlspecialchars( $onlineList[$i]->URL() ) );
             $t->set_var( "online_type_id", $onlineType->id() );
             $t->set_var( "online_type_name", eZTextTool::htmlspecialchars( $onlineType->name() ) );
             $t->set_var( "online_width", 100 / $count );
@@ -323,7 +323,7 @@ else
     $t->set_var( "no_contact_person", "" );
 
     $t->set_var( "contact_item", "" );
-    if ( $ShowCompanyContact )
+    if ( $showCompanyContact )
     {
         $contact = $company->contact();
         if ( $contact )
@@ -344,7 +344,7 @@ else
     }
 
     $t->set_var( "status_item", "" );
-    if ( $ShowCompanyStatus )
+    if ( $showCompanyStatus )
     {
         $t->set_var( "project_status", "" );
         $t->set_var( "no_project_status", "" );
@@ -377,19 +377,19 @@ else
         $t->parse( "buy_button", "buy_button_tpl" );
     }
 
-    if ( !isset( $PersonLimit ) or !is_numeric( $PersonLimit ) )
-        $PersonLimit = 5;
-    if ( !isset( $PersonOffset ) or !is_numeric( $PersonOffset ) )
-        $PersonOffset = 0;
+    if ( !isset( $personLimit ) or !is_numeric( $personLimit ) )
+        $personLimit = 5;
+    if ( !isset( $personOffset ) or !is_numeric( $personOffset ) )
+        $personOffset = 0;
     $t->set_var( "person_table_item", "" );
-    $persons = $company->persons( $CompanyID, true, $PersonLimit, $PersonOffset );
+    $persons = $company->persons( $companyID, true, $personLimit, $personOffset );
     if ( count( $persons ) > 0 )
     {
         $person_count = $company->personCount();
         $i = 0;
         $t->set_var( "person_max", $person_count );
-        $t->set_var( "person_start", $PersonOffset + 1 );
-        $t->set_var( "person_end", min( $PersonOffset + $PersonLimit, $person_count ) );
+        $t->set_var( "person_start", $personOffset + 1 );
+        $t->set_var( "person_end", min( $personOffset + $personLimit, $person_count ) );
         foreach ( $persons as $person )
         {
             $t->set_var( "bg_color", ( $i % 2 ) == 0 ? "bglight" : "bgdark" );
@@ -399,7 +399,7 @@ else
             $t->parse( "person_item", "person_item_tpl", true );
             $i++;
         }
-        eZList::drawNavigator( $t, $person_count, $PersonLimit, $PersonOffset, "person_table_item_tpl" );
+        eZList::drawNavigator( $t, $person_count, $personLimit, $personOffset, "person_table_item_tpl" );
 
         $t->parse( "person_table_item", "person_table_item_tpl" );
     }
@@ -408,30 +408,30 @@ else
     $user = eZUser::currentUser();
     if ( is_a( $user, "eZUser" ) && eZPermission::checkPermission( $user, "eZContact", "consultation" ) )
     {
-        if ( !isset( $OrderBy ) )
-            $OrderBy = "Date";
+        if ( !isset( $orderBy ) )
+            $orderBy = "Date";
 
         $max = $ini->variable( "eZContactMain", "MaxCompanyConsultationList" );
 
         if ( $ini->variable( "eZContactMain", "ShowAllConsultations" ) == "enabled" )
         {
             if ( $ini->variable( "eZContactMain", "ShowRelatedConsultations" ) == "enabled" )
-                $consultations = eZConsultation::findConsultationsByContact( $CompanyID, -1, $OrderBy, false, 0, $max, true );
+                $consultations = eZConsultation::findConsultationsByContact( $companyID, -1, $orderBy, false, 0, $max, true );
             else
-                $consultations = eZConsultation::findConsultationsByContact( $CompanyID, -1, $OrderBy, false, 0, $max );
+                $consultations = eZConsultation::findConsultationsByContact( $companyID, -1, $orderBy, false, 0, $max );
         }
         else
         {
             if ( $ini->variable( "eZContactMain", "ShowRelatedConsultations" ) == "enabled" )
-                $consultations = eZConsultation::findConsultationsByContact( $CompanyID, $user->id(), $OrderBy, false, 0, $max, true );
+                $consultations = eZConsultation::findConsultationsByContact( $companyID, $user->id(), $orderBy, false, 0, $max, true );
             else
-                $consultations = eZConsultation::findConsultationsByContact( $CompanyID, $user->id(), $OrderBy, false, 0, $max );
+                $consultations = eZConsultation::findConsultationsByContact( $companyID, $user->id(), $orderBy, false, 0, $max );
         }
 
         $t->set_var( "consultation_type", "company" );
-        $t->set_var( "company_id", $CompanyID  );
+        $t->set_var( "company_id", $companyID  );
 
-        $locale = new eZLocale( $Language );
+        $locale = new eZLocale( $language );
         $i = 0;
 
         foreach ( $consultations as $consultation )
@@ -466,7 +466,7 @@ else
         $t->set_var( "consultation_buttons", "" );
     }
 
-    if ( !$CompanyEditLogin or ($CompanyEditLogin and eZPermission::checkPermission( $user, "eZContact", "companyedit" ) ) )
+    if ( !$companyEditLogin or ($companyEditLogin and eZPermission::checkPermission( $user, "eZContact", "companyedit" ) ) )
     {
         $t->parse( "company_edit_button", "company_edit_button_tpl" );
     }
@@ -475,13 +475,13 @@ else
     if ( is_a( $user, "eZUser" ) and eZPermission::checkPermission( $user, "eZContact", "buy" ) )
     {
         $max = $ini->variable( "eZContactMain", "MaxCompanyConsultationList" );
-        $orders = eZOrder::getByContact( $CompanyID, false, 0, $max );
+        $orders = eZOrder::getByContact( $companyID, false, 0, $max );
 
-        $locale = new eZLocale( $Language );
+        $locale = new eZLocale( $language );
         $i = 0;
         $currency = new eZCurrency();
-        $languageINI = new eZINI( "kernel/eztrade/admin/intl/" . $Language . "/orderlist.php.ini", false );
-        $t->set_var( "admin_dir", $AdminSiteURL );
+        $languageINI = new eZINI( "kernel/eztrade/admin/intl/" . $language . "/orderlist.php.ini", false );
+        $t->set_var( "admin_dir", $adminSiteURL );
         foreach ( $orders as $order )
         {
             $t->set_var( "bg_color", ( $i % 2 ) == 0 ? "bglight" : "bgdark" );
@@ -521,12 +521,12 @@ else
     }
 
 // e-mail list
-    $emails = eZMail::getByContact( $CompanyID, true, 0, $max );
+    $emails = eZMail::getByContact( $companyID, true, 0, $max );
 
-    $locale = new eZLocale( $Language );
+    $locale = new eZLocale( $language );
     $i = 0;
     $currency = new eZCurrency();
-    $t->set_var( "admin_dir", $AdminSiteURL );
+    $t->set_var( "admin_dir", $adminSiteURL );
     $date = new eZDateTime();
     foreach ( $emails as $email )
     {
@@ -555,7 +555,7 @@ else
 
 
 // Template variabler.
-    $Action_value = "update";
+    $actionValue = "update";
 
     $t->parse( "company_information", "company_information_tpl" );
 }

@@ -28,7 +28,7 @@
 // include_once( "classes/eztemplate.php" );
 
 // check that the folder beeing viewed is your folder
-if ( $FolderID != 0 && !eZMailFolder::isOwner( eZUser::currentUser(), $FolderID ) )
+if ( $folderID != 0 && !eZMailFolder::isOwner( eZUser::currentUser(), $folderID ) )
 {
     eZHTTPTool::header( "Location: /error/403/" );
     exit();
@@ -37,35 +37,35 @@ if ( $FolderID != 0 && !eZMailFolder::isOwner( eZUser::currentUser(), $FolderID 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZMailMain", "Language" ); 
 
-if( isset( $Cancel ) )
+if( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /mail/folderlist" );
     exit();
 }
 
-if( isset( $Ok ) && $Name != "" )
+if( isset( $ok ) && $name != "" )
 {
     
-    if( $FolderID == 0 )
+    if( $folderID == 0 )
     {
         $folder = new eZMailFolder();
     }
     else
     {
-        $folder = new eZMailFolder( $FolderID );
-        if( $folder->isChild( $ParentID, true ) )
+        $folder = new eZMailFolder( $folderID );
+        if( $folder->isChild( $parentID, true ) )
         {
             eZHTTPTool::header( "Location: /mail/folderlist" );
             exit();
         }
     }
 
-    $folder->setName( $Name );
-    $folder->setParent( $ParentID );
+    $folder->setName( $name );
+    $folder->setParent( $parentID );
     $folder->setUser( eZUser::currentUser() );
     $folder->store();
-    $FolderID = $folder->id();
-    eZHTTPTool::header( "Location: /mail/folder/$FolderID" );
+    $folderID = $folder->id();
+    eZHTTPTool::header( "Location: /mail/folder/$folderID" );
     exit();
 }
 
@@ -81,11 +81,11 @@ $t->set_file( array(
 $t->set_block( "folder_edit_page_tpl", "folder_item_tpl", "folder_item" );
 $t->set_var( "folder_item", "" );
 $t->set_var( "folder_name", "" );
-$t->set_var( "current_folder_id", $FolderID );
+$t->set_var( "current_folder_id", $folderID );
 
-if( $FolderID != 0 )
+if( $folderID != 0 )
 {
-    $folder = new eZMailFolder( $FolderID );
+    $folder = new eZMailFolder( $folderID );
     $parentID = $folder->parentID();
     $t->set_var( "folder_name", htmlspecialchars( $folder->name() ) );
 }
@@ -93,7 +93,7 @@ if( $FolderID != 0 )
 $folders = eZMailFolder::getByUser();
 foreach( $folders as $folderItem )
 {
-    if( $folderItem->id() != $FolderID )
+    if( $folderItem->id() != $folderID )
     {
         $t->set_var( "folder_parent_id", $folderItem->id() );
         $t->set_var( "folder_parent_name", $folderItem->name() );

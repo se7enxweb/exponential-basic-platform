@@ -1,7 +1,7 @@
 
 <?php
 // 
-// $Id: menubox.php 7534 2001-09-27 15:20:35Z bf $
+// $id: menubox.php 7534 2001-09-27 15:20:35Z bf $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //

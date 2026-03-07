@@ -26,11 +26,15 @@
 $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "site", "DefaultSection" );
 
+$limit  = eZHTTPTool::getVar( 'Limit' );
+$offset = eZHTTPTool::getVar( 'Offset' );
+$tipID  = eZHTTPTool::getVar( 'TipID' );
+
 switch ( $url_array[2] )
 {
     case "goto" :
     {
-        $TipID = $url_array[3];
+        $tipID = $url_array[3];
 
         include( "eztip/user/gototip.php" );
     }

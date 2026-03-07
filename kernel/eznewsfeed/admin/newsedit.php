@@ -37,22 +37,22 @@
 // include_once( "classes/ezhttptool.php" );
 
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /newsfeed/archive/" );
     exit();
 }
 
-if ( isset( $Action ) && $Action == "Insert" )
+if ( isset( $action ) && $action == "Insert" )
 {
-    $category = new eZNewsCategory( $CategoryID );
+    $category = new eZNewsCategory( $categoryID );
     
     $news = new eZNews( );
 
-    $news->setName( $NewsTitle );
-    $news->setIntro( $NewsIntro );
+    $news->setName( $newsTitle );
+    $news->setIntro( $newsIntro );
     
-    if ( $IsPublished == "on" )
+    if ( $isPublished == "on" )
     {
         $news->setIsPublished( 1 );
     }
@@ -61,9 +61,9 @@ if ( isset( $Action ) && $Action == "Insert" )
         $news->setIsPublished( 0 );
     }
 
-    $news->setKeywords( $NewsKeywords );
-    $news->setOrigin( $NewsSource );
-    $news->setURL( $NewsURL );
+    $news->setKeywords( $newsKeywords );
+    $news->setOrigin( $newsSource );
+    $news->setURL( $newsURL );
     
     $dateTime = new eZDateTime( $Year, $Month, $Day, $Hour, $Second, $Minute );
     $news->setOriginalPublishingDate( $dateTime );
@@ -81,7 +81,7 @@ if ( isset( $Action ) && $Action == "Insert" )
         {
             if ( ereg( "latestnews,([^,]+)\..*", $entry, $regArray  ) )
             {
-                if ( $regArray[1] == $CategoryID )
+                if ( $regArray[1] == $categoryID )
                 {
                     eZPBFile::unlink( "eznewsfeed/cache/" . $entry );
                 }
@@ -89,7 +89,7 @@ if ( isset( $Action ) && $Action == "Insert" )
             
             if ( ereg( "headlines,([^,]+)\..*", $entry, $regArray  ) )
             {
-                if ( $regArray[1] == $CategoryID )
+                if ( $regArray[1] == $categoryID )
                 {
                     eZPBFile::unlink( "eznewsfeed/cache/" . $entry );
                 }
@@ -99,26 +99,26 @@ if ( isset( $Action ) && $Action == "Insert" )
     $dir->close();
     if ( $news->isPublished() == 1 )
     {
-        eZHTTPTool::header( "Location: /newsfeed/archive/$CategoryID/" );
+        eZHTTPTool::header( "Location: /newsfeed/archive/$categoryID/" );
     }
     else
     {
-        eZHTTPTool::header( "Location: /newsfeed/unpublished/$CategoryID/" );        
+        eZHTTPTool::header( "Location: /newsfeed/unpublished/$categoryID/" );        
     }
 
     exit();
 }
 
-if ( isset( $Action ) && $Action == "Update" )
+if ( isset( $action ) && $action == "Update" )
 {
-    $category = new eZNewsCategory( $CategoryID );
+    $category = new eZNewsCategory( $categoryID );
     
-    $news = new eZNews( $NewsID );
+    $news = new eZNews( $newsID );
 
-    $news->setName( $NewsTitle );
-    $news->setIntro( $NewsIntro );
+    $news->setName( $newsTitle );
+    $news->setIntro( $newsIntro );
 
-    if ( $IsPublished == "on" )
+    if ( $isPublished == "on" )
     {
         $news->setIsPublished( 1 );
     }
@@ -128,9 +128,9 @@ if ( isset( $Action ) && $Action == "Update" )
     }
     
 
-    $news->setKeywords( $NewsKeywords );
-    $news->setOrigin( $NewsSource );
-    $news->setURL( $NewsURL );
+    $news->setKeywords( $newsKeywords );
+    $news->setOrigin( $newsSource );
+    $news->setURL( $newsURL );
     
     $dateTime = new eZDateTime( $Year, $Month, $Day, $Hour, $Second, $Minute );
     $news->setOriginalPublishingDate( $dateTime );
@@ -149,8 +149,8 @@ if ( isset( $Action ) && $Action == "Update" )
         {
             if ( ereg( "latestnews,([^,]+)\..*", $entry, $regArray  ) )
             {
-                if ( ( $regArray[1] == $CategoryID ) ||
-                     ( $regArray[1] == $OldCategoryID ) )
+                if ( ( $regArray[1] == $categoryID ) ||
+                     ( $regArray[1] == $oldCategoryID ) )
                 {
                     eZPBFile::unlink( "eznewsfeed/cache/" . $entry );
                 }
@@ -158,8 +158,8 @@ if ( isset( $Action ) && $Action == "Update" )
             
             if ( ereg( "headlines,([^,]+)\..*", $entry, $regArray  ) )
             {
-                if ( ( $regArray[1] == $CategoryID ) ||
-                     ( $regArray[1] == $OldCategoryID ) )
+                if ( ( $regArray[1] == $categoryID ) ||
+                     ( $regArray[1] == $oldCategoryID ) )
                 {
                     eZPBFile::unlink( "eznewsfeed/cache/" . $entry );
                 }
@@ -170,24 +170,24 @@ if ( isset( $Action ) && $Action == "Update" )
 
     if ( $news->isPublished() == 1 )
     {
-        eZHTTPTool::header( "Location: /newsfeed/archive/$CategoryID/" );
+        eZHTTPTool::header( "Location: /newsfeed/archive/$categoryID/" );
     }
     else
     {
-        eZHTTPTool::header( "Location: /newsfeed/unpublished/$CategoryID/" );        
+        eZHTTPTool::header( "Location: /newsfeed/unpublished/$categoryID/" );        
     }
     exit();
 }
 
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
-    $news = new eZNews( $NewsID );
+    $news = new eZNews( $newsID );
 
     $cats = $news->categories();
     $defCat = $cats[0];
 
-    $CategoryID = $defCat->id();
+    $categoryID = $defCat->id();
 
     // delete the cache
     $dir = eZPBFile::dir( "eznewsfeed/cache/" );
@@ -198,7 +198,7 @@ if ( isset( $Action ) && $Action == "Delete" )
         {
             if ( ereg( "latestnews,([^,]+)\..*", $entry, $regArray  ) )
             {
-                if ( $regArray[1] == $CategoryID )
+                if ( $regArray[1] == $categoryID )
                 {
                     eZPBFile::unlink( "eznewsfeed/cache/" . $entry );
                 }
@@ -206,7 +206,7 @@ if ( isset( $Action ) && $Action == "Delete" )
             
             if ( ereg( "headlines,([^,]+)\..*", $entry, $regArray  ) )
             {
-                if ( $regArray[1] == $CategoryID )
+                if ( $regArray[1] == $categoryID )
                 {
                     eZPBFile::unlink( "eznewsfeed/cache/" . $entry );
                 }
@@ -217,7 +217,7 @@ if ( isset( $Action ) && $Action == "Delete" )
     
     $news->delete();
     
-    eZHTTPTool::header( "Location: /newsfeed/archive/$CategoryID/" );
+    eZHTTPTool::header( "Location: /newsfeed/archive/$categoryID/" );
     exit();
 }
 
@@ -256,9 +256,9 @@ $t->set_var( "news_url_value", "" );
 $t->set_var( "news_keywords_value", "" );
 $t->set_var( "news_id", "" );
 
-if ( isset( $Action ) && $Action == "Edit" )
+if ( isset( $action ) && $action == "Edit" )
 {
-    $news = new eZNews( $NewsID );
+    $news = new eZNews( $newsID );
 
     $published = $news->originalPublishingDate();
 
@@ -298,7 +298,7 @@ $categoryArray = $category->getAll( );
 
 foreach ( $categoryArray as $catItem )
 {
-    if ( isset( $Action ) && $Action == "Edit" )
+    if ( isset( $action ) && $action == "Edit" )
     {
         if ( $defCat->id() == $catItem->id() )
         {

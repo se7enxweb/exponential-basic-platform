@@ -46,18 +46,18 @@ $t->set_file( "page_view_page_tpl", "pageviewlist.tpl" );
 $t->set_block( "page_view_page_tpl", "page_view_list_tpl", "page_view_list" );
 $t->set_block( "page_view_list_tpl", "page_view_tpl", "page_view" );
 
-if ( !isset( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
 
-$latest = eZPageViewQuery::latest( $ViewLimit, $Offset );
+$latest = eZPageViewQuery::latest( $viewLimit, $offset );
 
-$ItemCount = eZPageViewQuery::latestCount();
-$ItemCount = count( $latest );
+$itemCount = eZPageViewQuery::latestCount();
+$itemCount = count( $latest );
 
-$t->set_var( "item_start", $Offset + 1 );
-$t->set_var( "item_end", $Offset + $ViewLimit );
-$t->set_var( "item_count", $ItemCount );
-$t->set_var( "item_limit", $ViewLimit );
+$t->set_var( "item_start", $offset + 1 );
+$t->set_var( "item_end", $offset + $viewLimit );
+$t->set_var( "item_count", $itemCount );
+$t->set_var( "item_limit", $viewLimit );
 
 $locale = new eZLocale( $Language );
 
@@ -81,7 +81,7 @@ if ( count( $latest ) > 0 )
         $t->parse( "page_view", "page_view_tpl", true );
         $i++;
     }
-    eZList::drawNavigator( $t, $ItemCount, $ViewLimit, $Offset, "page_view_list_tpl" );
+    eZList::drawNavigator( $t, $itemCount, $viewLimit, $offset, "page_view_list_tpl" );
 
     $t->parse( "page_view_list", "page_view_list_tpl" );
 }

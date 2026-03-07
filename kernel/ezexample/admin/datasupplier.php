@@ -23,6 +23,15 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$delete        = eZHTTPTool::getVar( 'Delete' );
+$deleteArrayID = eZHTTPTool::getVar( 'DeleteArrayID' ) ?? [];
+$idArray       = eZHTTPTool::getVar( 'IDArray' ) ?? [];
+$new           = eZHTTPTool::getVar( 'New' );
+$textArray     = eZHTTPTool::getVar( 'TextArray' ) ?? [];
+$update        = eZHTTPTool::getVar( 'Update' );
+$value         = eZHTTPTool::getVar( 'Value' );
+
 switch ( $url_array[2] )
 {
     case "page":

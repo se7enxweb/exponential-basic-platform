@@ -39,27 +39,27 @@ $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTodoMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZTodoMain", "DocumentRoot" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /todo/prioritytypelist/" );
     exit();
 }
 
-if ( isset( $Action ) && $Action == "insert" )
+if ( isset( $action ) && $action == "insert" )
 {
     $type = new eZPriority();
-    $type->setName( $Name );
+    $type->setName( $name );
     $type->store();
 
     eZHTTPTool::header( "Location: /todo/prioritytypelist/" );
 }
 
 // Updates a priority.
-if ( isset( $Action ) && $Action == "update" )
+if ( isset( $action ) && $action == "update" )
 {
     $type = new eZPriority();
-    $type->get( $PriorityID );
-    $type->setName( $Name );
+    $type->get( $priorityID );
+    $type->setName( $name );
     $type->store();
 
     eZHTTPTool::header( "Location: /todo/prioritytypelist/" );
@@ -67,10 +67,10 @@ if ( isset( $Action ) && $Action == "update" )
 }
 
 // Delete a priority.
-if ( isset( $Action ) && $Action == "delete" )
+if ( isset( $action ) && $action == "delete" )
 {
     $type = new eZPriority();
-    $type->get( $PriorityID );
+    $type->get( $priorityID );
     $type->delete();
 
     eZHTTPTool::header( "Location: /todo/prioritytypelist/" );
@@ -88,15 +88,15 @@ $t->set_file( array(
 $t->set_var( "action_value", "insert" );
 
 // Edit a priority.
-if ( isset( $Action ) && $Action == "edit" )
+if ( isset( $action ) && $action == "edit" )
 {
     $type = new eZPriority();
-    $type->get( $PriorityID );
+    $type->get( $priorityID );
 
-    $PriorityName = $type->name();
+    $priorityName = $type->name();
 
     {
-        $type_array = $type->get( $PriorityID );
+        $type_array = $type->get( $priorityID );
         if ( is_bool( $type_array ) )
             $type_array = array();
 
@@ -106,11 +106,11 @@ if ( isset( $Action ) && $Action == "edit" )
         }
     }
 
-    $t->set_var( "priority_type_id", $PriorityID );
+    $t->set_var( "priority_type_id", $priorityID );
     $t->set_var( "action_value", "update" );
 }
 
-$t->set_var( "priority_type_name", $PriorityName );
+$t->set_var( "priority_type_name", $priorityName );
 $t->set_var( "head_line", isset( $headline ) ? $headline : false );
 $t->set_var( "submit_text", isset( $submittext ) ? $submittext : false );
 $t->set_var( "document_root", $DOC_ROOT );

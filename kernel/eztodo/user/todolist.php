@@ -48,7 +48,7 @@ $iniLanguage = new eZINI( "kernel/eztodo/user/intl/$Language/todolist.php.ini", 
 // include_once( "eztodo/classes/ezstatus.php" );
 
 
-if ( isset( $New ) )
+if ( isset( $new ) )
 {
     eZHTTPTool::header( "Location: /todo/todoedit/new" );
     exit();
@@ -62,11 +62,11 @@ if ( $user == false )
     exit();
 }
 
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    if ( count( $DeleteArrayID ) > 0 )
+    if ( count( $deleteArrayID ) > 0 )
     {
-        foreach ( $DeleteArrayID as $todoid )
+        foreach ( $deleteArrayID as $todoid )
         {
             $todo = new eZTodo( $todoid );
             $due = $todo->due();
@@ -82,23 +82,23 @@ $t = new eZTemplate( "kernel/eztodo/user/" . $ini->variable( "eZTodoMain", "Temp
 $t->setAllStrings();
 $t->set_file( "todo_list_page", "todolist.tpl" );
 
-$CategoryID = eZHTTPTool::getVar( "CategoryTodoID" );
-//$Show = eZHTTPTool::getVar( "Show" );
-$ShowButton = eZHTTPTool::getVar( "ShowButton" );
-$StatusID = eZHTTPTool::getVar( "StatusTodoID" );
+$categoryID = eZHTTPTool::getVar( "CategoryTodoID" );
+//$show = eZHTTPTool::getVar( "Show" );
+$showButton = eZHTTPTool::getVar( "ShowButton" );
+$statusID = eZHTTPTool::getVar( "StatusTodoID" );
 
-if ( isset( $Show ) )
+if ( isset( $show ) )
 {
-    $GetByUserID = eZHTTPTool::getVar( "GetByUserID" );
-    $session->setVariable( "TodoUser", $GetByUserID );
+    $getByUserID = eZHTTPTool::getVar( "GetByUserID" );
+    $session->setVariable( "TodoUser", $getByUserID );
 }
 else
 {
-    $GetByUserID = $session->variable( "TodoUser" );
-    if ( !$GetByUserID )
+    $getByUserID = $session->variable( "TodoUser" );
+    if ( !$getByUserID )
     {
-        $GetByUserID = $user->id();
-        $session->setVariable( "TodoUser", $GetByUserID );
+        $getByUserID = $user->id();
+        $session->setVariable( "TodoUser", $getByUserID );
     }
 }
 
@@ -112,10 +112,10 @@ $t->set_block( "todo_item_tpl", "todo_is_public_tpl", "todo_is_public" );
 $t->set_block( "todo_item_tpl", "todo_is_not_public_tpl", "todo_is_not_public" );
 
 
-if ( isset( $ShowButton ) )
+if ( isset( $showButton ) )
 {
-    $session->setVariable( "TodoCategory", $CategoryID );
-    $session->setVariable( "TodoStatus", $StatusID );
+    $session->setVariable( "TodoCategory", $categoryID );
+    $session->setVariable( "TodoStatus", $statusID );
 }
 
 $showCategory = $session->variable( "TodoCategory" );
@@ -127,15 +127,15 @@ $todo = new eZTodo();
 $currentUserID = $user->id();
 if ( eZPermission::checkPermission( $user, "eZTodo", "ViewOtherUsers" ) )
 {
-    if ( $GetByUserID != "" )
+    if ( $getByUserID != "" )
     {
-        if ( $GetByUserID == $currentUserID )
+        if ( $getByUserID == $currentUserID )
         {
             $todo_array = $todo->getByUserID( $currentUserID, $showTodo, $showCategory );
         }
         else
         {
-            $todo_array = $todo->getByOthers( $GetByUserID, $showTodo, $showCategory );
+            $todo_array = $todo->getByOthers( $getByUserID, $showTodo, $showCategory );
         }
     }
     else
@@ -155,15 +155,15 @@ $userList = $user->getAll();
 
 foreach ( $userList as $userItem )
 {
-    if ( !isset( $GetByUserID ) )
+    if ( !isset( $getByUserID ) )
     {
-        $GetByUserID = $currentUserID;
+        $getByUserID = $currentUserID;
     }
     $t->set_var( "user_id", $userItem->id() );
     $t->set_var( "user_firstname", $userItem->firstName() );
     $t->set_var( "user_lastname", $userItem->lastName() );
 
-    if ( $GetByUserID == $user->id() )
+    if ( $getByUserID == $user->id() )
     {
         if ( $user->id() == $userItem->id() )
         {
@@ -176,7 +176,7 @@ foreach ( $userList as $userItem )
     }
     else
     {
-        if ( $GetByUserID == $userItem->id() )
+        if ( $getByUserID == $userItem->id() )
         {
             $t->set_var( "user_is_selected", "selected" );
         }

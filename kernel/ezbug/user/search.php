@@ -37,7 +37,7 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZBugMain", "Language" );
-$UserLimit = $ini->variable( "eZBugMain", "UserSearchLimit" );
+$userLimit = $ini->variable( "eZBugMain", "UserSearchLimit" );
 
 $t = new eZTemplate( "kernel/ezbug/user/" . $ini->variable( "eZBugMain", "TemplateDir" ),
                      "kernel/ezbug/user/intl/", $Language, "search.php" );
@@ -55,16 +55,16 @@ $t->set_block( "bug_list_tpl", "bug_item_tpl", "bug_item" );
 $t->set_block( "bug_item_tpl", "bug_is_closed_tpl", "bug_is_closed" );
 $t->set_block( "bug_item_tpl", "bug_is_open_tpl", "bug_is_open" );
 
-if ( !$Offset )
-    $Offset = 0;
+if ( !$offset )
+    $offset = 0;
 
 // bugs
 $bug = new eZBug();
-if ( $SearchText )
+if ( $searchText )
 {
-    $bugList = $bug->search( $SearchText, $Offset, $UserLimit );
-    $bugCount = $bug->searchCount( $SearchText );
-    $t->set_var( "query_text", urlencode( $SearchText ) );
+    $bugList = $bug->search( $searchText, $offset, $userLimit );
+    $bugCount = $bug->searchCount( $searchText );
+    $t->set_var( "query_text", urlencode( $searchText ) );
 }
 else
 {
@@ -129,7 +129,7 @@ if ( count ( $bugList ) > 0 )
     $i++;
     }
 }
-eZList::drawNavigator( $t, $bugCount, $UserLimit, $Offset, "bug_list_page_tpl" );
+eZList::drawNavigator( $t, $bugCount, $userLimit, $offset, "bug_list_page_tpl" );
 
 if ( count( $bugList ) > 0 )    
     $t->parse( "bug_list", "bug_list_tpl" );

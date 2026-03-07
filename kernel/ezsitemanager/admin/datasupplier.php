@@ -33,7 +33,17 @@ if ( eZPermission::checkPermission( $user, "eZSiteManager", "ModuleEdit" ) == fa
     exit();
 }
 
-$url_array = explode( "/", $REQUEST_URI );
+$url_array = explode( "/", $_SERVER['REQUEST_URI'] );
+
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$clearCache      = eZHTTPTool::getVar( 'ClearCache' );
+$clearVariations = eZHTTPTool::getVar( 'ClearVariations' );
+$parentID        = eZHTTPTool::getVar( 'ParentID' );
+$menuID          = eZHTTPTool::getVar( 'MenuID' );
+$offset          = eZHTTPTool::getVar( 'Offset' );
+$action          = eZHTTPTool::getVar( 'Action' );
+$rowID           = eZHTTPTool::getVar( 'RowID' );
+// URL-routing variables are set below inside the switch and override the above POST defaults.
 
 switch ( $url_array[2] )
 {
@@ -159,7 +169,7 @@ switch ( $url_array[2] )
             case "list":
             {
                 if ( $url_array[4] == "parent" )
-                    $Offset = $url_array[5];
+                    $offset = $url_array[5];
                 include( "kernel/ezsitemanager/admin/sectionlist.php" );
             }
             break;
@@ -173,17 +183,17 @@ switch ( $url_array[2] )
             {
                 if ( isset( $url_array[5] ) && $url_array[5] == "up" )
                 {
-                    $RowID = $url_array[6];
-                    $Action = "up";
+                    $rowID = $url_array[6];
+                    $action = "up";
                 }
                 if ( isset( $url_array[6] ) && $url_array[5] == "down" )
                 {
-                    $RowID = $url_array[6];
-                    $Action = "down";
+                    $rowID = $url_array[6];
+                    $action = "down";
                 }
                 
                 if ( isset( $url_array[4] ) && is_numeric( $url_array[4] ) )
-                    $SectionID = $url_array[4];
+                    $sectionID = $url_array[4];
                 include ( "kernel/ezsitemanager/admin/sectionedit.php" );
             }
             break;

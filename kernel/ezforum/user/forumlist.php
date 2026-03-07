@@ -36,7 +36,7 @@ $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZForumMain", "Language" );
 
 
-if( isset( $CategoryID ) && $CategoryID != 0 )
+if( isset( $categoryID ) && $categoryID != 0 )
 {
     $t = new eZTemplate( "kernel/ezforum/user/" . $ini->variable( "eZForumMain", "TemplateDir"),
                         "kernel/ezforum/user/intl", $Language, "forumlist.php" );
@@ -51,23 +51,23 @@ if( isset( $CategoryID ) && $CategoryID != 0 )
     $t->set_block( "forumlist", "next_tpl", "next" );
 
 
-    $category = new eZForumCategory( $CategoryID );
+    $category = new eZForumCategory( $categoryID );
 
-    if ( !isset( $Offset ) )
+    if ( !isset( $offset ) )
     {
-        $Offset = 0;
+        $offset = 0;
     }
 
-    if ( !isset( $UserListLimit ) )
+    if ( !isset( $userListLimit ) )
     {
-        $UserListLimit = 15;
+        $userListLimit = 15;
     }
 
     //
     // sections
     // include_once( "ezsitemanager/classes/ezsection.php" );
 
-    $GlobalSectionID = eZForumCategory::sectionIDStatic( $CategoryID );
+    $GlobalSectionID = eZForumCategory::sectionIDStatic( $categoryID );
 
     // init the section
     $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
@@ -78,7 +78,7 @@ if( isset( $CategoryID ) && $CategoryID != 0 )
     $t->set_var( "category_name", $category->name( ) );
     $t->set_var( "category_description", $category->name( ) );
 
-    $forumList = $category->forums( $Offset,$UserListLimit );
+    $forumList = $category->forums( $offset,$userListLimit );
     $forumCount = $category->forumCount();
  
     $t->set_var( "forum_item", "" );
@@ -161,9 +161,9 @@ if( isset( $CategoryID ) && $CategoryID != 0 )
         $t->parse( "view_forums", "view_forums_tpl" );
     }
 
-    $t->set_var( "category_id", $CategoryID );
+    $t->set_var( "category_id", $categoryID );
 
-    eZList::drawNavigator( $t, $forumCount, $UserListLimit, $Offset, "forumlist" );
+    eZList::drawNavigator( $t, $forumCount, $userListLimit, $offset, "forumlist" );
 
     $t->pparse( "output", "forumlist" );
 }

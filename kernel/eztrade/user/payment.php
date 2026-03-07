@@ -23,7 +23,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-unset( $PaymentSuccess );
+unset( $paymentSuccess );
 // include_once( "ezuser/classes/ezuser.php" );
 
 // include_once( "classes/INIFile.php" );
@@ -46,25 +46,25 @@ $RequireUserLogin = true;
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $locale = new eZLocale( $Language );
 
-function deleteCache($ProductID, $CategoryID, $CategoryArray, $Hotdeal )
+function deleteCache($productID, $categoryID, $categoryArray, $Hotdeal )
 {
-    if ( is_a( $ProductID, "eZProduct" ) )
+    if ( is_a( $productID, "eZProduct" ) )
     {
-        $CategoryID = $ProductID->categoryDefinition( false );
-        $CategoryArray = $ProductID->categories( false );
-        $Hotdeal = $ProductID->isHotDeal();
-        $ProductID = $ProductID->id();
+        $categoryID = $productID->categoryDefinition( false );
+        $categoryArray = $productID->categories( false );
+        $Hotdeal = $productID->isHotDeal();
+        $productID = $productID->id();
     }
 
     $files = eZCacheFile::files( "kernel/eztrade/cache/", array( array( "productview", "productprint" ),
-                                                          $ProductID, $CategoryID ),
+                                                          $productID, $categoryID ),
                                  "cache", "," );
     foreach ( $files as $file )
     {
         $file->delete();
     }
     $files = eZCacheFile::files( "kernel/eztrade/cache/", array( "productlist",
-                                                          array_merge( array( $CategoryID ), $CategoryArray ) ),
+                                                          array_merge( array( $categoryID ), $categoryArray ) ),
                                  "cache", "," );
 
     foreach ( $files as $file )
@@ -123,15 +123,15 @@ if ( !$cart )
 $items = $cart->items();
 
 // this is the value to charge the customer with
-$ChargeTotal = $session->variable( "TotalCost" ) ;
+$chargeTotal = $session->variable( "TotalCost" ) ;
 
 // this is the total vat.
-$ChargeVATTotal = $session->variable( "TotalVAT" ) ;
+$chargeVATTotal = $session->variable( "TotalVAT" ) ;
 
 // The comment from the user.
-$Comment = $session->variable( "Comment" ) ;
+$comment = $session->variable( "Comment" ) ;
 
-$PreOrderID = $session->variable( "PreOrderID" );
+$preOrderID = $session->variable( "PreOrderID" );
 
 $currency = new eZCurrency();
 $checkout = new eZCheckout();
@@ -149,12 +149,12 @@ if ( $paymentMethod == true and $paymentMethod != "voucher_done" )
 }
 else
 {
-    $PaymentSuccess = true;
+    $paymentSuccess = true;
 }
 
 
 
-if ( $PaymentSuccess == true )
+if ( $paymentSuccess == true )
 {
     $orderID = $session->variable( "OrderID" );
 
@@ -186,7 +186,7 @@ if ( $PaymentSuccess == true )
 
     $order->setShippingTypeID( $session->variable( "ShippingTypeID" ) );
 
-    $order->setComment( $Comment );
+    $order->setComment( $comment );
 
     $order->setPersonID( $cart->personID() );
     $order->setCompanyID( $cart->companyID() );
@@ -364,7 +364,7 @@ if ( $PaymentSuccess == true )
 
         $region = $billingAddress->region();
 
-        if ( ( get_class( $region ) == "eZRegion" ) )
+        if ( $region instanceof eZRegion )
         {
             if ( $ini->variable( "eZUserMain", "SelectRegion" ) == "enabled" )
                 $mailTemplate->set_var( "billing_region", $region->name() );
@@ -426,7 +426,7 @@ if ( $PaymentSuccess == true )
 
         $region = $shippingAddress->region();
 
-        if ( ( get_class( $region ) == "eZRegion" ) )
+        if ( $region instanceof eZRegion )
         {
             if ( $ini->variable( "eZUserMain", "SelectRegion" ) == "enabled" )
                 $mailTemplate->set_var( "shipping_region", $region->name() );
@@ -816,7 +816,7 @@ if ( $PaymentSuccess == true )
     $mailEncrypt = $ini->variable( "eZTradeMain", "MailEncrypt" );
 
     // load user account number 
-    $AccountNumber = $user->accountNumber();
+    $accountNumber = $user->accountNumber();
     
     if ( $mailEncrypt == "GPG" )
     {	
@@ -840,8 +840,8 @@ if ( $PaymentSuccess == true )
    	           {
 			    $mailTemplate->set_var( "payment_method", $paymentMethod );
     	        $mailTemplate->set_var( "cc_number", $CCNumber );
-    	        $mailTemplate->set_var( "cc_expiremonth", $ExpireMonth );
-    	        $mailTemplate->set_var( "cc_expireyear", $ExpireYear );
+    	        $mailTemplate->set_var( "cc_expiremonth", $expireMonth );
+    	        $mailTemplate->set_var( "cc_expireyear", $expireYear );
                 // parse the template block
                 $mailTemplate->parse( "credit_card_information", "credit_card_information_tpl");
 
@@ -853,8 +853,8 @@ if ( $PaymentSuccess == true )
                {
                 $mailTemplate->set_var( "payment_method", $paymentMethod );
     	        $mailTemplate->set_var( "cc_number", $CCNumber );
-    	        $mailTemplate->set_var( "cc_expiremonth", $ExpireMonth );
-    	        $mailTemplate->set_var( "cc_expireyear", $ExpireYear );
+    	        $mailTemplate->set_var( "cc_expiremonth", $expireMonth );
+    	        $mailTemplate->set_var( "cc_expireyear", $expireYear );
                 // parse the template block
                 $mailTemplate->parse( "credit_card_information", "credit_card_information_tpl");
 
@@ -882,7 +882,7 @@ if ( $PaymentSuccess == true )
     	        $mailTemplate->set_var( "cc_expiremonth", "" );
     	        $mailTemplate->set_var( "cc_expireyear", "" );
 
-                $mailTemplate->set_var( "customer_account_number", $AccountNumber );
+                $mailTemplate->set_var( "customer_account_number", $accountNumber );
                 $mailTemplate->parse( "customer_account_number_information", "customer_account_number_information_tpl");
                }
                break;
@@ -1047,10 +1047,10 @@ if ( $PaymentSuccess == true )
     
     //  $cart->clear();
 
-    $OrderID = $order->id();
+    $orderID = $order->id();
 
-    $preOrder = new eZPreOrder( $PreOrderID );
-    $preOrder->setOrderID( $OrderID );
+    $preOrder = new eZPreOrder( $preOrderID );
+    $preOrder->setOrderID( $orderID );
     $preOrder->store();
 
     $payedWith = $session->arrayValue( "PayedWith" );
@@ -1082,7 +1082,7 @@ if ( $PaymentSuccess == true )
 
     // call the payment script after the payment is successful.
     // some systems needs this, e.g. to print out the OrderID which was cleared..
-    $Action = "PostPayment";
+    $action = "PostPayment";
     include( $instance->paymentFile( $paymentMethod ) );
 
     // Turn of SSL and redirect to http://
@@ -1090,7 +1090,7 @@ if ( $PaymentSuccess == true )
     $session->setVariable( "SSLMode", "disabled" ); 
 
     // set the confirmation 
-    // eZHTTPTool::header( "Location: http://$HTTP_HOST/trade/ordersendt/$OrderID/" );
+    // eZHTTPTool::header( "Location: http://$HTTP_HOST/trade/ordersendt/$orderID/" );
     eZHTTPTool::header( "Location: https://" . $HTTP_HOST . $wwwDir . $indexFile . "/trade/confirmation/" );
     exit();
 }

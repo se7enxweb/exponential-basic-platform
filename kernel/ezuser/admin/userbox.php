@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: userbox.php 6484 2001-08-17 13:36:01Z jhe $
+// $id: userbox.php 6484 2001-08-17 13:36:01Z jhe $
 //
 // Created on: <20-Sep-2000 13:32:11 ce>
 //
@@ -28,7 +28,7 @@
 // include_once( "classes/ezhttptool.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZUserMain", "Language" );
+$language = $ini->variable( "eZUserMain", "Language" );
 // $DOC_ROOT = $ini->variable( "eZUserMain", "DocumentRoot" );
 
 // include_once( "ezuser/classes/ezuser.php" );
@@ -40,7 +40,7 @@ $Language = $ini->variable( "eZUserMain", "Language" );
 
 // Template
 $t = new eZTemplate( "kernel/ezuser/admin/" . $ini->variable( "eZUserMain", "TemplateDir" ),
-                     "kernel/ezuser/admin/intl", $Language, "userbox.php" );
+                     "kernel/ezuser/admin/intl", $language, "userbox.php" );
 $t->setAllStrings();
 
 $t->set_file( array(
@@ -56,7 +56,7 @@ if ( !$user )
 }
 $t->set_var( "first_name", $user->firstName() );
 $t->set_var( "last_name", $user->lastName() );
-$t->set_var( "style", $SiteDesign );
+$t->set_var( "style", $siteDesign );
 $t->pparse( "output", "userbox" );
 
 ?>

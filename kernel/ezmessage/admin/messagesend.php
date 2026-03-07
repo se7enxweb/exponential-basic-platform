@@ -38,9 +38,9 @@ $locale = new eZLocale( $Language );
 
 $t->set_file( "message_page_tpl", "messagesend.tpl" );
 
-if ( isSet( $Delete ) && isSet( $DelMessage ) && count( $DelMessage ) > 0 )
+if ( isSet( $delete ) && isSet( $delMessage ) && count( $delMessage ) > 0 )
 {
-	foreach( $DelMessage as $value )
+	foreach( $delMessage as $value )
 	{
 		$message = new eZMessage( $value );
 		$toUser = $message->toUser();

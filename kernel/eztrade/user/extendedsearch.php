@@ -52,7 +52,7 @@ $SmallImageHeight = $ini->variable( "eZTradeMain", "SmallImageHeight" );
 
 if ( isset ( $SearchButton ) )
 {
-    $Action = "SearchButton";
+    $action = "SearchButton";
 }
 
 $user = eZUser::currentUser();
@@ -90,17 +90,17 @@ $PriceHigher = $priceRange[1];
 // products
 $product = new eZProduct();
 
-if ( $Action == "SearchButton" )
+if ( $action == "SearchButton" )
 {
-    if ( $Limit == "" )
-        $Limit = 10;
-    if ( $Offset == "" )
-        $Offset = 0;
+    if ( $limit == "" )
+        $limit = 10;
+    if ( $offset == "" )
+        $offset = 0;
 
     $mainCategoryArray = explode( "-", $MainCategories );
     if ( $Next || $Prev )
     {
-        $lists = explode( ":", $CategoryArray );
+        $lists = explode( ":", $categoryArray );
         $cats = array();
         foreach( $lists as $list )
         {
@@ -120,20 +120,20 @@ if ( $Action == "SearchButton" )
             list($key,$main) = each( $mains );
         }
 
-        $productList = $product->extendedSearch( $PriceLower, $PriceHigher, $Text, $Offset, $Limit, $catIDArray );
-        $totalCount = $product->extendedSearchCount( $PriceLower, $PriceHigher, $Text, $catIDArray );
+        $productList = $product->extendedSearch( $PriceLower, $PriceHigher, $text, $offset, $limit, $catIDArray );
+        $totalCount = $product->extendedSearchCount( $PriceLower, $PriceHigher, $text, $catIDArray );
     }
     else
     {
-        if ( $Limit == "" )
-            $Limit = 10;
-        if ( $Offset == "" )
-            $Offset = 0;
+        if ( $limit == "" )
+            $limit = 10;
+        if ( $offset == "" )
+            $offset = 0;
 
         $catIDArray = array();
 
-        reset( $CategoryArrayID );
-        while ( list($main,$cats ) = each($CategoryArrayID) )
+        reset( $categoryArrayID );
+        while ( list($main,$cats ) = each($categoryArrayID) )
         {
             $cat_array = array();
             $cat_array["id"] = $main;
@@ -152,15 +152,15 @@ if ( $Action == "SearchButton" )
             $catIDArray[] = $cat_array;
         }
 
-        $productList = $product->extendedSearch( $PriceLower, $PriceHigher, $Text, $Offset, $Limit, $catIDArray );
-        $totalCount = $product->extendedSearchCount( $PriceLower, $PriceHigher, $Text, $catIDArray );
+        $productList = $product->extendedSearch( $PriceLower, $PriceHigher, $text, $offset, $limit, $catIDArray );
+        $totalCount = $product->extendedSearchCount( $PriceLower, $PriceHigher, $text, $catIDArray );
     }
 
     $t->set_var( "price_lower", $PriceLower );
     $t->set_var( "price_higher", $PriceHigher );
-    $t->set_var( "text", $Text );
+    $t->set_var( "text", $text );
 
-    $t->set_var( "url_text", urlencode( $Text == "" ? " " : $Text ) );
+    $t->set_var( "url_text", urlencode( $text == "" ? " " : $text ) );
     $t->set_var( "url_range", urlencode( $PriceRange ) );
 
     $urlCategory = "";
@@ -237,9 +237,9 @@ if ( count ( $productList ) > 0 )
              $ShowPrice and $product->showPrice() == true and $product->hasPrice() )
         {
             $found_price = false;
-            if ( $ShowPriceGroups and $PriceGroup > 0 )
+            if ( $ShowPriceGroups and $priceGroup > 0 )
             {
-                $price = eZPriceGroup::correctPrice( $product->id(), $PriceGroup );
+                $price = eZPriceGroup::correctPrice( $product->id(), $priceGroup );
                 if ( $price )
                 {
                     $found_price = true;
@@ -273,11 +273,11 @@ if ( count ( $productList ) > 0 )
 else
 {
     $t->set_var( "product_search_list", "" );
-    if ( $Action == "SearchButton" )
+    if ( $action == "SearchButton" )
         $t->parse( "empty_search", "empty_search_tpl" );
 }
 
-eZList::drawNavigator( $t, $totalCount, $Limit, $Offset, "extended_search_tpl" );
+eZList::drawNavigator( $t, $totalCount, $limit, $offset, "extended_search_tpl" );
 
 $category = new eZProductCategory();
 
@@ -295,10 +295,10 @@ foreach( $ExtendedSearchCategories as $category )
 $subCategories = "";
 $t->set_var( "category_list", "" );
 $t->set_var( "is_all_selected", "" );
-if ( is_array( $CategoryArrayID ) )
+if ( is_array( $categoryArrayID ) )
 {
-    reset( $CategoryArrayID );
-    list($key,$categoryArray) = each( $CategoryArrayID );
+    reset( $categoryArrayID );
+    list($key,$categoryArray) = each( $categoryArrayID );
 }
 foreach( $categoryList as $categoryItem )
 {
@@ -326,19 +326,19 @@ foreach( $categoryList as $categoryItem )
         $subCategories = "";
     }
     $t->parse( "category_list", "category_list_tpl", true );
-    if ( is_array( $CategoryArrayID ) )
+    if ( is_array( $categoryArrayID ) )
     {
-        list($key,$categoryArray) = each( $CategoryArrayID );
+        list($key,$categoryArray) = each( $categoryArrayID );
     }
 }
 
-$t->set_var( "url_query_string", $Query );
-$t->set_var( "query_string", $Query );
+$t->set_var( "url_query_string", $query );
+$t->set_var( "query_string", $query );
 
-$t->set_var( "query", $Query );
-$t->set_var( "limit", $Limit );
-$prevOffs = $Offset - $Limit;
-$nextOffs = $Offset + $Limit;
+$t->set_var( "query", $query );
+$t->set_var( "limit", $limit );
+$prevOffs = $offset - $limit;
+$nextOffs = $offset + $limit;
 
 $t->set_var( "prev_offset", $prevOffs );
 $t->set_var( "next_offset", $nextOffs );

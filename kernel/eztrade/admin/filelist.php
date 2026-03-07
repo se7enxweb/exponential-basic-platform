@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: filelist.php,v 1.9 2001/08/30 07:55:56 bf Exp $
+// $id: filelist.php,v 1.9 2001/08/30 07:55:56 bf Exp $
 //
 // Created on: <21-Dec-2000 17:43:40 bf>
 //
@@ -30,15 +30,15 @@ include_once( "classes/ezcurrency.php" );
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZTradeMain", "Language" );
-$SiteStyle = $ini->variable( "site", "SiteStyle" );
+$language = $ini->variable( "eZTradeMain", "Language" );
+$siteStyle = $ini->variable( "site", "SiteStyle" );
 
 include_once( "eztrade/classes/ezproductcategory.php" );
 include_once( "eztrade/classes/ezproduct.php" );
 
 
 $t = new eZTemplate( "eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "eztrade/admin/intl/", $Language, "filelist.php" );
+                     "eztrade/admin/intl/", $language, "filelist.php" );
 
 $t->setAllStrings();
 
@@ -48,21 +48,21 @@ $t->set_block( "file_list_page_tpl", "no_files_tpl", "no_files" );
 $t->set_block( "file_list_page_tpl", "file_list_tpl", "file_list" );
 $t->set_block( "file_list_tpl", "file_tpl", "file" );
 
-$product = new eZProduct( $ProductID );
+$product = new eZProduct( $productID );
 
 $session = eZSession::globalSession();
-$session->setVariable( "FileListReturnTo", $REQUEST_URI );
+$session->setVariable( "FileListReturnTo", $_SERVER['REQUEST_URI'] );
 $session->setVariable( "NameInBrowse", $product->name() );
 
-if ( isSet ( $AddFiles ) )
+if ( isSet ( $addFiles ) )
 {
-    if ( count ( $FileArrayID ) > 0 )
+    if ( count ( $fileArrayID ) > 0 )
     {
-        foreach( $FileArrayID as $fileID )
+        foreach( $fileArrayID as $fileID )
         {
             $file = new eZVirtualFile( $fileID );
-			if ( $DescriptionArray[$fileID] != $file->description() );
-				$file->setDescription( $DescriptionArray[$fileID] );
+			if ( $descriptionArray[$fileID] != $file->description() );
+				$file->setDescription( $descriptionArray[$fileID] );
 			$file->store();
             $product->addFile( $file );
         }
@@ -71,7 +71,7 @@ if ( isSet ( $AddFiles ) )
 
 $t->set_var( "product_name", $product->name() );
 
-$t->set_var( "site_style", $SiteStyle );
+$t->set_var( "site_style", $siteStyle );
 
 $files = $product->files();
 if ( count( $files ) == 0 )

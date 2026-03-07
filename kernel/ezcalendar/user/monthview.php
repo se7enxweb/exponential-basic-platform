@@ -36,7 +36,7 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZCalendarMain", "Language" );
-$Locale = new eZLocale( $Language );
+$locale = new eZLocale( $Language );
 
 $user = eZUser::currentUser();
 $session = eZSession::globalSession();
@@ -47,12 +47,12 @@ if ( $user == false )
 else
     $userID = $user->id();
 
-if ( isset( $GetByUser ) )
+if ( isset( $getByUser ) )
 {
-    $userID = $GetByUserID;
+    $userID = $getByUserID;
 }
 
-if ( $session->variable( "ShowOtherCalendarUsers" ) == false || isset( $GetByUser ) )
+if ( $session->variable( "ShowOtherCalendarUsers" ) == false || isset( $getByUser ) )
     $session->setVariable( "ShowOtherCalendarUsers", $userID );
 else
     $userID = $session->variable( "ShowOtherCalendarUsers" );
@@ -61,25 +61,25 @@ $appOwnerUser = new eZUser( $userID );
 
 $date = new eZDate();
 
-if ( $Year != "" && $Month != "" )
+if ( $year != "" && $month != "" )
 {
-    $date->setYear( $Year );
-    $date->setMonth( $Month );
+    $date->setYear( $year );
+    $date->setMonth( $month );
 }
 else
 {
-    $Year = $date->year();
-    $Month = $date->month();
+    $year = $date->year();
+    $month = $date->month();
 }
 
-$session->setVariable( "Year", $Year );
-$session->setVariable( "Month", $Month );
+$session->setVariable( "Year", $year );
+$session->setVariable( "Month", $month );
 
-$zMonth = addZero( $Month );
+$zMonth = addZero( $month );
 $isMyCalendar = ( $user && $user->id() == $userID ) ? "-private" : "";
 $t = new eZTemplate( "kernel/ezcalendar/user/" . $ini->variable( "eZCalendarMain", "TemplateDir" ),
                      "kernel/ezcalendar/user/intl", $Language, "monthview.php",
-                     "default", "ezcalendar" . "/user", "$Year-$zMonth-$userID" . $isMyCalendar );
+                     "default", "ezcalendar" . "/user", "$year-$zMonth-$userID" . $isMyCalendar );
 
 $t->set_file( "month_view_page_tpl", "monthview.tpl" );
 
@@ -100,15 +100,15 @@ else
     $t->set_block( "day_tpl", "private_appointment_tpl", "private_appointment" );
     $t->set_block( "day_tpl", "public_todo_tpl", "public_todo" );
     
-    $t->set_var( "month_name", $Locale->monthName( $date->monthName(), false ) );
-    $t->set_var( "month_number", $Month );
-    $t->set_var( "current_year_number", $Year );
+    $t->set_var( "month_name", $locale->monthName( $date->monthName(), false ) );
+    $t->set_var( "month_number", $month );
+    $t->set_var( "current_year_number", $year );
     $t->set_var( "week", "" );
 
     // Draw the week day header.
     $headerDate = new eZDate();
     $headerDate->setYear( 2001 );
-    if ( $Locale->mondayFirst() )
+    if ( $locale->mondayFirst() )
     {
         // January 2001 starts on a Monday
         $headerDate->setMonth( 1 );
@@ -122,7 +122,7 @@ else
     for ( $week_day = 1; $week_day <= 7; $week_day++ )
     {
         $headerDate->setDay( $week_day );
-        $t->set_var( "week_day_name", $Locale->dayName( $headerDate->dayName( $Locale->mondayFirst() ), false ) );
+        $t->set_var( "week_day_name", $locale->dayName( $headerDate->dayName( $locale->mondayFirst() ), false ) );
 
         $t->parse( "week_day", "week_day_tpl", true );
     }
@@ -139,7 +139,7 @@ else
         if ( ( ( $week * 7 ) - $firstDay + 1 ) < ( $date->daysInMonth() ) )
         {
             $date->setDay( 1 );
-            $firstDay = $date->dayOfWeek( $Locale->mondayFirst() );
+            $firstDay = $date->dayOfWeek( $locale->mondayFirst() );
 
             for ( $day = 1; $day <= 7; $day++ )
             {
@@ -171,8 +171,8 @@ else
                         }
                         else
                         {
-                            $t->set_var( "start_time", $Locale->format( $appointment->startTime(), true ) );
-                            $t->set_var( "stop_time", $Locale->format( $appointment->stopTime(), true ) );
+                            $t->set_var( "start_time", $locale->format( $appointment->startTime(), true ) );
+                            $t->set_var( "stop_time", $locale->format( $appointment->stopTime(), true ) );
                         }
 
                         if ( $appointment->isPrivate() == false || $userID == $appointment->userID() )
@@ -205,14 +205,14 @@ else
                     }
                     else if ( $day == 6 )
                     {
-                        if ( $Locale->mondayFirst() == true )
+                        if ( $locale->mondayFirst() == true )
                             $t->set_var( "td_class", "bgweekend" );
                         else
                             $t->set_var( "td_class", "bglight" );
                     }
                     else if ( $day == 1 )
                     {
-                        if ( $Locale->mondayFirst() == false )
+                        if ( $locale->mondayFirst() == false )
                             $t->set_var( "td_class", "bgweekend" );
                         else
                             $t->set_var( "td_class", "bglight" );
@@ -223,8 +223,8 @@ else
                     }
 
                     $t->set_var( "day_number", $currentDay );
-                    $t->set_var( "month_number", $Month );
-                    $t->set_var( "year_number", $Year );
+                    $t->set_var( "month_number", $month );
+                    $t->set_var( "year_number", $year );
                 }
                 else   // previous or next month
                 {
@@ -324,27 +324,27 @@ else
 
 
     // next previous values.
-    $t->set_var( "next_year_number", $Year );
-    $t->set_var( "prev_year_number", $Year );
+    $t->set_var( "next_year_number", $year );
+    $t->set_var( "prev_year_number", $year );
 
-    if ( $Month == 12 )
+    if ( $month == 12 )
     {
         $t->set_var( "next_month_number", 1 );
-        $t->set_var( "next_year_number", $Year + 1 );
+        $t->set_var( "next_year_number", $year + 1 );
     }
     else
     {
-        $t->set_var( "next_month_number", $Month + 1 );
+        $t->set_var( "next_month_number", $month + 1 );
     }
 
-    if ( $Month == 1 )
+    if ( $month == 1 )
     {
         $t->set_var( "prev_month_number", 12 );
-        $t->set_var( "prev_year_number", $Year - 1 );    
+        $t->set_var( "prev_year_number", $year - 1 );    
     }
     else
     {
-        $t->set_var( "prev_month_number", $Month - 1 );    
+        $t->set_var( "prev_month_number", $month - 1 );    
     }
 
 

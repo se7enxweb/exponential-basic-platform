@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: personlist.php 9743 2002-11-21 08:52:13Z jhe $
+// $id: personlist.php 9743 2002-11-21 08:52:13Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -25,12 +25,12 @@
 
 // include_once( "classes/INIFile.php" );
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZContactMain", "Language" );
-$Max = $ini->variable( "eZContactMain", "MaxPersonList" );
+$language = $ini->variable( "eZContactMain", "Language" );
+$max = $ini->variable( "eZContactMain", "MaxPersonList" );
 
-if ( !is_numeric( $Max ) )
+if ( !is_numeric( $max ) )
 {
-    $Max = 10;
+    $max = 10;
 }
 
 // include_once( "classes/eztemplate.php" );
@@ -38,7 +38,7 @@ if ( !is_numeric( $Max ) )
 // include_once( "classes/ezlist.php" );
 
 $t = new eZTemplate( "kernel/ezcontact/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ),
-                     "kernel/ezcontact/admin/intl", $Language, "personedit.php" );
+                     "kernel/ezcontact/admin/intl", $language, "personedit.php" );
 $t->setAllStrings();
 
 // include_once( "ezcontact/classes/ezperson.php" );
@@ -98,22 +98,22 @@ $session = eZSession::globalSession();
 
 if ( $session->fetch() != false )
 {
-    if ( !isset( $LimitType ) )
+    if ( !isset( $limitType ) )
     {
         if ( $session->variable( "PersonLimitType" ) == false )
             $session->setVariable( "PersonLimitType", "all" );
-        $LimitType = $session->variable( "PersonLimitType" );
+        $limitType = $session->variable( "PersonLimitType" );
     }
     else
     {
-        $session->setVariable( "PersonLimitType", $LimitType );
+        $session->setVariable( "PersonLimitType", $limitType );
     }
 }
 
 $t->set_var( "is_all_selected", "" );
 $t->set_var( "is_without_selected", "" );
 $t->set_var( "is_with_selected", "" );
-switch ( $LimitType )
+switch ( $limitType )
 {
     case "all":
     {
@@ -135,32 +135,32 @@ switch ( $LimitType )
 
 $person = new eZPerson();
 
-if ( !isset( $Offset ) )
+if ( !isset( $offset ) )
 {
-    $Offset = 0;
+    $offset = 0;
 }
-else if ( !is_numeric( $Offset ) )
+else if ( !is_numeric( $offset ) )
 {
-    $Offset = 0;
+    $offset = 0;
 }
 
-$t->set_var( "action", $Action );
+$t->set_var( "action", $action );
 
-if ( !isset( $SearchText ) )
+if ( !isset( $searchText ) )
 {
-    $total_persons = $person->getAllCount( "", $LimitType );
-    $persons = $person->getAll( "", $Offset, $Max, $LimitType );
+    $total_persons = $person->getAllCount( "", $limitType );
+    $persons = $person->getAll( "", $offset, $max, $limitType );
     $t->set_var( "search_form_text", "" );
     $t->set_var( "search_text", "" );
 }
 else
 {
-    $search_encoded = $SearchText;
+    $search_encoded = $searchText;
     $search_encoded = eZURITool::encode( $search_encoded );
-    $t->set_var( "search_form_text", $SearchText );
+    $t->set_var( "search_form_text", $searchText );
     $t->set_var( "search_text", $search_encoded );
-    $total_persons = $person->getAllCount( $SearchText, $LimitType );
-    $persons = $person->getAll( $SearchText, $Offset, $Max, $LimitType );
+    $total_persons = $person->getAllCount( $searchText, $limitType );
+    $persons = $person->getAll( $searchText, $offset, $max, $limitType );
 }
 
 $count = count( $persons );
@@ -199,7 +199,7 @@ if ( $count == 0 )
 }
 else
 {
-    for ( $i = 0; $i < $count && $i < $Max; $i++ )
+    for ( $i = 0; $i < $count && $i < $max; $i++ )
     {
         $t->set_var( "bg_color", ( $i % 2 ) == 0 ? "bglight" : "bgdark" );
 
@@ -251,7 +251,7 @@ $t->set_var( "person_new_button", "" );
 if ( eZPermission::checkPermission( $user, "eZContact", "PersonAdd" ) )
     $t->parse( "person_new_button", "person_new_button_tpl" );
 
-eZList::drawNavigator( $t, $total_persons, $Max, $Offset, false,
+eZList::drawNavigator( $t, $total_persons, $max, $offset, false,
 array( "type_list" => "person_list",
        "next" => "person_list_next",
        "next_inactive" => "person_list_next_inactive",

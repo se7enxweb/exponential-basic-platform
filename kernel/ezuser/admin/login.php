@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: login.php 6389 2001-08-07 13:26:40Z jhe $
+// $id: login.php 6389 2001-08-07 13:26:40Z jhe $
 //
 // Created on: <20-Sep-2000 13:32:11 ce>
 //
@@ -29,7 +29,7 @@
 // include_once( "classes/ezhttptool.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZUserMain", "Language" );
+$language = $ini->variable( "eZUserMain", "Language" );
 
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezuser/classes/ezusergroup.php" );
@@ -40,7 +40,7 @@ $Language = $ini->variable( "eZUserMain", "Language" );
 
 // Template
 $t = new eZTemplate( "kernel/ezuser/admin/" .  $ini->variable( "eZUserMain", "AdminTemplateDir" ),
-                     "kernel/ezuser/admin/" . "/intl", $Language, "login.php" );
+                     "kernel/ezuser/admin/" . "/intl", $language, "login.php" );
 $t->setAllStrings();
 
 $t->set_file( array(
@@ -50,82 +50,82 @@ $t->set_file( array(
 $t->set_block( "login_tpl", "error_message_tpl", "error_message" );
 $t->set_block( "login_tpl", "max_message_tpl", "max_message" );
 
-if ( isset( $Action ) && $Action == "login" )
+if ( isset( $action ) && $action == "login" )
 {
-    $Username = $_POST['Username'];
-    $Password = $_POST['Password'];
+    $username = $_POST['Username'];
+    $password = $_POST['Password'];
 
     $remoteAddress = $_SERVER['REMOTE_ADDR'];
 
     $user = new eZUser();
-    $user = $user->validateUser( $_POST['Username'], $_POST['Password'] );
+    $user = $user->validateUser( $username, $password );
 
     if ( ( $user )  && eZPermission::checkPermission( $user, "eZUser", "AdminLogin" ) )
     {
         if ( $user->get( $user->ID ) )
         {
             $logins = $user->getLogins( $user->ID );
-            $AllowSimultaneousLogins =  $ini->variable( "eZUserMain", "SimultaneousLogins" );
+            $allowSimultaneousLogins =  $ini->variable( "eZUserMain", "SimultaneousLogins" );
 
-            if ( $AllowSimultaneousLogins == "disabled" )
+            if ( $allowSimultaneousLogins == "disabled" )
             {
-                $MaxLogins = "1";
+                $maxLogins = "1";
             }
             else
             {
-                $MaxLogins = $user->simultaneousLogins();
+                $maxLogins = $user->simultaneousLogins();
             }
 
-            if ( ( $logins < $MaxLogins ) || ( $MaxLogins == 0 ) )
+            if ( ( $logins < $maxLogins ) || ( $maxLogins == 0 ) )
             {
-                eZDebug::writeNotice( "Admin login: $Username from IP: $remoteAddress" );
+                eZDebug::writeNotice( "Admin login: $username from IP: $remoteAddress" );
 
                 eZUser::loginUser( $user );
-                if ( !isset( $RefererURL ) )
-                    $RefererURL = "/";
+                if ( !isset( $refererURL ) )
+                    $refererURL = "/";
                 
                 // Show password change dialog, if admin is using default login
-                if ( $Username == "admin" && $Password == "publish" )
+                if ( $username == "admin" && $password == "publish" )
                 {
-                    $RefererURL = "/user/passwordchange/";
+                    $refererURL = "/user/passwordchange/";
                 }
 
-                eZHTTPTool::header( "Location: $RefererURL" );
+                eZHTTPTool::header( "Location: $refererURL" );
                 exit();
             }
             else
             {
-                eZPBLog::writeWarning( "Max limit reached: $Username from IP: $remoteAddress" );
+                eZPBLog::writeWarning( "Max limit reached: $username from IP: $remoteAddress" );
         
                 $maxerror = true;    
             }
         }
         else
         {
-            ezLog::writeError( "Couldn't receive admin information on : $Username from IP: $remoteAddress" );
+            eZPBLog::writeError( "Couldn't receive admin information on : $username from IP: $remoteAddress" );
 
             $error = true;
         }
     }
     else
     {
-        eZPBLog::writeWarning( "Bad admin login: $Username from IP: $remoteAddress" );
+        eZPBLog::writeWarning( "Bad admin login: $username from IP: $remoteAddress" );
         
         $error = true;
     }
 }
 
-if ( !isset( $RefererURL ) )
-    $RefererURL = $_SERVER['REQUEST_URI'];
-    if ( preg_match( "#^/user/login.*#", $RefererURL  ) )
+if ( !isset( $refererURL ) )
+    $refererURL = $_SERVER['REQUEST_URI'];
+    if ( preg_match( "#^/user/login.*#", $refererURL  ) )
     {
-        $RefererURL = "/";
+        $refererURL = "/";
         
     }
 
-$t->set_var( "referer_url", $RefererURL );
+$t->set_var( "referer_url", $refererURL );
 
-if ( isset( $Action ) && $Action == "logout" )
+if ( isset( $action ) && $action == "logout" )
 {
     eZUser::logout();
     eZHTTPTool::header( "Location: /" );

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: passwordchange.php 6484 2001-08-17 13:36:01Z jhe $
+// $id: passwordchange.php 6484 2001-08-17 13:36:01Z jhe $
 //
 // Created on: <20-Sep-2000 13:32:11 ce>
 //
@@ -28,8 +28,8 @@
 // include_once( "classes/ezhttptool.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZUserMain", "Language" );
-$errorIni = new eZINI( "kernel/ezuser/admin/intl/" . $Language . "/passwordchange.php.ini", false );
+$language = $ini->variable( "eZUserMain", "Language" );
+$errorIni = new eZINI( "kernel/ezuser/admin/intl/" . $language . "/passwordchange.php.ini", false );
 
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezuser/classes/ezusergroup.php" );
@@ -39,14 +39,19 @@ $errorIni = new eZINI( "kernel/ezuser/admin/intl/" . $Language . "/passwordchang
 
 require( "kernel/ezuser/admin/admincheck.php" );
 
-if ( isset( $Cancel ) )
+$cancel = eZHTTPTool::getVar( "Cancel" );
+$oldPassword = eZHTTPTool::getVar( "OldPassword" );
+$newPassword = eZHTTPTool::getVar( "NewPassword" );
+$verifyPassword = eZHTTPTool::getVar( "VerifyPassword" );
+
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /" );
 }
 
 // Template
 $t = new eZTemplate( "kernel/ezuser/admin/" . $ini->variable( "eZUserMain", "AdminTemplateDir" ),
-                     "kernel/ezuser/admin/" . "/intl", $Language, "passwordchange.php" );
+                     "kernel/ezuser/admin/" . "/intl", $language, "passwordchange.php" );
 $t->setAllStrings();
 
 $t->set_file( array(
@@ -60,21 +65,21 @@ if ( !$user )
     exit();
 }
 
-if ( isset( $Action ) && $Action == "update" )
+if ( isset( $action ) && $action == "update" )
 {
-    $checkuser = $user->validateUser( $user->login(), $OldPassword );
+    $checkuser = $user->validateUser( $user->login(), $oldPassword );
     
     if ( !$checkuser )
     {
         $error_msg = $errorIni->variable( "strings", "error_wrong" );
     }
-    else if ( $NewPassword != $VerifyPassword )
+    else if ( $newPassword != $verifyPassword )
     {
         $error_msg = $errorIni->variable( "strings", "error_nomach" );
     }
-    else if ( isset( $OldPassword ) && isset( $NewPassword ) && $OldPassword != $NewPassword )
+    else if ( isset( $oldPassword ) && isset( $newPassword ) && $oldPassword != $newPassword )
     {
-        $user->setPassword( $NewPassword );
+        $user->setPassword( $newPassword );
         $user->store();
         $error_msg = $errorIni->variable( "strings", "password_update" );
 

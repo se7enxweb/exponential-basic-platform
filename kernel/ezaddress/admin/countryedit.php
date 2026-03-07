@@ -27,11 +27,11 @@
 // include_once( "ezaddress/classes/ezcountry.php" );
 
 $language_file = "country.php";
-$item_type = new eZCountry( $CountryID );
-if ( isset( $ItemArrayID ) and is_array( $ItemArrayID ) )
+$item_type = new eZCountry( $countryID );
+if ( isset( $itemArrayID ) and is_array( $itemArrayID ) )
 {
     $item_types = array();
-    foreach( $ItemArrayID as $item_id )
+    foreach( $itemArrayID as $item_id )
     {
         $item_types[] = new eZCountry( $item_id );
     }

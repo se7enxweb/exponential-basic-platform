@@ -26,11 +26,11 @@
 // include_once( "ezaddress/classes/ezonlinetype.php" );
 
 $language_file = "onlinetype.php";
-$item_type = new eZOnlineType( $OnlineTypeID );
-if ( isset( $ItemArrayID ) and is_array( $ItemArrayID ) )
+$item_type = new eZOnlineType( $onlineTypeID );
+if ( isset( $itemArrayID ) and is_array( $itemArrayID ) )
 {
     $item_types = array();
-    foreach( $ItemArrayID as $item_id )
+    foreach( $itemArrayID as $item_id )
     {
         $item_types[] = new eZOnlineType( $item_id );
     }
@@ -59,13 +59,13 @@ $item_error = true;
 
 if( empty( $HTTP_REFERER ) )
 {
-    if( empty( $BackUrl ) )
+    if( empty( $backUrl ) )
     {
         $back_command = "$page_path/list";
     }
     else
     {
-        $back_command = $BackUrl;
+        $back_command = $backUrl;
     }
 }
 else
@@ -73,7 +73,7 @@ else
     $back_command = $HTTP_REFERER;
 }
 
-if ( isset( $Delete ) and isset( $ItemArrayID ) and isset( $item_types ) )
+if ( isset( $delete ) and isset( $itemArrayID ) and isset( $item_types ) )
 {
     foreach( $item_types as $item_type )
     {
@@ -84,7 +84,7 @@ if ( isset( $Delete ) and isset( $ItemArrayID ) and isset( $item_types ) )
     exit();
 }
 
-if( isset( $Action ) && $Action == "up" )
+if( isset( $action ) && $action == "up" )
 {
     $item_type->moveUp();
     // include_once( "classes/ezhttptool.php" );
@@ -92,7 +92,7 @@ if( isset( $Action ) && $Action == "up" )
     exit();
 }
 
-if( isset( $Action ) && $Action == "down" )
+if( isset( $action ) && $action == "down" )
 {
     $item_type->moveDown();
     // include_once( "classes/ezhttptool.php" );
@@ -100,26 +100,26 @@ if( isset( $Action ) && $Action == "down" )
     exit();
 }
 
-if( isset( $Action ) && $Action == "insert" || isset( $Action ) && $Action == "update" )
+if( isset( $action ) && $action == "insert" || isset( $action ) && $action == "update" )
 {
-    if ( $Action == "insert" )
+    if ( $action == "insert" )
         unset( $item_type->ID );
-    $item_type->setName( $ItemName );
-    $item_type->setURLPrefix( $Prefix );
-    $item_type->setPrefixLink( $PrefixLink );
-    $item_type->setPrefixVisual( $PrefixVisual );
+    $item_type->setName( $itemName );
+    $item_type->setURLPrefix( $prefix );
+    $item_type->setPrefixLink( $prefixLink );
+    $item_type->setPrefixVisual( $prefixVisual );
     $item_type->store();
     // include_once( "classes/ezhttptool.php" );
     eZHTTPTool::header( "Location: $page_path/list" );
 }
 
-if( isset( $Action ) && $Action == "new" )
+if( isset( $action ) && $action == "new" )
 {
-    $ItemID = 0;
-    $ItemName = false;
-    $Prefix = false;
-    $PrefixLink = false;
-    $PrefixVisual = false;
+    $itemID = 0;
+    $itemName = false;
+    $prefix = false;
+    $prefixLink = false;
+    $prefixVisual = false;
     $error = false;
 }
 
@@ -134,11 +134,11 @@ $t->set_block( "type_edit_tpl", "no_line_item_tpl", "no_line_item" );
 $t->set_var( "no_line_item", "" );
 $t->set_var( "line_item", "" );
 
-$t->set_var( "item_id", $ItemID );
-$t->set_var( "item_name", $ItemName );
-$t->set_var( "prefix", $Prefix );
-$t->set_var( "prefix_link_checked", $PrefixLink );
-$t->set_var( "prefix_visual_checked", $PrefixVisual );
+$t->set_var( "item_id", $itemID );
+$t->set_var( "item_name", $itemName );
+$t->set_var( "prefix", $prefix );
+$t->set_var( "prefix_link_checked", $prefixLink );
+$t->set_var( "prefix_visual_checked", $prefixVisual );
 $t->set_var( "back_url", $back_command );
 $t->set_var( "item_back_command", $back_command );
 
@@ -164,7 +164,7 @@ if( is_numeric( $item_type->id() ) )
         $t->set_var( "prefix_visual_checked", "" );
 }
 
-if( isset( $Action ) && $Action == "edit" )
+if( isset( $action ) && $action == "edit" )
 {
     $action_value = "update";
 
@@ -174,7 +174,7 @@ if( isset( $Action ) && $Action == "edit" )
     }
 }
 
-if( isset( $Action ) && $Action == "new" )
+if( isset( $action ) && $action == "new" )
 {
     $action_value = "insert";
 

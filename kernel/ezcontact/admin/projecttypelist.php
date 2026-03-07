@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: projecttypelist.php 6927 2001-09-04 12:06:17Z jhe $
+// $id: projecttypelist.php 6927 2001-09-04 12:06:17Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -46,7 +46,7 @@ $language_file = "projecttype.php";
 $page_path = "/contact/projecttype";
 $item_type_array = eZProjectType::findTypes();
 $move_item = true;
-$SortPage = "/contact/projecttype/edit";
+$sortPage = "/contact/projecttype/edit";
 
 include( "kernel/ezcontact/admin/typelist.php" );
 

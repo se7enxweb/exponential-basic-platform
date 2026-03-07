@@ -23,12 +23,12 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-// this page requires the variable $CategoryID to be set
+// this page requires the variable $categoryID to be set
 
 // this allows several newslistings on the same page:
 if( !function_exists( 'printNewsHeaderList' ) )
 {
-    function printNewsHeaderList( $CategoryID, $GenerateStaticPage, $cachedFile )
+    function printNewsHeaderList( $categoryID, $generateStaticPage, $cachedFile )
         {
             // include_once( "classes/INIFile.php" );
             // include_once( "classes/eztemplate.php" );
@@ -59,9 +59,9 @@ if( !function_exists( 'printNewsHeaderList' ) )
 
             $t->set_var( "head_line_item", "" );
 	
-            if ( $CategoryID != "" )
+            if ( $categoryID != "" )
             {
-                $category = new eZNewsCategory( $CategoryID );
+                $category = new eZNewsCategory( $categoryID );
                 $newsList = $category->newsList( "time", "no", 0, 5 );
                 $t->set_var( "category_name", $category->name() );    }
             else
@@ -86,7 +86,7 @@ if( !function_exists( 'printNewsHeaderList' ) )
                 $t->parse( "head_line_item", "head_line_item_tpl", true );
             }    
     
-            if ( $GenerateStaticPage == "true" )
+            if ( $generateStaticPage == "true" )
             {
                 $fp = eZPBFile::fopen( $cachedFile, "w+");
         
@@ -104,10 +104,10 @@ if( !function_exists( 'printNewsHeaderList' ) )
         }
 }
 
-$PageCaching = $ini->variable( "eZNewsFeedMain", "PageCaching" );
-$cachedFile = "kernel/eznewsfeed/cache/headlines," . $CategoryID . ".cache";
+$pageCaching = $ini->variable( "eZNewsFeedMain", "PageCaching" );
+$cachedFile = "kernel/eznewsfeed/cache/headlines," . $categoryID . ".cache";
 
-if ( $PageCaching == "enabled" )
+if ( $pageCaching == "enabled" )
 {
     if ( file_exists( $cachedFile ) )
     {
@@ -115,12 +115,12 @@ if ( $PageCaching == "enabled" )
     }
     else
     {
-        printNewsHeaderList( $CategoryID, "true", $cachedFile );
+        printNewsHeaderList( $categoryID, "true", $cachedFile );
     }            
 }
 else
 {
-    printNewsHeaderList( $CategoryID, "false", $cachedFile );
+    printNewsHeaderList( $categoryID, "false", $cachedFile );
 }
 
 ?>

@@ -34,14 +34,14 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZCalendarMain", "Language" );
-$Locale = new eZLocale( $Language );
+$locale = new eZLocale( $Language );
 
 $today = new eZDateTime();
-if ( $Year == false )
-    $Year = $today->year();
+if ( $year == false )
+    $year = $today->year();
 $t = new eZTemplate( "kernel/ezcalendar/user/" . $ini->variable( "eZCalendarMain", "TemplateDir" ),
                      "kernel/ezcalendar/user/intl", $Language, "yearview.php",
-                     "default", "ezcalendar" . "/user", $Year );
+                     "default", "ezcalendar" . "/user", $year );
 
 $t->set_file( "year_view_page_tpl", "yearview.tpl" );
 
@@ -49,9 +49,9 @@ $build = false;
 if ( $t->hasCache() )
 {
 //    print( "cached<br />" );
-    $file = new eZCacheFile( "kernel/ezcalendar/user/cache", array( "yearview.tpl", "default", $Language, $Year ), "cache", "-" );
+    $file = new eZCacheFile( "kernel/ezcalendar/user/cache", array( "yearview.tpl", "default", $Language, $year ), "cache", "-" );
     $dt = $file->lastModified();
-    if ( $Year == $today->year() && $dt->day() != $today->day() )
+    if ( $year == $today->year() && $dt->day() != $today->day() )
     {
         $file->delete();
         $build = true;
@@ -81,20 +81,20 @@ if ( $build == true )
 
     $date = new eZDate();
 
-    if ( $Year != "" )
+    if ( $year != "" )
     {
-        $date->setYear( $Year );
+        $date->setYear( $year );
     }
     else
     {
-        $Year = $date->year();
+        $year = $date->year();
     }
 
-    $session->setVariable( "Year", $Year );
+    $session->setVariable( "Year", $year );
 
-    $t->set_var( "year_number", $Year );
-    $t->set_var( "prev_year_number", $Year - 1 );
-    $t->set_var( "next_year_number", $Year + 1 );
+    $t->set_var( "year_number", $year );
+    $t->set_var( "prev_year_number", $year - 1 );
+    $t->set_var( "next_year_number", $year + 1 );
 
     $i=0;
     for ( $month=1; $month<13; $month++ )
@@ -117,7 +117,7 @@ if ( $build == true )
     
         $date->setMonth( $month );
         $t->set_var( "month_number", $month );
-        $t->set_var( "month_name", $Locale->monthName( $date->month(), false ) );
+        $t->set_var( "month_name", $locale->monthName( $date->month(), false ) );
 
         $t->set_var( "week", "" );
         for ( $week=0; $week<6; $week++ )
@@ -128,7 +128,7 @@ if ( $build == true )
             for ( $day=1; $day<=7; $day++ )
             {
                 $date->setDay( 1 );
-                $firstDay = $date->dayOfWeek( $Locale->mondayFirst() );
+                $firstDay = $date->dayOfWeek( $locale->mondayFirst() );
 
                 $currentDay = $day + ( $week * 7 ) - $firstDay + 1;
 

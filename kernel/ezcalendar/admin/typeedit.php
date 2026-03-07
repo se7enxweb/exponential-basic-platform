@@ -24,7 +24,7 @@
 //
 
 // include_once( "classes/ezhttptool.php" );
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /calendar/typelist/" );
     exit();
@@ -41,15 +41,15 @@ $LanguageIni = new eZINI( "kernel/ezcalendar/admin/intl/" . $Language . "/typeed
 // include_once( "ezcalendar/classes/ezappointment.php" );
 // include_once( "ezcalendar/classes/ezappointmenttype.php" );
 
-if ( isset( $Action ) && $Action == "Insert" )
+if ( isset( $action ) && $action == "Insert" )
 {
     $type = new eZAppointmentType();
-    $type->setName( $Name );
-    $type->setDescription( $Description );
+    $type->setName( $name );
+    $type->setDescription( $description );
 
-    if ( isset( $ParentID ) && $ParentID != $type->id() )
+    if ( isset( $parentID ) && $parentID != $type->id() )
     {
-        $type->setParent( $ParentID );
+        $type->setParent( $parentID );
     }
 
     $type->store();
@@ -58,15 +58,15 @@ if ( isset( $Action ) && $Action == "Insert" )
     exit();
 }
 
-if ( isset( $Action ) && $Action == "Update" )
+if ( isset( $action ) && $action == "Update" )
 {
-    $type = new eZAppointmentType( $TypeID );
-    $type->setName( $Name );
-    $type->setDescription( $Description );
+    $type = new eZAppointmentType( $typeID );
+    $type->setName( $name );
+    $type->setDescription( $description );
 
-    if ( $ParentID != $type->id() )
+    if ( $parentID != $type->id() )
     {
-        $type->setParent( $ParentID );
+        $type->setParent( $parentID );
     }
 
     $type->store();
@@ -75,13 +75,13 @@ if ( isset( $Action ) && $Action == "Update" )
     exit();
 }
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
-    if ( count( $TypeArrayID ) != 0 )
+    if ( count( $typeArrayID ) != 0 )
     {
-        foreach ( $TypeArrayID as $TypeID )
+        foreach ( $typeArrayID as $typeID )
         {
-            $type = new eZAppointmentType( $TypeID );
+            $type = new eZAppointmentType( $typeID );
             $typeName = $type->name();
 
             $type->delete();
@@ -105,9 +105,9 @@ $t->set_block( "type_edit_tpl", "parent_item_tpl", "parent_item" );
 
 $t->set_var( "no_parent_is_selected", "selected" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $type = new eZAppointmentType( $TypeID );
+    $type = new eZAppointmentType( $typeID );
     if ( $type->parentID() != 0 )
         $t->set_var( "no_parent_is_selected", "" );
 }
@@ -130,13 +130,13 @@ foreach ( $typeList as $typeSubList )
     $t->set_var( "parent_id", $typeItem->id() );
     $t->set_var( "parent_is_selected", "" );
 
-    if ( $Action == "Edit" && $type->parentID() == $typeItem->id() )
+    if ( $action == "Edit" && $type->parentID() == $typeItem->id() )
         $t->set_var( "parent_is_selected", "selected" );
 
     $t->parse( "parent_item", "parent_item_tpl", true );
 }
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
     $t->set_var( "header", $LanguageIni->variable( "strings", "edit_appointment_type" ) );
     $t->set_var( "name_value", $type->name() );

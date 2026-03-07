@@ -39,12 +39,12 @@ $wwwDir = $ini->WWWDir;
 $indexFile = $ini->Index;
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
-$ImageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
-$FileCat = $ini->variable( "eZFileManagerMain", "FileCat" );
-$SyncDir = $ini->variable( "eZFileManagerMain", "SyncDir" );
-$SectionID = $ini->variable( "eZFileManagerMain", "DefaultSection" );
-$Limit = $ini->variable( "eZFileManagerMain", "Limit" );
-$ShowUpFolder = $ini->variable( "eZFileManagerMain", "ShowUpFolder" ) == "enabled";
+$imageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
+$fileCat = $ini->variable( "eZFileManagerMain", "FileCat" );
+$syncDir = $ini->variable( "eZFileManagerMain", "SyncDir" );
+$sectionID = $ini->variable( "eZFileManagerMain", "DefaultSection" );
+$limit = $ini->variable( "eZFileManagerMain", "Limit" );
+$showUpFolder = $ini->variable( "eZFileManagerMain", "ShowUpFolder" ) == "enabled";
 
 $t = new eZTemplate( "kernel/ezfilemanager/user/" . $ini->variable( "eZFileManagerMain", "TemplateDir" ),
                      "kernel/ezfilemanager/user/intl/", $Language, "filelist.php" );
@@ -83,7 +83,7 @@ $t->set_block( "folder_tpl", "folder_read_tpl", "folder_read" );
 $t->set_var( "read", "" );
 $t->set_var( "description_edit", "" );
 $t->set_var( "description", "" );
-$t->set_var( "sync_dir", $SyncDir );
+$t->set_var( "sync_dir", $syncDir );
 /*
 echo "<pre>";
 print_r ($t);
@@ -92,21 +92,21 @@ exit();
 */
 $user = eZUser::currentUser();
 
-if ( isSet ( $FileUpload ) )
+if ( isSet ( $fileUpload ) )
 {
 
-	$category = new eZVirtualFolder( $FileCat );
-	syncDir( $SyncFileDir, $category );
-	eZHTTPTool::header( "Location: /filemanager/list/$FileCat" );
+	$category = new eZVirtualFolder( $fileCat );
+	syncDir( $syncFileDir, $category );
+	eZHTTPTool::header( "Location: /filemanager/list/$fileCat" );
     exit();
 }
 
-$folder = new eZVirtualFolder( $FolderID );
+$folder = new eZVirtualFolder( $folderID );
 
-if ( $FolderID == 0 )
+if ( $folderID == 0 )
     $GlobalSectionID = $ini->variable( "eZFileManagerMain", "DefaultSection" );
 else
-    $GlobalSectionID = eZVirtualFolder::sectionIDstatic ( $FolderID );
+    $GlobalSectionID = eZVirtualFolder::sectionIDstatic ( $folderID );
 // init the section
 $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
 $sectionObject->setOverrideVariables();
@@ -120,7 +120,7 @@ if ( eZObjectPermission::hasPermission( $folder->id(), "filemanager_folder", "r"
     $error = false;
 }
 
-if ( $FolderID == 0 )
+if ( $folderID == 0 )
 {
     $error = false;
 }
@@ -145,7 +145,7 @@ if ( $folder->id() != 0 )
         $parent = $parent->id();
     $t->set_var( "parent_folder_id", $parent );
     $t->set_var( "td_class_parent", "bglight" );
-    if ( $ShowUpFolder )
+    if ( $showUpFolder )
         $t->parse( "parent_folder", "parent_folder_tpl" );
     else
         $t->set_var( "parent_folder", "" );
@@ -181,7 +181,7 @@ else
 // Print out the folders.
 $folderList = $folder->getByParent( $folder );
 
-$i = ( $folder->id() && $ShowUpFolder ) ? 1 : 0;
+$i = ( $folder->id() && $showUpFolder ) ? 1 : 0;
 $deleteFolders = false;
 
 foreach ( $folderList as $folderItem )
@@ -225,7 +225,7 @@ else
 
 // Print out the files.
 
-$fileList = $folder->files( "name", $Offset, $Limit );
+$fileList = $folder->files( "name", $offset, $limit );
 
   //for debugging
 /*
@@ -312,9 +312,9 @@ foreach ( $fileList as $file )
 
 $fileNumber = $folder->countFiles();
 
-if ( $Offset > 0 )
+if ( $offset > 0 )
 {
-    $t->set_var( "prev_offset", ( $Offset - $Limit ) > 0 ? $Offset - $Limit : 0 );
+    $t->set_var( "prev_offset", ( $offset - $limit ) > 0 ? $offset - $limit : 0 );
     $t->parse( "prev", "prev_tpl" );
 }
 else
@@ -322,9 +322,9 @@ else
     $t->set_var( "prev", "" );
 }
 
-if ( $fileNumber > $Offset + $Limit )
+if ( $fileNumber > $offset + $limit )
 {
-    $t->set_var( "next_offset", $Offset + $Limit );
+    $t->set_var( "next_offset", $offset + $limit );
     $t->parse( "next", "next_tpl" );
 }
 else
@@ -341,7 +341,7 @@ else
     $t->set_var( "file_list", "" );
 }
 
-if ( $FolderID == 0 )
+if ( $folderID == 0 )
 {
     if ( eZPermission::checkPermission( eZUser::currentUser(), "eZFileManager", "WriteToRoot" ) )
         $t->parse( "write_menu", "write_menu_tpl" );
@@ -349,9 +349,9 @@ if ( $FolderID == 0 )
 //        $t->parse( "write_menu", "" );
 }
 else if ( $user &&
-          ( eZObjectPermission::hasPermission( $FolderID, "filemanager_folder", 'w' ) ||
-            eZObjectPermission::hasPermission( $FolderID, "filemanager_folder", 'u' ) ||
-            eZVirtualFolder::isOwner( eZUser::currentUser(), $FolderID ) ) )
+          ( eZObjectPermission::hasPermission( $folderID, "filemanager_folder", 'w' ) ||
+            eZObjectPermission::hasPermission( $folderID, "filemanager_folder", 'u' ) ||
+            eZVirtualFolder::isOwner( eZUser::currentUser(), $folderID ) ) )
 {
     $t->parse( "write_menu", "write_menu_tpl" );
 }
@@ -362,8 +362,8 @@ if ( $deleteFolders || $deleteFiles )
 }
 
 
-$t->set_var( "image_dir", $ImageDir );
-$t->set_var( "main_folder_id", $FolderID );
+$t->set_var( "image_dir", $imageDir );
+$t->set_var( "main_folder_id", $folderID );
 
 if ( $error == false )
 {

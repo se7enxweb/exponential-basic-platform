@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: consultationview.php 9529 2002-05-14 11:17:05Z jhe $
+// $id: consultationview.php 9529 2002-05-14 11:17:05Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -32,7 +32,7 @@
 // include_once( "classes/eztexttool.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZContactMain", "Language" );
+$language = $ini->variable( "eZContactMain", "Language" );
 
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
@@ -61,7 +61,7 @@ if ( !eZPermission::checkPermission( $user, "eZContact", "Consultation" ) &&
 // include_once( "ezuser/classes/ezusergroup.php" );
 
 $t = new eZTemplate( "kernel/ezcontact/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ),
-                     "kernel/ezcontact/admin/intl", $Language, "consultationedit.php" );
+                     "kernel/ezcontact/admin/intl", $language, "consultationedit.php" );
 $t->setAllStrings();
 
 $t->set_file( "consultation_view", "consultationview.tpl" );
@@ -101,14 +101,14 @@ $status_id = 0;
     We present a form with the info.
 */
 
-if ( !eZConsultation::belongsTo( $ConsultationID, $user->id() ) &&
+if ( !eZConsultation::belongsTo( $consultationID, $user->id() ) &&
      $ini->variable( "eZContactMain", "ShowAllConsultations" ) != "enabled" )
 {
     print( "<h1>Sorry, This page isn't for you. </h1>" );
 }
 else
 {
-    $consultation = new eZConsultation( $ConsultationID );
+    $consultation = new eZConsultation( $consultationID );
 
     $t->set_var( "short_description", eZTextTool::htmlspecialchars( $consultation->shortDescription() ) );
     $t->set_var( "description", eZTextTool::htmlspecialchars( $consultation->description() ) );
@@ -135,7 +135,7 @@ else
         $owner = new eZUser( $consultation->owner( -1, true ) );
     }
     $t->set_var( "owner", $owner->name() );
-    $t->set_var( "consultation_id", $ConsultationID );
+    $t->set_var( "consultation_id", $consultationID );
 
     $t->parse( "consultation_item", "consultation_item_tpl" );
 
@@ -163,7 +163,7 @@ else
     }
 
 // Template variabler.
-    $t->set_var( "action_value", $Action_value );
+    $t->set_var( "action_value", $actionValue );
     $t->pparse( "output", "consultation_view"  );
 }
 

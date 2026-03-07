@@ -61,15 +61,15 @@ $t->set_block( "month_tpl", "month_next_inactive_tpl", "month_next_inactive" );
 
 $t->set_var( "day", "" );
 
-if ( isset( $Year ) && !is_numeric( $Year ) || isset( $Month ) && !is_numeric( $Month ) )
+if ( isset( $year ) && !is_numeric( $year ) || isset( $month ) && !is_numeric( $month ) )
 {
     $cur_date = new eZDate();
-    $Year = $cur_date->year();
-    $Month = $cur_date->month();
+    $year = $cur_date->year();
+    $month = $cur_date->month();
 }
 
 $query = new eZPageViewQuery();
-$monthReport = $query->monthStats( $Year, $Month );
+$monthReport = $query->monthStats( $year, $month );
 
 if ( count( $monthReport ) > 0 )
 {
@@ -131,7 +131,7 @@ if ( count( $monthReport ) > 0 )
         $t->set_var( "day_link", "" );
         $t->set_var( "no_day_link", "" );
 
-        $next_date = new eZDate( $Year, $Month, $i );
+        $next_date = new eZDate( $year, $month, $i );
         if ( $cur_date->isGreater( $next_date ) )
             $t->parse( "no_day_link", "no_day_link_tpl" );
         else
@@ -163,29 +163,29 @@ $months = array( 1 => "jan",
                  11 => "nov",
                  12 => "dec" );
 
-$t->set_var( "this_month_named", $locale->monthName( $months[$Month], false ) );
+$t->set_var( "this_month_named", $locale->monthName( $months[$month], false ) );
 
-$t->set_var( "this_month", $Month );
-$t->set_var( "this_year", $Year );
+$t->set_var( "this_month", $month );
+$t->set_var( "this_year", $year );
 
-$NextYear = $Year;
-$PrevYear = $Year;
-$NextMonth = $Month + 1;
-if ( $NextMonth > 12 )
+$nextYear = $year;
+$prevYear = $year;
+$nextMonth = $month + 1;
+if ( $nextMonth > 12 )
 {
-    $NextYear++;
-    $NextMonth = 1;
+    $nextYear++;
+    $nextMonth = 1;
 }
-$PrevMonth = $Month - 1;
-if ( $PrevMonth < 1 )
+$prevMonth = $month - 1;
+if ( $prevMonth < 1 )
 {
-    $PrevYear--;
-    $PrevMonth = 12;
+    $prevYear--;
+    $prevMonth = 12;
 }
-$t->set_var( "next_month", $NextMonth );
-$t->set_var( "previous_month", $PrevMonth );
-$t->set_var( "next_year", $NextYear );
-$t->set_var( "previous_year", $PrevYear );
+$t->set_var( "next_month", $nextMonth );
+$t->set_var( "previous_month", $prevMonth );
+$t->set_var( "next_year", $nextYear );
+$t->set_var( "previous_year", $prevYear );
 
 $t->set_var( "month_next_inactive", "" );
 $t->set_var( "month_next", "" );
@@ -193,7 +193,7 @@ $t->set_var( "month_previous", "" );
 $t->set_var( "month_previous_inactive", "" );
 
 $cur_date = new eZDate();
-$next_date = new eZDate( $NextYear, $NextMonth, 1 );
+$next_date = new eZDate( $nextYear, $nextMonth, 1 );
 
 if ( $cur_date->isGreater( $next_date ) )
     $t->parse( "month_next_inactive", "month_next_inactive_tpl" );

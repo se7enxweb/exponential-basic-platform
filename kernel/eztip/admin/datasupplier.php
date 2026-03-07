@@ -24,11 +24,40 @@
 //
 
 
+$action         = eZHTTPTool::getVar( 'Action' );
+$addImages      = eZHTTPTool::getVar( 'AddImages' );
+$browse         = eZHTTPTool::getVar( 'Browse' );
+$cancel         = eZHTTPTool::getVar( 'Cancel' );
+$caption        = eZHTTPTool::getVar( 'Caption' );
+$categoryArrayID = eZHTTPTool::getVar( 'CategoryArrayID' ) ?? [];
+$categoryID     = eZHTTPTool::getVar( 'CategoryID' );
+$deleteCategories = eZHTTPTool::getVar( 'DeleteCategories' );
+$deleteTips     = eZHTTPTool::getVar( 'DeleteTips' );
+$description    = eZHTTPTool::getVar( 'Description' );
+$htmlBanner     = eZHTTPTool::getVar( 'HTMLBanner' );
+$id             = eZHTTPTool::getVar( 'ID' );
+$isActive       = eZHTTPTool::getVar( 'IsActive' );
+$isPublished    = eZHTTPTool::getVar( 'IsPublished' );
+$locationID     = eZHTTPTool::getVar( 'LocationID' );
+$locationItem   = eZHTTPTool::getVar( 'LocationItem' );
+$locationList   = eZHTTPTool::getVar( 'LocationList' );
+$name           = eZHTTPTool::getVar( 'Name' );
+$parentID       = eZHTTPTool::getVar( 'ParentID' );
+$preview        = eZHTTPTool::getVar( 'Preview' );
+$sectionArray   = eZHTTPTool::getVar( 'SectionArray' ) ?? [];
+$tipArrayID     = eZHTTPTool::getVar( 'TipArrayID' ) ?? [];
+$tipDescription = eZHTTPTool::getVar( 'TipDescription' );
+$tipID          = eZHTTPTool::getVar( 'TipID' );
+$tipLocations   = eZHTTPTool::getVar( 'TipLocations' );
+$tipTitle       = eZHTTPTool::getVar( 'TipTitle' );
+$tipURL         = eZHTTPTool::getVar( 'TipURL' );
+$useHTML        = eZHTTPTool::getVar( 'UseHTML' );
+
 switch ( $url_array[2] )
 {
     case "archive" :
     {
-        $CategoryID = $url_array[3];
+        $categoryID = $url_array[3];
 
         include( "kernel/eztip/admin/tiplist.php" );
     }
@@ -36,7 +65,7 @@ switch ( $url_array[2] )
 
     case "statistics" :
     {
-        $TipID = $url_array[3];
+        $tipID = $url_array[3];
         
         include( "kernel/eztip/admin/tipstatistics.php" );        
     }
@@ -46,32 +75,32 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "new" )
         {
-            $Action = "New";
+            $action = "New";
         }
 
         if ( $url_array[3] == "insert" )
         {
-            $Action = "Insert";
+            $action = "Insert";
         }
 
         if ( $url_array[3] == "edit" )
         {
-            $Action = "Edit";
+            $action = "Edit";
         }
 
         if ( $url_array[3] == "update" )
         {
-            $Action = "Update";
+            $action = "Update";
         }
 
         if ( $url_array[3] == "delete" )
         {
-            $Action = "Delete";
+            $action = "Delete";
         }
         
-        if( empty( $TipID ) )
+        if( empty( $tipID ) )
         {
-            $TipID = $url_array[4];
+            $tipID = $url_array[4];
         }
         include( "kernel/eztip/admin/tipedit.php" );
     }
@@ -81,36 +110,36 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "new" )
         {
-            $Action = "New";
+            $action = "New";
         }
 
         if ( $url_array[3] == "insert" )
         {
-            $Action = "Insert";
+            $action = "Insert";
         }
 
         if ( $url_array[3] == "edit" )
         {
-            $Action = "Edit";
+            $action = "Edit";
         }
 
         if ( $url_array[3] == "update" )
         {
-            $Action = "Update";
-            $CategoryID = $url_array[4];
+            $action = "Update";
+            $categoryID = $url_array[4];
         }
 
         if ( $url_array[3] == "delete" )
         {
-            $Action = "Delete";
+            $action = "Delete";
         }
         if( !empty( $url_array[4] ) )
         {
-            $CategoryID = $url_array[4];
+            $categoryID = $url_array[4];
         }
         else
         {
-            $CategoryID = 0;
+            $categoryID = 0;
         }
 
         include( "kernel/eztip/admin/categoryedit.php" );

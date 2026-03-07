@@ -39,9 +39,9 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
-$SimpleUserList = $ini->variable( "eZForumMain", "SimpleUserList" );
+$simpleUserList = $ini->variable( "eZForumMain", "SimpleUserList" );
 $anonymous = $ini->variable( "eZForumMain", "AnonymousPoster" );
-$ReviewLimit = $ini->variable( "eZTradeMain", "ReviewLimit" );
+$reviewLimit = $ini->variable( "eZTradeMain", "ReviewLimit" );
 
 $t = new eZTemplate( "kernel/ezforum/user/" . $ini->variable( "eZForumMain", "TemplateDir" ),
                      "kernel/ezforum/user/intl", $Language, "messagereviewlist.php" );
@@ -56,14 +56,14 @@ $t->set_block( "message_item_tpl", "private_message_tpl", "private_message" );
 
 $t->setAllStrings();
 
-$forum = new eZForum( $ForumID );
+$forum = new eZForum( $forumID );
 
 $locale = new eZLocale( $Language );
 
-if ( !isset($Offset) || !$Offset )
-    $Offset = 0;
+if ( !isset($offset) || !$offset )
+    $offset = 0;
 
-$messageList = $forum->messageTree( $Offset, $SimpleUserList );
+$messageList = $forum->messageTree( $offset, $simpleUserList );
 $messageCount = $forum->messageCount();
 $t->set_var( "total_threads", $forum->messageCount( false, false ) );
 //$t->set_var( "total_messages", $forum->messageCount( false, true ) );
@@ -91,7 +91,7 @@ else
 		
 		if ($level == 0)
 		{
-			if ( $i <= $ReviewLimit )
+			if ( $i <= $reviewLimit )
 				{
 				if ( ( $i % 2 ) == 0 )
     	        	$t->set_var( "td_class", "bglight" );
@@ -115,15 +115,15 @@ else
         		$t->set_var( "message_id", $message->id() );
             	$muser = $message->user();
 				if ( $muser->id() == 0 )
-					$MessageAuthor = $anonymous;
+					$messageAuthor = $anonymous;
 				else
-					$MessageAuthor = $muser->firstName() . " " . $muser->lastName();
+					$messageAuthor = $muser->firstName() . " " . $muser->lastName();
 				if ( $muser->firstName()== "" && $muser->lastName()=="" )
-					$MessageAuthor = $anonymous;
-				$t->set_var( "user", $MessageAuthor );
+					$messageAuthor = $anonymous;
+				$t->set_var( "user", $messageAuthor );
 				$user = eZUser::currentUser();
 				$t->set_var( "private_message", "" );
-				if ( ( $MessageAuthor != $anonymous) and ($user) )
+				if ( ( $messageAuthor != $anonymous) and ($user) )
 				{
 					$t->set_var( "username", $muser->login() );
 					$t->set_var( "PM_topic", urlencode (": ".$message->topic() ) );
@@ -138,9 +138,9 @@ else
 }
 
 
-eZList::drawNavigator( $t, $messageCount, $SimpleUserList, $Offset, "messagelist" );
+eZList::drawNavigator( $t, $messageCount, $simpleUserList, $offset, "messagelist" );
 
-$t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $RedirectURL ) );
+$t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $redirectURL ) );
 
 if ( !isset( $newmessage ) )
 {

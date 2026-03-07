@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: typeedit.php 7163 2001-09-12 10:50:36Z br $
+// $id: typeedit.php 7163 2001-09-12 10:50:36Z br $
 //
 // Created on: <20-Dec-2000 18:24:06 bf>
 //
@@ -25,7 +25,7 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /trade/typelist/" );
     exit();
@@ -36,91 +36,91 @@ if ( isset( $Cancel ) )
 
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 $move_item = true;
 
 // include_once( "eztrade/classes/ezproducttype.php" );
 // include_once( "eztrade/classes/ezproductattribute.php" );
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $type = new eZProductType();
-    $type->setName( $Name );
-    $type->setDescription( $Description );
+    $type->setName( $name );
+    $type->setDescription( $description );
 
     $type->store();
 
-    $TypeID = $type->id();
-    $Action = "Edit";
+    $typeID = $type->id();
+    $action = "Edit";
 }
 
 
-if ( ( $Action == "Update" ) || ( isset ( $Update ) ) )
+if ( ( $action == "Update" ) || ( isset ( $update ) ) )
 {
-    $type = new eZProductType( $TypeID );
-    $type->setName( $Name );
-    $type->setDescription( $Description );
+    $type = new eZProductType( $typeID );
+    $type->setName( $name );
+    $type->setDescription( $description );
 
     $type->store();
 
     // update attributes
     $i =0;
-    if ( count( $AttributeName ) > 0 )
+    if ( count( $attributeName ) > 0 )
     {
 
-        foreach ( $AttributeName as $attribute )
+        foreach ( $attributeName as $attribute )
         {
-            $att = new eZProductAttribute( $AttributeID[$i] );
+            $att = new eZProductAttribute( $attributeID[$i] );
             $att->setName( $attribute );
-            $att->setAttributeType( $AttributeType[$i] );
-            $att->setUnit( $Unit[$i] );
+            $att->setAttributeType( $attributeType[$i] );
+            $att->setUnit( $unit[$i] );
             $att->store();            
 
             $i++;
         }
     }
-    $Action="Edit";
+    $action="Edit";
 }
 
-if( $Action == "up" )
+if( $action == "up" )
 {
-    $attribute = new eZProductAttribute( $AttributeID );
+    $attribute = new eZProductAttribute( $attributeID );
     $attribute->moveUp();
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /trade/typeedit/edit/$TypeID" );
+    eZHTTPTool::header( "Location: /trade/typeedit/edit/$typeID" );
     exit();
 }
 
-if( $Action == "down" )
+if( $action == "down" )
 {
-    $attribute = new eZProductAttribute( $AttributeID );
+    $attribute = new eZProductAttribute( $attributeID );
     $attribute->moveDown();
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /trade/typeedit/edit/$TypeID" );
+    eZHTTPTool::header( "Location: /trade/typeedit/edit/$typeID" );
     exit();
 }
 
-if( isset( $Ok ) )
+if( isset( $ok ) )
 {
     eZHTTPTool::header( "Location: /trade/typelist/" );
     exit();
 }
 
-if ( isset ( $DeleteSelected ) )
+if ( isset ( $deleteSelected ) )
 {
-    if ( count ( $DeleteAttributes ) > 0 )
+    if ( count ( $deleteAttributes ) > 0 )
     {
-        foreach ( $DeleteAttributes as $attID )
+        foreach ( $deleteAttributes as $attID )
         {
             $attribute = new eZProductAttribute( $attID );
             $attribute->delete();
         }
     }
-    $Action = "Edit";
+    $action = "Edit";
 }
 
 
-if ( isset( $NewAttribute ) )
+if ( isset( $newAttribute ) )
 {
     $attribute = new eZProductAttribute();
     $attribute->setType( $type );
@@ -130,10 +130,10 @@ if ( isset( $NewAttribute ) )
 }
 
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
     $type = new eZProductType();
-    $type->get( $TypeID );
+    $type->get( $typeID );
 
     $type->delete();
     
@@ -142,7 +142,7 @@ if ( $Action == "Delete" )
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "typeedit.php" );
+                     "kernel/eztrade/admin/intl/", $language, "typeedit.php" );
 
 $t->setAllStrings();
 
@@ -173,10 +173,10 @@ $t->set_var( "type_id", "" );
 $t->set_var( "action_value", "Insert" );
 
 // edit
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
     $type = new eZProductType();
-    $type->get( $TypeID );
+    $type->get( $typeID );
 
     $t->set_var( "name_value", $type->name() );
     $t->set_var( "description_value", $type->description() );

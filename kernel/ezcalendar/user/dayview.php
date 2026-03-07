@@ -35,11 +35,11 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZCalendarMain", "Language" );
-$StartTimeStr = $ini->variable( "eZCalendarMain", "DayStartTime" );
-$StopTimeStr = $ini->variable( "eZCalendarMain", "DayStopTime" );
-$IntervalStr = $ini->variable( "eZCalendarMain", "DayInterval" );
+$startTimeStr = $ini->variable( "eZCalendarMain", "DayStartTime" );
+$stopTimeStr = $ini->variable( "eZCalendarMain", "DayStopTime" );
+$intervalStr = $ini->variable( "eZCalendarMain", "DayInterval" );
 
-$Locale = new eZLocale( $Language );
+$locale = new eZLocale( $Language );
 
 $user = eZUser::currentUser();
 $session = eZSession::globalSession();
@@ -50,10 +50,10 @@ if ( $user == false )
 else
     $userID = $user->id();
 
-if ( isset( $GetByUser ) )
-    $userID = $GetByUserID;
+if ( isset( $getByUser ) )
+    $userID = $getByUserID;
 
-if ( ( $session->variable( "ShowOtherCalendarUsers" ) == false ) || ( isset( $GetByUser ) ) )
+if ( ( $session->variable( "ShowOtherCalendarUsers" ) == false ) || ( isset( $getByUser ) ) )
 {
     $session->setVariable( "ShowOtherCalendarUsers", $userID );
 }
@@ -65,45 +65,45 @@ else
 $tmpUser = new eZUser( $userID );
 $date = new eZDate();
 
-if ( isset( $Year ) && $Year != "" && isset( $Month ) && $Month != "" && isset( $Day ) && $Day != "" )
+if ( isset( $year ) && $year != "" && isset( $month ) && $month != "" && isset( $day ) && $day != "" )
 {
-    $date->setYear( $Year );
-    $date->setMonth( $Month );
-    $date->setDay( $Day );
+    $date->setYear( $year );
+    $date->setMonth( $month );
+    $date->setDay( $day );
 }
 else
 {
-    $Year = $session->variable( "Year" );
-    $Month = $session->variable( "Month" );
-    $Day = $session->variable( "Day" );
-    if ( !$Year && !$Month && !$Day )
+    $year = $session->variable( "Year" );
+    $month = $session->variable( "Month" );
+    $day = $session->variable( "Day" );
+    if ( !$year && !$month && !$day )
     {
-        $Year = $date->year();
-        $Month = $date->month();
-        $Day = $date->day();
+        $year = $date->year();
+        $month = $date->month();
+        $day = $date->day();
     }
     else
     {
-        $date->setYear( $Year );
-        $date->setMonth( $Month );
-        $date->setDay( $Day );
+        $date->setYear( $year );
+        $date->setMonth( $month );
+        $date->setDay( $day );
     }
 }
 
-$session->setVariable( "Year", $Year );
-$session->setVariable( "Month", $Month );
-$session->setVariable( "Day", $Day );
+$session->setVariable( "Year", $year );
+$session->setVariable( "Month", $month );
+$session->setVariable( "Day", $day );
 
-$zMonth = addZero( $Month );
-$zDay = addZero( $Day );
+$zMonth = addZero( $month );
+$zDay = addZero( $day );
 $isMyCalendar = ( $user && $user->id() == $userID ) ? "-private" : "";
 $t = new eZTemplate( "kernel/ezcalendar/user/" . $ini->variable( "eZCalendarMain", "TemplateDir" ),
                      "kernel/ezcalendar/user/intl", $Language, "dayview.php",
-                     "default", "ezcalendar" . "/user", "$Year-$zMonth-$zDay-$userID" . $isMyCalendar );
+                     "default", "ezcalendar" . "/user", "$year-$zMonth-$zDay-$userID" . $isMyCalendar );
 
 $t->set_file( "day_view_page_tpl", "dayview.tpl" );
 
-if ( $StoreSiteCache && $t->hasCache() )
+if ( $storeSiteCache && $t->hasCache() )
 {
     print( $t->cache() );
 }
@@ -121,10 +121,10 @@ else
     $t->set_block( "week_tpl", "day_tpl", "day" );
     $t->set_block( "week_tpl", "empty_day_tpl", "empty_day" );
 
-    $t->set_var( "month_number", $Month );
-    $t->set_var( "year_number", $Year );
-    $t->set_var( "day_number", $Day );
-    $t->set_var( "long_date", $Locale->format( $date, false ) );
+    $t->set_var( "month_number", $month );
+    $t->set_var( "year_number", $year );
+    $t->set_var( "day_number", $day );
+    $t->set_var( "long_date", $locale->format( $date, false ) );
 
 
     $today = new eZDate();
@@ -139,7 +139,7 @@ else
     $stopTime = new eZTime();
     $interval = new eZTime();
 
-    if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $StartTimeStr, $startArray ) )
+    if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $startTimeStr, $startArray ) )
     {
         $hour = $startArray[2];
         $startTime->setHour( $hour );
@@ -150,7 +150,7 @@ else
         $startTime->setSecond( 0 );
     }
 
-    if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $StopTimeStr, $stopArray ) )
+    if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $stopTimeStr, $stopArray ) )
     {
         $hour = $stopArray[2];
         $stopTime->setHour( $hour );
@@ -161,7 +161,7 @@ else
         $stopTime->setSecond( 0 );
     }
 
-    if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $IntervalStr, $intervalArray ) )
+    if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $intervalStr, $intervalArray ) )
     {
         $hour = $intervalArray[2];
         $interval->setHour( $hour );
@@ -405,7 +405,7 @@ else
 
     while ( $tmpTime->isGreater( $stopTime ) )
     {
-        $t->set_var( "short_time", $Locale->format( $tmpTime, true ) );
+        $t->set_var( "short_time", $locale->format( $tmpTime, true ) );
         $t->set_var( "start_time", addZero( $tmpTime->hour() ) . addZero( $tmpTime->minute() ) );
 
         $drawnColumn = array();
@@ -513,17 +513,17 @@ else
 
 
     // previous day link
-    $date->setYear( $Year );
-    $date->setMonth( $Month );
+    $date->setYear( $year );
+    $date->setMonth( $month );
 
-    $date->setDay( $Day - 1 );
+    $date->setDay( $day - 1 );
     if ( $date->day() < 1 )
     {
-        $date->setMonth( $Month - 1 );
+        $date->setMonth( $month - 1 );
         if ( $date->month() < 1 )
         {
             $date->setMonth( 12 );
-            $date->setYear( $Year - 1 );
+            $date->setYear( $year - 1 );
         }
         $date->setDay( $date->daysInMonth() );
     }
@@ -532,18 +532,18 @@ else
     $t->set_var( "pd_day_number", $date->day() );
 
     // next day link
-    $date->setYear( $Year );
-    $date->setMonth( $Month );
+    $date->setYear( $year );
+    $date->setMonth( $month );
 
-    $date->setDay( $Day + 1 );
+    $date->setDay( $day + 1 );
     if ( $date->day() > $date->daysInMonth() )
     {
         $date->setDay( 1 );
-        $date->setMonth( $Month + 1 );
+        $date->setMonth( $month + 1 );
         if ( $date->month() > 12 )
         {
             $date->setMonth( 1 );
-            $date->setYear( $Year + 1 );
+            $date->setYear( $year + 1 );
         }
     }
     $t->set_var( "nd_year_number", $date->year() );
@@ -551,14 +551,14 @@ else
     $t->set_var( "nd_day_number", $date->day() );
 
     // previous month link
-    $date->setYear( $Year );
-    $date->setDay( $Day );
+    $date->setYear( $year );
+    $date->setDay( $day );
 
-    $date->setMonth( $Month - 1 );
+    $date->setMonth( $month - 1 );
     if ( $date->month() < 1 )
     {
         $date->setMonth( 12 );
-        $date->setYear( $Year - 1 );
+        $date->setYear( $year - 1 );
     }
     if ( $date->day() > $date->daysInMonth() )
         $date->setDay( $date->daysInMonth() );
@@ -567,14 +567,14 @@ else
     $t->set_var( "pm_day_number", $date->day() );
 
     // next month link
-    $date->setYear( $Year );
-    $date->setDay( $Day );
+    $date->setYear( $year );
+    $date->setDay( $day );
 
-    $date->setMonth( $Month + 1 );
+    $date->setMonth( $month + 1 );
     if ( $date->month() > 12 )
     {
         $date->setMonth( 1 );
-        $date->setYear( $Year + 1 );
+        $date->setYear( $year + 1 );
     }
     if ( $date->day() > $date->daysInMonth() )
         $date->setDay( $date->daysInMonth() );
@@ -584,12 +584,12 @@ else
 
 
     // parse month table
-    $date->setYear( $Year );
-    $date->setMonth( $Month );
-    $date->setDay( $Day );
+    $date->setYear( $year );
+    $date->setMonth( $month );
+    $date->setDay( $day );
 
     $t->set_var( "month_number", $date->month() );
-    $t->set_var( "month_name", $Locale->monthName( $date->monthName(), false ) );
+    $t->set_var( "month_name", $locale->monthName( $date->monthName(), false ) );
 
     $t->set_var( "week", "" );
     for ( $week = 0; $week < 6; $week++ )
@@ -600,7 +600,7 @@ else
         for ( $day = 1; $day <= 7; $day++ )
         {
             $date->setDay( 1 );
-            $firstDay = $date->dayOfWeek( $Locale->mondayFirst() );
+            $firstDay = $date->dayOfWeek( $locale->mondayFirst() );
 
             $currentDay = $day + ( $week * 7 ) - $firstDay + 1;
 

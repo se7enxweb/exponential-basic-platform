@@ -29,11 +29,11 @@ $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZLinkMain", "Language" );
 
-$PageCaching = $ini->variable( "eZLinkMain", "PageCaching");
+$pageCaching = $ini->variable( "eZLinkMain", "PageCaching");
 
 unset( $menuCachedFile );
 // do the caching
-if ( $PageCaching == "enabled" )
+if ( $pageCaching == "enabled" )
 {
     $menuCacheFile = new eZCacheFile( "kernel/ezlink/cache",
                                       array( "menubox", $GlobalSiteDesign ),
@@ -103,9 +103,9 @@ function createLinkMenu( $menuCacheFile = false, $ini = null, $Language = null, 
             $t->parse( "link_category", "link_category_tpl", true );
         }
     }
-    if ( !isset( $LGID ) )
-        $LGID = "";
-    $t->set_var( "linkcategory_id", $LGID );
+    if ( !isset( $lgid ) )
+        $lgid = "";
+    $t->set_var( "linkcategory_id", $lgid );
 
     $t->set_var( "sitedesign", $GlobalSiteDesign );
 

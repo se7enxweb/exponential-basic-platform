@@ -39,7 +39,7 @@ if ( !is_a( $GlobalPageView, "eZPageView" ) )
 
 $user = eZUser::currentUser();
 
-$ad = new eZAd( $AdID );
+$ad = new eZAd( $adID );
 
 $click = new eZAdClick();
 $click->setAd( $ad );

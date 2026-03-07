@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: attributeedit.php 6206 2001-07-19 12:19:22Z jakobn $
+// $id: attributeedit.php 6206 2001-07-19 12:19:22Z jakobn $
 //
 // Created on: <05-Jun-2001 13:07:24 pkej>
 //
@@ -32,37 +32,37 @@
 // include_once( "ezarticle/classes/ezarticletype.php" );
 // include_once( "ezarticle/classes/ezarticletool.php" );
 
-if( isset( $Cancel ) )
+if( isset( $cancel ) )
 {
-    eZHTTPTool::header( "Location: /article/articleedit/attributelist/$ArticleID" );
+    eZHTTPTool::header( "Location: /article/articleedit/attributelist/$articleID" );
     exit();
 }
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
 $category = $article->categoryDefinition( );
-$CategoryID = $category->id();
-$thisType = new eZArticleType( $TypeID );
+$categoryID = $category->id();
+$thisType = new eZArticleType( $typeID );
 
-if( isset( $OK ) )
+if( isset( $ok ) )
 {
-    $count = count( $AttributeID );
+    $count = count( $attributeID );
     
     for( $i = 0; $i < $count; $i++ )
     {
-        $attribute = new eZArticleAttribute( $AttributeID[$i] );
-        $attribute->setValue( $article, htmlspecialchars( $AttributeValue[$i] ) );
+        $attribute = new eZArticleAttribute( $attributeID[$i] );
+        $attribute->setValue( $article, htmlspecialchars( $attributeValue[$i] ) );
     }
-    eZArticleTool::deleteCache( $ArticleID, $CategoryID, $CategoryArray );
-    eZHTTPTool::header( "Location: /article/articleedit/attributelist/$ArticleID" );
+    eZArticleTool::deleteCache( $articleID, $categoryID, $categoryArray );
+    eZHTTPTool::header( "Location: /article/articleedit/attributelist/$articleID" );
     exit();
 }
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "attribute.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "attribute.php" );
 
 $t->setAllStrings();
 
@@ -75,7 +75,7 @@ $t->set_block( "attribute_list_tpl", "attribute_item_tpl", "attribute_item" );
 $t->set_block( "attribute_edit_page_tpl", "no_attributes_item_tpl", "no_attributes_item" );
 $t->set_block( "attribute_edit_page_tpl", "no_selected_type_item_tpl", "no_selected_type_item" );
 
-$ActionValue = "insert";
+$actionValue = "insert";
 
 $types = $thisType->getAll();
 
@@ -118,11 +118,11 @@ else
 
 $t->set_var( "this_type_id", $thisType->id() );
 $t->set_var( "type_name", $thisType->name() );
-$t->set_var( "action_value", $ActionValue );
+$t->set_var( "action_value", $actionValue );
 $t->set_var( "article_name", $article->name() );
 $t->set_var( "article_id", $article->id() );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
 $t->pparse( "output", "attribute_edit_page_tpl" );
 

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: sitemap.php 9693 2002-08-07 09:37:31Z br $
+// $id: sitemap.php 9693 2002-08-07 09:37:31Z br $
 //
 // Created on: <06-Jun-2001 17:05:38 bf>
 //
@@ -38,21 +38,21 @@
 // include_once( "ezarticle/classes/ezarticlegenerator.php" );
 // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 // sections
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
-if ( isset( $CategoryID ) )
+if ( isset( $categoryID ) )
 {
-    $GlobalSectionID = eZArticleCategory::sectionIDstatic ( $CategoryID );
+    $globalSectionID = eZArticleCategory::sectionIDstatic ( $categoryID );
 }
     
 // init the section
-$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $globalSectionID );
 $sectionObject->setOverrideVariables();
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "sitemap.php" );
+                     "kernel/ezarticle/user/intl/", $language, "sitemap.php" );
 
 $t->setAllStrings();
 
@@ -63,16 +63,16 @@ $t->set_block( "article_sitemap_page_tpl", "article_value_tpl", "article_value" 
 $t->set_block( "article_sitemap_page_tpl", "value_tpl", "value" );
 
 $tree = new eZArticleCategory();
-$treeArray = $tree->getTree( $CategoryID );
+$treeArray = $tree->getTree( $categoryID );
 $user = eZUser::currentUser();
 
 $t->set_var( "category_value", "" );
 $t->set_var( "article_value", "" );
 $t->set_var( "value", "" );
 
-if ( $CategoryID != 0 && is_numeric( $CategoryID ) )
+if ( $categoryID != 0 && is_numeric( $categoryID ) )
 {
-    $frontCategory = new eZArticleCategory( $CategoryID );
+    $frontCategory = new eZArticleCategory( $categoryID );
     if ( eZObjectPermission::hasPermission( $frontCategory->id(), "article_category", 'r', $user ) == true  ||
          eZArticleCategory::isOwner( eZUser::currentUser(), $frontCategory->id() ) )
     {    

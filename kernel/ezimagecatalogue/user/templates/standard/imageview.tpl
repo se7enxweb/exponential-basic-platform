@@ -42,7 +42,7 @@
         <td class="pictext">{image_caption}</td>
 </tr>
 <tr><td>
-<center>[<a href="{www_dir}{index}/imagecatalogue/download/{image_id}/{original_image_name}/">{intl-download}</a>]</center>
+<center>[<a href="{www_dir}{index}/imagecatalogue/download/{image_id}/{original_image_name}/" download="{original_image_name}">{intl-download}</a>]</center>
 </td></tr>
 <tr><td class="small">
 <center>

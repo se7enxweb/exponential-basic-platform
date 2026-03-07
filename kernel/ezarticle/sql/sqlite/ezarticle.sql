@@ -76,7 +76,8 @@ CREATE TABLE eZArticle_ArticleSectionDict (
   ArticleID int(11) NOT NULL DEFAULT 0,
   ImageID int(11) NOT NULL DEFAULT 0,
   Created int(11) NOT NULL DEFAULT 0,
-  Placement int(11) NOT NULL DEFAULT 0);
+  Placement int(11) NOT NULL DEFAULT 0,
+  SectionID int(11) NOT NULL DEFAULT 0);
 
 CREATE TABLE eZArticle_ArticleTypeLink (
  `ID` int(11) NOT NULL DEFAULT 0,

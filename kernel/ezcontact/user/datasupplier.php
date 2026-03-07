@@ -38,10 +38,10 @@ for( $i = $url_array_count; $i <= 25; $i++ )
 
 if ( is_object( $user ) )
 {
-    $UserID = $user->id();
+    $userID = $user->id();
 }
 
-if ( isset( $UserID ) && $UserID > 0 )
+if ( isset( $userID ) && $userID > 0 )
 {
     $Add_User = false;
 }
@@ -50,28 +50,55 @@ else
     $Add_User = true;
 }
 
+$action             = eZHTTPTool::getVar( 'Action' );
+$add                = eZHTTPTool::getVar( 'Add' );
+$companyEdit        = eZHTTPTool::getVar( 'CompanyEdit' );
+$companyID          = eZHTTPTool::getVar( 'CompanyID' );
+$consultationID     = eZHTTPTool::getVar( 'ConsultationID' );
+$consultationList   = $_POST['ConsultationList'] ?? [];
+$contactArrayID     = $_POST['ContactArrayID'] ?? [];
+$mailButton         = eZHTTPTool::getVar( 'MailButton' );
+$moduleName         = eZHTTPTool::getVar( 'ModuleName' );
+$newCompany         = eZHTTPTool::getVar( 'NewCompany' );
+$newCompanyCategory = eZHTTPTool::getVar( 'NewCompanyCategory' );
+$newParentID        = eZHTTPTool::getVar( 'NewParentID' );
+$newPerson          = eZHTTPTool::getVar( 'NewPerson' );
+$offset             = eZHTTPTool::getVar( 'Offset' );
+$personID           = eZHTTPTool::getVar( 'PersonID' );
+$personOffset       = eZHTTPTool::getVar( 'PersonOffset' );
+$searchCategory     = eZHTTPTool::getVar( 'SearchCategory' );
+$searchObject       = eZHTTPTool::getVar( 'SearchObject' );
+$searchResult       = eZHTTPTool::getVar( 'SearchResult' );
+$searchText         = eZHTTPTool::getVar( 'SearchText' );
+$searchType         = eZHTTPTool::getVar( 'SearchType' );
+$sendMail           = eZHTTPTool::getVar( 'SendMail' );
+$showStats          = eZHTTPTool::getVar( 'ShowStats' );
+$subAction          = eZHTTPTool::getVar( 'SubAction' );
+$type               = eZHTTPTool::getVar( 'Type' );
+$typeID             = eZHTTPTool::getVar( 'TypeID' );
+
 switch ( $url_array[2] )
 {
     case "nopermission":
     {
-        $Type = $url_array[3];
-        switch ( $Type )
+        $type = $url_array[3];
+        switch ( $type )
         {
             case "company":
             {
-                $Action = $url_array[4];
+                $action = $url_array[4];
                 include( "kernel/ezcontact/admin/nopermission.php" );
                 break;
             }
             case "category":
             {
-                $Action = $url_array[4];
+                $action = $url_array[4];
                 include( "kernel/ezcontact/admin/nopermission.php" );
                 break;
             }
             case "person":
             {
-                $Action = $url_array[4];
+                $action = $url_array[4];
                 include( "kernel/ezcontact/admin/nopermission.php" );
                 break;
             }
@@ -83,14 +110,14 @@ switch ( $url_array[2] )
             }
             case "type":
             {
-                $Action = $url_array[4];
+                $action = $url_array[4];
                 include( "kernel/ezcontact/admin/nopermission.php" );
                 break;
             }
             default:
             {
                 // include_once( "classes/ezhttptool.php" );
-                eZHTTPTool::header( "Location: /contact/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+                eZHTTPTool::header( "Location: /contact/error?Type=404&Uri=$_SERVER['REQUEST_URI']&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
                 break;
             }
         }
@@ -99,8 +126,8 @@ switch ( $url_array[2] )
 
     case "search":
     {
-        $SearchType = $url_array[3];
-        switch ( $SearchType )
+        $searchType = $url_array[3];
+        switch ( $searchType )
         {
             case "company":
             {
@@ -118,9 +145,9 @@ switch ( $url_array[2] )
 
     case "person":
     {
-        $Action = $url_array[3];
-        $PersonID = $url_array[4];
-        switch ( $Action )
+        $action = $url_array[3];
+        $personID = $url_array[4];
+        switch ( $action )
         {
             // intentional fall through
             case "new":
@@ -129,20 +156,20 @@ switch ( $url_array[2] )
             case "delete":
             case "insert":
             {
-                $CompanyEdit = false;
-                if ( isset( $SendMail ) )
+                $companyEdit = false;
+                if ( isset( $sendMail ) )
                 {
                     include( "kernel/ezcontact/admin/sendmail.php" );
                 }
-                else if ( isset( $MailButton ) )
+                else if ( isset( $mailButton ) )
                 {
-                    $ContactArrayID = array( $PersonID );
+                    $contactArrayID = array( $personID );
                     include( "kernel/ezcontact/admin/sendmail.php" );
                 }
                 else
                 {
-                    if ( isset( $NewPerson ) )
-                        $Action = "new";
+                    if ( isset( $newPerson ) )
+                        $action = "new";
                     include( "kernel/ezcontact/admin/personedit.php" );
                 }
                 break;
@@ -150,17 +177,17 @@ switch ( $url_array[2] )
             case "list":
             {
                 if ( is_numeric( $url_array[4] ) )
-                    $Offset = $url_array[4];
+                    $offset = $url_array[4];
                 include( "kernel/ezcontact/admin/personlist.php" );
                 break;
             }
             case "search":
             {
                 if ( is_numeric( $url_array[4] ) )
-                    $Offset = $url_array[4];
-                if ( count( $url_array ) >= 5 && !isset( $SearchText ) )
+                    $offset = $url_array[4];
+                if ( count( $url_array ) >= 5 && !isset( $searchText ) )
                 {
-                    $SearchText = eZURITool::decode( $url_array[5] );
+                    $searchText = eZURITool::decode( $url_array[5] );
                 }
                 include( "kernel/ezcontact/admin/personlist.php" );
                 break;
@@ -184,7 +211,7 @@ switch ( $url_array[2] )
             default:
             {
                 // include_once( "classes/ezhttptool.php" );
-                eZHTTPTool::header( "Location: /contact/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+                eZHTTPTool::header( "Location: /contact/error?Type=404&Uri=$_SERVER['REQUEST_URI']&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
                 break;
             }
         }
@@ -193,9 +220,9 @@ switch ( $url_array[2] )
 
     case "company":
     {
-        $Action = $url_array[3];
-        $CompanyID = $url_array[4];
-        switch ( $Action )
+        $action = $url_array[3];
+        $companyID = $url_array[4];
+        switch ( $action )
         {
             case "new":
             case "edit":
@@ -203,55 +230,55 @@ switch ( $url_array[2] )
             case "delete":
             case "insert":
             {
-                $CompanyEdit = true;
-                if ( isset( $SendMail ) )
+                $companyEdit = true;
+                if ( isset( $sendMail ) )
                 {
                     include( "kernel/ezcontact/admin/sendmail.php" );
                 }
-                else if ( isset( $MailButton ) )
+                else if ( isset( $mailButton ) )
                 {
-                    $ContactArrayID = array( $CompanyID );
+                    $contactArrayID = array( $companyID );
                     include( "kernel/ezcontact/admin/sendmail.php" );
                 }
                 else
                 {
-                    if ( isset( $NewCompany ) )
+                    if ( isset( $newCompany ) )
                     {
                         // include_once( "classes/ezhttptool.php" );
-                        eZHTTPTool::header( "Location: /contact/company/new/$CompanyID" );
+                        eZHTTPTool::header( "Location: /contact/company/new/$companyID" );
                         exit;
                     }
-                    if ( $Action == "new" )
+                    if ( $action == "new" )
                         if ( isset( $url_array[4] ) and is_numeric( $url_array[4] ) )
-                            $NewCompanyCategory = $url_array[4];
-//                        else if ( !isset( $CompanyID ) and isset( $url_array[4] ) and is_numeric( $url_array[4] ) )
-//                            $CompanyID = $url_array[4];
+                            $newCompanyCategory = $url_array[4];
+//                        else if ( !isset( $companyID ) and isset( $url_array[4] ) and is_numeric( $url_array[4] ) )
+//                            $companyID = $url_array[4];
                     include( "kernel/ezcontact/admin/companyedit.php" );
                 }
                 break;
             }
             case "view":
             {
-                if ( !isset( $CompanyID ) and isset( $url_array[4] ) and is_numeric( $url_array[4] ) )
-                    $CompanyID = $url_array[4];
-                $PersonOffset = $url_array[5];
+                if ( !isset( $companyID ) and isset( $url_array[4] ) and is_numeric( $url_array[4] ) )
+                    $companyID = $url_array[4];
+                $personOffset = $url_array[5];
                 // include_once( "ezcontact/classes/ezcompany.php" );
-                eZCompany::addViewHit( $CompanyID );
+                eZCompany::addViewHit( $companyID );
                 include( "kernel/ezcontact/admin/companyview.php" );
                 break;
             }
             case "list":
             {
-                $TypeID = $url_array[4];
-                $Offset = $url_array[5];
-                $ShowStats = false;
+                $typeID = $url_array[4];
+                $offset = $url_array[5];
+                $showStats = false;
                 include( "kernel/ezcontact/admin/companytypelist.php" );
                 break;
             }
             case "folder":
             {
                 $item_id = $url_array[4];
-                $CompanyEdit = true;
+                $companyEdit = true;
                 include( "kernel/ezcontact/admin/folder.php" );
                 break;
             }
@@ -263,7 +290,7 @@ switch ( $url_array[2] )
             default:
             {
                 // include_once( "classes/ezhttptool.php" );
-                eZHTTPTool::header( "Location: /contact/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+                eZHTTPTool::header( "Location: /contact/error?Type=404&Uri=$_SERVER['REQUEST_URI']&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
                 break;
             }
         }
@@ -272,15 +299,15 @@ switch ( $url_array[2] )
 
     case "companycategory" :
     {
-        $TypeID = $url_array[4];
-        $Action = $url_array[3];
-        switch ( $Action )
+        $typeID = $url_array[4];
+        $action = $url_array[3];
+        switch ( $action )
         {
             // intentional fall through
             case "new":
             {
-                $NewParentID = $url_array[4];
-                unset( $TypeID );
+                $newParentID = $url_array[4];
+                unset( $typeID );
                 include( "kernel/ezcontact/admin/companytypeedit.php" );
                 break;
             }
@@ -295,7 +322,7 @@ switch ( $url_array[2] )
             default:
             {
                 // include_once( "classes/ezhttptool.php" );
-                eZHTTPTool::header( "Location: /contact/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+                eZHTTPTool::header( "Location: /contact/error?Type=404&Uri=$_SERVER['REQUEST_URI']&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
                 break;
             }
         }
@@ -304,16 +331,16 @@ switch ( $url_array[2] )
 
     case "consultation":
     {
-        if ( isset( $url_array[4] ) && ( !isset( $ConsultationID ) or !is_numeric( $ConsultationID ) ) )
-            $ConsultationID = $url_array[4];
+        if ( isset( $url_array[4] ) && ( !isset( $consultationID ) or !is_numeric( $consultationID ) ) )
+            $consultationID = $url_array[4];
         if ( isset( $new_consultation ) )
         {
             // include_once( "classes/ezhttptool.php" );
             eZHTTPTool::header( "Location: /contact/consultation/new" );
             exit();
         }
-        $Action = $url_array[3];
-        switch ( $Action )
+        $action = $url_array[3];
+        switch ( $action )
         {
             // intentional fall through
             case "new":
@@ -337,16 +364,16 @@ switch ( $url_array[2] )
             }
             case "company":
             {
-                $SubAction = $url_array[3];
-                $Action = $url_array[4];
-                if ( !isset( $CompanyID ) or !is_numeric( $CompanyID ) )
-                    $CompanyID = $url_array[5];
-                switch ( $Action )
+                $subAction = $url_array[3];
+                $action = $url_array[4];
+                if ( !isset( $companyID ) or !is_numeric( $companyID ) )
+                    $companyID = $url_array[5];
+                switch ( $action )
                 {
                     // intentional fall through
                     case "delete":
                     {
-                        $ConsultationID = $url_array[5];
+                        $consultationID = $url_array[5];
                     }
                     case "new":
                     case "edit":
@@ -358,7 +385,7 @@ switch ( $url_array[2] )
                     }
                     case "list":
                     {
-                        $ConsultationList = true;
+                        $consultationList = true;
                         include( "kernel/ezcontact/admin/consultationlist.php" );
                         break;
                     }
@@ -372,16 +399,16 @@ switch ( $url_array[2] )
             }
             case "person":
             {
-                $SubAction = $url_array[3];
-                $Action = $url_array[4];
-                if ( !isset( $PersonID ) or !is_numeric( $PersonID ) )
-                    $PersonID = $url_array[5];
-                switch ( $Action )
+                $subAction = $url_array[3];
+                $action = $url_array[4];
+                if ( !isset( $personID ) or !is_numeric( $personID ) )
+                    $personID = $url_array[5];
+                switch ( $action )
                 {
                     // intentional fall through
                     case "delete":
                     {
-                        $ConsultationID = $url_array[5];
+                        $consultationID = $url_array[5];
                     }
                     case "new":
                     case "edit":
@@ -393,7 +420,7 @@ switch ( $url_array[2] )
                     }
                     case "list":
                     {
-                        $ConsultationList = true;
+                        $consultationList = true;
                         include( "kernel/ezcontact/admin/consultationlist.php" );
                         break;
                     }
@@ -409,7 +436,7 @@ switch ( $url_array[2] )
             default:
             {
                 // include_once( "classes/ezhttptool.php" );
-                eZHTTPTool::header( "Location: /contact/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+                eZHTTPTool::header( "Location: /contact/error?Type=404&Uri=$_SERVER['REQUEST_URI']&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
                 break;
             }
         }

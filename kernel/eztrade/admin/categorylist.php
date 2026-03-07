@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: categorylist.php 8565 2001-11-21 17:34:16Z br $
+// $id: categorylist.php 8565 2001-11-21 17:34:16Z br $
 //
 // Created on: <13-Sep-2000 14:56:11 bf>
 //
@@ -30,17 +30,17 @@
 // include_once( "classes/ezcachefile.php" );
 // include_once( "classes/ezlist.php" );
 
-function deleteCache( $ProductID, $CategoryID, $CategoryArray )
+function deleteCache( $productID, $categoryID, $categoryArray )
 {
-    if ( is_a( $ProductID, "eZProduct" ) )
+    if ( is_a( $productID, "eZProduct" ) )
     {
-        $CategoryID = $ProductID->categoryDefinition( false );
-        $CategoryArray = $ProductID->categories( false );
-        $ProductID = $ProductID->id();
+        $categoryID = $productID->categoryDefinition( false );
+        $categoryArray = $productID->categories( false );
+        $productID = $productID->id();
     }
 
     $files = eZCacheFile::files( "kernel/eztrade/cache/", array( "productlist",
-                                                          array_merge( $CategoryID, $CategoryArray ) ),
+                                                          array_merge( $categoryID, $categoryArray ) ),
                                  "cache", "," );
     foreach( $files as $file )
     {
@@ -57,25 +57,25 @@ function deleteCache( $ProductID, $CategoryID, $CategoryArray )
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZTradeMain", "Language" );
-$Limit = $ini->variable( "eZTradeMain", "AdminProductLimit" );
+$language = $ini->variable( "eZTradeMain", "Language" );
+$limit = $ini->variable( "eZTradeMain", "AdminProductLimit" );
 $hotDealImageWidth  = $ini->variable( "eZTradeMain", "HotDealImageWidth" );
 $hotDealImageHeight  = $ini->variable( "eZTradeMain", "HotDealImageHeight" );
-$ShowQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
+$showQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "categorylist.php" );
+                     "kernel/eztrade/admin/intl/", $language, "categorylist.php" );
 
 // Set detail or normal mode
-if ( isSet ( $DetailView ) )
+if ( isSet ( $detailView ) )
 {
     $session = eZSession::globalSession();
     $session->setVariable( "TradeViewMode", "Detail" );
 }
-if ( isSet ( $NormalView ) )
+if ( isSet ( $normalView ) )
 {
     $session = eZSession::globalSession();
     $session->setVariable( "TradeViewMode", "Normal" );
@@ -85,11 +85,11 @@ $checkMode = eZSession::globalSession();
 
 if ( $checkMode->variable( "TradeViewMode" ) == "Detail" )
 {
-    $DetailView = true;
+    $detailView = true;
 }
 else if ( $checkMode->variable( "TradeViewMode" ) == "Normal" )
 {
-    $NormalView = true;
+    $normalView = true;
 }
 
 $t->setAllStrings();
@@ -157,9 +157,9 @@ $t->set_block( "product_item_tpl", "absolute_placement_item_tpl", "absolute_plac
 
 $t->set_var( "site_style", $siteDesign );
 
-if( isset( $ParentID ) )
+if( isset( $parentID ) )
 {
-    $category = new eZProductCategory( $ParentID );
+    $category = new eZProductCategory( $parentID );
 }
 else
 {
@@ -167,13 +167,13 @@ else
 }
 // $category->copy( true );
 
-$ParentID = 0;
+$parentID = 0;
 
 // $category = new eZProductCategory();
 
-//if( isset( $ParentID ) )
+//if( isset( $parentID ) )
 //{
-//    $category->get( $ParentID );
+//    $category->get( $parentID );
 //}
 //else
 //{
@@ -185,15 +185,15 @@ $category->get();
 
 if ( $category->sortMode() == "absolute_placement" )
 {
-    if ( is_numeric( $MoveUp ) )
+    if ( is_numeric( $moveUp ) )
     {
-        $category->moveUp( $MoveUp );
-        deleteCache( $MoveUp, false, false );
+        $category->moveUp( $moveUp );
+        deleteCache( $moveUp, false, false );
     }
-    if ( is_numeric( $MoveDown ) )
+    if ( is_numeric( $moveDown ) )
     {
-        $category->moveDown( $MoveDown );
-        deleteCache( $MoveDown, false, false );
+        $category->moveDown( $moveDown );
+        deleteCache( $moveDown, false, false );
     }
 }
 
@@ -250,16 +250,16 @@ else
     $t->set_var( "category_list", "" );
 
 
-if ( !isset( $Limit ) or !is_numeric( $Limit ) )
-    $Limit = 10;
-if ( !isset( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
+if ( !isset( $limit ) or !is_numeric( $limit ) )
+    $limit = 10;
+if ( !isset( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
 
 // products
-$TotalTypes = $category->productCount( $category->sortMode(), true, false, $category->id() );
-$productList = $category->products( $category->sortMode(), true, $Offset, $Limit, true, $category->id() );
+$totalTypes = $category->productCount( $category->sortMode(), true, false, $category->id() );
+$productList = $category->products( $category->sortMode(), true, $offset, $limit, true, $category->id() );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 $i = 0;
 $t->set_var( "product_list", "" );
 
@@ -369,7 +369,7 @@ foreach ( $productList as $product )
     $t->set_var( "product_name", htmlspecialchars($product->name()) );
     $t->set_var( "product_number", $product->productNumber() );
 
-    if ( isSet ( $DetailView ) )
+    if ( isSet ( $detailView ) )
     {
       $t->set_var( "brief_value", $product->briefPlain() );
       $t->set_var( "description_value", $product->descriptionPlain() );
@@ -405,11 +405,11 @@ foreach ( $productList as $product )
     $t->set_var( "vat_select", "" );
 	$vat = new eZVATType();
 	$vatTypes = $vat->getAll();
-	$VatType = $product->vatType();
+	$vatType = $product->vatType();
 
 	foreach ( $vatTypes as $type )
 	{
-    	if ( $VatType  and  ( $VatType->id() == $type->id() ) )
+    	if ( $vatType  and  ( $vatType->id() == $type->id() ) )
 	    {
         $t->set_var( "vat_selected", "selected" );
     	}
@@ -428,10 +428,10 @@ foreach ( $productList as $product )
         $t->set_var( "box_select", "" );
 	$box = new eZBoxType();
 	$boxTypes = $box->getAll();
-	$BoxType = $product->boxType();
+	$boxType = $product->boxType();
 	foreach ( $boxTypes as $type )
 	{
-    	if ( $BoxType  and  ( $BoxType->id() == $type->id() ) )
+    	if ( $boxType  and  ( $boxType->id() == $type->id() ) )
 	    	$t->set_var( "box_selected", "selected" );
         else
             $t->set_var( "box_selected", "" );
@@ -446,11 +446,11 @@ foreach ( $productList as $product )
     $t->set_var( "shipping_select", "" );
 	$group = new eZShippingGroup();
 	$groups = $group->getAll();
-	$ShippingGroup = $product->shippingGroup();  
+	$shippingGroup = $product->shippingGroup();  
 
 	foreach ( $groups as $group )
 	{
-    	if ( $ShippingGroup and $ShippingGroup->id() == $group->id() )
+    	if ( $shippingGroup and $shippingGroup->id() == $group->id() )
     	{
         	$t->set_var( "selected", "selected" );
 	    }
@@ -473,25 +473,25 @@ foreach ( $productList as $product )
 		$t->set_var( "weight_value", "" );
 
 	// Show quantity
-	$Quantity = $product->totalQuantity();
+	$quantity = $product->totalQuantity();
 	$t->set_var( "quantity_item", "" );
-	$t->set_var( "quantity_value", $Quantity );
+	$t->set_var( "quantity_value", $quantity );
 
 	// show expected stock date
 
     if ( $product->stockDate() )
     {
-		$Stock = new eZDate();
-        $Stock->setTimeStamp( $product->stockDate() );	
-        $StockYear = $Stock->year();
-        $StockMonth = $Stock->month();
-        $StockDay = $Stock->day();
+		$stock = new eZDate();
+        $stock->setTimeStamp( $product->stockDate() );	
+        $stockYear = $stock->year();
+        $stockMonth = $stock->month();
+        $stockDay = $stock->day();
     }
     else
     {
-        $StockYear = "";
-        $StockMonth = "";
-        $StockDay = "";
+        $stockYear = "";
+        $stockMonth = "";
+        $stockDay = "";
     }
 	
     for ( $j = 1; $j <= 31; $j++ )
@@ -499,9 +499,9 @@ foreach ( $productList as $product )
         $t->set_var( "day_id", $j );
         $t->set_var( "day_value", $j );
         $t->set_var( "selected", "" );
-    	if ( $StockDay == $j )
+    	if ( $stockDay == $j )
         	$t->set_var( "selected", "selected" );
-    	if ( $StockDay == "" and $j == date(j) )
+    	if ( $stockDay == "" and $j == date(j) )
         	$t->set_var( "selected", "selected" );
         $t->parse( "day_item", "day_item_tpl", true );
     }
@@ -521,16 +521,16 @@ foreach ( $productList as $product )
 
 	foreach ( $month_array as $month )
     	$t->set_var( $month, "" );
-    $var_name =& $month_array[$StockMonth];
+    $var_name =& $month_array[$stockMonth];
     if ( $var_name == "" )
 	    $var_name =& $month_array[date(n)];
     $t->set_var( $var_name, "selected" );
-	if ( $StockYear )
-		$t->set_var( "stockyear", $StockYear );
+	if ( $stockYear )
+		$t->set_var( "stockyear", $stockYear );
 	else
 		$t->set_var( "stockyear", date(Y) );
 
-if ( $ShowQuantity )
+if ( $showQuantity )
 	$t->parse( "quantity_item", "quantity_item_tpl" );
 
     $t->set_var( "product_price", "" );
@@ -541,7 +541,7 @@ if ( $ShowQuantity )
 
 //        $t->set_var( "product_price", $locale->format( $price ) );
 
-		$t->set_var( "product_price", $product->localePrice( $PricesIncludeVAT ) );
+		$t->set_var( "product_price", $product->localePrice( $pricesIncludeVAT ) );
 
     }
 
@@ -619,7 +619,7 @@ if ( $ShowQuantity )
 
     $t->set_var( "category_id", $category->id() );
 
-if ( isSet ( $DetailView ) )
+if ( isSet ( $detailView ) )
    {
     if ( $category->sortMode() == "absolute_placement" )
     {
@@ -649,7 +649,7 @@ if ( isSet ( $DetailView ) )
 
     // If product type == 1, render the product object as a product
     // If product type == 1, render the product object as a voucher
-	if ( isSet ( $DetailView ) )
+	if ( isSet ( $detailView ) )
   	{
     	if ( $product->productType() == 1 )
     	{
@@ -721,7 +721,7 @@ foreach ( $images as $imageArray )
 }
 
     // Set the detail or normail view
-    if ( isSet ( $DetailView ) )
+    if ( isSet ( $detailView ) )
     {
         $t->set_var( "product_item", "" );
         $t->parse( "detail_view", "detail_view_tpl", true );
@@ -735,7 +735,7 @@ foreach ( $images as $imageArray )
     $i++;
 }
 
-if ( isSet ( $DetailView ) )
+if ( isSet ( $detailView ) )
 {
     $t->set_var( "is_detail_view", "true" );
     $t->set_var( "detail_button", "" );
@@ -751,24 +751,24 @@ else
     $t->parse( "detail_button", "detail_view_button" );
 }
 
-$t->set_var( "offset", $Offset );
+$t->set_var( "offset", $offset );
 
 /*
-echo "TotalTypes:".$TotalTypes."<br>";
-echo "Limit:".$Limit."<br>";
-echo "Offset:".$Offset."<br>";
+echo "TotalTypes:".$totalTypes."<br>";
+echo "Limit:".$limit."<br>";
+echo "Offset:".$offset."<br>";
 exit();
 */
 
-eZList::drawNavigator( $t, $TotalTypes, $Limit, $Offset, "product_list_tpl" );
+eZList::drawNavigator( $t, $totalTypes, $limit, $offset, "product_list_tpl" );
 /*
 if ( $user  )
 {
-	$session->setVariable( "RedirectURL", "/trade/categorylist/parent/$ParentID/$Offset" );
+	$session->setVariable( "RedirectURL", "/trade/categorylist/parent/$parentID/$offset" );
 }
 */
 
-if (( count( $productList ) > 0 ) and ( !isSet ($DetailView) ))
+if (( count( $productList ) > 0 ) and ( !isSet ($detailView) ))
 	{
 	$t->parse( "product_list", "product_list_tpl" );
 	$t->parse( "normal_list", "normal_list_tpl" );

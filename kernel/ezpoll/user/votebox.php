@@ -29,15 +29,15 @@
 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZPollMain", "Language" );
-$PageCaching = $ini->variable( "eZPollMain", "PageCaching" );
+$pageCaching = $ini->variable( "eZPollMain", "PageCaching" );
 $errorIni = new eZINI( "kernel/ezpoll/user/intl/" . $Language . "/votebox.php.ini", false );
 
 $noItem = $errorIni->variable( "strings", "noitem" );
-$PollID = null;
+$pollID = null;
 
 unset( $menuCachedFile );
 // do the caching
-if ( $PageCaching == "enabled" )
+if ( $pageCaching == "enabled" )
 {
     $menuCachedFile = "kernel/ezpoll/cache/menubox,". $GlobalSiteDesign .".cache";
     
@@ -47,22 +47,22 @@ if ( $PageCaching == "enabled" )
     }
     else
     {
-        createPollMenu( true, $menuCachedFile, $ini, $GlobalSiteDesign, $PollID, $noItem );
+        createPollMenu( true, $menuCachedFile, $ini, $GlobalSiteDesign, $pollID, $noItem );
     }
 }
 else
 {
-    createPollMenu(false, false, $ini, $GlobalSiteDesign, $PollID, $noItem );
+    createPollMenu(false, false, $ini, $GlobalSiteDesign, $pollID, $noItem );
 }
 
 function createPollMenu( $generateStaticPage = false, $menuCachedFile = false, $ini = null, $GlobalSiteDesign = null,
-            $PollID = null, $noItem = null )
+            $pollID = null, $noItem = null )
 {
     // global $ini;
     // global $menuCachedFile;
     // global $noItem;
     // global $GlobalSiteDesign;
-    // global $PollID;
+    // global $pollID;
 
     $Language = $ini->variable( "eZPollMain", "Language" );
     
@@ -74,7 +74,7 @@ function createPollMenu( $generateStaticPage = false, $menuCachedFile = false, $
 
     $t->setAllStrings();
 
-    $poll = new eZPoll( $PollID );
+    $poll = new eZPoll( $pollID );
     $poll = $poll->mainPoll();
 
     $t->set_file( array(
@@ -91,22 +91,22 @@ function createPollMenu( $generateStaticPage = false, $menuCachedFile = false, $
     
     if ( $poll )
     {
-	if (! $PollID)
+	if (! $pollID)
 	{
-	    $PollID = $poll->id();
+	    $pollID = $poll->id();
 	}
-        $poll = new eZPoll( $PollID );
+        $poll = new eZPoll( $pollID );
 
 
         if ( $poll->isClosed() )
         {
-            eZHTTPTool::header( "Location: /poll/result/$PollID" );
+            eZHTTPTool::header( "Location: /poll/result/$pollID" );
             exit();
         }
 
         $choice = new eZPollChoice();
 
-        $choiceList = $choice->getAll( $PollID );
+        $choiceList = $choice->getAll( $pollID );
 
         if ( !$choiceList )
         {
@@ -127,9 +127,9 @@ function createPollMenu( $generateStaticPage = false, $menuCachedFile = false, $
         }
 
         $poll = new eZPoll();
-        $poll->get( $PollID );
+        $poll->get( $pollID );
         $t->set_var( "head_line", $poll->name() );
-        $t->set_var( "poll_id", $PollID );
+        $t->set_var( "poll_id", $pollID );
 
     }
     if ( $generateStaticPage == true )

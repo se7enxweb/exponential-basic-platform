@@ -26,12 +26,41 @@
 $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZLinkMain", "DefaultSection" );
 
+$accepted          = eZHTTPTool::getVar( 'Accepted' );
+$action            = eZHTTPTool::getVar( 'Action' );
+$addImages         = eZHTTPTool::getVar( 'AddImages' );
+$attributeValue    = eZHTTPTool::getVar( 'AttributeValue' );
+$back              = eZHTTPTool::getVar( 'Back' );
+$categoryArray     = $_POST['CategoryArray'] ?? [];
+$categoryID        = eZHTTPTool::getVar( 'CategoryID' );
+$delete            = eZHTTPTool::getVar( 'Delete' );
+$deleteImage       = eZHTTPTool::getVar( 'DeleteImage' );
+$deleteLinks       = eZHTTPTool::getVar( 'DeleteLinks' );
+$description       = eZHTTPTool::getVar( 'Description' );
+$getSite           = eZHTTPTool::getVar( 'GetSite' );
+$idArray           = $_POST['IdArray'] ?? [];
+$idArrayStr        = eZHTTPTool::getVar( 'IdArrayStr' );
+$keywords          = eZHTTPTool::getVar( 'Keywords' );
+$lgid              = eZHTTPTool::getVar( 'LGID' );
+$linkCategoryID    = eZHTTPTool::getVar( 'LinkCategoryID' );
+$linkCategoryIDArray = $_POST['LinkCategoryIDArray'] ?? [];
+$linkID            = eZHTTPTool::getVar( 'LinkID' );
+$name              = eZHTTPTool::getVar( 'Name' );
+$offset            = eZHTTPTool::getVar( 'Offset' );
+$pageCaching       = eZHTTPTool::getVar( 'PageCaching' );
+$queryString       = eZHTTPTool::getVar( 'QueryString' );
+$searchText        = eZHTTPTool::getVar( 'SearchText' );
+$typeID            = eZHTTPTool::getVar( 'TypeID' );
+$update            = eZHTTPTool::getVar( 'Update' );
+$url               = eZHTTPTool::getVar( 'Url' ) ?? eZHTTPTool::getVar( 'URL' );
+$userLimit         = eZHTTPTool::getVar( 'UserLimit' );
+
 switch ( $url_array[2] )
 {
     case "gotolink" :
     {
-        $Action = $url_array[3];
-        $LinkID = $url_array[4];
+        $action = $url_array[3];
+        $linkID = $url_array[4];
         include( "kernel/ezlink/user/gotolink.php" );
     }
     break;
@@ -46,8 +75,8 @@ switch ( $url_array[2] )
     {
         if ( isset( $url_array[3] ) and $url_array[3] == "parent" )
         {
-            $QueryString = urldecode( $url_array[4] );
-            $Offset = $url_array[5];
+            $queryString = urldecode( $url_array[4] );
+            $offset = $url_array[5];
         }
         include( "kernel/ezlink/user/search.php" );
     }
@@ -61,15 +90,15 @@ switch ( $url_array[2] )
     case "group" :
     {
         if ( isset( $url_array[4] ) and $url_array[4] == "parent" )
-            $Offset = $url_array[5];
-        $LinkCategoryID = $url_array[3];
+            $offset = $url_array[5];
+        $linkCategoryID = $url_array[3];
         include( "kernel/ezlink/user/linkcategorylist.php" );
     }
     break;
 
     case "linklist" :
     {
-        $LinkCategoryID = $url_array[3];
+        $linkCategoryID = $url_array[3];
         include( "kernel/ezlink/user/onepagelinklist.php" );
     }
     break;
@@ -78,12 +107,12 @@ switch ( $url_array[2] )
     {
         if ( isset( $url_array[3] ) and $url_array[3] == "insert" )
         {
-            $Action = "insert";
+            $action = "insert";
             include( "kernel/ezlink/user/suggestlink.php" );
         }
         else
         {
-            $LinkCategoryID = $url_array[3];
+            $linkCategoryID = $url_array[3];
             include( "kernel/ezlink/user/suggestlink.php" );
         }
     }

@@ -56,9 +56,9 @@ $t->set_block( "bug_item_tpl", "bug_is_open_tpl", "bug_is_open" );
 
 // bugs
 $bug = new eZBug();
-$bugList = $bug->search( $SearchText );
+$bugList = $bug->search( $searchText );
 
-$t->set_var( "query_text", $SearchText );
+$t->set_var( "query_text", $searchText );
 
 $locale = new eZLocale( $Language );
 $i=0;

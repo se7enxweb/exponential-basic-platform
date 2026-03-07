@@ -334,7 +334,7 @@ class eZVirtualFolder
         {
                 array_push( $tree, array( $return_array[] = new eZVirtualFolder( $category->id() ), $level ) );
 
-            if ( $category != 0 )
+            if ( $category->id() )
             {
                 $tree = array_merge( $tree, $this->getTree( $category->id(), $level ) );
             }
@@ -591,7 +591,7 @@ class eZVirtualFolder
                                         eZFileManager_FileFolderLink.FolderID='$this->ID'
                                         AND
                                         eZFileManager_Folder.ID='$this->ID'" );
-        return $file_array[0][0];
+        return $file_array[0][0] ?? 0;
     }
 
     /*!

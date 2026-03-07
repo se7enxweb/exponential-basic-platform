@@ -50,10 +50,10 @@ $ShowOptionQuantity = $ini->variable( "eZTradeMain", "ShowOptionQuantity" ) == "
 
 // move to item to cart and delete item if the user owns it
 // if not just "copy" to cart
-if ( $Action == "MoveToCart" )
+if ( $action == "MoveToCart" )
 {
     $wishListItem = new eZWishListItem( );
-    if ( $wishListItem->get( $WishListItemID ) )
+    if ( $wishListItem->get( $wishListItemID ) )
     {
         $wishListItem->moveToCart();
 
@@ -204,25 +204,25 @@ foreach ( $items as $item )
     $t->set_var( "product_id", $product->id() );
     $t->set_var( "product_name", $product->name() );
 
-    $Quantity = $product->totalQuantity();
+    $quantity = $product->totalQuantity();
     if ( !$product->hasPrice() )
     {
-        $Quantity = 0;
+        $quantity = 0;
         foreach ( $optionValues as $optionValue )
         {
             $option = $optionValue->option();
             $value = $optionValue->optionValue();
             $value_quantity = $value->totalQuantity();
             if ( $value_quantity > 0 )
-                $Quantity = $value_quantity;
+                $quantity = $value_quantity;
         }
     }
     $t->set_var( "product_available_item", "" );
     if ( $ShowQuantity )
     {
-        $NamedQuantity = $Quantity;
+        $NamedQuantity = $quantity;
         if ( $ShowNamedQuantity )
-            $NamedQuantity = eZProduct::namedQuantity( $Quantity );
+            $NamedQuantity = eZProduct::namedQuantity( $quantity );
         $t->set_var( "product_availability", $NamedQuantity );
         $t->parse( "product_available_item", "product_available_item_tpl" );
     }
@@ -233,7 +233,7 @@ foreach ( $items as $item )
     $optionValues = $item->optionValues();
 
     $t->set_var( "wishlist_item_option", "" );
-    $min_quantity = $Quantity;
+    $min_quantity = $quantity;
     foreach ( $optionValues as $optionValue )
     {
         $option = $optionValue->option();

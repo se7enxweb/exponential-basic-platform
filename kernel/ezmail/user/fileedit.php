@@ -31,13 +31,13 @@
 // include_once( "ezmail/classes/ezmail.php" );
 // include_once( "ezfilemanager/classes/ezvirtualfile.php" );
 
-if( isset( $Ok ) )
+if( isset( $ok ) )
 {
     $file = new eZFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     { 
-        $mail = new eZMail( $MailID );
+        $mail = new eZMail( $mailID );
 
         $uploadedFile = new eZVirtualFile();
 //        $uploadedFile->setDescription( $Description );
@@ -49,7 +49,7 @@ if( isset( $Ok ) )
 
         $mail->addFile( $uploadedFile );
 
-        eZPBLog::writeNotice( "File added to mail $MailID  from IP: $REMOTE_ADDR" );
+        eZPBLog::writeNotice( "File added to mail $mailID  from IP: $REMOTE_ADDR" );
     }
     else
     {
@@ -57,14 +57,14 @@ if( isset( $Ok ) )
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /mail/mailedit/" . $MailID . "/" );
+    eZHTTPTool::header( "Location: /mail/mailedit/" . $mailID . "/" );
     exit();
 }
 
-if( isset( $Cancel ) )
+if( isset( $cancel ) )
 {
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /mail/mailedit/" . $MailID . "/" );
+    eZHTTPTool::header( "Location: /mail/mailedit/" . $mailID . "/" );
     exit();
 }
 
@@ -80,8 +80,8 @@ $t->set_file( array(
     "file_edit_page" => "fileedit.tpl",
     ) );
 
-$t->set_var( "mail_id", $MailID );
-$mail = new eZMail( $MailID );
+$t->set_var( "mail_id", $mailID );
+$mail = new eZMail( $mailID );
 $t->set_var( "mail_subject", $mail->subject() );
 
 $t->pparse( "output", "file_edit_page" );

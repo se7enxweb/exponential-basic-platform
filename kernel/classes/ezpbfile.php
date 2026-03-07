@@ -431,6 +431,8 @@ class eZPBFile
             include( "kernel/sitedir.ini" );
             $filename = $siteDir . $filename;
         }
+        if ( is_dir( $filename ) )
+            return false;
         return file( $filename );
     }
 

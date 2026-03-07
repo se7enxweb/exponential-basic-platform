@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: searchform.php 7151 2001-09-11 21:12:17Z fh $
+// $id: searchform.php 7151 2001-09-11 21:12:17Z fh $
 //
 // Created on: <08-Sep-2001 10:32:19 fh>
 //
@@ -33,10 +33,10 @@
 // include_once( "ezuser/classes/ezauthor.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "searchform.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "searchform.php" );
 
 $t->setAllStrings();
 

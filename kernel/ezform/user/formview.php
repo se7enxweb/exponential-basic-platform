@@ -42,7 +42,7 @@ if( strstr( $_SERVER['HTTP_REFERER'], $ini->variable( "eZFormMain", "FromURL" ))
  die('eZFormMain is misconfigured: please check your site.ini');
 }
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     if ( !empty( $redirectTo ) )
     {
@@ -56,9 +56,9 @@ if ( isset( $Cancel ) )
 }
 
 
-$ActionValue="process";
+$actionValue="process";
 
-$form = new eZForm( $FormID );
+$form = new eZForm( $formID );
 
 if ( !( $form->id() > 0 ) )
 {
@@ -70,11 +70,11 @@ $errorMessages = array();
 $Language = $ini->variable( "eZFormMain", "Language" );
 
 // init the section
-if ( isset( $SectionIDOverride ) )
+if ( isset( $sectionIDOverride ) )
 {
     // include_once( "ezsitemanager/classes/ezsection.php" );
     
-    $sectionObject = eZSection::globalSectionObject( $SectionIDOverride );
+    $sectionObject = eZSection::globalSectionObject( $sectionIDOverride );
     $sectionObject->setOverrideVariables();
 }
 
@@ -90,7 +90,7 @@ $t->set_block( "form_view_page_tpl", "mail_preview_tpl", "mail_preview" );
 $t->set_var( "error", "" );
 $t->set_var( "form", "" );
 
-$t->set_var( "form_id", $FormID );
+$t->set_var( "form_id", $formID );
 $t->set_var( "form_name", $form->name() );
 $t->set_var( "form_completed_page", $form->completedPage() );
 $t->set_var( "form_instruction_page", $form->instructionPage() );
@@ -99,7 +99,7 @@ $renderer = new eZFormRenderer( $form );
 $output = $renderer->renderForm( $form );
 $t->set_var( "form", $output );
 
-if ( isset( $OK ) )
+if ( isset( $ok ) )
 {
     $output = $renderer->verifyForm();
     if ( $output == "" )

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: browse.php 6847 2001-09-03 10:22:42Z bf $
+// $id: browse.php 6847 2001-09-03 10:22:42Z bf $
 //
 // Christoffer A. Elo
 // Created on: <15-May-2001 15:01:28 ce>
@@ -38,12 +38,12 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZImageCatalogueMain", "Language" );
+$language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
-$ImageDir = $ini->variable( "eZImageCatalogueMain", "ImageDir" );
+$imageDir = $ini->variable( "eZImageCatalogueMain", "ImageDir" );
 
 $t = new eZTemplate( "kernel/ezimagecatalogue/admin/" . $ini->variable( "eZImageCatalogueMain", "AdminTemplateDir" ),
-                     "kernel/ezimagecatalogue/admin/intl/", $Language, "browse.php" );
+                     "kernel/ezimagecatalogue/admin/intl/", $language, "browse.php" );
 
 $t->set_file( "image_list_page_tpl", "browse.tpl" );
 
@@ -86,22 +86,22 @@ $t->set_var( "delete_categories_button" , "" );
 $t->set_var( "default_new" , "" );
 $t->set_var( "default_delete" , "" );
 
-if ( !is_numeric( $CategoryID ) )
-    $CategoryID = 0;
+if ( !is_numeric( $categoryID ) )
+    $categoryID = 0;
     
-$category = new eZImageCategory( $CategoryID );
+$category = new eZImageCategory( $categoryID );
 
 // Check if user have permission to the current category
 
 $error = true;
 
 if ( eZObjectPermission::hasPermission( $category->id(), "imagecatalogue_category", "r", $user )
-     || eZImageCategory::isOwner( $user, $CategoryID ) )
+     || eZImageCategory::isOwner( $user, $categoryID ) )
 {
     $error = false;
 }
 
-if ( $CategoryID == 0 )
+if ( $categoryID == 0 )
 {
     $t->set_var( "current_category_description", "" );
     $error = false;
@@ -157,7 +157,7 @@ foreach ( $categoryList as $categoryItem )
     $i++;
 }
 
-if ( ( count( $categoryList ) > 0 ) &&  !isset( $SearchText ) )
+if ( ( count( $categoryList ) > 0 ) &&  !isset( $searchText ) )
 {
     $t->parse( "category_list", "category_list_tpl" );
 }
@@ -167,9 +167,9 @@ else
 }
 
 // Print out all the images
-if ( isset( $SearchText )  )
+if ( isset( $searchText )  )
 {
-    $imageList = eZImage::search( $SearchText );
+    $imageList = eZImage::search( $searchText );
 }
 else
 {
@@ -282,9 +282,9 @@ else
     $t->set_var( "image_list", "" );
 }
 
-$t->set_var( "image_dir", $ImageDir );
+$t->set_var( "image_dir", $imageDir );
 
-$t->set_var( "main_category_id", $CategoryID );
+$t->set_var( "main_category_id", $categoryID );
 
 if ( $error == false )
 {

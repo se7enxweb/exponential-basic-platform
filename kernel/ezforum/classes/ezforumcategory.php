@@ -322,7 +322,7 @@ class eZForumCategory
         $db->query_single( $res, "SELECT SectionID from eZForum_Category WHERE ID='$categoryID'");
 
         if( is_array( $res ) && count( $res ) > 0 )
-        $sectionID = $res[ (int) $db->fieldName("SectionID")];
+        $sectionID = $res[$db->fieldName("SectionID")] ?? 0;
         else
         $sectionID = 0;
 

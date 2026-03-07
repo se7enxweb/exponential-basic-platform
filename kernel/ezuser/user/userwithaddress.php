@@ -41,33 +41,25 @@ $AutoCookieLogin = eZHTTPTool::getVar( "AutoCookieLogin" );
 
 $session = eZSession::globalSession();
 
-// include_once( "ezuser/classes/ezuser.php" );
-// include_once( "ezuser/classes/ezusergroup.php" );
-// include_once( "ezaddress/classes/ezaddress.php" );
-// include_once( "ezaddress/classes/ezcountry.php" );
-// include_once( "ezmail/classes/ezmail.php" );
-
 $user = eZUser::currentUser();
 
 // set SSL mode and redirect if not already in SSL mode.
 if ( ( $ForceSSL == "enabled" ) )
 {
     // force SSL if supposed to
-    if ( $SERVER_PORT != '443' )
+    if ( $_SERVER['SERVER_PORT'] != '443' )
     {
    		$session->setVariable( "SSLMode", "enabled" );
-        eZHTTPTool::header("Location: https://" . $HTTP_HOST . $REQUEST_URI );
- //       eZHTTPTool::header("Location: https://" . $HTTP_HOST . "/user/userwithaddress/edit/" . $user->id() );
-//        print( "<font color=\"#333333\">Start: Location: https://" . $HTTP_HOST . $REQUEST_URI . "</font>" );
+        eZHTTPTool::header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
         exit();
     }
 }
 elseif ( $ForceSSL == "disabled" )
 {
-	if ( $SERVER_PORT == '443' )
+	if ( $_SERVER['SERVER_PORT'] == '443' )
     {
     	$session->setVariable( "SSLMode", "disabled" );
-		eZHTTPTool::header("Location: http://" . $HTTP_HOST . "/user/userwithaddress/edit/" . $user->id() );
+		eZHTTPTool::header("Location: http://" . $_SERVER['HTTP_HOST'] . "/user/userwithaddress/edit/" . $user->id() );
 		exit();
 	}
 }
@@ -78,6 +70,24 @@ $Email = eZHTTPTool::getVar( "Email" );
 $Login = eZHTTPTool::getVar( "Login" );
 $FirstName = eZHTTPTool::getVar( "FirstName" );
 $LastName = eZHTTPTool::getVar( "LastName" );
+$InfoSubscription = eZHTTPTool::getVar( "InfoSubscription" );
+$Signature = eZHTTPTool::getVar( "Signature" ) ?? '';
+$AddressID = eZHTTPTool::getVar( "AddressID" );
+$RealAddressID = eZHTTPTool::getVar( "RealAddressID" );
+$Street1 = eZHTTPTool::getVar( "Street1" );
+$Street2 = eZHTTPTool::getVar( "Street2" );
+$Zip = eZHTTPTool::getVar( "Zip" );
+$Phone = eZHTTPTool::getVar( "Phone" );
+$Place = eZHTTPTool::getVar( "Place" );
+$CountryID = eZHTTPTool::getVar( "CountryID" );
+$RegionID = eZHTTPTool::getVar( "RegionID" );
+$MainAddressID = eZHTTPTool::getVar( "MainAddressID" );
+$NewAddress = eZHTTPTool::getVar( "NewAddress" );
+$OK = eZHTTPTool::getVar( "OK" );
+$OK_x = eZHTTPTool::getVar( "OK_x" );
+$NoAddress = eZHTTPTool::getVar( "NoAddress" );
+$DeleteAddressArrayID = eZHTTPTool::getVar( "DeleteAddressArrayID" );
+$RedirectURL = eZHTTPTool::getVar( "RedirectURL" );
 
 $t = new eZTemplate( "kernel/ezuser/user/" . $ini->variable( "eZUserMain", "TemplateDir" ),
                      "kernel/ezuser/user/intl/", $Language, "userwithaddress.php" );
@@ -202,7 +212,6 @@ else
 
 // Defaults
 $user_insert = false;
-$Signature = '';
 // Set error checking.
 $error = false;
 $nameCheck = true;
@@ -498,8 +507,8 @@ if ( ( isset( $OK ) or isset( $OK_x ) ) and $error == false )
     {
         $address_id = $AddressID[$i];
 
-	if( isset( $_REQUEST["RealAddressID[$i]"] ) )
-            $realAddressID = $_REQUEST["RealAddressID[$i]"];
+	if( is_array( $RealAddressID ) && isset( $RealAddressID[$i] ) )
+            $realAddressID = $RealAddressID[$i];
 	else
 	    $realAddressID = false;
 
@@ -566,7 +575,7 @@ if ( ( isset( $OK ) or isset( $OK_x ) ) and $error == false )
         $Updated = true;
 
 	// if( $RedirectURL == "" )
-		// $RedirectURL = $REQUEST_URI;
+		// $RedirectURL = $_SERVER['REQUEST_URI'];
     if( $RedirectURL == "" )
     {
         // $RedirectURL = $session->variable( "RedirectURL" );
@@ -795,7 +804,7 @@ for ( $i = 0; $i < count( $AddressID ); ++$i )
 {
     $address_id = $AddressID[$i];
     $variable = "DeleteAddressButton$address_id";
-    if ( in_array( $AddressID[$i], $DeleteAddressArrayID ) or isset( $$variable ) )
+    if ( in_array( $AddressID[$i], $DeleteAddressArrayID ) or isset( $_POST[$variable] ) )
     {
         if ( $RealAddressID[$i] == $MainAddressID )
         {
@@ -810,7 +819,7 @@ if ( $deleted )
     {
         $address_id = $AddressID[$i];
         $variable = "DeleteAddressButton$address_id";
-        if ( !in_array( $AddressID[$i], $DeleteAddressArrayID ) and !isset( $$variable ) )
+        if ( !in_array( $AddressID[$i], $DeleteAddressArrayID ) and !isset( $_POST[$variable] ) )
         {
             $MainAddressID = $RealAddressID[$i];
             break;
@@ -850,7 +859,7 @@ if ( $ini->variable( "eZUserMain", "UserWithAddress" ) == "enabled" )
     {
         $address_id = $AddressID[$i];
         $variable = "DeleteAddressButton$address_id";
-        if ( !in_array( $AddressID[$i], $DeleteAddressArrayID ) and !isset( $$variable ) )
+        if ( !in_array( $AddressID[$i], $DeleteAddressArrayID ) and !isset( $_POST[$variable] ) )
         {
             if ( isset( $MainAddressID ) && is_numeric( $MainAddressID ) )
             {

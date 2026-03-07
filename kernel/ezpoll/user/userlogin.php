@@ -35,13 +35,13 @@ $Language = $ini->variable( "eZPollMain", "Language" );
 
 // include_once( "ezuser/classes/ezuser.php" );
 
-$poll = new eZPoll( $PollID );
+$poll = new eZPoll( $pollID );
 if ( !$poll->anonymous() )
 {
 
     if ( eZUser::currentUser() )
     {
-        eZHTTPTool::header( "Location: /poll/vote/$PollID/$ChoiceID/" );
+        eZHTTPTool::header( "Location: /poll/vote/$pollID/$choiceID/" );
     }
     else
     {
@@ -54,14 +54,14 @@ if ( !$poll->anonymous() )
             "user_login_tpl" => "userlogin.tpl"
             ) );
         
-        $t->set_var( "redirect_url", "/poll/vote/$PollID/$ChoiceID/" );
+        $t->set_var( "redirect_url", "/poll/vote/$pollID/$choiceID/" );
         
         $t->pparse( "output", "user_login_tpl" );
     }
 }
 else
 {
-    eZHTTPTool::header( "Location: /poll/vote/$PollID/$ChoiceID/" );
+    eZHTTPTool::header( "Location: /poll/vote/$pollID/$choiceID/" );
 }
 
 ?>

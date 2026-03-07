@@ -36,16 +36,16 @@
 
 $user = eZUser::currentUser();
 
-if( isset( $Ok ) || isset( $NewAccount ) || isset( $NewFilter ) ||
-    isset( $DeleteAccounts ) )
+if( isset( $ok ) || isset( $newAccount ) || isset( $newFilter ) ||
+    isset( $deleteAccounts ) )
 {
     // this strange way of enabling accounts makes sure that one user doesn't tamper
     // with the accounts of someone else.
     $accounts = eZMailAccount::getByUser( eZUser::currentUser() );
     foreach( $accounts as $account )
     {
-        if( count( $AccountActiveArrayID ) > 0 &&
-            in_array( $account->id(), $AccountActiveArrayID ) )
+        if( count( $accountActiveArrayID ) > 0 &&
+            in_array( $account->id(), $accountActiveArrayID ) )
             $account->setIsActive( true );
         else
             $account->setIsActive( false );
@@ -55,53 +55,53 @@ if( isset( $Ok ) || isset( $NewAccount ) || isset( $NewFilter ) ||
     // save options
     if( $user )
     {
-        if( isset( $OnDelete ) && $OnDelete == "trash" )
+        if( isset( $onDelete ) && $onDelete == "trash" )
             eZPreferences::setVariable( "eZMail_OnDel", "trash" );
         else
             eZPreferences::setVariable( "eZMail_OnDel", "del" );
 
-        if( isset( $Signature ) )
-            eZPreferences::setVariable( "eZMail_Signature", $Signature );
+        if( isset( $signature ) )
+            eZPreferences::setVariable( "eZMail_Signature", $signature );
 
-        if( isset( $AutoSignature ) )
+        if( isset( $autoSignature ) )
             eZPreferences::setVariable( "eZMail_AutoSignature", "true" );
         else
             eZPreferences::setVariable( "eZMail_AutoSignature", "false" );
 
-        if( isset( $ShowUnread ) )
+        if( isset( $showUnread ) )
             eZPreferences::setVariable( "eZMail_ShowUnread", "true" );
         else
             eZPreferences::setVariable( "eZMail_ShowUnread", "false" );
 
-        if( isset( $AutoCheckMail ) )
+        if( isset( $autoCheckMail ) )
             eZPreferences::setVariable( "eZMail_AutoCheckMail", "true" );
         else
             eZPreferences::setVariable( "eZMail_AutoCheckMail", "false" );
     }
 }
 
-if( isset( $NewAccount ) )
+if( isset( $newAccount ) )
 {
     eZHTTPTool::header( "Location: /mail/accountedit" );
     exit();
 }
 
-if( isset( $NewFilter) )
+if( isset( $newFilter) )
 {
     eZHTTPTool::header( "Location: /mail/filteredit" );
     exit();
 }
 
-if( isset( $DeleteAccounts ) && count( $AccountArrayID ) > 0  )
+if( isset( $deleteAccounts ) && count( $accountArrayID ) > 0  )
 {
-    foreach( $AccountArrayID as $accountID )
+    foreach( $accountArrayID as $accountID )
     {
         (new eZMailAccount())->delete( $accountID );
     }
 }
-if( isset( $DeleteAccounts ) && isset( $FilterArrayID ) && count( $FilterArrayID ) > 0 )
+if( isset( $deleteAccounts ) && isset( $filterArrayID ) && count( $filterArrayID ) > 0 )
 {
-    foreach( $FilterArrayID as $filterID )
+    foreach( $filterArrayID as $filterID )
     {
         eZMailFilterRule::delete( $filterID );
     }

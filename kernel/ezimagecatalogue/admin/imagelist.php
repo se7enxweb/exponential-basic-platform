@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: imagelist.php 9501 2002-05-02 17:09:58Z br $
+// $id: imagelist.php 9501 2002-05-02 17:09:58Z br $
 //
 // Created on: <10-Dec-2000 16:16:20 bf>
 //
@@ -41,15 +41,15 @@ $ini = eZINI::instance( 'site.ini' );
 $wwwDir = $ini->WWWDir;
 $indexFile = $ini->Index;
 
-$Language = $ini->variable( "eZImageCatalogueMain", "Language" );
+$language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
-$ImageDir = $ini->variable( "eZImageCatalogueMain", "ImageDir" );
-$PicCat = $ini->variable( "eZImageCatalogueMain", "PicCat" );
-$SyncDir = $ini->variable( "eZImageCatalogueMain", "SyncDir" );
-$SectionID = $ini->variable( "eZImageCatalogueMain", "DefaultSection" );
+$imageDir = $ini->variable( "eZImageCatalogueMain", "ImageDir" );
+$picCat = $ini->variable( "eZImageCatalogueMain", "PicCat" );
+$syncDir = $ini->variable( "eZImageCatalogueMain", "SyncDir" );
+$sectionID = $ini->variable( "eZImageCatalogueMain", "DefaultSection" );
 
 $t = new eZTemplate( "kernel/ezimagecatalogue/admin/" . $ini->variable( "eZImageCatalogueMain", "AdminTemplateDir" ),
-                     "kernel/ezimagecatalogue/admin/intl/", $Language, "imagelist.php" );
+                     "kernel/ezimagecatalogue/admin/intl/", $language, "imagelist.php" );
 
 $t->set_file( "image_list_page_tpl", "imagelist.tpl" );
 
@@ -58,12 +58,12 @@ $t->setAllStrings();
 $user = eZUser::currentUser();
 
 // Set detail or normal mode
-if ( isset ( $DetailView ) )
+if ( isset ( $detailView ) )
 {
     $session = eZSession::globalSession();
     $session->setVariable( "ImageViewMode", "Detail" );
 }
-if ( isset ( $NormalView ) )
+if ( isset ( $normalView ) )
 {
     $session = eZSession::globalSession();
     $session->setVariable( "ImageViewMode", "Normal" );
@@ -96,7 +96,7 @@ function syncDir( $root, $category )
         	            $sub = new eZImageCategory(  );
             	        $sub->setParent( $category );
                 	    $sub->setName( $entry );
-					    $sub->setSectionID( $SectionID );
+					    $sub->setSectionID( $sectionID );
                     	$sub->store();
 	                    eZObjectPermission::removePermissions( $sub->id(), "imagecatalogue_category", "r" );
     	                eZObjectPermission::removePermissions( $sub->id(), "imagecatalogue_category", "w" );
@@ -124,7 +124,7 @@ function syncDir( $root, $category )
     	  {
         	 $image = new eZImage();
              $image->setName( $entry );
-             $image->setDescription( $Description );
+             $image->setDescription( $description );
              $image->setUser( $user );
              $author = new eZAuthor( 1 );
              $image->setPhotographer( $author );
@@ -147,11 +147,11 @@ function syncDir( $root, $category )
  }
 }
 
-if ( isSet ( $ImageUpload ) )
+if ( isSet ( $imageUpload ) )
 {
-	$category = new eZImageCategory( $PicCat );
-	syncDir( $SyncDir, $category );
-	eZHTTPTool::header( "Location: /imagecatalogue/image/list/$PicCat/" );
+	$category = new eZImageCategory( $picCat );
+	syncDir( $syncDir, $category );
+	eZHTTPTool::header( "Location: /imagecatalogue/image/list/$picCat/" );
     exit();
 }
 
@@ -160,11 +160,11 @@ $checkMode = eZSession::globalSession();
 
 if ( $checkMode->variable( "ImageViewMode" ) == "Detail" )
 {
-    $DetailView = true;
+    $detailView = true;
 }
 else if ( $checkMode->variable( "ImageViewMode" ) == "Normal" )
 {
-    $NormalView = true;
+    $normalView = true;
 }
 
 $t->set_block( "image_list_page_tpl", "current_category_tpl", "current_category" );
@@ -216,11 +216,11 @@ $t->set_var( "delete_images_button" , "" );
 $t->set_var( "delete_categories_button" , "" );
 $t->set_var( "default_new" , "" );
 $t->set_var( "default_delete" , "" );
-$t->set_var( "main_category_id", $CategoryID );
+$t->set_var( "main_category_id", $categoryID );
 
-$t->set_var( "sync_dir", $SyncDir );
+$t->set_var( "sync_dir", $syncDir );
 
-$category = new eZImageCategory( $CategoryID );
+$category = new eZImageCategory( $categoryID );
 
  
 // Check if user have permission to the current category
@@ -228,12 +228,12 @@ $category = new eZImageCategory( $CategoryID );
 $error = true;
 
 if ( eZObjectPermission::hasPermission( $category->id(), "imagecatalogue_category", "r", $user )
-     || eZImageCategory::isOwner( $user, $CategoryID ) )
+     || eZImageCategory::isOwner( $user, $categoryID ) )
 {
     $error = false;
 }
 
-if ( $CategoryID == 0 )
+if ( $categoryID == 0 )
 {
     $t->set_var( "current_category_description", "" );
     $error = false;
@@ -299,7 +299,7 @@ foreach ( $categoryList as $categoryItem )
     $i++;
 }
 
-if ( count( $categoryList ) > 0  &&  !isset( $SearchText ))
+if ( count( $categoryList ) > 0  &&  !isset( $searchText ))
 {
     $t->parse( "category_list", "category_list_tpl" );
 }
@@ -311,32 +311,32 @@ else
 $limit = $ini->variable( "eZImageCatalogueMain", "ListImagesPerPage" );
 
 // Print out all the images
-if ( isset( $SearchText )  )
+if ( isset( $searchText )  )
 {
-    $imageList = eZImage::search( $SearchText );
-    $count = eZImage::searchCount( $SearchText );
+    $imageList = eZImage::search( $searchText );
+    $count = eZImage::searchCount( $searchText );
 
-  $URL = "search/?SearchText=$SearchText";
+  $url = "search/?SearchText=$searchText";
 
-  // die("$SearchText - $Offset - $limit -- $count ---");
+  // die("$searchText - $offset - $limit -- $count ---");
 
-  $page_link = "search/?SearchText=$SearchText&Offset={item_index}";
-  $page_link_next = "search/?SearchText=$SearchText&Offset={item_next_index}";
-  $page_link_prev = "search/?SearchText=$SearchText&Offset={item_previous_index}";
+  $page_link = "search/?SearchText=$searchText&Offset={item_index}";
+  $page_link_next = "search/?SearchText=$searchText&Offset={item_next_index}";
+  $page_link_prev = "search/?SearchText=$searchText&Offset={item_previous_index}";
 
-  // $imageList = eZImage::search( $SearchText );
-  // $count = eZImage::searchCount( $SearchText );
+  // $imageList = eZImage::search( $searchText );
+  // $count = eZImage::searchCount( $searchText );
 }
 else
 {
-    $imageList = $category->images( "time", $Offset, $limit );
+    $imageList = $category->images( "time", $offset, $limit );
     $count = $category->imageCount(  );
 
-  $URL = "image/list/$CategoryID/$Offset";
+  $url = "image/list/$categoryID/$offset";
 
-  $page_link = "image/list/$CategoryID/parent/{item_index}";
-  $page_link_next = "image/list/$CategoryID/parent/{item_next_index}";
-  $page_link_prev = "image/list/$CategoryID/parent/{item_previous_index}";
+  $page_link = "image/list/$categoryID/parent/{item_index}";
+  $page_link_next = "image/list/$categoryID/parent/{item_next_index}";
+  $page_link_prev = "image/list/$categoryID/parent/{item_previous_index}";
 }
 
 
@@ -349,7 +349,7 @@ foreach ( $imageList as $image )
 {
     ( $i % 2 ) ? $t->set_var( "td_class", "bgdark" ) : $t->set_var( "td_class", "bglight" );
 
-    $t->set_var( "main_category_id", $CategoryID . "/" . $Offset );
+    $t->set_var( "main_category_id", $categoryID . "/" . $offset );
     
     $t->set_var( "end_tr", "" );        
     $t->set_var( "begin_tr", "" );
@@ -434,7 +434,7 @@ foreach ( $imageList as $image )
             $t->set_var( "end_tr", "</tr>" );
         }
 
-        if ( isset ( $DetailView ) )
+        if ( isset ( $detailView ) )
         {
             $t->parse( "detail_read", "detail_read_tpl" );
         }
@@ -451,7 +451,7 @@ foreach ( $imageList as $image )
          ( eZImage::isOwner( $user, $image->id() ) ) )
     {
         $can_write = true;
-        if ( isset ( $DetailView ) )
+        if ( isset ( $detailView ) )
         {
             $deleteImage = true;
             $t->parse( "detail_write", "detail_write_tpl" );
@@ -471,7 +471,7 @@ foreach ( $imageList as $image )
     }
 
     // Set the detail or normail view
-    if ( isset ( $DetailView ) )
+    if ( isset ( $detailView ) )
     {
         $t->set_var( "image", "" );
 
@@ -490,20 +490,20 @@ foreach ( $imageList as $image )
     $counter++;
 }
 
-$t->set_var( "URL", $URL );
+$t->set_var( "URL", $url );
 $t->set_var( "page_link", $page_link );
 $t->set_var( "page_link_next", $page_link_next );
 $t->set_var( "page_link_prev", $page_link_prev );
 
-$t->set_var( "main_category_id", $CategoryID );
+$t->set_var( "main_category_id", $categoryID );
 
-eZList::drawNavigator( $t, $count, $limit, $Offset, "image_list_page_tpl" );
+eZList::drawNavigator( $t, $count, $limit, $offset, "image_list_page_tpl" );
 
 $t->set_var( "detail_button", "" );
 $t->set_var( "normal_button", "" );
-$t->set_var( "pos", $Offset );
+$t->set_var( "pos", $offset );
 
-if ( isset ( $DetailView ) )
+if ( isset ( $detailView ) )
 {
     $t->set_var( "is_detail_view", "true" );
     $t->parse( "normal_button", "normal_view_button" );
@@ -544,9 +544,9 @@ else
     $t->set_var( "image_list", "" );
 }
 
-$t->set_var( "image_dir", $ImageDir );
+$t->set_var( "image_dir", $imageDir );
 
-$t->set_var( "main_category_id", $CategoryID );
+$t->set_var( "main_category_id", $categoryID );
 
 if ( $error == false )
 {

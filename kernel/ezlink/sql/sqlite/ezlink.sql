@@ -22,14 +22,10 @@ CREATE TABLE eZLink_Category (
 
 CREATE TABLE eZLink_Hit (
   `ID` int(11) NOT NULL DEFAULT 0,
-  `Name` varchar(100) DEFAULT NULL,
-  Description text DEFAULT NULL,
-  KeyWords text DEFAULT NULL,
-  Modified int(11) NOT NULL DEFAULT 0,
-  Accepted int(11) DEFAULT NULL,
-  Created int(11) DEFAULT NULL,
-  Url text DEFAULT NULL,
-  ImageID int(11) NOT NULL DEFAULT 0);
+  Link int(11) DEFAULT NULL,
+  Time int(11) NOT NULL DEFAULT 0,
+  RemoteIP varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`ID`));
 
 CREATE TABLE eZLink_Link (
   `ID` int(11) NOT NULL DEFAULT 0,

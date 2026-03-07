@@ -27,7 +27,7 @@
 // include_once( "ezaddress/classes/ezcountry.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Max = $ini->variable( "eZAddressMain", "MaxCountryList" );
+$max = $ini->variable( "eZAddressMain", "MaxCountryList" );
 
 include( "kernel/ezaddress/admin/typelist_pre.php" );
 
@@ -42,12 +42,12 @@ $variable_array = array( "country_header" => "country_header_tpl",
 $block_array = array( array( "country_tpl", "country_header_tpl", "country_header" ),
                       array( "country_tpl", "country_item_tpl", "country_item" ) );
 
-$item_type_array = eZCountry::getAll( true, $SearchText, $Index, $Max );
-$total_types = eZCountry::getAllCount( $SearchText );
+$item_type_array = eZCountry::getAll( true, $searchText, $index, $max );
+$total_types = eZCountry::getAllCount( $searchText );
 $func_call = array( "item_id" => 'id',
                     "item_name" => 'name',
                     "item_iso" => 'iso' );
-$Searchable = true;
+$searchable = true;
 
 include( "kernel/ezaddress/admin/typelist.php" );
 

@@ -48,39 +48,39 @@ $t->set_block( "priority_page", "priority_item_tpl", "priority_item" );
 $t->set_var( "site_style", $SiteDesign );
 
 
-if( isset( $DeletePriorities ) )
+if( isset( $deletePriorities ) )
 {
-    if( count( $PriorityArrayID ) > 0 )
+    if( count( $priorityArrayID ) > 0 )
     {
-        foreach( $PriorityArrayID as $deleteItemID )
+        foreach( $priorityArrayID as $deleteItemID )
         {
-            $item = new eZBugPriority( $PriorityID[ $deleteItemID ] );
+            $item = new eZBugPriority( $priorityID[ $deleteItemID ] );
             $item->delete();
         }
     }
 }
 
 
-if( isset( $Ok ) || isset( $AddPriority ) )
+if( isset( $ok ) || isset( $addPriority ) )
 {
     $i = 0;
-    if( count( $PriorityID ) > 0 )
+    if( count( $priorityID ) > 0 )
     {
-        foreach( $PriorityID as $itemID )
+        foreach( $priorityID as $itemID )
         {
             $priority = new eZBugPriority( $itemID );
-            $priority->setName( $PriorityName[$i] );
+            $priority->setName( $priorityName[$i] );
             $priority->store();
             $i++;
         }
     }
     
-//    $priority = new eZBugPriority( $PriorityID );
-//    $priority->setName( $Name );
+//    $priority = new eZBugPriority( $priorityID );
+//    $priority->setName( $name );
 //    $priority->store();
 }
 
-if( isset( $AddPriority ) )
+if( isset( $addPriority ) )
 {
     $newItem = new eZBugPriority();
     $newName = $LanguageIni->variable( "strings", "new_priority" );

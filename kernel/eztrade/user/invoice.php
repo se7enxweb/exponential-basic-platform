@@ -25,6 +25,6 @@
 
 
 // bypass the payment.
-$PaymentSuccess = true;
+$paymentSuccess = true;
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: searchsupplier.php 7750 2001-10-10 11:38:41Z bf $
+// $id: searchsupplier.php 7750 2001-10-10 11:38:41Z bf $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -26,18 +26,18 @@
 // include_once( "ezarticle/classes/ezarticle.php" );
 
 
-$ModuleName = "eZ article";
-$SearchResult[0]["DetailedSearchPath"] = "/article/search/";
-$SearchResult[0]["DetailedSearchVariable"] = "SearchText";
-$SearchResult[0]["DetailViewPath"] = "/article/view/";
-$SearchResult[0]["IconPath"] = "/design/base/images/icons/document.gif";
+$moduleName = "eZ article";
+$searchResult[0]["DetailedSearchPath"] = "/article/search/";
+$searchResult[0]["DetailedSearchVariable"] = "SearchText";
+$searchResult[0]["DetailViewPath"] = "/article/view/";
+$searchResult[0]["IconPath"] = "/design/base/images/icons/document.gif";
 
 $article = new eZArticle();
 
-$articleSearchResult = $article->search( $SearchText, "time", false, 0, $Limit, array(), $SearchResult["SearchCount"] );
+$articleSearchResult = $article->search( $searchText, "time", false, 0, $limit, array(), $searchResult["SearchCount"] );
 
-$SearchResult[0]["Result"] = $articleSearchResult;
-$SearchResult[0]["SearchCount"] = is_array( $articleSearchResult ) ? count( $articleSearchResult ) : 0;
-// $SearchResult["SearchCount"] = $article->searchCount( $SearchText, "time", false );
+$searchResult[0]["Result"] = $articleSearchResult;
+$searchResult[0]["SearchCount"] = is_array( $articleSearchResult ) ? count( $articleSearchResult ) : 0;
+// $searchResult["SearchCount"] = $article->searchCount( $searchText, "time", false );
 
 ?>

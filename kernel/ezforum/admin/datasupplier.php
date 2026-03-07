@@ -26,7 +26,7 @@
 
 
 <?php
-$url_array = explode( "/", $REQUEST_URI );
+$url_array = explode( "/", $_SERVER['REQUEST_URI'] );
 
 // include_once( "ezuser/classes/ezpermission.php" );
 // include_once( "classes/ezhttptool.php" );
@@ -36,11 +36,45 @@ if ( eZPermission::checkPermission( $user, "eZForum", "ModuleEdit" ) == false )
     eZHTTPTool::header( "Location: /error/403" );
     exit();
 }
+
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$action           = eZHTTPTool::getVar( 'Action' );
+$actionValueArray = eZHTTPTool::getVar( 'ActionValueArray' ) ?? [];
+$allowHTML        = eZHTTPTool::getVar( 'AllowHTML' );
+$anonymousPoster  = eZHTTPTool::getVar( 'AnonymousPoster' );
+$body             = eZHTTPTool::getVar( 'Body' );
+$categoryArrayID  = eZHTTPTool::getVar( 'CategoryArrayID' ) ?? [];
+$categoryID       = eZHTTPTool::getVar( 'CategoryID' );
+$categorySelectID = eZHTTPTool::getVar( 'CategorySelectID' );
+$deleteCategories = eZHTTPTool::getVar( 'DeleteCategories' );
+$deleteForums     = eZHTTPTool::getVar( 'DeleteForums' );
+$deleteMessages   = eZHTTPTool::getVar( 'DeleteMessages' );
+$description      = eZHTTPTool::getVar( 'Description' );
+$forumArrayID     = eZHTTPTool::getVar( 'ForumArrayID' ) ?? [];
+$forumID          = eZHTTPTool::getVar( 'ForumID' );
+$generateStaticPage = eZHTTPTool::getVar( 'GenerateStaticPage' );
+$isAnonymous      = eZHTTPTool::getVar( 'IsAnonymous' );
+$isModerated      = eZHTTPTool::getVar( 'IsModerated' );
+$limit            = eZHTTPTool::getVar( 'Limit' );
+$messageArrayID   = eZHTTPTool::getVar( 'MessageArrayID' ) ?? [];
+$messageAuthor    = eZHTTPTool::getVar( 'MessageAuthor' );
+$messageID        = eZHTTPTool::getVar( 'MessageID' );
+$name             = eZHTTPTool::getVar( 'Name' );
+$offset           = eZHTTPTool::getVar( 'Offset' );
+$queryString      = eZHTTPTool::getVar( 'QueryString' );
+$refererURL       = eZHTTPTool::getVar( 'RefererURL' );
+$rejectReason     = eZHTTPTool::getVar( 'RejectReason' );
+$sectionID        = eZHTTPTool::getVar( 'SectionID' );
+$startAction      = eZHTTPTool::getVar( 'StartAction' );
+$topic            = eZHTTPTool::getVar( 'Topic' );
+$unapprovdLimit   = eZHTTPTool::getVar( 'UnapprovdLimit' );
+// URL-routing variables are set below inside the switch and override the above POST defaults.
+
 switch ( $url_array[2] )
 {
     case "forumlist":
     {
-        $CategoryID = $url_array[3];
+        $categoryID = $url_array[3];
         include( "kernel/ezforum/admin/forumlist.php" );
     }
     break;
@@ -48,9 +82,9 @@ switch ( $url_array[2] )
     case "unapprovedlist":
     {
         if ( $url_array[3] == "parent" )
-            $Offset = $url_array[4];
+            $offset = $url_array[4];
         else
-            $Offset = 0;
+            $offset = 0;
         include( "kernel/ezforum/admin/unapprovedlist.php" );
     }
     break;
@@ -63,12 +97,12 @@ switch ( $url_array[2] )
     
     case "messagelist":
     {
-        $ForumID = $url_array[3];
+        $forumID = $url_array[3];
 
         if ( isset( $url_array[5] ) && isset( $url_array[4] ) && $url_array[4] == "parent" )
-            $Offset = $url_array[5];
+            $offset = $url_array[5];
         else
-            $Offset = 0;
+            $offset = 0;
 
         include( "kernel/ezforum/admin/messagelist.php" );
     }
@@ -78,10 +112,10 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "parent" )
         {
-            $QueryString = urldecode( $url_array[4] );
-            $Offset = $url_array[5];
-            if  ( !is_numeric( $Offset ) )
-                $Offset = 0;
+            $queryString = urldecode( $url_array[4] );
+            $offset = $url_array[5];
+            if  ( !is_numeric( $offset ) )
+                $offset = 0;
         }
         include( "kernel/ezforum/admin/search.php" );
     }
@@ -90,7 +124,7 @@ switch ( $url_array[2] )
 
     case "message":
     {
-        $MessageID = $url_array[3];
+        $messageID = $url_array[3];
         include( "kernel/ezforum/admin/message.php" );
     }
     break;
@@ -99,20 +133,20 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "edit" )
         {
-            $Action = "edit";
-            $MessageID = $url_array[4];
+            $action = "edit";
+            $messageID = $url_array[4];
             include( "kernel/ezforum/admin/messageedit.php" );
         }
         if ( $url_array[3] == "update" )
         {
-            $Action = "update";
-            $MessageID = $url_array[4];
+            $action = "update";
+            $messageID = $url_array[4];
             include( "kernel/ezforum/admin/messageedit.php" );
         }
         if ( $url_array[3] == "delete" )
         {
-            $Action = "delete";
-            $MessageID = $url_array[4];
+            $action = "delete";
+            $messageID = $url_array[4];
             include( "kernel/ezforum/admin/messageedit.php" );
         }
     }
@@ -121,33 +155,33 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "new" )
         {
-            $Action = "new";
+            $action = "new";
             include( "kernel/ezforum/admin/forumedit.php" );
         }
 
         if ( $url_array[3] == "insert" )
         {
-            $Action = "insert";
+            $action = "insert";
             include( "kernel/ezforum/admin/forumedit.php" );
         }
 
         if ( $url_array[3] == "edit" )
         {
-            $Action = "edit";
-            $ForumID = $url_array[4];
+            $action = "edit";
+            $forumID = $url_array[4];
             include( "kernel/ezforum/admin/forumedit.php" );
         }
         if ( $url_array[3] == "update" )
         {
             
-            $Action = "update";
-            $ForumID = $url_array[4];
+            $action = "update";
+            $forumID = $url_array[4];
             include( "kernel/ezforum/admin/forumedit.php" );
         }
         if ( $url_array[3] == "delete" )
         {
-            $Action = "delete";
-            $ForumID = $url_array[4];
+            $action = "delete";
+            $forumID = $url_array[4];
             include( "kernel/ezforum/admin/forumedit.php" );
         }
     }
@@ -157,32 +191,32 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "new" )
         {
-            $Action = "new";
-            $CategoryID = false;
+            $action = "new";
+            $categoryID = false;
             $sectionID = false;
             include( "kernel/ezforum/admin/categoryedit.php" );
         }
         if ( $url_array[3] == "insert" )
         {
-            $Action = "insert";
+            $action = "insert";
             include( "kernel/ezforum/admin/categoryedit.php" );
         }
         if ( $url_array[3] == "edit" )
         {
-            $Action = "edit";
-            $CategoryID = $url_array[4];
+            $action = "edit";
+            $categoryID = $url_array[4];
             include( "kernel/ezforum/admin/categoryedit.php" );
         }
         if ( $url_array[3] == "update" )
         {
-            $Action = "update";
-            $CategoryID = $url_array[4];
+            $action = "update";
+            $categoryID = $url_array[4];
             include( "kernel/ezforum/admin/categoryedit.php" );
         }
         if ( $url_array[3] == "delete" )
         {
-            $Action = "delete";
-            $CategoryID = $url_array[4];
+            $action = "delete";
+            $categoryID = $url_array[4];
             include( "kernel/ezforum/admin/categoryedit.php" );
         }
     }

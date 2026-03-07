@@ -28,34 +28,34 @@
 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZCalendarMain", "Language" );
-$Locale = new eZLocale( $Language );
+$locale = new eZLocale( $Language );
 
-if ( isset( $ShowMessage ) && $ShowMessage )
+if ( isset( $showMessage ) && $showMessage )
 {
     // include_once( "classes/eztexttool.php" );
-    $AllowedTags = $ini->variable( "eZForumMain", "AllowedTags" );
-    $AllowHTML = $ini->variable( "eZForumMain", "AllowHTML" );
+    $allowedTags = $ini->variable( "eZForumMain", "AllowedTags" );
+    $allowHTML = $ini->variable( "eZForumMain", "AllowHTML" );
     
     $t->set_file( "body", "messagebody.tpl" );
     
-    $msg = new eZForumMessage( $MessageID );
+    $msg = new eZForumMessage( $messageID );
 
-    if( !isset( $MessageTopic ) )
-    $MessageTopic = $msg->topic();
+    if( !isset( $messageTopic ) )
+    $messageTopic = $msg->topic();
 
 
-    $MessageBody = eZTextTool::nl2br( $msg->body() );
-    $MessageBody = stripslashes($MessageBody);
+    $messageBody = eZTextTool::nl2br( $msg->body() );
+    $messageBody = stripslashes($messageBody);
     
     $author = new eZUser( $msg->userID() );
-    $MessageNotice = $msg->emailNotice();
+    $messageNotice = $msg->emailNotice();
 
-    if ( isset( $NewMessageAuthor ) )
+    if ( isset( $newMessageAuthor ) )
     {
-        if ( $msg->userName() && $Action != "reply" )
-            $MessageAuthor = $msg->userName();
+        if ( $msg->userName() && $action != "reply" )
+            $messageAuthor = $msg->userName();
         else
-            $MessageAuthor = $NewMessageAuthor;
+            $messageAuthor = $newMessageAuthor;
     }
     else
     {
@@ -66,32 +66,32 @@ if ( isset( $ShowMessage ) && $ShowMessage )
 
         if ( $author->id() == 0 )
         {
-            if ( $msg->userName() && $Action != "reply" )
-                $MessageAuthor = $msg->userName();
+            if ( $msg->userName() && $action != "reply" )
+                $messageAuthor = $msg->userName();
             else
-                $MessageAuthor = $ini->variable( "eZForumMain", "AnonymousPoster" );
+                $messageAuthor = $ini->variable( "eZForumMain", "AnonymousPoster" );
         }
         else
         {
-            $MessageAuthor = $author->firstName() . " " . $author->lastName();
+            $messageAuthor = $author->firstName() . " " . $author->lastName();
         }
     }
 
-    if ( isset( $NewMessagePostedAt ) )
+    if ( isset( $newMessagePostedAt ) )
     {
-        $MessagePostedAt = $NewMessagePostedAt;
+        $messagePostedAt = $newMessagePostedAt;
     }
     else
     {
-        $MessagePostedAt = $Locale->format( $msg->postingTime() );
+        $messagePostedAt = $locale->format( $msg->postingTime() );
     }
 
-    if ( isset( $NewMessageNotice ) )
+    if ( isset( $newMessageNotice ) )
     {
-        $MessageNotice = $NewMessageNotice;
+        $messageNotice = $newMessageNotice;
     }
 
-    switch ( $MessageNotice )
+    switch ( $messageNotice )
     {
         case "on":
         case "y":
@@ -113,12 +113,12 @@ if ( isset( $ShowMessage ) && $ShowMessage )
         }
         break;
     }
-    $t->set_var( "message_topic", htmlspecialchars( $MessageTopic ) );
-    $t->set_var( "message_body", eZTextTool::nl2br( htmlspecialchars( $MessageBody ) ) );
-    $t->set_var( "message_posted_at", $MessagePostedAt );
-    $t->set_var( "message_author", htmlspecialchars( $MessageAuthor ) );
-    $t->set_var( "message_id", $MessageID );
-    $t->set_var( "message_notice", $MessageNotice );
+    $t->set_var( "message_topic", htmlspecialchars( $messageTopic ) );
+    $t->set_var( "message_body", eZTextTool::nl2br( htmlspecialchars( $messageBody ) ) );
+    $t->set_var( "message_posted_at", $messagePostedAt );
+    $t->set_var( "message_author", htmlspecialchars( $messageAuthor ) );
+    $t->set_var( "message_id", $messageID );
+    $t->set_var( "message_notice", $messageNotice );
 
     if ( isset( $doPrint ) && $doPrint == true )
     {

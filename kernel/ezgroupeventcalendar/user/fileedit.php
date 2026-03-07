@@ -38,20 +38,20 @@ $Language = $ini->variable( "eZGroupEventCalendarMain", "Language" );
 //include_once( "ezgroupeventcalendar/classes/ezgroupeventcategory.php" );
 //include_once( "ezgroupeventcalendar/classes/ezgroupevent.php" );
 
-if ( isset( $DeleteSelected ) )
-    $Action = "Delete";
+if ( isset( $deleteSelected ) )
+    $action = "Delete";
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $file = new eZFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     { 
-        $event = new eZGroupEvent( $EventID );
+        $event = new eZGroupEvent( $eventID );
 
         $uploadedFile = new eZVirtualFile();
-        $uploadedFile->setName( $Name );
-        $uploadedFile->setDescription( $Description );
+        $uploadedFile->setName( $name );
+        $uploadedFile->setDescription( $description );
 
         $uploadedFile->setFile( $file );
         
@@ -65,7 +65,7 @@ if ( $Action == "Insert" )
 		
         $event->addFile( $uploadedFile );
 
-        eZPBLog::writeNotice( "File added to event $EventID  from IP: $REMOTE_ADDR" );
+        eZPBLog::writeNotice( "File added to event $eventID  from IP: $REMOTE_ADDR" );
     }
     else
     {
@@ -73,24 +73,24 @@ if ( $Action == "Insert" )
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /groupeventcalendar/eventedit/filelist/" . $EventID . "/" );
+    eZHTTPTool::header( "Location: /groupeventcalendar/eventedit/filelist/" . $eventID . "/" );
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
     $file = new eZFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     {
-        $event = new eZGroupEvent( $EventID );
+        $event = new eZGroupEvent( $eventID );
 
-        $oldFile = new eZFile( $FileID );
+        $oldFile = new eZFile( $fileID );
         $event->deleteFile( $oldFile );
 
         $uploadedFile = new eZVirtualFile();
-        $uploadedFile->setName( $Name );
-        $uploadedFile->setDescription( $Description );
+        $uploadedFile->setName( $name );
+        $uploadedFile->setDescription( $description );
 
         $uploadedFile->setFile( $file );
 
@@ -100,33 +100,33 @@ if ( $Action == "Update" )
     }
     else
     {
-        $uploadedFile = new eZVirtualFile( $FileID );
-        $uploadedFile->setName( $Name );
-        $uploadedFile->setDescription( $Description );
+        $uploadedFile = new eZVirtualFile( $fileID );
+        $uploadedFile->setName( $name );
+        $uploadedFile->setDescription( $description );
         $uploadedFile->store();
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /groupeventcalendar/eventedit/filelist/" . $EventID . "/" );
+    eZHTTPTool::header( "Location: /groupeventcalendar/eventedit/filelist/" . $eventID . "/" );
     exit();
 }
 
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    $event = new eZGroupEvent( $EventID );
+    $event = new eZGroupEvent( $eventID );
 
-    if ( count ( $FileArrayID ) != 0 )
+    if ( count ( $fileArrayID ) != 0 )
     {
-        foreach( $FileArrayID as $FileID )
+        foreach( $fileArrayID as $fileID )
         {
-            $file = new eZVirtualFile( $FileID );
+            $file = new eZVirtualFile( $fileID );
             $event->deleteFile( $file );
         }
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /groupeventcalendar/eventedit/filelist/" . $EventID . "/" );
+    eZHTTPTool::header( "Location: /groupeventcalendar/eventedit/filelist/" . $eventID . "/" );
     exit();    
 }
 
@@ -145,10 +145,10 @@ $t->set_var( "action_value", "Insert" );
 $t->set_var( "option_id", "" );
 $t->set_var( "file", "" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $event = new eZGroupEvent( $EventID );
-    $file = new eZVirtualFile( $FileID );
+    $event = new eZGroupEvent( $eventID );
+    $file = new eZVirtualFile( $fileID );
 
     $t->set_var( "event_name", $event->name() );
 
@@ -158,7 +158,7 @@ if ( $Action == "Edit" )
     $t->set_var( "action_value", "Update" );
 }
 
-$event = new eZGroupEvent( $EventID );
+$event = new eZGroupEvent( $eventID );
     
 $t->set_var( "event_name", $event->name() );
 $t->set_var( "event_id", $event->id() );

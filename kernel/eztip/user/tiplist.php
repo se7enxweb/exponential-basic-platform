@@ -38,17 +38,17 @@ $category = new eZTipCategory( $CategoryID );
 
 // fetch the user if any
 $user = eZUser::currentUser();
-if ( !isset( $Limit ) )
-    $Limit = 1;
+if ( !isset( $limit ) )
+    $limit = 1;
 if ( !isset( $tipLocationID ) )
     $tipLocationID = 0;
 if ( !isset( $showTitle ) )
     $showTitle = 0;
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 	
 // tips
-$tiplist_tpl = $category->tips( "count", false, $Offset, $Limit, $tipLocationID );
+$tiplist_tpl = $category->tips( "count", false, $offset, $limit, $tipLocationID );
 
 /* for debugging
 echo "<pre>";

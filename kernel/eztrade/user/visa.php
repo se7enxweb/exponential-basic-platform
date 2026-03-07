@@ -34,18 +34,18 @@ $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
-if ( !isset( $PaymentType ) )
-    $PaymentType = false;
+if ( !isset( $paymentType ) )
+    $paymentType = false;
 
-if ( isset( $Action ) && $Action == "Verify" )
+if ( isset( $action ) && $action == "Verify" )
 {
     // add clearing code here
     if ( eZCCTool::checkCC( $CCNumber, $ExpierMonth, $ExpierYear ) )
-        $PaymentSuccess = true;
+        $paymentSuccess = true;
 }
 else
 {
-    $PaymentSuccess = false;
+    $paymentSuccess = false;
 }
 
 $t = new eZTemplate( "kernel/eztrade/user/" . $ini->variable( "eZTradeMain", "TemplateDir" ),
@@ -55,10 +55,10 @@ $t->set_file( "visa_tpl", "visa.tpl" );
 
 $t->setAllStrings();
 
-// $ChargeTotal is the value to charge the customer with
+// $chargeTotal is the value to charge the customer with
 
-$t->set_var( "order_id", $PreOrderID );
-$t->set_var( "payment_type", $PaymentType );
+$t->set_var( "order_id", $preOrderID );
+$t->set_var( "payment_type", $paymentType );
 
 $t->pparse( "output", "visa_tpl" );
 

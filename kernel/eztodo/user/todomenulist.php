@@ -30,7 +30,7 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTodoMain", "Language" );
-$NotDoneID = $ini->variable( "eZTodoMain", "NotDoneID" );
+$notDoneID = $ini->variable( "eZTodoMain", "NotDoneID" );
 
 $iniLanguage = new eZINI( "kernel/eztodo/user/intl/$Language/todolist.php.ini", false );
 
@@ -54,7 +54,7 @@ $todo_array = array();
 
 if ( $user )
 {
-    $todo_array = $todo->getByLimit( $user->id(), 5, $NotDoneID, 0 );
+    $todo_array = $todo->getByLimit( $user->id(), 5, $notDoneID, 0 );
 }
 
 $i=0;

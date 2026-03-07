@@ -418,7 +418,7 @@ if ( ! preg_match( "/.*index\.php.*/", $_SERVER['PHP_SELF'] ) )
     $index = "";
 else
 {
-    // Get the right $REQUEST_URI, when using nVH setup.
+    // Get the right $_SERVER['REQUEST_URI'], when using nVH setup.
     if ( preg_match( '/^ ' . $wwwDir . str_replace('/', '\/', $index ) . '(.+)/', $_SERVER['PHP_SELF'], $req ) )
         $_SERVER['REQUEST_URI'] = $req[1];
 }
@@ -585,6 +585,7 @@ try
             $url_array = explode( "/", $_SERVER['REQUEST_URI'] );
         }
 
+        /*
         // 7x Register Globals Replacement
         foreach($_COOKIE as $key => $value) {
             if(!is_array($value)){
@@ -631,6 +632,7 @@ try
                 ${$key} = $value;
             }
         }
+        */
 
         // Load the main contents and store in a variable
         $content_page = "kernel/ez" . $url_array[1] . "/user/datasupplier.php";

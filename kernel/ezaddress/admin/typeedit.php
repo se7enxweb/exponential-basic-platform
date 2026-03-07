@@ -57,13 +57,13 @@ $item_error = true;
 
 if( empty( $HTTP_REFERER ) )
 {
-    if( empty( $BackUrl ) )
+    if( empty( $backUrl ) )
     {
         $back_command = "$page_path/list";
     }
     else
     {
-        $back_command = $BackUrl;
+        $back_command = $backUrl;
     }
 }
 else
@@ -71,7 +71,7 @@ else
     $back_command = $HTTP_REFERER;
 }
 
-if ( isset( $Delete ) and isset( $ItemArrayID ) and isset( $item_types ) )
+if ( isset( $delete ) and isset( $itemArrayID ) and isset( $item_types ) )
 {
     foreach( $item_types as $item_type )
     {
@@ -82,7 +82,7 @@ if ( isset( $Delete ) and isset( $ItemArrayID ) and isset( $item_types ) )
     exit();
 }
 
-if( isset( $Action ) && $Action == "up" )
+if( isset( $action ) && $action == "up" )
 {
     $item_type->moveUp();
     // include_once( "classes/ezhttptool.php" );
@@ -90,7 +90,7 @@ if( isset( $Action ) && $Action == "up" )
     exit();
 }
 
-if( isset( $Action ) && $Action == "down" )
+if( isset( $action ) && $action == "down" )
 {
     $item_type->moveDown();
     // include_once( "classes/ezhttptool.php" );
@@ -98,9 +98,9 @@ if( isset( $Action ) && $Action == "down" )
     exit();
 }
 
-if( isset( $Action ) && $Action == "insert" or isset( $Action ) && $Action == "update" )
+if( isset( $action ) && $action == "insert" or isset( $action ) && $action == "update" )
 {
-    if ( isset( $Action ) && $Action == "insert" )
+    if ( isset( $action ) && $action == "insert" )
         unset( $item_type->ID );
 
     if ( isset( $func_call_set ) and is_array( $func_call_set ) )
@@ -121,7 +121,7 @@ if( isset( $Action ) && $Action == "insert" or isset( $Action ) && $Action == "u
     }
     else
     {
-        $item_type->setName( $ItemName );
+        $item_type->setName( $itemName );
     }
     $item_type->store();
     // include_once( "classes/ezhttptool.php" );
@@ -151,8 +151,8 @@ $t->set_block( "type_edit_tpl", "no_line_item_tpl", "no_line_item" );
 $t->set_var( "no_line_item", "" );
 $t->set_var( "line_item", "" );
 
-$t->set_var( "item_id", isset( $ItemID ) ? $ItemID : false );
-$t->set_var( "item_name", isset( $ItemName ) ? $ItemName : false );
+$t->set_var( "item_id", isset( $itemID ) ? $itemID : false );
+$t->set_var( "item_name", isset( $itemName ) ? $itemName : false );
 
 $t->set_var( "back_url", $back_command );
 $t->set_var( "item_back_command", $back_command );
@@ -191,7 +191,7 @@ else
     }
 }
 
-if( isset( $Action ) && $Action == "edit" )
+if( isset( $action ) && $action == "edit" )
 {
     $action_value = "update";
 
@@ -201,7 +201,7 @@ if( isset( $Action ) && $Action == "edit" )
     }
 }
 
-if( isset( $Action ) && $Action == "new" )
+if( isset( $action ) && $action == "new" )
 {
     $action_value = "insert";
 

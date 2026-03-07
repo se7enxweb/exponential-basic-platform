@@ -187,6 +187,7 @@ class eZCacheFile
         else
         {
             print( "<br><b>Cache: Cannot write contents to file \"" . $this->filename( true ) . "\"</b><br>" );
+            // die();
         }
         return $content;
     }

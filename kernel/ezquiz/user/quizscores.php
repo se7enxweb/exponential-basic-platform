@@ -38,9 +38,9 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Limit = $ini->variable( "eZQuizMain", "ScoreLimit" );
+$limit = $ini->variable( "eZQuizMain", "ScoreLimit" );
 $Language = $ini->variable( "eZQuizMain", "Language" );
-$ScoreCurrent = $ini->variable( "eZQuizMain", "ScoreCurrent" );
+$scoreCurrent = $ini->variable( "eZQuizMain", "ScoreCurrent" );
 
 $t = new eZTemplate( "kernel/ezquiz/user/" . $ini->variable( "eZQuizMain", "TemplateDir" ),
                      "kernel/ezquiz/user/intl/", $Language, "quiz.php" );
@@ -67,21 +67,21 @@ $t->set_var( "future_item", "" );
 $t->set_var( "score_list_item", "" );
 $t->set_var( "score_item", "" );
 
-$game = new eZQuizGame( $GameID );
-$t->set_var( "game_id", $GameID );
+$game = new eZQuizGame( $gameID );
+$t->set_var( "game_id", $gameID );
 $t->set_var( "game_name", $game->name() );
 $t->set_var( "questions", $game->numberOfQuestions() );
 $t->set_var( "players", $game->numberOfPlayers() );
 
 $score = new eZQuizScore();
-$scores = $score->getAllByGame( $game, $Offset, $Limit );
+$scores = $score->getAllByGame( $game, $offset, $limit );
 
 $count = count( $scores ); 
 $scoreCount = $score->countAllByGame( $game );
 
 $last = 0;
 $lastColor = "bgdark";
-$position = $Offset + 1;
+$position = $offset + 1;
 $locale = new eZLocale( $Language );
 
 if( $game->isClosed() )
@@ -91,7 +91,7 @@ if( $game->isClosed() )
 else
 {
     $printScores = false;
-    $GenerateStaticPage = false;
+    $generateStaticPage = false;
     
     if( $game->isFutureGame() )
     {
@@ -99,7 +99,7 @@ else
         $t->set_var( "game_start", $locale->format( $start, false ) );
         $t->parse( "future_item", "future_item_tpl" );
     }
-    elseif( $ScoreCurrent == "disabled" )
+    elseif( $scoreCurrent == "disabled" )
     {
         $stop = $game->stopDate();
         $t->set_var( "game_stop", $locale->format( $stop, false ) );
@@ -120,7 +120,7 @@ if( $printScores == true )
 
             $currentScore = $score->totalScore();
 
-            if( $currentScore == $last && $position != ( $Offset + 1 ) )
+            if( $currentScore == $last && $position != ( $offset + 1 ) )
             {
                 $t->set_var( "score_position", "&nbsp;" );
 
@@ -171,7 +171,7 @@ if( $printScores == true )
     }
 }
 
-eZList::drawNavigator( $t, $scoreCount, $Limit, $Offset, "score_page_tpl" );
+eZList::drawNavigator( $t, $scoreCount, $limit, $offset, "score_page_tpl" );
 
 if( $error )
 {

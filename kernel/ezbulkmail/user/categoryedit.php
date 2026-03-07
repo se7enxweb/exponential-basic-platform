@@ -37,15 +37,15 @@ if( isset( $Cancel ) ) // cancel pressed, redirect to categorylist page...
     exit();
 }
 
-if( isset( $Ok ) ) // cancel pressed, redirect to categorylist page...
+if( isset( $ok ) ) // cancel pressed, redirect to categorylist page...
 {
-    if( $CategoryID == 0 )
+    if( $categoryID == 0 )
     {
         $category = new eZBulkMailCategory();
     }
     else
     {
-        $category = new eZBulkMailCategory( $CategoryID );
+        $category = new eZBulkMailCategory( $categoryID );
     }
     eZHTTPTool::header( "Location: /bulkmail/categorylist/$id" );
     exit();

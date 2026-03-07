@@ -52,23 +52,23 @@ $ShowQuantity = $ini->variable( "eZTradeMain", "ShowQuantity" ) == "true";
 $ShowNamedQuantity = $ini->variable( "eZTradeMain", "ShowNamedQuantity" ) == "true";
 $RequireQuantity = $ini->variable( "eZTradeMain", "RequireQuantity" ) == "true" ;
 $ShowOptionQuantity = $ini->variable( "eZTradeMain", "ShowOptionQuantity" ) == "true";
-$PurchaseProduct = $ini->variable( "eZTradeMain", "PurchaseProduct" ) == "true" ? true : false;
+$purchaseProduct = $ini->variable( "eZTradeMain", "PurchaseProduct" ) == "true" ? true : false;
 $PricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enabled" ? true : false;
 $locale = new eZLocale( $Language );
 
-$AdminSiteURL = $ini->variable( "site", "AdminSiteURL" );
+$adminSiteURL = $ini->variable( "site", "AdminSiteURL" );
 $SiteURL = $ini->variable( "site", "UserSiteURL" );
 
-if ( isset( $CategoryID ) )
-    $categoryID = $CategoryID;
+if ( isset( $categoryID ) )
+    $categoryID = $categoryID;
 else
     $categoryID = 0;
 
 $product = new eZProduct();
 
-if ( isset( $ProductID ) && !$product->get( $ProductID, $categoryID ) )
+if ( isset( $productID ) && !$product->get( $productID, $categoryID ) )
 {
-    if ( $product->get( $ProductID ) )
+    if ( $product->get( $productID ) )
     {
         eZHTTPTool::header( "Location: /error/403/" );
     }
@@ -79,17 +79,17 @@ if ( isset( $ProductID ) && !$product->get( $ProductID, $categoryID ) )
     exit();
 }
 
-if ( !isset( $CategoryID ) )
+if ( !isset( $categoryID ) )
 {
     $category = $product->categoryDefinition();
 }
 else
 {
     $category = new eZProductCategory();
-    $category->get( $CategoryID );
+    $category->get( $categoryID );
 }
 
-$CapitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
+$capitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
 
 $MainImageWidth = $ini->variable( "eZTradeMain", "MainImageWidth" );
 $MainImageHeight = $ini->variable( "eZTradeMain", "MainImageHeight" );
@@ -151,7 +151,7 @@ else
 
 $t->set_block( "product_view_tpl", "user_login_tpl", "user_login" );
 
-$t->set_var( "admin_site", "http://$AdminSiteURL" );
+$t->set_var( "admin_site", "http://$adminSiteURL" );
 
 if ( $user && ( eZPermission::checkPermission( $user, "eZTrade", "WriteToRoot" ) ) )
 {
@@ -231,8 +231,8 @@ $t->set_block( "product_view_tpl", "section_item_tpl", "section_item" );
 
 $t->set_block( "section_item_tpl", "link_item_tpl", "link_item" );
 
-if ( !isset( $ModuleName ) )
-    $ModuleName = "trade";
+if ( !isset( $moduleName ) )
+    $moduleName = "trade";
 if ( !isset( $ModuleList ) )
     $ModuleList = "productlist";
 if ( !isset( $ModuleView ) )
@@ -245,7 +245,7 @@ if ( !isset( $ModulePrint ) )
 $SiteTitleAppend = $product->name();
 $SiteTitleAppend .= " - ". $product->productNumber();
 
-$t->set_var( "module", $ModuleName );
+$t->set_var( "module", $moduleName );
 $t->set_var( "module_list", $ModuleList );
 $t->set_var( "module_view", $ModuleView );
 $t->set_var( "module_print", $ModulePrint );
@@ -256,7 +256,7 @@ $t->set_var( "price_range", "" );
 $t->set_var( "price_to_high", "" );
 $t->set_var( "price_to_low", "" );
 
-$MailMethod = 1;
+$mailMethod = 1;
 
 if ($product->flatUSPS() != 'off') {
 	if (0 == $product->flatUSPS()) {	
@@ -316,7 +316,7 @@ if ( !$product->showProduct() )
 	exit();
 }
 
-if ( isset ( $Voucher ) )
+if ( isset ( $voucher ) )
 {
     $range = $product->priceRange();
     
@@ -339,7 +339,7 @@ if ( isset ( $Voucher ) )
 
     if ( !$error )
     {
-        eZHTTPTool::header( "Location: /trade/voucherinformation/$ProductID/$PriceRange/$MailMethod/" );
+        eZHTTPTool::header( "Location: /trade/voucherinformation/$productID/$PriceRange/$mailMethod/" );
         exit();
     }
 }
@@ -385,7 +385,7 @@ else
     $t->set_var( "main_image", "" );
 }
 
-if ( $CapitalizeHeadlines == "enabled" )
+if ( $capitalizeHeadlines == "enabled" )
 {
     // include_once( "classes/eztexttool.php" );
     $t->set_var( "title_text", eZTextTool::capitalize( $product->name() ) );
@@ -435,7 +435,7 @@ foreach ( $images as $imageArray )
         $t->set_var( "image_title", $image->name() );
         $t->set_var( "image_caption", eZTextTool::nl2br( $image->caption() ) );
         $t->set_var( "image_id", $image->id() );
-        $t->set_var( "product_id", $ProductID );
+        $t->set_var( "product_id", $productID );
 
         $variation = $image->requestImageVariation( $SmallImageWidth, $SmallImageHeight );
 
@@ -486,7 +486,7 @@ foreach ( $options as $option )
     $t->set_var( "value_description_header", "" );
     if ( $SimpleOptionHeaders )
     {
-        $t->set_var( "description_header", $headers[0] );
+        $t->set_var( "description_header", isset( $headers[0] ) ? $headers[0] : '' );
         $t->parse( "value_description_header", "value_description_header_tpl" );
     }
     else
@@ -578,7 +578,7 @@ foreach ( $options as $option )
         $t->set_var( "option_name", $option->name() );
         $t->set_var( "option_description", $option->description() );
         $t->set_var( "option_id", $option->id() );
-        $t->set_var( "product_id", $ProductID );
+        $t->set_var( "product_id", $productID );
 
         $t->parse( "option", "option_tpl", true );
     }
@@ -630,7 +630,7 @@ if ( $type )
             $t->set_var( "end_tr", "</tr>" );
         }
 
-        $value =& $attributes[$i]->value( $product );
+        $value = $attributes[$i]->value( $product );
         $t->set_var( "attribute_id", $attributes[$i]->id( ) );
         $t->set_var( "attribute_name", $attributes[$i]->name( ) );
         $t->set_var( "attribute_unit", $attributes[$i]->unit( ) );
@@ -702,17 +702,17 @@ if ( $product->catalogNumber() != "" )
 }
 
 
-$Quantity = $product->totalQuantity();
-if ( is_bool( $Quantity ) and !$Quantity )
+$quantity = $product->totalQuantity();
+if ( is_bool( $quantity ) and !$quantity )
     $ShowQuantity = false;
 $t->set_var( "quantity_item", "" );
 
 if ( $ShowQuantity and $product->hasPrice() )
 {
-    $NamedQuantity = $Quantity;
+    $NamedQuantity = $quantity;
     if ( $ShowNamedQuantity )
     {
-        $NamedQuantity = eZProduct::namedQuantity( $Quantity );
+        $NamedQuantity = eZProduct::namedQuantity( $quantity );
     }
     $t->set_var( "product_quantity", $NamedQuantity );
     $t->parse( "quantity_item", "quantity_item_tpl" );
@@ -722,9 +722,9 @@ $t->set_var( "date_available", "" );
 
 if ( $product->stockDate() && $NamedQuantity == 0 )
             {
-                $Stock = new eZDate();
-                $Stock->setTimeStamp( $product->stockDate() );	
-				$t->set_var( "date_available", $locale->format( $Stock ) );
+                $stock = new eZDate();
+                $stock->setTimeStamp( $product->stockDate() );	
+				$t->set_var( "date_available", $locale->format( $stock ) );
 				$t->parse( "date_available", "date_available_tpl" );				
 }
 
@@ -863,9 +863,9 @@ else
     }
 }
 
-if ( ( $PurchaseProduct and !$product->discontinued() and $can_checkout ) and !$useVoucher )
+if ( ( $purchaseProduct and !$product->discontinued() and $can_checkout ) and !$useVoucher )
     $t->parse( "add_to_cart", "add_to_cart_tpl" );
-if ( ( $PurchaseProduct and !$product->discontinued() and $can_checkout ) and $useVoucher )
+if ( ( $purchaseProduct and !$product->discontinued() and $can_checkout ) and $useVoucher )
     $t->parse( "voucher_buttons", "voucher_buttons_tpl" );
 if ( isset( $PrintableVersion ) && $PrintableVersion == "enabled" )
 {
@@ -883,7 +883,7 @@ if ( isset( $func_array ) and is_array( $func_array ) )
 {
     foreach ( $func_array as $func )
     {
-        $func( $t, $ProductID );
+        $func( $t, $productID );
     }
 }
 
@@ -934,7 +934,7 @@ $SiteTitleAppend = $product->name();
 $SiteDescriptionOverride = str_replace( "\"", "", strip_tags( $product->brief() ) );
 $SiteKeywordsOverride = str_replace( "\"", "", strip_tags( $product->keywords() ) );
 
-if ( isset( $GenerateStaticPage ) && $GenerateStaticPage == "true" && !$useVoucher )
+if ( isset( $generateStaticPage ) && $generateStaticPage == "true" && !$useVoucher )
 {
 
     $title_check_single = strstr( $SiteTitleAppend, "'" );
@@ -965,7 +965,7 @@ if ( isset( $GenerateStaticPage ) && $GenerateStaticPage == "true" && !$useVouch
     $output .= $t->parse("output", $template_var );
     // print the output the first time while printing the cache file.
     print( $output );
-    $CacheFile->store( $output );
+    $cacheFile->store( $output );
 }
 else
 {

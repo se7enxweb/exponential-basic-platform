@@ -30,10 +30,10 @@
 
 // include_once( "ezurltranslator/classes/ezurltranslator.php" );
 
-if ( isset( $DeleteURL ) && count( $DeleteIDArray ) > 0 )
+if ( isset( $deleteURL ) && count( $deleteIDArray ) > 0 )
 {
     $url = new eZURLTranslator( );
-    foreach ( $DeleteIDArray as $id )
+    foreach ( $deleteIDArray as $id )
     {
         $url = new eZURLTranslator( $id );
         $url->delete();
@@ -41,21 +41,21 @@ if ( isset( $DeleteURL ) && count( $DeleteIDArray ) > 0 )
 }
 
 
-if ( isset( $NewURL ) )
+if ( isset( $newURL ) )
 {
     
     $url = new eZURLTranslator( );
     $url->store();
 }
 
-if ( isset( $Store ) )
+if ( isset( $store ) )
 {
     $i=0;
-    foreach ( $IDArray as $id )
+    foreach ( $idArray as $id )
     {
         $url = new eZURLTranslator( $id );
-        $url->setSource( $SourceURL[$i] );
-        $url->setDest( $DestURL[$i] );
+        $url->setSource( $sourceURL[$i] );
+        $url->setDest( $destURL[$i] );
         $url->store();
 
         $i++;

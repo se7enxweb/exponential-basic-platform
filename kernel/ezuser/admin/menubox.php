@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: menubox.php 9460 2002-04-24 07:23:43Z bf $
+// $id: menubox.php 9460 2002-04-24 07:23:43Z bf $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //

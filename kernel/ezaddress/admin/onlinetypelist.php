@@ -54,13 +54,13 @@ $item_error = true;
 
 if( empty( $HTTP_REFERER ) )
 {
-    if( empty( $BackUrl ) )
+    if( empty( $backUrl ) )
     {
         $back_command = "$page_path/list";
     }
     else
     {
-        $back_command = $BackUrl;
+        $back_command = $backUrl;
     }
 }
 else
@@ -99,8 +99,8 @@ $t->set_var( "item_delete_command", "$page_path/delete" );
 $t->set_var( "item_view_command", "$page_path/view" );
 $t->set_var( "item_list_command", "$page_path/list" );
 $t->set_var( "item_new_command", "$page_path/new" );
-$t->set_var( "item_id", isset( $ItemID ) ? $ItemID : false );
-$t->set_var( "item_name", isset( $ItemName ) ? $ItemName : false );
+$t->set_var( "item_id", isset( $itemID ) ? $itemID : false );
+$t->set_var( "item_name", isset( $itemName ) ? $itemName : false );
 $t->set_var( "back_url", $back_command );
 $t->set_var( "item_back_command", $back_command );
 
@@ -142,9 +142,9 @@ foreach( $item_type_array as $item )
     else
         $t->parse( "item_visual_false", "item_visual_false_tpl" );
 
-    if ( isset( $SortPage ) )
+    if ( isset( $sortPage ) )
     {
-        $t->set_var( "item_sort_command", $SortPage );
+        $t->set_var( "item_sort_command", $sortPage );
         $t->parse( "item_linked", "item_linked_tpl" );
     }
     else

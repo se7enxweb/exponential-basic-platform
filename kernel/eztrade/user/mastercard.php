@@ -34,10 +34,10 @@ $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
 
-if ( $Action == "Verify" )
+if ( $action == "Verify" )
 {
     // add CC clearing code here:
-    $PaymentSuccess = true;        
+    $paymentSuccess = true;        
 }
 
 $t = new eZTemplate( "kernel/eztrade/user/" . $ini->variable( "eZTradeMain", "TemplateDir" ),
@@ -47,10 +47,10 @@ $t->set_file( "mastercard_tpl", "mastercard.tpl" );
 
 $t->setAllStrings();
 
-// $ChargeTotal is the value to charge the customer with
+// $chargeTotal is the value to charge the customer with
 
-$t->set_var( "order_id", $OrderID );
-$t->set_var( "payment_type", $PaymentType );
+$t->set_var( "order_id", $orderID );
+$t->set_var( "payment_type", $paymentType );
 
 $t->pparse( "output", "mastercard_tpl" );
 ?>

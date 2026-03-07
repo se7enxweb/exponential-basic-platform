@@ -34,14 +34,14 @@
 
 // include_once( "ezimagecatalogue/classes/ezimage.php" );
 
-$ModuleName = "eZ imagecatalogue";
-$SearchResult[0]["DetailedSearchPath"] = "/imagecatalogue/search/";
-$SearchResult[0]["DetailedSearchVariable"] = "SearchText";
-$SearchResult[0]["DetailViewPath"] = "/imagecatalogue/imageview/";
-$SearchResult[0]["IconPath"] = "/design/base/images/icons/document.gif";
+$moduleName = "eZ imagecatalogue";
+$searchResult[0]["DetailedSearchPath"] = "/imagecatalogue/search/";
+$searchResult[0]["DetailedSearchVariable"] = "SearchText";
+$searchResult[0]["DetailViewPath"] = "/imagecatalogue/imageview/";
+$searchResult[0]["IconPath"] = "/design/base/images/icons/document.gif";
 
 $image = new eZImage();
-$SearchResult[0]["Result"] = $image->search( $SearchText, 0, $Limit );
-$SearchResult[0]["SearchCount"] = $image->searchCount( $SearchText );
+$searchResult[0]["Result"] = $image->search( $searchText, 0, $limit );
+$searchResult[0]["SearchCount"] = $image->searchCount( $searchText );
 
 ?>

@@ -14,7 +14,15 @@ $SelectCountry = $ini->variable( "eZUserMain", "SelectCountry" );
 $SelectRegion = $ini->variable( "eZUserMain", "SelectRegion" );
 $AnonymousUserGroup = $ini->variable( "eZUserMain", "AnonymousUserGroup" );
 
-$AutoCookieLogin = eZHTTPTool::getVar( "AutoCookieLogin" );
+$AutoCookieLogin  = eZHTTPTool::getVar( "AutoCookieLogin" );
+$next             = eZHTTPTool::getVar( "next" );
+$first_name       = eZHTTPTool::getVar( "first_name" );
+$last_name        = eZHTTPTool::getVar( "last_name" );
+$email            = eZHTTPTool::getVar( "email" );
+$username         = eZHTTPTool::getVar( "username" );
+$password1        = eZHTTPTool::getVar( "password1" );
+$password2        = eZHTTPTool::getVar( "password2" );
+$newsletter_ind   = eZHTTPTool::getVar( "newsletter_ind" );
 
 $session = eZSession::globalSession();
 
@@ -33,8 +41,8 @@ $error = array();
 if( isset( $next ) && $next )
 {
   // Report blank errors
-  foreach($_POST as $k=>$v){
-    $error[$k] = error_check($v);
+  foreach(['first_name','last_name','email','username','password1','password2'] as $k){
+    $error[$k] = error_check(eZHTTPTool::getVar($k));
   }
   
   // Don't change blank passwords for users
@@ -66,7 +74,7 @@ if( isset( $next ) && $next )
     }
   }
   
-  if( isset( $errors_ind ) && $errors_ind )
+  if( !isset( $errors_ind ) )
   {  
     if(! $user){
       $user = new eZUser();
@@ -82,7 +90,8 @@ if( isset( $next ) && $next )
     $user->store();
     $user->loginUser($user);
     $user->setCookieValues();
-    header("Location: /index.php/user/step2/");
+    header("Location: /user/step2/");
+    exit();
   }
   
 }

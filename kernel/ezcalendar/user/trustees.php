@@ -44,13 +44,13 @@ if ( !$user )
 
 $session = eZSession::globalSession();
 $session->fetch();
-if ( isset( $Action ) && $Action == "edit" )
+if ( isset( $action ) && $action == "edit" )
 {
     $trustees = $user->trustees();
-    if ( !isset( $TrusteesList ) )
-        $TrusteesList = array();
-    $remove_trustees = array_diff( $trustees, $TrusteesList );
-    $add_trustees = array_diff( $TrusteesList, $trustees );
+    if ( !isset( $trusteesList ) )
+        $trusteesList = array();
+    $remove_trustees = array_diff( $trustees, $trusteesList );
+    $add_trustees = array_diff( $trusteesList, $trustees );
     foreach ( $remove_trustees as $remove )
     {
         $user->removeTrustee( $remove );

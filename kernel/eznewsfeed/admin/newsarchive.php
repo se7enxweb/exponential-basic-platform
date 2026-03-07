@@ -34,18 +34,18 @@ $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZNewsFeedMain", "Language" );
 
-if( isset( $DeleteCategories ) && count( $CategoryArrayID ) > 0 )
+if( isset( $deleteCategories ) && count( $categoryArrayID ) > 0 )
 {
-    foreach( $CategoryArrayID as $categoryID )
+    foreach( $categoryArrayID as $categoryID )
     {
         $category = new eZNewsCategory( $categoryID );
         $category->delete();
     }
 }
 
-if( isset( $DeleteNews ) && count( $NewsArrayID ) > 0)
+if( isset( $deleteNews ) && count( $newsArrayID ) > 0)
 {
-    foreach( $NewsArrayID as $newsID )
+    foreach( $newsArrayID as $newsID )
     {
         $news = new eZNews( $newsID );
         $news->delete();
@@ -79,7 +79,7 @@ $t->set_block( "news_archive_page_tpl", "next_tpl", "next" );
 $t->set_block( "news_archive_page_tpl", "delete_categories_tpl", "delete_categories" );
 $t->set_block( "news_archive_page_tpl", "delete_news_tpl", "delete_news" );
 
-$category = new eZNewsCategory( $CategoryID );
+$category = new eZNewsCategory( $categoryID );
 
 $t->set_var( "current_category_id", $category->id() );
 $t->set_var( "current_category_name", $category->name() );
@@ -142,20 +142,20 @@ else
 }
 
 
-if ( !isset( $Limit ) )
-    $Limit = 20;
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $limit ) )
+    $limit = 20;
+if ( !isset( $offset ) )
+    $offset = 0;
 
 // news
-if ( $ShowUnPublished = "no" )
+if ( $showUnPublished = "no" )
 {
-    $newsList = $category->newsList( "time", "no", $Offset, $Limit );
+    $newsList = $category->newsList( "time", "no", $offset, $limit );
     $newsListCount = $category->newsListCount( "time", "no" );    
 }
 else
 {
-    $newsList = $category->newsList( "time", "only", $Offset, $Limit );
+    $newsList = $category->newsList( "time", "only", $offset, $limit );
     $newsListCount = $category->newsListCount( "time", "only" );
 }
 
@@ -214,8 +214,8 @@ else
 }
 
 
-$prevOffs = $Offset - $Limit;
-$nextOffs = $Offset + $Limit;
+$prevOffs = $offset - $limit;
+$nextOffs = $offset + $limit;
         
 if ( $prevOffs >= 0 )
 {

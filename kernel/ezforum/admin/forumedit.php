@@ -41,25 +41,25 @@ $error = new eZINI( "kernel/ezforum/admin/intl/" . $Language . "/forumedit.php.i
 
 require( "kernel/ezuser/admin/admincheck.php" );
 
-if ( isset( $DeleteForums ) )
+if ( isset( $deleteForums ) )
 {
-    $Action = "DeleteForums";
+    $action = "DeleteForums";
 }
 
-if ( $Action == "insert" )
+if ( $action == "insert" )
 {
     if ( eZPermission::checkPermission( $user, "eZForum", "ForumAdd" ) )
     {
-        if ( $Name != "" && $Description != "" && $CategorySelectID != "" )
+        if ( $name != "" && $description != "" && $categorySelectID != "" )
         {
             $forum = new eZForum();
-            $forum->setName( $Name );
-            $forum->setDescription( $Description );
+            $forum->setName( $name );
+            $forum->setDescription( $description );
 
             $moderatorgroup = new eZUserGroup( $ModeratorID ); //variable name?
             $forum->setModerator( $moderatorgroup );
 
-            if ( $IsModerated == "on" )
+            if ( $isModerated == "on" )
             {
                 $forum->setIsModerated( true );
             }
@@ -68,7 +68,7 @@ if ( $Action == "insert" )
                 $forum->setIsModerated( false );
             }
 
-            if ( $IsAnonymous == "on" )
+            if ( $isAnonymous == "on" )
             {
                 $forum->setIsAnonymous( true );
             }
@@ -82,11 +82,11 @@ if ( $Action == "insert" )
 
             $forum->store();
 
-            $category = new eZForumCategory( $CategorySelectID );
+            $category = new eZForumCategory( $categorySelectID );
             $category->addForum( $forum );
-            eZPBLog::writeNotice( "Forum created: $Name from IP: $REMOTE_ADDR" );
+            eZPBLog::writeNotice( "Forum created: $name from IP: $REMOTE_ADDR" );
 
-            eZHTTPTool::header( "Location: /forum/forumlist/$CategorySelectID" );
+            eZHTTPTool::header( "Location: /forum/forumlist/$categorySelectID" );
             exit();
         }
         else
@@ -103,19 +103,19 @@ if ( $Action == "insert" )
     }
 }
 
-if ( $Action == "update" )
+if ( $action == "update" )
 {
     if ( eZPermission::checkPermission( $user, "eZForum", "ForumModify" ) )
     {
-        if ( $Name != "" && $Description != "" && $CategorySelectID != "" )
+        if ( $name != "" && $description != "" && $categorySelectID != "" )
         {
             $forum = new eZForum();
-            $forum->get( $ForumID );
+            $forum->get( $forumID );
 
             $moderatorgroup = new eZUserGroup( $ModeratorID ); //variable name?
             $forum->setModerator( $moderatorgroup );
 
-            if ( $IsModerated == "on" )
+            if ( $isModerated == "on" )
             {
                 $forum->setIsModerated( true );
             }
@@ -124,7 +124,7 @@ if ( $Action == "update" )
                 $forum->setIsModerated( false );
             }
 
-            if ( $IsAnonymous == "on" )
+            if ( $isAnonymous == "on" )
             {
                 $forum->setIsAnonymous( true );
             }
@@ -133,8 +133,8 @@ if ( $Action == "update" )
                 $forum->setIsAnonymous( false );
             }
 
-            $forum->setName( $Name );
-            $forum->setDescription( $Description );
+            $forum->setName( $name );
+            $forum->setDescription( $description );
 
             $group = new eZUserGroup( $GroupID );
             $forum->setGroup( $group );
@@ -144,12 +144,12 @@ if ( $Action == "update" )
             // remove all category assigmnents.
             $forum->removeFromForums();
 
-            $category = new eZForumCategory( $CategorySelectID );
+            $category = new eZForumCategory( $categorySelectID );
             $category->addForum( $forum );
 
-            eZPBLog::writeNotice( "Forum updated: $Name from IP: $REMOTE_ADDR" );
+            eZPBLog::writeNotice( "Forum updated: $name from IP: $REMOTE_ADDR" );
 
-            eZHTTPTool::header( "Location: /forum/forumlist/$CategorySelectID" );
+            eZHTTPTool::header( "Location: /forum/forumlist/$categorySelectID" );
             exit();
         }
         else
@@ -165,14 +165,14 @@ if ( $Action == "update" )
     }
 }
 
-if ( $Action == "delete" )
+if ( $action == "delete" )
 {
     if ( eZPermission::checkPermission( $user, "eZForum", "ForumDelete" ) )
     {
-        if ( $ForumID != "" )
+        if ( $forumID != "" )
         {
             $forum = new eZForum();
-            $forum->get( $ForumID );
+            $forum->get( $forumID );
             $forumName = $forum->name();
 
             $forum->delete();
@@ -194,13 +194,13 @@ if ( $Action == "delete" )
     }
 }
 
-if ( $Action == "DeleteForums" )
+if ( $action == "DeleteForums" )
 {
-    if ( count( $ForumArrayID ) != 0 )
+    if ( count( $forumArrayID ) != 0 )
     {
-        foreach ( $ForumArrayID as $ForumID )
+        foreach ( $forumArrayID as $forumID )
         {
-            $forum = new eZForum( $ForumID );
+            $forum = new eZForum( $forumID );
             $forumName = $forum->name();
             $categories = $forum->categories();
 
@@ -234,7 +234,7 @@ $t->set_var( "forum_description", "" );
 $action_value = "update";
 
 
-if ( $Action == "new" )
+if ( $action == "new" )
 {
 
     if ( !eZPermission::checkPermission( $user, "eZForum", "ForumModifyAdd" ) )
@@ -246,14 +246,14 @@ if ( $Action == "new" )
     $action_value = "insert";
     $groupUser = false;
     $forum = false;
-    $ForumID = false;
+    $forumID = false;
 }
 
-$t->set_var( "forum_id", $ForumID );
+$t->set_var( "forum_id", $forumID );
 
-if ( $Action == "edit" )
+if ( $action == "edit" )
 {
-    $forum = new eZForum( $ForumID );
+    $forum = new eZForum( $forumID );
     $categories = $forum->categories();
 
     $languageIni = new eZINI( "kernel/ezforum/admin/" . "intl/" . $Language . "/forumedit.php.ini", false );
@@ -267,11 +267,11 @@ if ( $Action == "edit" )
     else
     {
         $forum = new eZForum();
-        $forum->get( $ForumID );
+        $forum->get( $forumID );
 
         $t->set_var( "forum_name", $forum->name() );
         $t->set_var( "forum_description", $forum->description() );
-        $t->set_var( "forum_id", $ForumID);
+        $t->set_var( "forum_id", $forumID);
 
         if ( $forum->isModerated() )
         {
@@ -356,7 +356,7 @@ foreach ( $groupList as $groupItem )
     $t->set_var( "user_id", $groupItem->id() );
     $t->set_var( "user_name", $groupItem->name() ); //change variable names?
 
-    if ( $Action == "edit" )
+    if ( $action == "edit" )
     {
         if ( $moderator )
         {
@@ -402,7 +402,7 @@ foreach ( $groupList as $group )
 
 $t->set_var( "action_value", $action_value );
 $t->set_var( "error_msg", isset( $error_msg ) ? $error_msg : false );
-$t->set_var( "category_id", isset( $CategoryID ) ? $CategoryID : false );
+$t->set_var( "category_id", isset( $categoryID ) ? $categoryID : false );
 $t->set_var( "headline", $headline );
 
 $t->pparse( "output", "forum_page");

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: authorlist.php 8273 2001-11-05 09:09:11Z jhe $
+// $id: authorlist.php 8273 2001-11-05 09:09:11Z jhe $
 //
 // Created on: <31-May-2001 13:27:04 bf>
 //
@@ -30,17 +30,17 @@
 
 // include_once( "ezuser/classes/ezauthor.php" );
 
-if ( isset( $NewAuthor ) )
+if ( isset( $newAuthor ) )
 {
     $author = new eZAuthor();
     $author->store();    
 }
 
-if ( isset( $DeleteAuthor ) )
+if ( isset( $deleteAuthor ) )
 {
-    if ( count( $DeleteIDArray ) > 0 )
+    if ( count( $deleteIDArray ) > 0 )
     {
-        foreach ( $DeleteIDArray as $id )
+        foreach ( $deleteIDArray as $id )
         {
             eZAuthor::delete( $id );
         }
@@ -48,17 +48,17 @@ if ( isset( $DeleteAuthor ) )
 }
 
 
-if ( ( isset( $Store ) ) || ( isset( $NewAuthor ) ) ||( isset( $DeleteAuthor ) ) )
+if ( ( isset( $store ) ) || ( isset( $newAuthor ) ) ||( isset( $deleteAuthor ) ) )
 {
     $i = 0;
 
-    if ( count( $IDArray )  > 0 )
+    if ( count( $idArray )  > 0 )
     {
-        foreach ( $IDArray as $id )
+        foreach ( $idArray as $id )
         {
             $author = new eZAuthor( $id );
-            $author->setEMail( $EMail[$i] );
-            $author->setName( $Name[$i] );
+            $author->setEMail( $eMail[$i] );
+            $author->setName( $name[$i] );
             $author->store();
             
             $i++;
@@ -67,9 +67,9 @@ if ( ( isset( $Store ) ) || ( isset( $NewAuthor ) ) ||( isset( $DeleteAuthor ) )
 }
 
 $t = new eZTemplate( "kernel/ezuser/admin/" . $ini->variable( "eZUserMain", "AdminTemplateDir" ),
-                     "kernel/ezuser/admin/intl", $Language, "authorlist.php" );
+                     "kernel/ezuser/admin/intl", $language, "authorlist.php" );
 
-$locale = new eZLocale( $Language ); 
+$locale = new eZLocale( $language ); 
 
 $t->set_file( "author_page_tpl", "authorlist.tpl" );
 

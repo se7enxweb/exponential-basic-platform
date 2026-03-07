@@ -28,12 +28,12 @@
 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZForumMain", "Language" );
-$PageCaching = $ini->variable( "eZForumMain", "PageCaching" );
+$pageCaching = $ini->variable( "eZForumMain", "PageCaching" );
 
 unset( $menuCachedFile );
 
 // do the caching
-if ( $PageCaching == "enabled" )
+if ( $pageCaching == "enabled" )
 {
     $menuCacheFile = new eZCacheFile( "kernel/ezforum/cache",
                                       array( "menubox", $GlobalSiteDesign ),

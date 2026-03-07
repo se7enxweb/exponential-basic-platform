@@ -48,13 +48,13 @@ $t->set_block( "result", "result_list_tpl", "result_list" );
 $t->set_block( "result_list_tpl", "result_item_tpl", "result_item" );
 
 $poll = new eZPoll();
-if ( isset($Show) && $Show == "all"  )
+if ( isset($show) && $show == "all"  )
 {
     $pollArray = $poll->getAll();    
 }
 else
 {
-    $poll->get( $PollID );
+    $poll->get( $pollID );
     $pollArray[] = $poll;
 }
 

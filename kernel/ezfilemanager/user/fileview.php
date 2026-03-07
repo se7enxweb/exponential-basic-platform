@@ -57,9 +57,9 @@ $t->set_var( "delete", "" );
 $t->set_var( "edit", "" );
 $t->set_var( "download", "" );
 
-if ( $FileID != 0 )
+if ( $fileID != 0 )
 {
-    $file = new eZVirtualFile( $FileID );
+    $file = new eZVirtualFile( $fileID );
 
     if ( $file->id() == 0 )
     {
@@ -81,10 +81,10 @@ if ( $FileID != 0 )
     {
         $t->set_var( "folder_name", $parent_folder->name() );
 
-        $FolderID = $parent_folder->id();
+        $folderID = $parent_folder->id();
 
         // tempo fix for admin users - maybe in the future must be changed
-        if ( $parent_folder != 0 && ! eZPermission::checkPermission( $user, "eZUser", "AdminLogin" ) )
+        if ( $parent_folder->id() && ! eZPermission::checkPermission( $user, "eZUser", "AdminLogin" ) )
         {
             $GlobalSectionID = eZVirtualFolder::sectionIDstatic ( $parent_folder->id() );
         }
@@ -137,7 +137,7 @@ if ( $FileID != 0 )
 }
 
 
-$folder = new eZVirtualFolder( $FolderID );
+$folder = new eZVirtualFolder( $folderID );
 
 $folderList = $folder->getByParent( $folder );
 

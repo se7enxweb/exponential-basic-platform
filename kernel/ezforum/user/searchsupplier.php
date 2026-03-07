@@ -24,19 +24,19 @@
 //
 
 
-$ModuleName = "eZ forum";
-$SearchResult[0]["DetailedSearchPath"] = "/forum/search/";
-$SearchResult[0]["DetailedSearchVariable"] = "QueryString";
-$SearchResult[0]["DetailViewPath"] = "/forum/message/";
-$SearchResult[0]["IconPath"] = "/design/base/images/icons/message.gif";
+$moduleName = "eZ forum";
+$searchResult[0]["DetailedSearchPath"] = "/forum/search/";
+$searchResult[0]["DetailedSearchVariable"] = "QueryString";
+$searchResult[0]["DetailViewPath"] = "/forum/message/";
+$searchResult[0]["IconPath"] = "/design/base/images/icons/message.gif";
 
 // include_once( "ezforum/classes/ezforum.php" );
 
 $forum = new eZForum();
 
-$SearchResult[0]["Result"] = $forum->search( $SearchText, 0, $Limit, $SearchResult["SearchCount"] );
-$SearchResult[0]["SearchCount"] = count( $SearchResult[0]["Result"] );
-// $SearchResult["SearchCount"] = $forum->getQueryCount( $SearchText );
+$searchResult[0]["Result"] = $forum->search( $searchText, 0, $limit, $searchResult["SearchCount"] );
+$searchResult[0]["SearchCount"] = count( $searchResult[0]["Result"] );
+// $searchResult["SearchCount"] = $forum->getQueryCount( $searchText );
 
 
 ?>

@@ -53,19 +53,19 @@ $t->set_block( "news_search_page_tpl", "next_tpl", "next" );
 
 $news = new eZNews();
 
-if ( !isset( $Limit ) )
-    $Limit = 20;
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $limit ) )
+    $limit = 20;
+if ( !isset( $offset ) )
+    $offset = 0;
 
-if ( isset( $URLQueryString ) )
+if ( isset( $urlQueryString ) )
 {
-    $SearchText = urldecode( $URLQueryString );
+    $searchText = urldecode( $urlQueryString );
 }
 
 // fetch the n next news items
-$newsList = $news->search( $SearchText, true, $Offset, $Limit );
-$newsListCount = $news->searchCount( $SearchText, true );
+$newsList = $news->search( $searchText, true, $offset, $limit );
+$newsListCount = $news->searchCount( $searchText, true );
 
 
 $locale = new eZLocale( $Language );
@@ -110,8 +110,8 @@ else
 $t->set_var( "news_list", "" );
 
 
-$prevOffs = $Offset - $Limit;
-$nextOffs = $Offset + $Limit;
+$prevOffs = $offset - $limit;
+$nextOffs = $offset + $limit;
         
 if ( $prevOffs >= 0 )
 {
@@ -133,7 +133,7 @@ else
     $t->set_var( "next", "" );
 }
 
-$t->set_var( "url_query_string", urlencode( $SearchText ) );
+$t->set_var( "url_query_string", urlencode( $searchText ) );
 
 $t->pparse( "output", "news_search_page_tpl" );
 

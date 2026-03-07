@@ -27,7 +27,7 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
-$UnapprovdLimit = $ini->variable( "eZForumMain", "UnApprovdLimit" );
+$unapprovdLimit = $ini->variable( "eZForumMain", "UnApprovdLimit" );
 
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlocale.php" );
@@ -52,7 +52,7 @@ $locale = new eZLocale( $Language );
 
 $message = new eZForumMessage();
 
-$messages = $message->getAllUnApproved( $Offset, $UnapprovdLimit );
+$messages = $message->getAllUnApproved( $offset, $unapprovdLimit );
 $messageCount = $message->unApprovedCount();
 
 $languageIni = new eZINI( "kernel/ezforum/admin/" . "intl/" . $Language . "/unapprovedlist.php.ini", false );
@@ -99,7 +99,7 @@ else
     }
 }
 
-eZList::drawNavigator( $t, $messageCount, $UnapprovdLimit, $Offset, "message_page" );
+eZList::drawNavigator( $t, $messageCount, $unapprovdLimit, $offset, "message_page" );
 
 $t->pparse( "output", "message_page" );
 

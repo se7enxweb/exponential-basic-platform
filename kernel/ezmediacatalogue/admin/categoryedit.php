@@ -35,30 +35,30 @@
 
 // include_once( "ezmediacatalogue/classes/ezmediacategory.php" );
 
-if ( isset( $Action ) && $Action == "New" )
+if ( isset( $action ) && $action == "New" )
 {
-    $Name = false;
-    $Description = false;
-    $CategoryID = false;
+    $name = false;
+    $description = false;
+    $categoryID = false;
     $readGroupArrayID[0] = -1;
     $writeGroupArrayID[0] = -1;
     $uploadGroupArrayID[0] = -1;
 }
 
 // Insert the category values when editing.
-if ( $Action == "Edit" ) {
-    $category = new eZMediaCategory($CategoryID);
+if ( $action == "Edit" ) {
+    $category = new eZMediaCategory($categoryID);
 
-    $Name = $category->name();
-    $Description = $category->description();
+    $name = $category->name();
+    $description = $category->description();
     $parent = $category->parent();
     if ($parent)
-        $CurrentCategoryID = $parent->id();
+        $currentCategoryID = $parent->id();
     else
-        $CurrentCategoryID = $CategoryID;
+        $currentCategoryID = $categoryID;
 }
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /mediacatalogue/media/list/" );
     exit();
@@ -90,8 +90,8 @@ $t->set_block( "category_edit_tpl", "write_group_item_tpl", "write_group_item" )
 $t->set_block( "category_edit_tpl", "read_group_item_tpl", "read_group_item" );
 
 $t->set_var( "errors", "" );
-$t->set_var( "category_name", "$Name" );
-$t->set_var( "category_description", "$Description" );
+$t->set_var( "category_name", "$name" );
+$t->set_var( "category_description", "$description" );
 
 $t->set_block( "errors_tpl", "error_write_permission", "error_write" );
 $t->set_var( "error_write", "" );
@@ -116,14 +116,14 @@ $permissionCheck = true;
 $nameCheck = true;
 $descriptionCheck = true;
 
-$t->set_var( "category_id", "$CategoryID" );
+$t->set_var( "category_id", "$categoryID" );
 
-if ( $Action == "Insert" || $Action == "Update" )
+if ( $action == "Insert" || $action == "Update" )
 {
     // Check if the user have write access to the category
     if ( $permissionCheck )
     {
-        if ( $ParentID == 0 )
+        if ( $parentID == 0 )
         {
             if ( eZPermission::checkPermission( $user, "eZMediaCatalogue", "WriteToRoot"  ) == false )
             {
@@ -133,7 +133,7 @@ if ( $Action == "Insert" || $Action == "Update" )
         }
         else
         {
-            $parentCategory = new eZMediaCategory( $ParentID );
+            $parentCategory = new eZMediaCategory( $parentID );
 
             if ( eZObjectPermission::hasPermission( $parentCategory, "mediacatalogue_category", "w", $user ) == false )
             {
@@ -144,11 +144,11 @@ if ( $Action == "Insert" || $Action == "Update" )
     }
 
     // If selected more that one group, check if there is are a everybody.
-    if ( count ( $ReadGroupArrayID ) > 1 )
+    if ( count ( $readGroupArrayID ) > 1 )
     {
-        foreach ( $ReadGroupArrayID as $Read )
+        foreach ( $readGroupArrayID as $read )
         {
-            if ( $Read == 0 )
+            if ( $read == 0 )
             {
                 $t->parse( "error_read_everybody_permission", "error_read_everybody_permission_tpl" );
                 $error = true;
@@ -157,11 +157,11 @@ if ( $Action == "Insert" || $Action == "Update" )
     }
 
     // If selected more that one group, check if there is are a everybody.
-    if ( count ( $WriteGroupArrayID ) > 1 )
+    if ( count ( $writeGroupArrayID ) > 1 )
     {
-        foreach ( $WriteGroupArrayID as $Write )
+        foreach ( $writeGroupArrayID as $write )
         {
-            if ( $Write == 0 )
+            if ( $write == 0 )
             {
                 $t->parse( "error_write_everybody_permission", "error_write_everybody_permission_tpl" );
                 $error = true;
@@ -170,9 +170,9 @@ if ( $Action == "Insert" || $Action == "Update" )
     }
 
     // Check if parent is the same as category.
-    if ( $Action == "Update" )
+    if ( $action == "Update" )
     {
-        if ( $ParentID == $CategoryID )
+        if ( $parentID == $categoryID )
         {
             $t->parse( "error_parent_check", "error_parent_check_tpl" );
             $error = true;
@@ -182,7 +182,7 @@ if ( $Action == "Insert" || $Action == "Update" )
     // Check if name is empty.
     if ( $nameCheck )
     {
-        if ( empty ( $Name ) )
+        if ( empty ( $name ) )
         {
             $t->parse( "error_name", "error_name_tpl" );
             $error = true;
@@ -192,7 +192,7 @@ if ( $Action == "Insert" || $Action == "Update" )
     // Check if description is empty.
     if ( $descriptionCheck )
     {
-        if ( empty ( $Description ) )
+        if ( empty ( $description ) )
         {
             $t->parse( "error_description", "error_description_tpl" );
             $error = true;
@@ -208,94 +208,94 @@ if ( $Action == "Insert" || $Action == "Update" )
 }
 
 // Insert a category.
-if( ( $Action == "Insert" || $Action == "Update" ) && $error == false )
+if( ( $action == "Insert" || $action == "Update" ) && $error == false )
 {
-    $category = new eZMediaCategory( $CategoryID );
-    $category->setName( $Name );
-    $category->setDescription( $Description );
+    $category = new eZMediaCategory( $categoryID );
+    $category->setName( $name );
+    $category->setDescription( $description );
 
     $category->setUser( $user );
 
 
-    $parent = new eZMediaCategory( $ParentID );
+    $parent = new eZMediaCategory( $parentID );
     $category->setParent( $parent );
 
     $category->store();
-    changePermissions( $CategoryID, $ReadGroupArrayID, 'r' );
-    changePermissions( $CategoryID, $WriteGroupArrayID, 'w' );
+    changePermissions( $categoryID, $readGroupArrayID, 'r' );
+    changePermissions( $categoryID, $writeGroupArrayID, 'w' );
 
     /*
-     if ( count ( $ReadGroupArrayID ) > 0 )
+     if ( count ( $readGroupArrayID ) > 0 )
      {
-         foreach ( $ReadGroupArrayID as $Read )
+         foreach ( $readGroupArrayID as $read )
          {
-             if ( $Read == 0 )
+             if ( $read == 0 )
                 $group = -1;
             else
-                $group = new eZUserGroup( $Read );
+                $group = new eZUserGroup( $read );
             
             eZObjectPermission::setPermission( $group, $category->id(), "mediacatalogue_category", "r" );
         }
     }
 
-   if( count ( $WriteGroupArrayID ) > 0 )
+   if( count ( $writeGroupArrayID ) > 0 )
     {
-        foreach ( $WriteGroupArrayID as $Write )
+        foreach ( $writeGroupArrayID as $write )
         {
-            if ( $Write == 0 )
+            if ( $write == 0 )
                 $group = -1;
             else
-                $group = new eZUserGroup( $Write );
+                $group = new eZUserGroup( $write );
             
             eZObjectPermission::setPermission( $group, $category->id(), "mediacatalogue_category", "w" );
         }
     }
     */
 
-    eZHTTPTool::header( "Location: /mediacatalogue/media/list/$ParentID" );
+    eZHTTPTool::header( "Location: /mediacatalogue/media/list/$parentID" );
     exit();
 }
 
 
 // Delete the selected categories.
-if ( $Action == "Delete" && $error == false )
+if ( $action == "Delete" && $error == false )
 {
-    if ( count ( $CategoryArrayID ) > 0 )
+    if ( count ( $categoryArrayID ) > 0 )
     {
-        foreach ( $CategoryArrayID as $CategoryID )
+        foreach ( $categoryArrayID as $categoryID )
         {
-            $category = new eZMediaCategory( $CategoryID );
+            $category = new eZMediaCategory( $categoryID );
             $category->delete();
         }
     }
 }
 
 // Delete the selected categories.
-if ( isset( $DeleteMedia ) && $error == false )
+if ( isset( $deleteMedia ) && $error == false )
 {
-    if ( count ( $MediaArrayID ) > 0 )
+    if ( count ( $mediaArrayID ) > 0 )
     {
-        foreach ( $MediaArrayID as $MediaID )
+        foreach ( $mediaArrayID as $mediaID )
         {
-            eZMedia::delete( $MediaID );
+            eZMedia::delete( $mediaID );
         }
     }
 }
 
 // Insert default values when creating a new category.
-if ( $Action == "New" || $error )
+if ( $action == "New" || $error )
 {
     $t->set_var( "action_value", "insert" );
-    $t->set_var( "category_id", "$CategoryID" );
+    $t->set_var( "category_id", "$categoryID" );
 
     $t->set_var( "user_read_checked", "checked" );
     $t->set_var( "user_write_checked", "checked" );
 }
 
 // Insert the category values when editing.
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $category = new eZMediaCategory( $CategoryID );
+    $category = new eZMediaCategory( $categoryID );
 
     $t->set_var( "category_name", $category->name() );
     $t->set_var( "category_id", $category->id() );
@@ -304,7 +304,7 @@ if ( $Action == "Edit" )
     $parent = $category->parent();
 
     if ( $parent )
-        $CurrentCategoryID = $parent->id();
+        $currentCategoryID = $parent->id();
 
     $t->set_var( "action_value", "update" );
 
@@ -391,9 +391,9 @@ foreach ( $categoryList as $categoryItem )
 
         $t->set_var( "is_selected", "" );
 
-        if ( isset( $CurrentCategoryID ) && $CurrentCategoryID != 0 )
+        if ( isset( $currentCategoryID ) && $currentCategoryID != 0 )
         {
-            if ( $categoryItem[0]->id() == $CurrentCategoryID )
+            if ( $categoryItem[0]->id() == $currentCategoryID )
             {
                 $t->set_var( "is_selected", "selected" );
             }

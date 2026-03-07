@@ -58,12 +58,12 @@ $t->set_var( "new_email_list", "" );
 $t->set_var( "email_exists_list", "" );
 $t->set_var( "not_valid_list", "" );
 
-$t->set_var( "addresses", isset( $Addresses ) ? $Addresses : false );
+$t->set_var( "addresses", isset( $addresses ) ? $addresses : false );
 
-if ( isset ( $OK ) && ( count ( $CategoryArrayID ) > 0 ) )
+if ( isset ( $ok ) && ( count ( $categoryArrayID ) > 0 ) )
 {
     unset ( $addresses );
-    $addresses = explode( "\n", $Addresses );
+    $addresses = explode( "\n", $addresses );
 
     if ( count ( $addresses ) > 0 )
     {
@@ -93,13 +93,13 @@ if ( isset ( $OK ) && ( count ( $CategoryArrayID ) > 0 ) )
                 }
 
                
-                foreach( $CategoryArrayID as $CategoryID )
+                foreach( $categoryArrayID as $categoryID )
                 {
-                    if ( $bulkMail->subscribe( $CategoryID ) )
+                    if ( $bulkMail->subscribe( $categoryID ) )
                     {
-                        $category = new eZBulkMailCategory( $CategoryID );
+                        $category = new eZBulkMailCategory( $categoryID );
                         $new[] = array( $email, $category->name() );
-                        if ( $SendMail == "on" )
+                        if ( $sendMail == "on" )
                         {
                             $mailTemplate->set_var( "category_name", $category->name() );
 

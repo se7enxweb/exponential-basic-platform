@@ -35,9 +35,9 @@ $Language = $ini->variable( "eZLinkMain", "Language" );
 // include_once( "ezlink/classes/ezlink.php" );
 // include_once( "ezlink/classes/ezlinktype.php" );
 
-if( isset( $Delete ) )
+if( isset( $delete ) )
 {
-    foreach( $DeleteArrayID as $typeid )
+    foreach( $deleteArrayID as $typeid )
     {
         $typed = new eZLinkType( $typeid );
         $typed->delete();

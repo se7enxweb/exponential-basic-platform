@@ -33,23 +33,58 @@ if( eZPermission::checkPermission( $user, "eZBulkMail", "ModuleEdit" ) == false 
     exit();
 }
 
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$addresses                 = eZHTTPTool::getVar( 'Addresses' );
+$bulkMailArrayID           = eZHTTPTool::getVar( 'BulkMailArrayID' ) ?? [];
+$cancel                    = eZHTTPTool::getVar( 'Cancel' );
+$categoryArrayID           = eZHTTPTool::getVar( 'CategoryArrayID' ) ?? [];
+$categoryID                = eZHTTPTool::getVar( 'CategoryID' );
+$delete                    = eZHTTPTool::getVar( 'Delete' );
+$description               = eZHTTPTool::getVar( 'Description' );
+$edit                      = eZHTTPTool::getVar( 'Edit' );
+$editButton                = eZHTTPTool::getVar( 'EditButton' );
+$footer                    = eZHTTPTool::getVar( 'Footer' );
+$from                      = eZHTTPTool::getVar( 'From' );
+$fromName                  = eZHTTPTool::getVar( 'FromName' );
+$header                    = eZHTTPTool::getVar( 'Header' );
+$listID                    = eZHTTPTool::getVar( 'ListID' );
+$mailArrayID               = eZHTTPTool::getVar( 'MailArrayID' ) ?? [];
+$mailBody                  = eZHTTPTool::getVar( 'MailBody' );
+$mailID                    = eZHTTPTool::getVar( 'MailID' );
+$name                      = eZHTTPTool::getVar( 'Name' );
+$new                       = eZHTTPTool::getVar( 'New' );
+$ok                        = eZHTTPTool::getVar( 'OK' ) ?? eZHTTPTool::getVar( 'Ok' );
+$offset                    = eZHTTPTool::getVar( 'Offset' );
+$preview                   = eZHTTPTool::getVar( 'Preview' );
+$publicList                = eZHTTPTool::getVar( 'PublicList' );
+$save                      = eZHTTPTool::getVar( 'Save' );
+$send                      = eZHTTPTool::getVar( 'Send' );
+$sendButton                = eZHTTPTool::getVar( 'SendButton' );
+$sendMail                  = eZHTTPTool::getVar( 'SendMail' );
+$singleListID              = eZHTTPTool::getVar( 'SingleListID' );
+$subject                   = eZHTTPTool::getVar( 'Subject' );
+$subscriptionGroupsArrayID = eZHTTPTool::getVar( 'SubscriptionGroupsArrayID' ) ?? [];
+$templateArrayID           = eZHTTPTool::getVar( 'TemplateArrayID' ) ?? [];
+$templateID                = eZHTTPTool::getVar( 'TemplateID' );
+// URL-routing variables are set below inside the switch and override the above POST defaults.
+
 switch ( $url_array[2] )
 {
     case "categorylist":
     {
-        $CategoryID = $url_array[3];
-        $Offset = $url_array[4];
-        if( $Offset == "" )
-            $Offset = 0;
+        $categoryID = $url_array[3];
+        $offset = $url_array[4];
+        if( $offset == "" )
+            $offset = 0;
         include( "kernel/ezbulkmail/admin/categorylist.php" );
     }
     break;
 
     case "categoryedit" :
     {
-        $CategoryID = $url_array[3];
-        if( !is_numeric( $CategoryID ) )
-            $CategoryID = 0;
+        $categoryID = $url_array[3];
+        if( !is_numeric( $categoryID ) )
+            $categoryID = 0;
         include( "kernel/ezbulkmail/admin/categoryedit.php" );
     }
     break;
@@ -62,18 +97,18 @@ switch ( $url_array[2] )
 
     case "templateedit" :
     {
-        $TemplateID = $url_array[3];
-        if( !is_numeric( $TemplateID ) )
-            $TemplateID = 0;
+        $templateID = $url_array[3];
+        if( !is_numeric( $templateID ) )
+            $templateID = 0;
         include( "kernel/ezbulkmail/admin/templateedit.php" );
     }
     break;
 
     case "mailedit" :
     {
-        $MailID = $url_array[3];
-        if( !is_numeric( $MailID ) )
-            $MailID = 0;
+        $mailID = $url_array[3];
+        if( !is_numeric( $mailID ) )
+            $mailID = 0;
         include( "kernel/ezbulkmail/admin/mailedit.php" );
     }
     break;
@@ -85,13 +120,13 @@ switch ( $url_array[2] )
     break;
 
     case "send" :
-        $SendButton = true;
+        $sendButton = true;
     case "preview" :
-        $EditButton = true;
+        $editButton = true;
     case "view" :
     {
-        $MailID = $url_array[3];
-        if( !is_numeric( $MailID ) )
+        $mailID = $url_array[3];
+        if( !is_numeric( $mailID ) )
         {
             eZHTTPTool::header( "Location: /error/404" );
             exit();
@@ -114,9 +149,9 @@ switch ( $url_array[2] )
 
     case "userlist":
     {
-        $CategoryID = $url_array[3];
-        if( !is_numeric( $CategoryID ) )
-            $CategoryID = 0;
+        $categoryID = $url_array[3];
+        if( !is_numeric( $categoryID ) )
+            $categoryID = 0;
         include( "kernel/ezbulkmail/admin/userlist.php" );
     }
     break;

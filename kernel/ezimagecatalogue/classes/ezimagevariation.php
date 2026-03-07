@@ -38,6 +38,36 @@
 
 class eZImageVariation
 {
+    /** Pre-fetched variation rows keyed by "groupID|imageID|modification". null = confirmed absent. */
+    static $cache = [];
+
+    /*!
+      Batch-prefetches variation records for a list of image IDs sharing the same group.
+      Reduces N individual SELECTs to one IN() query.
+    */
+    static function prefetchByGroup( $groupID, array $imageIDs, $modification = '' )
+    {
+        if ( empty( $imageIDs ) ) return;
+        $db = eZDB::globalDatabase();
+        $idList = implode( ',', array_map( 'intval', $imageIDs ) );
+        $mod    = $db->escapeString( $modification );
+        $rows   = [];
+        $db->array_query( $rows, "SELECT * FROM eZImageCatalogue_ImageVariation
+            WHERE VariationGroupID='$groupID' AND ImageID IN ($idList) AND Modification='$mod'" );
+        foreach ( $rows as $row )
+        {
+            $key = $groupID . '|' . $row[$db->fieldName( 'ImageID' )] . '|' . $modification;
+            self::$cache[$key] = $row;
+        }
+        // Mark all requested IDs as resolved so getByGroupAndImage skips DB on miss too
+        foreach ( $imageIDs as $imageID )
+        {
+            $key = $groupID . '|' . $imageID . '|' . $modification;
+            if ( !isset( self::$cache[$key] ) )
+                self::$cache[$key] = null; // confirmed absent
+        }
+    }
+
     /*!
       Constructs a new eZImageVariation object.
     */
@@ -151,6 +181,25 @@ class eZImageVariation
     */
     function getByGroupAndImage( $groupID, $imageID, $modification )
     {
+        // Fast path: use pre-fetched cache populated by prefetchByGroup()
+        $key = "$groupID|$imageID|$modification";
+        if ( array_key_exists( $key, self::$cache ) )
+        {
+            $row = self::$cache[$key];
+            if ( $row === null ) return false; // confirmed absent
+            $db = eZDB::globalDatabase();
+            $this->ID             = $row[$db->fieldName( "ID" )];
+            $this->ImageID        = $row[$db->fieldName( "ImageID" )];
+            $this->VariationGroupID = $row[$db->fieldName( "VariationGroupID" )];
+            $this->ImagePath      = $row[$db->fieldName( "ImagePath" )];
+            $this->Width          = $row[$db->fieldName( "Width" )];
+            $this->Height         = $row[$db->fieldName( "Height" )];
+            $this->Modification   = $row[$db->fieldName( "Modification" )];
+            if ( !file_exists( $this->ImagePath ) or !is_file( $this->ImagePath ) )
+                return false;
+            return true;
+        }
+
         $db = eZDB::globalDatabase();
         $ret = false;
 
@@ -162,15 +211,19 @@ class eZImageVariation
 
             if ( count( $image_variation_array ) > 0 )
             {
-                $this->ID =& $image_variation_array[0][$db->fieldName("ID")];
-                $this->ImageID =& $image_variation_array[0][$db->fieldName("ImageID")];
+                $this->ID             =& $image_variation_array[0][$db->fieldName("ID")];
+                $this->ImageID        =& $image_variation_array[0][$db->fieldName("ImageID")];
                 $this->VariationGroupID =& $image_variation_array[0][$db->fieldName("VariationGroupID")];
-                $this->ImagePath =& $image_variation_array[0][$db->fieldName("ImagePath")];
-                $this->Width =& $image_variation_array[0][$db->fieldName("Width")];
-                $this->Height =& $image_variation_array[0][$db->fieldName("Height")];
-                $this->Modification =& $image_variation_array[0][$db->fieldName("Modification")];
-
+                $this->ImagePath      =& $image_variation_array[0][$db->fieldName("ImagePath")];
+                $this->Width          =& $image_variation_array[0][$db->fieldName("Width")];
+                $this->Height         =& $image_variation_array[0][$db->fieldName("Height")];
+                $this->Modification   =& $image_variation_array[0][$db->fieldName("Modification")];
+                self::$cache[$key]   = $image_variation_array[0]; // store for future calls
                 $ret = true;
+            }
+            else
+            {
+                self::$cache[$key] = null; // cache confirmed absent
             }
 
             if ( !file_exists( $this->ImagePath ) or !is_file( $this->ImagePath ) )

@@ -32,63 +32,85 @@
 $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZFileManagerMain", "DefaultSection" );
 
+// HTTP input variables (replaces register_globals extraction)
+$cancel             = eZHTTPTool::getVar( 'Cancel' );
+$delete             = eZHTTPTool::getVar( 'Delete' );
+$deleteFiles        = eZHTTPTool::getVar( 'DeleteFiles' );
+$deleteFolders      = eZHTTPTool::getVar( 'DeleteFolders' );
+$description        = eZHTTPTool::getVar( 'Description' );
+$download           = eZHTTPTool::getVar( 'Download' );
+$fileUpload         = eZHTTPTool::getVar( 'FileUpload' );
+$name               = eZHTTPTool::getVar( 'Name' );
+$parentID           = eZHTTPTool::getVar( 'ParentID' );
+$sectionID          = eZHTTPTool::getVar( 'SectionID' );
+$syncFileDir        = eZHTTPTool::getVar( 'SyncFileDir' );
+$updateFiles        = eZHTTPTool::getVar( 'UpdateFiles' );
+// Array POST vars
+$fileArrayID        = $_POST['FileArrayID']         ?? [];
+$fileUpdateIDArray  = $_POST['FileUpdateIDArray']   ?? [];
+$folderArrayID      = $_POST['FolderArrayID']       ?? [];
+$newDescriptionArray = $_POST['NewDescriptionArray'] ?? [];
+$readGroupArrayID   = $_POST['ReadGroupArrayID']    ?? [];
+$uploadGroupArrayID = $_POST['UploadGroupArrayID']  ?? [];
+$writeGroupArrayID  = $_POST['WriteGroupArrayID']   ?? [];
+
 switch ( $url_array[2] )
 {
     case "new" :        
     {
-        $Action = "New";
-        $NewFile = true;
-        $FolderID = false;
+        $action = "New";
+        $newFile = true;
+        $folderID = false;
         include( "kernel/ezfilemanager/user/fileupload.php" );
     }
     break;
 
     case "insert" :        
     {
-        $Action = "Insert";
+        $action = "Insert";
         include( "kernel/ezfilemanager/user/fileupload.php" );
     }
     break;
 
     case "edit" :
     {
-        $FileID = $url_array[3];
-        $Action = "Edit";
+        $fileID = $url_array[3];
+        $action = "Edit";
         include( "kernel/ezfilemanager/user/fileupload.php" );
     }
     break;
     
     case "update" :
     {
-        $FileID = $url_array[3];
-        $Action = "Update";
+        $fileID = $url_array[3];
+        $action = "Update";
         include( "kernel/ezfilemanager/user/fileupload.php" );
     }
     break;
     
     case "fileview" :
     {
-        $FileID = $url_array[3];
+        $fileID = $url_array[3];
         include( "kernel/ezfilemanager/user/fileview.php" );
     }
     break;
     
     case "download" :
     {
-        $FileID = $url_array[3];
-        $FileNamePassed = $url_array[4];
+        $fileID = $url_array[3];
+        $fileNamePassed = $url_array[4];
         include( "kernel/ezfilemanager/user/filedownload.php" );
     }
     break;
     
     case "list" :
     {
-        $FolderID = $url_array[3];
-        if ( !isset( $FolderID ) || $FolderID == "" )
-            $FolderID = 0;
-        $Offset = $url_array[4];
-        if ( !isset( $Offset ) || $Offset == "" )
-            $Offset = 0;
+        $folderID = $url_array[3];
+        if ( !isset( $folderID ) || $folderID == "" )
+            $folderID = 0;
+        $offset = $url_array[4];
+        if ( !isset( $offset ) || $offset == "" )
+            $offset = 0;
         include( "kernel/ezfilemanager/user/filelist.php" );
     }
     break;
@@ -107,39 +129,39 @@ switch ( $url_array[2] )
             case "new" :
             {
                 $parentID = $url_array[4];
-                $Action = "New";
-                $NewFolder = true;
-                $FolderID = false;
+                $action = "New";
+                $newFolder = true;
+                $folderID = false;
                 include( "kernel/ezfilemanager/user/folderedit.php" );
             }
             break;
             case "delete" :
             {
-                $FolderID = $url_array[4];
-                $Action = "Delete";
+                $folderID = $url_array[4];
+                $action = "Delete";
                 include( "kernel/ezfilemanager/user/folderedit.php" );
             }
             break;
             
             case "insert" :
             {
-                $Action = "Insert";
+                $action = "Insert";
                 include( "kernel/ezfilemanager/user/folderedit.php" );
             }
             break;
 
             case "edit" :
             {
-                $FolderID = $url_array[4];
-                $Action = "Edit";
+                $folderID = $url_array[4];
+                $action = "Edit";
                 include( "kernel/ezfilemanager/user/folderedit.php" );
             }
             break;
 
             case "update" :
             {
-                $FolderID = $url_array[4];
-                $Action = "Update";
+                $folderID = $url_array[4];
+                $action = "Update";
                 include( "kernel/ezfilemanager/user/folderedit.php" );
             }
             break;
@@ -150,7 +172,7 @@ switch ( $url_array[2] )
 
     case "browse":
     {
-        $FolderID = $url_array[3];
+        $folderID = $url_array[3];
         include( "kernel/ezfilemanager/admin/browse.php" );
     }
     break;
@@ -159,8 +181,8 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "parent" )
         {
-            $SearchText = urldecode( $url_array[4] );
-            $Offset = $url_array[5];
+            $searchText = urldecode( $url_array[4] );
+            $offset = $url_array[5];
         }
         
         include( "kernel/ezfilemanager/user/search.php" );

@@ -44,19 +44,19 @@ $t->set_file( "browser_page_tpl", "browserlist.tpl" );
 $t->set_block( "browser_page_tpl", "browser_list_tpl", "browser_list" );
 $t->set_block( "browser_list_tpl", "browser_tpl", "browser" );
 
-if ( !isset( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
 
-$latest = eZPageViewQuery::topBrowsers( $ViewLimit, $Offset );
-// $ItemCount = eZPageViewQuery::topBrowsersCount();
-$ItemCount = count( $latest );
+$latest = eZPageViewQuery::topBrowsers( $viewLimit, $offset );
+// $itemCount = eZPageViewQuery::topBrowsersCount();
+$itemCount = count( $latest );
 $total_count = eZPageViewQuery::latestCount();
 $total_count = eZPageViewQuery::sumBrowserTypeCount();
 
-$t->set_var( "item_start", $Offset + 1 );
-$t->set_var( "item_end", $Offset + $ViewLimit );
-$t->set_var( "item_count", $ItemCount );
-$t->set_var( "item_limit", $ViewLimit );
+$t->set_var( "item_start", $offset + 1 );
+$t->set_var( "item_end", $offset + $viewLimit );
+$t->set_var( "item_count", $itemCount );
+$t->set_var( "item_limit", $viewLimit );
 
 if ( count( $latest ) > 0 )
 {
@@ -75,7 +75,7 @@ if ( count( $latest ) > 0 )
         $i++;
     }
 
-    eZList::drawNavigator( $t, $ItemCount, $ViewLimit, $Offset, "browser_list_tpl" );
+    eZList::drawNavigator( $t, $itemCount, $viewLimit, $offset, "browser_list_tpl" );
     $t->parse( "browser_list", "browser_list_tpl" );
 }
 else
@@ -83,8 +83,8 @@ else
     $t->set_var( "browser_list", "" );
 }
 
-$t->set_var( "view_mode", $ViewMode );
-$t->set_var( "view_limit", $ViewLimit );
+$t->set_var( "view_mode", $viewMode );
+$t->set_var( "view_limit", $viewLimit );
 
 $t->pparse( "output", "browser_page_tpl" );
 

@@ -23,6 +23,8 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
+// $generateStaticPage = true;
+
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlocale.php" );
@@ -39,10 +41,10 @@
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
 
-if ( $CategoryID != 0 )
+if ( $categoryID != 0 )
 {
-    $GlobalSectionID = eZProductCategory::sectionIDStatic( $CategoryID );
-    $CategoryArray = $CategoryID;
+    $GlobalSectionID = eZProductCategory::sectionIDStatic( $categoryID );
+    $categoryArray = $categoryID;
 }
 
 // init the section
@@ -53,12 +55,12 @@ $sectionObject->setOverrideVariables();
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
-$Limit = $ini->variable( "eZTradeMain", "ProductLimit" );
+$limit = $ini->variable( "eZTradeMain", "ProductLimit" );
 $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
 $RequireUserLogin = $ini->variable( "eZTradeMain", "RequireUserLogin" ) == "true";
 $PricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enabled" ? true : false;
 
-$CapitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
+$capitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
 
 $ThumbnailImageWidth = $ini->variable( "eZTradeMain", "ThumbnailImageWidth" );
 $ThumbnailImageHeight = $ini->variable( "eZTradeMain", "ThumbnailImageHeight" );
@@ -67,7 +69,19 @@ $ShowPrice = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
 
 $SimpleOptionHeaders = $ini->variable( "eZTradeMain", "SimpleOptionHeaders" ) == "true";
 $ShowOptionQuantity = $ini->variable( "eZTradeMain", "ShowOptionQuantity" ) == "true";
-$RequireQuantity = $ini->variable( "eZTradeMain", "RequireQuantity" ) == "true" ;
+$RequireQuantity = $ini->variable( "eZTradeMain", "RequireQuantity" ) == "true";
+$ShowNamedQuantity = $ini->variable( "eZTradeMain", "ShowNamedQuantity" ) == "true";
+
+// ---- Performance flags ---------------------------------------------------
+// ShowProductOptions: renders the per-product option/variant table.
+// Each option with 5 values costs ~30 DB queries. Disable on listing pages
+// for a dramatic speedup; enable on productview where detail is needed.
+$ShowProductOptions = $ini->variable( "eZTradeMain", "ShowProductOptions" ) == "enabled";
+
+// ShowThumbnailImages: fetches + resizes thumbnails (2+ queries per product).
+// Disable only if your listing template doesn't use images.
+$ShowThumbnailImages = $ini->variable( "eZTradeMain", "ShowThumbnailImages" ) != "disabled";
+// --------------------------------------------------------------------------
 
 
 $t = new eZTemplate( "kernel/eztrade/user/" . $ini->variable( "eZTradeMain", "TemplateDir" ),
@@ -105,8 +119,8 @@ $t->set_block( "category_list_tpl", "category_tpl", "category" );
 $t->set_var( "product", "" );
 $t->set_var( "module", "" );
 
-if ( !isSet( $ModuleName ) )
-    $ModuleName = "trade";
+if ( !isSet( $moduleName ) )
+    $moduleName = "trade";
 if ( !isset( $ModuleList ) )
     $ModuleList = "productlist";
 if ( !isset( $ModuleView ) )
@@ -115,14 +129,14 @@ if ( !isset( $ModuleView ) )
 // makes the section ID available in articleview template
 $t->set_var( "section_id", $GlobalSectionID );
 
-$t->set_var( "module", $ModuleName );
+$t->set_var( "module", $moduleName );
 $t->set_var( "module_list", $ModuleList );
 $t->set_var( "module_view", $ModuleView );
 
 $t->setAllStrings();
 
 $category = new eZProductCategory();
-$category->get( $CategoryID );
+$category->get( $categoryID );
 
 // path
 $pathArray = $category->path();
@@ -187,53 +201,76 @@ else
     $t->parse( "category_list", "category_list_tpl" );
 }
 
-if ( !isset( $Limit ) or !is_numeric( $Limit ) )
-    $Limit = 10;
-if ( !isset( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
+if ( !isset( $limit ) or !is_numeric( $limit ) )
+    $limit = 10;
+if ( !isset( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
 
 // products
 $TotalTypes = $category->productCount( $category->sortMode(), false );
-$productList = $category->activeProducts( $category->sortMode(), $Offset, $Limit, $category->id() );
+$productList = $category->activeProducts( $category->sortMode(), $offset, $limit, $category->id() );
+
+// Prewarm thumbnail cache: fetches all ProductImageDefinition + eZImage records
+// in 2 queries instead of N*2 individual SELECTs (one pair per product).
+if ( $ShowThumbnailImages && !empty( $productList ) )
+{
+    $productIDs = array_map( fn( $p ) => (int) $p->id(), $productList );
+    eZProduct::prewarmThumbnails( $productIDs );
+
+    // Batch-prefetch image variations (getByGroupAndImage) in one IN() query.
+    // After prewarmThumbnails, eZImage::$rowCache holds every imageID that has a thumbnail.
+    $variationGroupID = (new eZImageVariationGroup())->groupExists( $ThumbnailImageWidth, $ThumbnailImageHeight );
+    if ( $variationGroupID && !empty( eZImage::$rowCache ) )
+        eZImageVariation::prefetchByGroup( $variationGroupID, array_keys( eZImage::$rowCache ) );
+}
 
 $locale = new eZLocale( $Language );
 $i = 0;
 
+// Hoist currency fetch outside the product loop (was N+1 per product)
+$productCurrency = new eZProductCurrency();
+$currencies = $productCurrency->getAll();
+
+// Hoist permission check for the listing category (same args every iteration)
+$categoryReadPermission = eZObjectPermission::hasPermission( $category->id(), "trade_category", "r", $user );
+
 foreach ( $productList as $product )
 {
-    if ( eZObjectPermission::hasPermission( $category->id(), "trade_category", "r", $user ) )
+    if ( $categoryReadPermission )
     {
         $t->set_var( "product_id", $product->id() );
 
         // preview image
-        $thumbnailImage = $product->thumbnailImage();
-        
-        if ( $thumbnailImage )
+        if ( $ShowThumbnailImages )
         {
-            $variation = $thumbnailImage->requestImageVariation( $ThumbnailImageWidth, $ThumbnailImageHeight );
-        
-            $t->set_var( "thumbnail_image_uri", "/" . $variation->imagePath() );
-            $t->set_var( "thumbnail_image_width", $variation->width() );
-            $t->set_var( "thumbnail_image_height", $variation->height() );
-            $t->set_var( "thumbnail_image_caption", $thumbnailImage->caption() );
-
-            $t->parse( "product_image", "product_image_tpl" );
+            $thumbnailImage = $product->thumbnailImage();
+            if ( $thumbnailImage )
+            {
+                $variation = $thumbnailImage->requestImageVariation( $ThumbnailImageWidth, $ThumbnailImageHeight );
+                $t->set_var( "thumbnail_image_uri", "/" . $variation->imagePath() );
+                $t->set_var( "thumbnail_image_width", $variation->width() );
+                $t->set_var( "thumbnail_image_height", $variation->height() );
+                $t->set_var( "thumbnail_image_caption", $thumbnailImage->caption() );
+                $t->parse( "product_image", "product_image_tpl" );
+            }
+            else
+            {
+                $t->set_var( "product_image", "" );
+            }
         }
         else
         {
-            $t->set_var( "product_image", "" );    
+            $t->set_var( "product_image", "" );
         }
 
-        $options = $product->options();
+        $options = $ShowProductOptions ? $product->options() : [];
         $t->set_var( "option", "" );
 
         $t->set_var( "value_price_header", "" );
         if ( $ShowPrice and $product->showPrice() == true  )
             $t->parse( "value_price_header", "value_price_header_tpl" );
 
-        // show alternative currencies
-        $currency = new eZProductCurrency( );
-        $currencies = $currency->getAll();
+        // alternative currencies (fetched once above, reused per product)
         $t->set_var( "currency_count", count( $currencies ) );
         $t->set_var( "value_price_header_item", "" );
         $t->set_var( "value_currency_header_item", "" );
@@ -257,7 +294,7 @@ foreach ( $productList as $product )
             $t->set_var( "value_description_header", "" );
             if ( $SimpleOptionHeaders )
             {
-                $t->set_var( "description_header", $headers[0] );
+                $t->set_var( "description_header", $headers[0] ?? '' );
                 $t->parse( "value_description_header", "value_description_header_tpl" );
             }
             else
@@ -349,7 +386,7 @@ foreach ( $productList as $product )
                 $t->set_var( "option_name", $option->name() );
                 $t->set_var( "option_description", $option->description() );
                 $t->set_var( "option_id", $option->id() );
-                // $t->set_var( "product_id", isset( $ProductID ) ? $ProductID : false );
+                // $t->set_var( "product_id", isset( $productID ) ? $productID : false );
 
                 $t->parse( "option", "option_tpl", true );
             }
@@ -438,35 +475,17 @@ else
 
 
 
-eZList::drawNavigator( $t, $TotalTypes, $Limit, $Offset, "product_list_page_tpl" );
+eZList::drawNavigator( $t, $TotalTypes, $limit, $offset, "product_list_page_tpl" );
 
-if ( isset( $GenerateStaticPage ) && $GenerateStaticPage == "true" )
+if ( $generateStaticPage == true )
 {
-    // if ( $user ) {
-    //     $CategoryArray = $user->groups( false );
-    // } 
-    // else
-    // {
-    //     $CategoryArray = '';
-    // }
-  
-    if ( !$PriceGroup ) 
-      $PriceGroup = 0;
-    
-    $cache = new eZCacheFile( "kernel/eztrade/cache/", array( "productlist", $CategoryID, $Offset, $PriceGroup ),
+    if ( $user )
+        $categoryArray = $user->groups( false );
+    $cache = new eZCacheFile( "kernel/eztrade/cache/", array( "productlist", $categoryID, $groupIDArray, $offset, $priceGroup ),
                               "cache", "," );
-      $cacheFileName = $cache->filename( true );
-    // add PHP code in the cache file to store variables
-    /*
-    $output = "<?php\n";
-    $output .= "\$GlobalSectionID=\"$GlobalSectionID\";\n";
-    $output .= "\$SiteTitleAppend=\"$SiteTitleAppend\";\n";
-    $output .= "\$SiteDescriptionOverride=\"$SiteDescriptionOverride\";\n";    
-    $output .= "?>\n";
-    */
-    
+
     $output = $t->parse( "output", "product_list_page_tpl" );
-    print( $output ."<br /><br />" );
+    print( $output );
     $cache->store( $output );
 }
 else

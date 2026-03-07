@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: persontypelist.php 6237 2001-07-20 12:01:51Z jakobn $
+// $id: persontypelist.php 6237 2001-07-20 12:01:51Z jakobn $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -28,8 +28,8 @@
 */
 // include_once( "classes/INIFile.php" );
 
-$ini =& $GlobalSiteIni;
-$Language = $ini->variable( "eZContactMain", "Language" );
+$ini =& $globalSiteIni;
+$language = $ini->variable( "eZContactMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZContactMain", "DocumentRoot" );
 
 // include_once( "classes/eztemplate.php" );
@@ -45,7 +45,7 @@ $DOC_ROOT = $ini->variable( "eZContactMain", "DocumentRoot" );
 
 require( "kernel/ezuser/admin/admincheck.php" );
 
-$t = new eZTemplate( $DOC_ROOT . "/" . $ini->variable( "eZContactMain", "TemplateDir" ), $DOC_ROOT . "/intl", $Language, "persontypelist.php" );
+$t = new eZTemplate( $DOC_ROOT . "/" . $ini->variable( "eZContactMain", "TemplateDir" ), $DOC_ROOT . "/intl", $language, "persontypelist.php" );
 $t->setAllStrings();
 
 $t->set_file( array(

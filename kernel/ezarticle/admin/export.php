@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: export.php 7455 2001-09-25 13:48:56Z bf $
+// $id: export.php 7455 2001-09-25 13:48:56Z bf $
 //
 // Created on: <23-Sep-2001 16:55:39 bf>
 //
@@ -33,22 +33,22 @@
 // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$TemplateDir = $ini->variable( "eZArticleMain", "TemplateDir" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$templateDir = $ini->variable( "eZArticleMain", "TemplateDir" );
 
-$t = new eZTemplate( "kernel/ezarticle/user/" . $TemplateDir,                     
-                     "kernel/ezarticle/user/intl/", $Language, "articleview.php" );
+$t = new eZTemplate( "kernel/ezarticle/user/" . $templateDir,                     
+                     "kernel/ezarticle/user/intl/", $language, "articleview.php" );
 
 
 $t->set_file( "article_view_tex_tpl", "tex.tpl"  );
 
 $t->setAllStrings();
 
-$ArticleID = 590;
+$articleID = 590;
 
 $article = new eZArticle( );
 
-if ( $article->get( $ArticleID ) )
+if ( $article->get( $articleID ) )
 {
     if ( $article->isPublished() )
     {

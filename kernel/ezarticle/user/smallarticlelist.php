@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: smallarticlelist.php 8283 2001-11-05 16:44:16Z th $
+// $id: smallarticlelist.php 8283 2001-11-05 16:44:16Z th $
 //
 // Created on: <18-Oct-2000 14:41:37 bf>
 //
@@ -33,22 +33,24 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
-$CapitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
-$DefaultLinkText =  $ini->variable( "eZArticleMain", "DefaultLinkText" );
-$PageCaching = $ini->variable( "eZArticleMain", "PageCaching" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$imageDir = $ini->variable( "eZArticleMain", "ImageDir" );
+$globalSiteDesign = $GlobalSiteDesign ?? null;
+$globalSectionID = $GlobalSectionID ?? 0;
+$capitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
+$defaultLinkText =  $ini->variable( "eZArticleMain", "DefaultLinkText" );
+$pageCaching = $ini->variable( "eZArticleMain", "PageCaching" );
 
 if ( !isset( $noItem ) ) $noItem = null;
-if ( !isset( $Limit ) ) $Limit = null;
-if ( !isset( $Offset ) ) $Offset = null;
-if ( !isset( $CategoryID ) ) $CategoryID = null;
+if ( !isset( $limit ) ) $limit = null;
+if ( !isset( $offset ) ) $offset = null;
+if ( !isset( $categoryID ) ) $categoryID = null;
 
 unset( $menuCachedFile );
 // do the caching
-if ( $PageCaching == "enabled" )
+if ( $pageCaching == "enabled" )
 {
-    $menuCachedFile = "kernel/ezarticle/cache/smallarticlelist,". $GlobalSiteDesign .".cache";
+    $menuCachedFile = "kernel/ezarticle/cache/smallarticlelist,". $globalSiteDesign .".cache";
 
     if ( file_exists( $menuCachedFile ) )
     {
@@ -56,29 +58,29 @@ if ( $PageCaching == "enabled" )
     }
     else
     {
-        createSmallArticleList( true, $menuCachedFile, $ini, $Language, $GlobalSiteDesign, $GlobalSectionID, $CategoryID, $Offset, $Limit, $noItem, $DefaultLinkText );
+        createSmallArticleList( true, $menuCachedFile, $ini, $language, $globalSiteDesign, $globalSectionID, $categoryID, $offset, $limit, $noItem, $defaultLinkText );
     }            
 }
 else
 {
-    createSmallArticleList(false, false, $ini, $Language, $GlobalSiteDesign, $GlobalSectionID, $CategoryID, $Offset, $Limit, $noItem, $DefaultLinkText );
+    createSmallArticleList(false, false, $ini, $language, $globalSiteDesign, $globalSectionID, $categoryID, $offset, $limit, $noItem, $defaultLinkText );
 }
 
-function createSmallArticleList( $generateStaticPage = false, $menuCachedFile = false, $ini = null, $Language = null, $GlobalSiteDesign = null,
-            $GlobalSectionID = null, $CategoryID = null, $Offset = null, $Limit = null, $noItem = null, $DefaultLinkText = null )
+function createSmallArticleList( $generateStaticPage = false, $menuCachedFile = false, $ini = null, $language = null, $globalSiteDesign = null,
+            $globalSectionID = null, $categoryID = null, $offset = null, $limit = null, $noItem = null, $defaultLinkText = null )
 {
     // global $ini;
     // global $menuCachedFile;
     // global $noItem;
-	// global $GlobalSiteDesign;
-    // global $CategoryID;
-    // global $Offset;
-    // global $Limit;
-    // global $Language;
-	// global $DefaultLinkText;
+	// global $globalSiteDesign;
+    // global $categoryID;
+    // global $offset;
+    // global $limit;
+    // global $language;
+	// global $defaultLinkText;
 
     $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                         "kernel/ezarticle/user/intl/", $Language, "smallarticlelist.php" );
+                         "kernel/ezarticle/user/intl/", $language, "smallarticlelist.php" );
 
     $t->setAllStrings();
 
@@ -88,16 +90,16 @@ function createSmallArticleList( $generateStaticPage = false, $menuCachedFile = 
     $t->set_block( "article_list_tpl", "article_item_tpl", "article_item" );
     $t->set_block( "article_item_tpl", "read_more_tpl", "read_more_item" );
 
-    $category = new eZArticleCategory( $CategoryID );
+    $category = new eZArticleCategory( $categoryID );
 
     $t->set_var( "current_category_name", $category->name() );
     $t->set_var( "current_category_description", $category->description() );
 
-    $t->set_var( "sitedesign", $GlobalSiteDesign );
+    $t->set_var( "sitedesign", $globalSiteDesign );
 
-    $articleList = $category->articles( $category->sortMode(), false, true, $Offset, $Limit );
+    $articleList = $category->articles( $category->sortMode(), false, true, $offset, $limit );
 
-    $locale = new eZLocale( $Language );
+    $locale = new eZLocale( $language );
     $i = 0;
     $t->set_var( "article_list", "" );
     foreach ( $articleList as $article )
@@ -114,7 +116,7 @@ function createSmallArticleList( $generateStaticPage = false, $menuCachedFile = 
         
         $t->set_var( "article_published", $locale->format( $published ) );
 
-        $t->set_var( "category_id", $CategoryID );
+        $t->set_var( "category_id", $categoryID );
 
         $t->set_var( "article_intro", $renderer->renderIntro(  ) );
 
@@ -127,7 +129,7 @@ function createSmallArticleList( $generateStaticPage = false, $menuCachedFile = 
         }
         else if ( !( trim( $contents[1] ) == "" && count( $article->attributes( false ) ) <= 0 ))
         {
-            $t->set_var( "article_link_text", $DefaultLinkText );
+            $t->set_var( "article_link_text", $defaultLinkText );
         	$t->parse( "read_more_item", "read_more_tpl" );
         }
 		else

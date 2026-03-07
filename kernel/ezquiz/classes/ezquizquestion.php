@@ -78,8 +78,8 @@ class eZQuizQuestion
 
         $db->query_single( $result, "SELECT MAX(Placement)+1 FROM eZQuiz_Question WHERE GameID='$gameID' " );
 
-        $place = $result[0];
-        if ( $result[0] == NULL )
+        $place = $result[0] ?? null;
+        if ( $place == NULL )
         {
             $place = 1;
         }

@@ -29,19 +29,19 @@
 
 require( "kernel/ezuser/admin/admincheck.php" );
 
-for( $i = 0; $i < isset( $LinkArrayID ) ? count( $LinkArrayID ) : 0; $i++ )
+for( $i = 0; $i < ( isset( $linkArrayID ) ? count( $linkArrayID ) : 0 ); $i++ )
 {
     unset( $link );
-    $link = new eZLink( $LinkArrayID[$i] );
-    $link->setName( $Name[$i] );
-    $link->setCategoryDefinition( $LinkCategoryID[$i] );
+    $link = new eZLink( $linkArrayID[$i] );
+    $link->setName( $name[$i] );
+    $link->setCategoryDefinition( $linkCategoryID[$i] );
 
     // Calculate new and unused categories
     $old_maincategory = $link->categoryDefinition();
     $old_categories = array_unique( array_merge( array( $old_maincategory->id() ),
                                                   $link->categories( false ) ) );
 
-    $new_categories = array_unique( array_merge( array( $LinkCategoryID[$i] ), array( $CategoryArray[$i] ) ) );
+    $new_categories = array_unique( array_merge( array( $linkCategoryID[$i] ), array( $categoryArray[$i] ) ) );
     $remove_categories = array_diff( $old_categories, $new_categories );
     $add_categories = array_diff( $new_categories, $old_categories );
 
@@ -54,24 +54,24 @@ for( $i = 0; $i < isset( $LinkArrayID ) ? count( $LinkArrayID ) : 0; $i++ )
         eZLinkCategory::addLink( $link, $category );
     }
     
-    $link->setUrl( $Url[$i] );
-    $link->setKeyWords( $Keywords[$i] );
-    $link->setDescription( $Description[$i] );
+    $link->setUrl( $url[$i] );
+    $link->setKeyWords( $keywords[$i] );
+    $link->setDescription( $description[$i] );
     $link->setAccepted( false );
 
-    if ( $ActionValueArray[$i] == "Defer" )
+    if ( $actionValueArray[$i] == "Defer" )
     {
     }
-    else if ( $ActionValueArray[$i] == "Accept" )
+    else if ( $actionValueArray[$i] == "Accept" )
     {
         $link->setAccepted( true );
         $link->update();
     }
-    else if ( $ActionValueArray[$i] == "Delete" )
+    else if ( $actionValueArray[$i] == "Delete" )
     {
         $link->delete();
     }
-    else if ( $ActionValueArray[$i] == "Update" )
+    else if ( $actionValueArray[$i] == "Update" )
     {
         $link->update();
     }

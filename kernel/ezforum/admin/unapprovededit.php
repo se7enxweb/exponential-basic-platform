@@ -35,28 +35,28 @@ $user = eZUser::currentUser();
 
 $message = new eZForumMessage();
 
-if( isset( $ActionValueArray ) )
+if( isset( $actionValueArray ) )
 {
-    for ( $i = 0; $i < count( $ActionValueArray ); $i++ )
+    for ( $i = 0; $i < count( $actionValueArray ); $i++ )
     {
-        $message = new eZForumMessage( $MessageID[$i] );
+        $message = new eZForumMessage( $messageID[$i] );
 
-        if ( $ActionValueArray[$i] == "Defer" )
+        if ( $actionValueArray[$i] == "Defer" )
         {
         }
-        if ( $ActionValueArray[$i] == "Approve" )
+        if ( $actionValueArray[$i] == "Approve" )
         {
             $message->setIsApproved( 1 );
             $message->store();
             $msg = $message;
-            $StartAction = "moderatorapprove";
+            $startAction = "moderatorapprove";
             // include( "kernel/ezforum/user/messagereply.php" );
         }
-        if ( $ActionValueArray[$i] == "Discard" )
+        if ( $actionValueArray[$i] == "Discard" )
         {
             $message->delete();
         }
-        if ( $ActionValueArray[$i] == "Reject" )
+        if ( $actionValueArray[$i] == "Reject" )
         {
             $mail = new eZMail();
             $mailTemplate = new eZTemplate( "kernel/ezforum/admin/" . $ini->variable( "eZForumMain", "AdminTemplateDir" ),
@@ -67,7 +67,7 @@ if( isset( $ActionValueArray ) )
             $mailTemplate->set_file( "mail_reject_tpl", "mailreject.tpl" );
             $mailTemplate->setAllStrings();
 
-            $mailTemplate->set_var( "reason_for_reject", $RejectReason[$i] );
+            $mailTemplate->set_var( "reason_for_reject", $rejectReason[$i] );
             $mailTemplate->set_var( "message_body", nl2br( $message->body() ) );
             $mailTemplate->set_var( "message_topic", $message->topic() );
             $mailTemplate->set_var( "message_postingtime", $locale->format( $message->postingTime() ) );

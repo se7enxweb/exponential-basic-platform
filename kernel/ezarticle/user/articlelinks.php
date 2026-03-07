@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: articlelinks.php 6344 2001-08-01 16:22:23Z kaid $
+// $id: articlelinks.php 6344 2001-08-01 16:22:23Z kaid $
 //
 // Created on: <03-Jan-2001 10:47:00 bf>
 //
@@ -25,35 +25,36 @@
 
 // graham : php - error log fix project : 20005-05-27 (undefined variable patch)
 // this just shuts of the hundreds of thousands of error log entries (performance)
-$DefaultLinkText = "";
+$defaultLinkText = "";
+$globalSiteDesign = $GlobalSiteDesign ?? null;
 
-$ArticlePageCaching = $ini->variable( "eZArticleMain", "PageCaching");
-$PageCaching = "disabled";
+$articlePageCaching = $ini->variable( "eZArticleMain", "PageCaching");
+$pageCaching = "disabled";
 
-$PureStatic = "false";
-//$PureStatic ="true";
+$pureStatic = "false";
+//$pureStatic ="true";
 
-// unset( $CacheFile );
-unset( $GenerateStaticPage );
+// unset( $cacheFile );
+unset( $generateStaticPage );
 
-if ( $PageCaching == "enabled" )
+if ( $pageCaching == "enabled" )
 {
     // include_once( "classes/ezcachefile.php" );
-    $CacheFile = new eZCacheFile( "kernel/ezarticle/cache/",
-                                  array( "articlelinklist", $CategoryID, $url_array[3], $GlobalSiteDesign ),
+    $cacheFile = new eZCacheFile( "kernel/ezarticle/cache/",
+                                  array( "articlelinklist", $categoryID, $url_array[3], $globalSiteDesign ),
                                   "cache", "," );
-    if ( $CacheFile->exists() )
+    if ( $cacheFile->exists() )
     {
-        include( $CacheFile->filename( true ) );
-        $PureStatic = "true";
+        include( $cacheFile->filename( true ) );
+        $pureStatic = "true";
     }
     else
     {
-        $GenerateStaticPage = "true";
+        $generateStaticPage = "true";
     }
 }
 
-if ( $PureStatic != "true" )
+if ( $pureStatic != "true" )
 {
     // include_once( "classes/INIFile.php" );
     // include_once( "classes/eztemplate.php" );
@@ -64,11 +65,11 @@ if ( $PureStatic != "true" )
     // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 
     $ini = eZINI::instance( 'site.ini' );
-    $Language = $ini->variable( "eZArticleMain", "Language" );
-    $ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
+    $language = $ini->variable( "eZArticleMain", "Language" );
+    $imageDir = $ini->variable( "eZArticleMain", "ImageDir" );
 
     $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                         "kernel/ezarticle/user/intl/", $Language, "articlelinks.php" );
+                         "kernel/ezarticle/user/intl/", $language, "articlelinks.php" );
 
     $t->setAllStrings();
 
@@ -80,20 +81,20 @@ if ( $PureStatic != "true" )
     $t->set_block( "article_list_page_tpl", "article_list_tpl", "article_list" );
     $t->set_block( "article_list_tpl", "article_item_tpl", "article_item" );
 
-    $t->set_var( "image_dir", $ImageDir );
-    $t->set_var( "sitedesign", $GlobalSiteDesign );
+    $t->set_var( "image_dir", $imageDir );
+    $t->set_var( "sitedesign", $globalSiteDesign );
 		
-    $category = new eZArticleCategory( $CategoryID );
+    $category = new eZArticleCategory( $categoryID );
 
     $category_name_no_whitespace = $category->name();
-    $category_name_no_whitespace = str_replace(" ", "&nbsp;", $category_name_no_whitespace);
+    $category_name_no_whitespace = str_replace(" ", "&nbsp;", $category_name_no_whitespace ?? '');
 
     $t->set_var( "current_category_name", $category_name_no_whitespace );
     $t->set_var( "current_category_description", $category->description() );
 
     $articleList = $category->articles( $category->sortMode(), false, true );
 
-    $locale = new eZLocale( $Language );
+    $locale = new eZLocale( $language );
     $i=0;
     $t->set_var( "article_list", "" );
     foreach ( $articleList as $article )
@@ -119,7 +120,7 @@ if ( $PureStatic != "true" )
         }
         else
         {
-            $t->set_var( "article_link_text", isset($DefaultLinkText)?$DefaultLinkText:'More' );
+            $t->set_var( "article_link_text", isset($defaultLinkText)?$defaultLinkText:'More' );
         }
 
 		if ( ( $url_array[2] == "articlestatic" ) && ( $url_array[3] == $article->id() ) )
@@ -140,12 +141,12 @@ if ( $PureStatic != "true" )
     else
         $t->set_var( "article_list", "" );
 
-    if ( isset( $GenerateStaticPage ) and $GenerateStaticPage == "true" )
+    if ( isset( $generateStaticPage ) and $generateStaticPage == "true" )
     {
         $output = $t->parse( "output", "article_list_page_tpl" );
         // print the output the first time while printing the cache file.
         print( $output );
-        $CacheFile->store( $output );
+        $cacheFile->store( $output );
     }
     else
     {

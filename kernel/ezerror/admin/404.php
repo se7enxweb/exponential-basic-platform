@@ -25,7 +25,7 @@
 
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/eztemplate.php" );
-$ini = & eZINI::instance( 'site.ini' );
+$ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZErrorMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezerror/admin/" . $ini->variable( "eZErrorMain", "AdminTemplateDir" ),
@@ -35,9 +35,9 @@ $t->setAllStrings();
 $t->set_file( array( "error_page" => "404.tpl" ) );
 $t->set_block( "error_page", "additional_information_tpl", "additional_information" );
 
-if( isset( $Info ) && !empty( $Info ) )
+if( isset( $info ) && !empty( $info ) )
 {
-    $t->set_var( "additional_info", stripslashes( $Info ) );
+    $t->set_var( "additional_info", stripslashes( $info ) );
     $t->parse( "additional_information", "additional_information_tpl", true );
 }
 else

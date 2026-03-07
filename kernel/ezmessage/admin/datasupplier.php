@@ -24,11 +24,28 @@
 //
 
 
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$delMessage  = eZHTTPTool::getVar( 'DelMessage' );
+$delete      = eZHTTPTool::getVar( 'Delete' );
+$description = eZHTTPTool::getVar( 'Description' );
+$edit        = eZHTTPTool::getVar( 'Edit' );
+$index       = eZHTTPTool::getVar( 'Index' );
+$max         = eZHTTPTool::getVar( 'Max' );
+$messageID   = eZHTTPTool::getVar( 'MessageID' );
+$messageSent = eZHTTPTool::getVar( 'MessageSent' );
+$orderBy     = eZHTTPTool::getVar( 'OrderBy' );
+$preview     = eZHTTPTool::getVar( 'Preview' );
+$receiver    = eZHTTPTool::getVar( 'Receiver' );
+$reply       = eZHTTPTool::getVar( 'Reply' );
+$sendMessage = eZHTTPTool::getVar( 'SendMessage' );
+$subject     = eZHTTPTool::getVar( 'Subject' );
+// URL-routing variables are set below inside the switch and override the above POST defaults.
+
 switch( $url_array[2] )
 {
     case "view" :
     {
-        $MessageID = $url_array[3];
+        $messageID = $url_array[3];
         include( "kernel/ezmessage/admin/messageview.php" );
     }
     break;    

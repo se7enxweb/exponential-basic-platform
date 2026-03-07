@@ -31,7 +31,7 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZGroupEventCalendarMain", "Language" );
-$SiteStyle = $ini->variable( "site", "SiteStyle" );
+$siteStyle = $ini->variable( "site", "SiteStyle" );
 
 // include_once( "eztrade/classes/ezgroupeventcalendarcategory.php" );
 //include_once( "kernel/ezgroupeventcalendar/classes/ezgroupevent.php" );
@@ -47,21 +47,21 @@ $t->set_block( "file_list_page_tpl", "no_files_tpl", "no_files" );
 $t->set_block( "file_list_page_tpl", "file_list_tpl", "file_list" );
 $t->set_block( "file_list_tpl", "file_tpl", "file" );
 
-$event = new eZGroupEvent( $EventID );
+$event = new eZGroupEvent( $eventID );
 
 $session = eZSession::globalSession();
-$session->setVariable( "FileListReturnTo", $REQUEST_URI );
+$session->setVariable( "FileListReturnTo", $_SERVER['REQUEST_URI'] );
 $session->setVariable( "NameInBrowse", $event->name() );
 
-if ( isSet ( $AddFiles ) )
+if ( isSet ( $addFiles ) )
 {
-    if ( count ( $FileArrayID ) > 0 )
+    if ( count ( $fileArrayID ) > 0 )
     {
-        foreach( $FileArrayID as $fileID )
+        foreach( $fileArrayID as $fileID )
         {
             $file = new eZVirtualFile( $fileID );
-			if ( $DescriptionArray[$fileID] != $file->description() );
-				$file->setDescription( $DescriptionArray[$fileID] );
+			if ( $descriptionArray[$fileID] != $file->description() );
+				$file->setDescription( $descriptionArray[$fileID] );
 			$file->store();
             $event->addFile( $file );
         }
@@ -70,7 +70,7 @@ if ( isSet ( $AddFiles ) )
 
 $t->set_var( "event_name", $event->name() );
 
-$t->set_var( "site_style", $SiteStyle );
+$t->set_var( "site_style", $siteStyle );
 
 $files = $event->files();
 if ( count( $files ) == 0 )

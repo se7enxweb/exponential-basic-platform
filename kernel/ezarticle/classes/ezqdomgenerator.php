@@ -493,6 +493,7 @@ class eZQDomGenerator
     */     
     function decodeRollOver(  $paragraph )
     {
+        $pageContent = '';
         switch ( $paragraph->name )
         {
             case "rollover" :
@@ -602,7 +603,7 @@ class eZQDomGenerator
     function decodeImage( $paragraph )
     {
     	$imageCaptionOverride = $imageID = $imageAlignment = $imageSize = $imageHref = 
-    	$imageTarget = '';
+    	$imageTarget = $pageContent = '';
         // image 
         if ( $paragraph->name == "image" ) {
             foreach ( $paragraph->attributes as $imageItem ) {
@@ -672,6 +673,7 @@ class eZQDomGenerator
     */
     function decodeMedia( $paragraph )
     {
+        $pageContent = '';
         // media 
         if ( $paragraph->name == "media" )
         {
@@ -699,6 +701,7 @@ class eZQDomGenerator
     */
     function decodeFile( $paragraph )
     {
+        $pageContent = '';
         if ( $paragraph->name == "file" )
         {
             foreach ( $paragraph->attributes as $fileItem )
@@ -727,6 +730,7 @@ class eZQDomGenerator
     
     function decodeHr( $paragraph )
     {
+        $pageContent = '';
         if ( $paragraph->name == "hr" )
         {            
             $pageContent = "<hr>";
@@ -910,6 +914,7 @@ class eZQDomGenerator
     */
     function decodeTable( $paragraph )
     {
+        $pageContent = '';
         if ( $paragraph->name == "table" )
         {
     

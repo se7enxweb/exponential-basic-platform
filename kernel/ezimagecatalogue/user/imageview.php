@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: imageview.php 9345 2002-03-06 10:34:39Z jhe $
+// $id: imageview.php 9345 2002-03-06 10:34:39Z jhe $
 //
 // Created on: <26-Oct-2000 19:40:18 bf>
 //
@@ -35,13 +35,13 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZImageCatalogueMain", "Language" );
+$language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
-$ShowOriginal = $ini->variable( "eZImageCatalogueMain", "ShowOriginal" );
+$showOriginal = $ini->variable( "eZImageCatalogueMain", "ShowOriginal" );
 
 
 $t = new eZTemplate( "kernel/ezimagecatalogue/user/" . $ini->variable( "eZImageCatalogueMain", "TemplateDir" ),
-                     "kernel/ezimagecatalogue/user/intl/", $Language, "imageview.php" );
+                     "kernel/ezimagecatalogue/user/intl/", $language, "imageview.php" );
 
 $t->set_file( "image_view_tpl", "imageview.tpl" );
 $t->set_block( "image_view_tpl", "product_item_tpl", "product_item" );
@@ -56,7 +56,7 @@ $t->setAllStrings();
 
 $user = eZUser::currentUser();
 
-$image = new eZImage( $ImageID );
+$image = new eZImage( $imageID );
 
 // sections
 // include_once( "ezsitemanager/classes/ezsection.php" );
@@ -82,15 +82,15 @@ $sectionObject->setOverrideVariables();
 //    exit();
 //}
 
-if ( $ShowOriginal != "enabled" && !isset( $VariationID ) )
+if ( $showOriginal != "enabled" && !isset( $variationID ) )
 {
     $variation = $image->requestImageVariation( $ini->variable( "eZImageCatalogueMain", "ImageViewWidth" ),
     $ini->variable( "eZImageCatalogueMain", "ImageViewHeight" ) );
 }
-else if ( isset( $VariationID ) )
+else if ( isset( $variationID ) )
 {
-    $variation = new eZImageVariation( $VariationID );
-    if ( $variation->imageID() != $ImageID )
+    $variation = new eZImageVariation( $variationID );
+    if ( $variation->imageID() != $imageID )
     {
         
         $variation = $image->requestImageVariation( $ini->variable( "eZImageCatalogueMain", "ImageViewWidth" ),
@@ -169,12 +169,12 @@ $size = eZPBFile::siFileSize( $size );
 $width = $ini->variable( "eZImageCatalogueMain", "ThumbnailViewWidth" );
 $height = $ini->variable( "eZImageCatalogueMain", "ThumbnailViewHight" );
 $thumbnail = $image->requestImageVariation( $width, $height );
-$SiteURL = $ini->variable( "site", "UserSiteURL" );
+$siteURL = $ini->variable( "site", "UserSiteURL" );
 
 $t->set_var( "orig_width", $image->width() );
 $t->set_var( "orig_height", $image->height() );
 $t->set_var( "image_src", "/" . $thumbnail->imagePath() );
-$t->set_var( "site_url", $SiteURL );
+$t->set_var( "site_url", $siteURL );
 
 $t->set_var( "image_size", $size["size-string"] );
 $t->set_var( "image_unit", $size["unit"] );
@@ -188,10 +188,10 @@ $t->set_var( "image_name", $image->name() );
 $t->set_var( "image_description", $image->description() );
 $t->set_var( "original_image_name", $image->originalFileName() );
 
-if ( !isset( $RefererURL ) || !$RefererURL )
-	$RefererURL="";
+if ( !isset( $refererURL ) || !$refererURL )
+	$refererURL="";
 
-$t->set_var( "referer_url", $RefererURL );
+$t->set_var( "referer_url", $refererURL );
 
 $t->pparse( "output", "image_view_tpl" );
 

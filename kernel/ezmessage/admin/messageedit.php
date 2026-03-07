@@ -34,11 +34,11 @@
 // include_once( "ezmessage/classes/ezmessage.php" );
 
 $usersValid = true;
-$MessageSent = false;
+$messageSent = false;
 
-if ( isset( $SendMessage ) )
+if ( isset( $sendMessage ) )
 {
-    $users = explode( ",", $Receiver );
+    $users = explode( ",", $receiver );
 
     // check for valid users:
     foreach ( $users as $user )
@@ -56,12 +56,12 @@ if ( isset( $SendMessage ) )
             $user = trim( $user );
             
             $message = new eZMessage( );
-            if ( trim ( $Subject ) == "" )
-            	$Subject = "None Subject";
-            $message->setSubject( $Subject );
-            if ( trim ( $Description ) == "" )
-            	$Description = "None Description";
-            $message->setDescription( $Description );
+            if ( trim ( $subject ) == "" )
+            	$subject = "None Subject";
+            $message->setSubject( $subject );
+            if ( trim ( $description ) == "" )
+            	$description = "None Description";
+            $message->setDescription( $description );
             $toUser = eZUser::getUser( $user );
             $message->setToUser( $toUser );
 
@@ -69,20 +69,20 @@ if ( isset( $SendMessage ) )
             $message->setFromUser( $fromUser );
 
             $message->store();
-$MessageID = $message->id();
+$messageID = $message->id();
 
 $messageDefinition = new eZMessageDefinition();
-$messageDefinition->setMessageID( $MessageID );
+$messageDefinition->setMessageID( $messageID );
 $messageDefinition->setToUserID( $toUser );
 $messageDefinition->setFromUserID( $fromUser );
 $messageDefinition->store();
 
 $messageDefinition = new eZMessageDefinition();
-$messageDefinition->setMessageID( $MessageID );
+$messageDefinition->setMessageID( $messageID );
 $messageDefinition->setToUserID( $fromUser );
 $messageDefinition->setFromUserID( $toUser );
 $messageDefinition->store();
-            $MessageSent = true;
+            $messageSent = true;
             
         }
     }    
@@ -103,26 +103,26 @@ $t->set_block( "message_page_tpl", "message_edit_tpl", "message_edit" );
 
 $t->setAllStrings();
 
-$t->set_var( "receiver", isset( $Receiver ) ? $Receiver : false );
-$t->set_var( "subject", isset( $Subject ) ? $Subject : false );
-$t->set_var( "description", isset( $Description ) ? $Description : false );
+$t->set_var( "receiver", isset( $receiver ) ? $receiver : false );
+$t->set_var( "subject", isset( $subject ) ? $subject : false );
+$t->set_var( "description", isset( $description ) ? $description : false );
 
 $t->set_var( "error", "" );
 
-if ( isset ( $Reply ) )
+if ( isset ( $reply ) )
 {
     $fromUser = new eZUser ( $FromUserID );
     $t->set_var( "description", eZTextTool::addPre( $Message ), ">" );
     $t->set_var( "receiver", $fromUser->login()  );
 }
 
-if ( isset( $MessageSent ) && $MessageSent == true )
+if ( isset( $messageSent ) && $messageSent == true )
 {
     $t->parse( "message_sent", "message_sent_tpl" );
     $t->set_var( "message_verify", "" );
     $t->set_var( "message_edit", "" );
 }
-else if ( !isset( $Preview ) || isset( $Edit ) )
+else if ( !isset( $preview ) || isset( $edit ) )
 {
     $t->parse( "message_edit", "message_edit_tpl" );
     $t->set_var( "message_verify", "" );
@@ -131,10 +131,10 @@ else if ( !isset( $Preview ) || isset( $Edit ) )
 }
 else
 {
-    if ( substr( trim( $Receiver ) ,strlen( trim( $Receiver ) ) -1 ) == "," )
-    $Receiver = substr( trim( $Receiver ) , 0, strlen( trim( $Receiver ) ) -1 );
+    if ( substr( trim( $receiver ) ,strlen( trim( $receiver ) ) -1 ) == "," )
+    $receiver = substr( trim( $receiver ) , 0, strlen( trim( $receiver ) ) -1 );
     
-    $users = explode( ",", $Receiver );
+    $users = explode( ",", $receiver );
 
     // check for valid users:
     $usersValid = true;

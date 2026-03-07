@@ -9,8 +9,8 @@
     $Language = $ini->variable( "eZSurveyMain", "Language" );
     
 
-    $SurveyID = $url_array[3];
-    $Page = $url_array[4];
+    $surveyID = $url_array[3];
+    $page = $url_array[4];
     
     $t = new eZTemplate( "kernel/ezsurvey/admin/" . $ini->variable( "eZSurveyMain", "AdminTemplateDir" ),
                          "kernel/ezsurvey/admin/intl", $Language, "stats.php" );
@@ -26,38 +26,38 @@
     $t->set_block( "stats_tpl", "next_page_button_tpl", "next_page_button" );
     $t->set_block( "stats_tpl", "previous_page_button_tpl", "previous_page_button" );
     
-    $t->set_var( "survey_id", $SurveyID );
+    $t->set_var( "survey_id", $surveyID );
     $t->set_var( "value_list", "" );
     
-    if ( $Page == "" )
+    if ( $page == "" )
     {
-        $Page = 1;
+        $page = 1;
     }
     
-    if ( isset( $OK ) )
+    if ( isset( $ok ) )
     {
-        eZHTTPTool::header( "Location: /survey/surveyedit/edit/$SurveyID" );
+        eZHTTPTool::header( "Location: /survey/surveyedit/edit/$surveyID" );
         exit();
     }
     
-    if ( isset( $NextPage ) )
+    if ( isset( $nextPage ) )
     {
-        $Page++;
+        $page++;
     }
-    if ( isset( $PreviousPage ) )
+    if ( isset( $previousPage ) )
     {
-        $Page--;
+        $page--;
     }
     
-    $survey = new eZSurvey( $SurveyID );
+    $survey = new eZSurvey( $surveyID );
     
     $t->set_var( "title", $survey->title() );
     
     $totalPages = $survey->numberOfPages();
-    $t->set_var( "page_number", $Page );
+    $t->set_var( "page_number", $page );
     $t->set_var( "page_total", $totalPages );
     
-    $question_array = $survey->surveyQuestions( "Position", $Page );
+    $question_array = $survey->surveyQuestions( "Position", $page );
     
     $position = 0;
     foreach ( $question_array as $questionItem )
@@ -97,13 +97,13 @@
     }
   
     // Next page button
-    if ( $Page < $totalPages )
+    if ( $page < $totalPages )
         $t->parse( "next_page_button", "next_page_button_tpl" );
     else
         $t->set_var( "next_page_button", "" );
         
     // Previous page button
-    if ( $Page > 1 )
+    if ( $page > 1 )
         $t->parse( "previous_page_button", "previous_page_button_tpl" );
     else
         $t->set_var( "previous_page_button", "" );

@@ -104,7 +104,7 @@ foreach ( $categories as $category )
     $t->parse( "news_list", "news_list_tpl", true );
 }
  
-if ( $GenerateStaticPage == "true" )
+if ( $generateStaticPage == "true" )
 {
     $fp = eZPBFile::fopen( $cachedFile, "w+");
 

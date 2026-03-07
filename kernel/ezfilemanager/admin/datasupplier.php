@@ -23,11 +23,20 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$fileArrayID   = eZHTTPTool::getVar( 'FileArrayID' ) ?? [];
+$folderArrayID = eZHTTPTool::getVar( 'FolderArrayID' ) ?? [];
+$folderID      = eZHTTPTool::getVar( 'FolderID' );
+$imageDir      = eZHTTPTool::getVar( 'ImageDir' );
+$update        = eZHTTPTool::getVar( 'Update' );
+$name        = eZHTTPTool::getVar( 'Name' );
+// URL-routing variables are set below inside the switch and override the above POST defaults.
+
 switch ( $url_array[2] )
 {
     case "browse":
     {
-        $FolderID = $url_array[3];
+        $folderID = $url_array[3];
         include( "kernel/ezfilemanager/admin/browse.php" );
     }
     break;

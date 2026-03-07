@@ -73,28 +73,28 @@ $t->set_var( "result_category", "" );
 $t->set_var( "companies_table", "" );
 $t->set_var( "command_type", "company" );
 
-$t->set_var( "search_text", htmlspecialchars( $SearchText ) );
-$t->set_var( "current_id", isset( $SearchCategory ) ? $SearchCategory : false );
+$t->set_var( "search_text", htmlspecialchars( $searchText ) );
+$t->set_var( "current_id", isset( $searchCategory ) ? $searchCategory : false );
 
-$Action = "new";
+$action = "new";
 $results = "false";
 
-if ( isset( $SearchObject ) && $SearchObject == "company" )
+if ( isset( $searchObject ) && $searchObject == "company" )
 {
-    $Action = "search";
+    $action = "search";
 }
 
-if ( !empty( $SearchText ) )
+if ( !empty( $searchText ) )
 {
-    $Action = "search";
+    $action = "search";
 }
 
 $company = new eZCompany();
 $result = false;
 $companyArray = array();
-if ( $Action == "search" )
+if ( $action == "search" )
 {
-    $companyArray = $company->search( $SearchText );
+    $companyArray = $company->search( $searchText );
 
     $count = count( $companyArray );
     if ( $count > 0 )
@@ -109,7 +109,7 @@ if ( $results == true )
     $t->set_var( "results", $count );
     $i = 0;
 
-    $can_view_stats = eZPermission::checkPermission( $user, "eZContact", "CompanyStats" ) && isset( $ShowStats ) && $ShowStats;
+    $can_view_stats = eZPermission::checkPermission( $user, "eZContact", "CompanyStats" ) && isset( $showStats ) && $showStats;
     $t->set_var( "company_stats_header", "" );
     if ( $can_view_stats )
         $t->parse( "company_stats_header", "company_stats_header_tpl" );
@@ -144,7 +144,7 @@ if ( $results == true )
     }
     else
     {
-        $can_view_stats = eZPermission::checkPermission( $user, "eZContact", "CompanyStats" ) && $ShowStats;
+        $can_view_stats = eZPermission::checkPermission( $user, "eZContact", "CompanyStats" ) && $showStats;
         $t->set_var( "company_stats_header", "" );
         if ( $can_view_stats )
             $t->parse( "company_stats_header", "company_stats_header_tpl" );

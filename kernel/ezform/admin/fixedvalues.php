@@ -33,14 +33,14 @@
 // include_once( "ezform/classes/ezformelementtype.php" );
 // include_once( "ezform/classes/ezformelementfixedvalue.php" );
 
-$ActionValue = "list";
+$actionValue = "list";
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFormMain", "Language" );
 
-$element = new eZFormElement( $ElementID );
+$element = new eZFormElement( $elementID );
 
-if( isset( $AddValue ) )
+if( isset( $addValue ) )
 {
     $value = new eZFormElementFixedValue();
     $value->store();
@@ -48,33 +48,33 @@ if( isset( $AddValue ) )
 }
 
 
-if( isset( $Store ) || isset ( $AddValue ) || isset ( $DeleteSelected ) || isset ( $OK ) )
+if( isset( $store ) || isset ( $addValue ) || isset ( $deleteSelected ) || isset ( $ok ) )
 {
     $i=0;
-    if ( count ( $ValueID ) > 0 )
+    if ( count ( $valueID ) > 0 )
     {
-        foreach( $ValueID as $ID )
+        foreach( $valueID as $id )
         {
-            $value = new eZFormElementFixedValue( $ID );
-            $value->setValue( $Value[$i] );
+            $value = new eZFormElementFixedValue( $id );
+            $value->setValue( $value[$i] );
             $value->store();
             $i++;
         }
     }
 }
 
-if( isset( $DeleteSelected ) )
+if( isset( $deleteSelected ) )
 {
-    foreach( $ValueDeleteID as $ID )
+    foreach( $valueDeleteID as $id )
     {
-        $value = new eZFormElementFixedValue( $ID );
+        $value = new eZFormElementFixedValue( $id );
         $value->delete();
     }
 }
 
-if( isset( $OK ) )
+if( isset( $ok ) )
 {
-    eZHTTPTool::header( "Location: /form/form/edit/$FormID" );
+    eZHTTPTool::header( "Location: /form/form/edit/$formID" );
     exit();
 }
 
@@ -97,7 +97,7 @@ $t->set_var( "no_values_item", "" );
 $t->set_var( "element_name", $element->name() );
 $t->set_var( "element_id", $element->id() );
 
-$t->set_var( "form_id", $FormID );
+$t->set_var( "form_id", $formID );
 
 $values = $element->fixedValues();
 
@@ -131,7 +131,7 @@ else
     $t->parse( "value_list", "value_list_tpl" );
 }
 
-$t->set_var( "action_value", $ActionValue );
+$t->set_var( "action_value", $actionValue );
 $t->set_var( "site_style", $SiteDesign );
 $t->pparse( "output", "value_list_page_tpl" );
 

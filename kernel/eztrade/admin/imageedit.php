@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: imageedit.php 6233 2001-07-20 11:42:02Z jakobn $
+// $id: imageedit.php 6233 2001-07-20 11:42:02Z jakobn $
 //
 // Created on: <21-Sep-2000 10:32:36 bf>
 //
@@ -32,21 +32,21 @@
 // include_once( "ezimagecatalogue/classes/ezimage.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $file = new eZPBImageFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     { 
-        $product = new eZProduct( $ProductID );
+        $product = new eZProduct( $productID );
         $image = new eZImage();
-        $image->setName( $Name );
-        $image->setCaption( $Caption );
+        $image->setName( $name );
+        $image->setCaption( $caption );
 
         $image->setImage( $file );
         
@@ -64,7 +64,7 @@ if ( $Action == "Insert" )
 		eZObjectPermission::setPermission( -1, $image->id(), "imagecatalogue_image", "r" );
 		eZObjectPermission::setPermission( 1, $image->id(), "imagecatalogue_image", "w" );
 
-        eZPBLog::writeNotice( "Picture added to product: $ProductID  from IP: $REMOTE_ADDR" );
+        eZPBLog::writeNotice( "Picture added to product: $productID  from IP: $REMOTE_ADDR" );
     }
     else
     {
@@ -72,24 +72,24 @@ if ( $Action == "Insert" )
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $ProductID . "/" );
+    eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $productID . "/" );
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
     $file = new eZPBImageFile();
     
     if ( $file->getUploadedFile( "userfile" ) )
     {
-        $product = new eZProduct( $ProductID );
+        $product = new eZProduct( $productID );
 
-        $oldImage = new eZImage( $ImageID );
+        $oldImage = new eZImage( $imageID );
         $product->deleteImage( $oldImage );
         
         $image = new eZImage();
-        $image->setName( $Name );
-        $image->setCaption( $Caption );
+        $image->setName( $name );
+        $image->setCaption( $caption );
 
         $image->setImage( $file );
         
@@ -99,118 +99,118 @@ if ( $Action == "Update" )
     }
     else
     {
-        $image = new eZImage( $ImageID );
-        $image->setName( $Name );
-        $image->setCaption( $Caption );
+        $image = new eZImage( $imageID );
+        $image->setName( $name );
+        $image->setCaption( $caption );
         $image->store();
     }
     
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $ProductID . "/" );
+    eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $productID . "/" );
     exit();
 }
 
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    $product = new eZProduct( $ProductID );
+    $product = new eZProduct( $productID );
 
-    if ( count ( $ImageArrayID ) != 0 )
+    if ( count ( $imageArrayID ) != 0 )
     {
-        foreach( $ImageArrayID as $ImageID )
+        foreach( $imageArrayID as $imageID )
         {
-            $image = new eZImage( $ImageID );
+            $image = new eZImage( $imageID );
             $product->deleteImage( $image );
         }
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $ProductID . "/" );
+    eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $productID . "/" );
     exit();    
 }
 
 // update captions
 
-if ( $Action == "UpdateImages" )
+if ( $action == "UpdateImages" )
 
 	{
-         for ( $i = 0; $i < count( $ImageUpdateArrayID ); $i++ )
+         for ( $i = 0; $i < count( $imageUpdateArrayID ); $i++ )
         	{
-            	if ( $NewCaption[$i] != $OldCaption[$i] )
+            	if ( $newCaption[$i] != $oldCaption[$i] )
 			{
-			$image = new eZImage($ImageUpdateArrayID[$i]);
-			$image->setCaption( $NewCaption[$i] );
+			$image = new eZImage($imageUpdateArrayID[$i]);
+			$image->setCaption( $newCaption[$i] );
 			$image->store();
 			}
 	      	  }
 
 	include_once( "classes/ezhttptool.php" );
-	eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $ProductID . "/" );
+	eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $productID . "/" );
 	exit();    
 		}
 
 
 
 // store the image definition
-if ( $Action == "StoreDef" )
+if ( $action == "StoreDef" )
 {
-    $product = new eZProduct( $ProductID );
+    $product = new eZProduct( $productID );
 
-	for ( $i = 0; $i < count( $ImageUpdateArrayID ); $i++ )
+	for ( $i = 0; $i < count( $imageUpdateArrayID ); $i++ )
         	{
-            	if ( $NewCaption[$i] != $OldCaption[$i] )
+            	if ( $newCaption[$i] != $oldCaption[$i] )
 			{
-			$image = new eZImage($ImageUpdateArrayID[$i]);
-			$image->setCaption( $NewCaption[$i] );
+			$image = new eZImage($imageUpdateArrayID[$i]);
+			$image->setCaption( $newCaption[$i] );
 			$image->store();
 			}
 		}
 
     // Unset main page image radiobutton
-    if ( isset( $NoMainImage ) )
+    if ( isset( $noMainImage ) )
     {
         $product->setMainImage( false );
         // include_once( "classes/ezhttptool.php" );
-        eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $ProductID . "/" );
+        eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $productID . "/" );
         exit();
     }
 
     // Unset mini page image radiobutton
-    if ( isset( $NoMiniImage ) )
+    if ( isset( $noMiniImage ) )
     {
         $product->setThumbnailImage( false );
         // include_once( "classes/ezhttptool.php" );
-        eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $ProductID . "/" );
+        eZHTTPTool::header( "Location: /trade/productedit/imagelist/" . $productID . "/" );
         exit();
     }
 
-    if ( isset( $ThumbnailImageID ) &&  ( $ThumbnailImageID != 0 ) &&  ( $ThumbnailImageID != "" ) )
+    if ( isset( $thumbnailImageID ) &&  ( $thumbnailImageID != 0 ) &&  ( $thumbnailImageID != "" ) )
     {
-        $thumbnail = new eZImage( $ThumbnailImageID );
+        $thumbnail = new eZImage( $thumbnailImageID );
         $product->setThumbnailImage( $thumbnail );
     }
 
-    if ( isset( $MainImageID ) &&  ( $MainImageID != 0 ) &&  ( $MainImageID != "" ) )
+    if ( isset( $mainImageID ) &&  ( $mainImageID != 0 ) &&  ( $mainImageID != "" ) )
     {
-        $main = new eZImage( $MainImageID );
+        $main = new eZImage( $mainImageID );
         $product->setMainImage( $main );
     }
     
-    if ( isset( $NewImage ) )
+    if ( isset( $newImage ) )
     {
         print( "new image" );
         // include_once( "classes/ezhttptool.php" );
-        eZHTTPTool::header( "Location: /trade/productedit/imageedit/new/$ProductID/" );
+        eZHTTPTool::header( "Location: /trade/productedit/imageedit/new/$productID/" );
         exit();
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /trade/productedit/edit/" . $ProductID . "/" );
+    eZHTTPTool::header( "Location: /trade/productedit/edit/" . $productID . "/" );
     exit();
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "imageedit.php" );
+                     "kernel/eztrade/admin/intl/", $language, "imageedit.php" );
 
 $t->setAllStrings();
 
@@ -228,10 +228,10 @@ $t->set_var( "action_value", "Insert" );
 $t->set_var( "option_id", "" );
 $t->set_var( "image", "" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $product = new eZProduct( $ProductID );
-    $image = new eZImage( $ImageID );
+    $product = new eZProduct( $productID );
+    $image = new eZImage( $imageID );
 
     $t->set_var( "image_id", $image->id() );
     $t->set_var( "name_value", $image->name() );
@@ -250,7 +250,7 @@ if ( $Action == "Edit" )
     $t->parse( "image", "image_tpl" );
 }
 
-$product = new eZProduct( $ProductID );
+$product = new eZProduct( $productID );
     
 $t->set_var( "product_name", $product->name() );
 $t->set_var( "product_id", $product->id() );

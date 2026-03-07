@@ -25,11 +25,11 @@
     $t->set_block( "value_list_tpl", "dropdown_tpl", "dropdown" );
     $t->set_block( "dropdown_tpl", "dropdown_item_tpl", "dropdown_item" );
     
-    $SurveyID = $url_array[3];
-    $QuestionID = $url_array[4];
+    $surveyID = $url_array[3];
+    $questionID = $url_array[4];
     
-    $t->set_var( "survey_id", $SurveyID );
-    $t->set_var( "question_id", $QuestionID );
+    $t->set_var( "survey_id", $surveyID );
+    $t->set_var( "question_id", $questionID );
     
     $t->set_var( "yesno", "" );
     $t->set_var( "checkbox", "" );
@@ -39,17 +39,17 @@
     $t->set_var( "essay", "" );
     $t->set_var( "numeric", "" );
     
-    $question = new eZQuestion( $QuestionID );
+    $question = new eZQuestion( $questionID );
     
     // retira default
-    if ( isset( $Clear ) )
+    if ( isset( $clear ) )
     {
         $question->setInitial( "" );
         $question->store();
     }
     
     // gravar altera��es
-    if ( (isset( $Store ) || isset( $OK )) && isset( $Value ) )
+    if ( (isset( $store ) || isset( $ok )) && isset( $value ) )
     {
         switch ( $question->questionTypeID() )
         {
@@ -60,23 +60,23 @@
             case $question->TYPE_DROPDOWN:
             case $question->TYPE_NUMERIC:
             {
-                $question->setInitial( $Value[0] );
+                $question->setInitial( $value[0] );
                 $question->store();
             }
             break;
             
             case $question->TYPE_CHECKBOX:
             {
-                $question->setInitial( implode( ";", $Value ) );
+                $question->setInitial( implode( ";", $value ) );
                 $question->store();
             }
             break;
         }
     }
     
-    if( isset( $OK ) )
+    if( isset( $ok ) )
     {
-        eZHTTPTool::header( "Location: /survey/surveyedit/edit/$SurveyID" );
+        eZHTTPTool::header( "Location: /survey/surveyedit/edit/$surveyID" );
         exit();
     }
     

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: imagelist.php 9753 2003-01-07 13:46:20Z br $
+// $id: imagelist.php 9753 2003-01-07 13:46:20Z br $
 //
 // Created on: <21-Sep-2000 10:32:19 bf>
 //
@@ -30,7 +30,7 @@
 
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
 // include_once( "ezarticle/classes/ezarticle.php" );
@@ -38,7 +38,7 @@ $Language = $ini->variable( "eZArticleMain", "Language" );
 
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "imagelist.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "imagelist.php" );
 
 $t->setAllStrings();
 
@@ -48,7 +48,7 @@ $t->set_block( "image_list_page_tpl", "no_images_tpl", "no_images" );
 $t->set_block( "image_list_page_tpl", "image_list_tpl", "image_list" );
 $t->set_block( "image_list_tpl", "image_tpl", "image" );
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
 
 $session = eZSession::globalSession();
 $session->setVariable( "ImageListReturnTo", $_SERVER['REQUEST_URI'] );
@@ -59,13 +59,13 @@ $thumbnail = $article->thumbnailImage();
 
 $t->set_var( "article_name", $article->name() );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
-if ( isset( $AddImages ) )
+if ( isset( $addImages ) )
 {
-    if ( isset( $ImageArrayID ) && ( $ImageArrayID ) > 0 )
+    if ( isset( $imageArrayID ) && ( $imageArrayID ) > 0 )
     {
-        foreach ( $ImageArrayID as $imageID )
+        foreach ( $imageArrayID as $imageID )
         {
             $image = new eZImage( $imageID );
             $article->addImage( $image );
@@ -77,18 +77,18 @@ $images = $article->images( true, "Placement" );
 // Start Add By kadooz !
 
 /** move article pics up/down **/
-if ( is_numeric( $MoveImageUp ) || is_numeric( $MoveImageDown ) )
+if ( is_numeric( $moveImageUp ) || is_numeric( $moveImageDown ) )
 {
-    if ( is_numeric( $MoveImageUp ) )
+    if ( is_numeric( $moveImageUp ) )
     {
-        $article->moveImageUp( $MoveImageUp );
+        $article->moveImageUp( $moveImageUp );
     }
 
-    if ( is_numeric( $MoveImageDown ) )
+    if ( is_numeric( $moveImageDown ) )
     {
-        $article->moveImageDown( $MoveImageDown );
+        $article->moveImageDown( $moveImageDown );
     }
-    eZHTTPTool::header( "Location: /article/articleedit/imagelist/$ArticleID/" );
+    eZHTTPTool::header( "Location: /article/articleedit/imagelist/$articleID/" );
     exit();
 }
 
@@ -131,7 +131,7 @@ else
         else
             $t->set_var( "image_name", $image->caption() );
         $t->set_var( "image_id", $image->id() );
-        $t->set_var( "article_id", $ArticleID );
+        $t->set_var( "article_id", $articleID );
 
         $variation = $image->requestImageVariation( 150, 150 );
 

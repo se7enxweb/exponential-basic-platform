@@ -38,7 +38,7 @@ $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
 
-$ImageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
+$imageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
 
 
 $t = new eZTemplate( "kernel/ezfilemanager/admin/" . $ini->variable( "eZFileManagerMain", "AdminTemplateDir" ),
@@ -55,14 +55,14 @@ $t->set_block( "unassigned_page_tpl", "file_list_tpl", "file_list" );
 $t->set_block( "file_list_tpl", "file_tpl", "file" );
 $t->set_var( "read", "" );
 
-if ( isset( $Update ) )
+if ( isset( $update ) )
 {
-    for ( $i = 0; $i < count( $FileArrayID ); $i++ )
+    for ( $i = 0; $i < count( $fileArrayID ); $i++ )
     {
-        if ( ( $FolderArrayID[$i] != "-1" ) && ( is_numeric( $FolderArrayID[$i] ) ) )
+        if ( ( $folderArrayID[$i] != "-1" ) && ( is_numeric( $folderArrayID[$i] ) ) )
         {
-            $file = new eZVirtualFile( $FileArrayID[$i] );
-            $folder = new eZVirtualFolder( $FolderArrayID[$i] );
+            $file = new eZVirtualFile( $fileArrayID[$i] );
+            $folder = new eZVirtualFolder( $folderArrayID[$i] );
             $folder->addFile( $file );
         }
     }
@@ -120,7 +120,7 @@ foreach ( $folderList as $folderItem )
     }
 }
 
-$t->set_var( "image_dir", $ImageDir );
+$t->set_var( "image_dir", $imageDir );
 
 $t->pparse( "output", "unassigned_page_tpl" );
 

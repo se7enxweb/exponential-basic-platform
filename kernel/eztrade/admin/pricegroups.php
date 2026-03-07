@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: pricegroups.php 8510 2001-11-19 10:28:54Z br $
+// $id: pricegroups.php 8510 2001-11-19 10:28:54Z br $
 //
 // Created on: <23-Feb-2001 12:09:51 amos>
 //
@@ -33,23 +33,23 @@
 
 $page_path = "/trade/pricegroups";
 
-if ( isset( $Action ) && $Action == "list" )
+if ( isset( $action ) && $action == "list" )
 {
-    $Offset = false;
-    $ListType = false;
+    $offset = false;
+    $listType = false;
 }
 
-if ( isset( $New ) )
+if ( isset( $new ) )
 {
     eZHTTPTool::header( "Location: $page_path/new" );
     exit();
 }
 
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    if ( isset( $ItemArrayID ) && count( $ItemArrayID ) > 0 )
+    if ( isset( $itemArrayID ) && count( $itemArrayID ) > 0 )
     {
-        foreach( $ItemArrayID as $item )
+        foreach( $itemArrayID as $item )
         {
             eZPriceGroup::delete( $item );
         }
@@ -68,9 +68,9 @@ eZList::drawList( array( "language_file" => $language_file,
                          "page_path" => $page_path,
                          "item_type_array" => $item_type_array,
                          "total_types" => 0,
-                         "action" => $Action,
-                         "offset" => $Offset,
-                         "list_type" => $ListType,
+                         "action" => $action,
+                         "offset" => $offset,
+                         "list_type" => $listType,
                          "module" => "eztrade",
                          "module_main" => "eZTradeMain",
                          "place" => "admin",

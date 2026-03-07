@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: search.php 9891 2003-09-04 16:13:04Z br $
+// $id: search.php 9891 2003-09-04 16:13:04Z br $
 //
 // Created on: <28-Oct-2000 15:56:58 bf>
 //
@@ -32,26 +32,26 @@
 // include_once( "ezarticle/classes/ezarticle.php" );
 // include_once( "classes/ezlist.php" );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$Limit = $ini->variable( "eZArticleMain", "SearchListLimit" );
-$SearchWithinSections = $ini->variable( "eZArticleMain", "SearchWithinSections" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$limit = $ini->variable( "eZArticleMain", "SearchListLimit" );
+$searchWithinSections = $ini->variable( "eZArticleMain", "SearchWithinSections" );
 
 // init the section
-if ( isset ($SectionIDOverride) )
+if ( isset ($sectionIDOverride) )
 {
-    $GlobalSectionID = $SectionIDOverride;
+    $globalSectionID = $sectionIDOverride;
     // include_once( "ezsitemanager/classes/ezsection.php" );
 
-    $sectionObject = eZSection::globalSectionObject( $SectionIDOverride );
+    $sectionObject = eZSection::globalSectionObject( $sectionIDOverride );
     $sectionObject->setOverrideVariables();
 }
 else
 {
-    $SectionIDOverride = false;
+    $sectionIDOverride = false;
 }
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "search.php" );
+                     "kernel/ezarticle/user/intl/", $language, "search.php" );
 
 $t->setAllStrings();
 
@@ -77,21 +77,21 @@ if ( isset($_REQUEST['StartMonth']) && isset($_REQUEST['StartDay']) && isset($_R
 {
     $startDate = new eZDateTime( $_REQUEST['StartYear'], $_REQUEST['StartMonth'], $_REQUEST['StartDay'], 
     	$_REQUEST['StartHour'], $_REQUEST['StartMinute'], 0 );
-    $StartStamp = $startDate->timeStamp();
+    $startStamp = $startDate->timeStamp();
 }
 if ( isset($_REQUEST['StopMonth']) && isset($_REQUEST['StopDay']) && isset($_REQUEST['StopYear']) &&
-	 checkdate ( $StopMonth, $StopDay, $StopYear ) )
+	 checkdate ( $stopMonth, $stopDay, $stopYear ) )
 {
     $stopDate = new eZDateTime( $_REQUEST['StopYear'], $_REQUEST['StopMonth'], $_REQUEST['StopDay'], 
     			$_REQUEST['StopHour'], $_REQUEST['StopMinute'], 0 );
-    $StopStamp = $stopDate->timeStamp();
+    $stopStamp = $stopDate->timeStamp();
 }
 
 $t->set_var( "search_text", "" );
 
-if ( isset( $CategoryID ) )
+if ( isset( $categoryID ) )
 {
-	$category = new eZArticleCategory( $CategoryID );
+	$category = new eZArticleCategory( $categoryID );
 } 
 else 
 {
@@ -106,33 +106,33 @@ $tmpSearchText = str_replace( "<", "&lt;", $_REQUEST['SearchText'] );
 $tmpSearchText = str_replace( ">", "&gt;", $tmpSearchText );
 $t->set_var( "search_text", $tmpSearchText );
 
-$Offset = isset ( $_REQUEST['Offset'] )?isset ( $_REQUEST['Offset'] ):0;
+$offset = isset ( $_REQUEST['Offset'] )?isset ( $_REQUEST['Offset'] ):0;
 
 // articles
 $paramsArray = array();
 if ( isset($_REQUEST['SearchText']) )
 {
-/*    if ( isset( $StartStamp ) )
+/*    if ( isset( $startStamp ) )
     {
-        $paramsArray["FromDate"] = $StartStamp;
-        $t->set_var( "url_start_stamp", urlencode( $StartStamp ) );
+        $paramsArray["FromDate"] = $startStamp;
+        $t->set_var( "url_start_stamp", urlencode( $startStamp ) );
     }
 
-    if ( isset( $StopStamp ) )
+    if ( isset( $stopStamp ) )
     {
-        $paramsArray["ToDate"] = $StopStamp;
-        $t->set_var( "url_stop_stamp", urlencode( $StopStamp ) );
+        $paramsArray["ToDate"] = $stopStamp;
+        $t->set_var( "url_stop_stamp", urlencode( $stopStamp ) );
     }   */
     
-    if ( $SearchWithinSections == "enabled" )
+    if ( $searchWithinSections == "enabled" )
     {
-	if ( isset( $SectionsList ) )
+	if ( isset( $sectionsList ) )
 	{
-	    $paramsArray["SectionsList"] = $SectionsList;
+	    $paramsArray["SectionsList"] = $sectionsList;
 	}
 	else
 	{
-	    $paramsArray["SectionsList"] = "$SectionIDOverride";
+	    $paramsArray["SectionsList"] = "$sectionIDOverride";
 	}
     }										       
 
@@ -157,11 +157,11 @@ if ( isset($_REQUEST['SearchText']) )
         $t->set_var( "url_category_array", htmlspecialchars( implode( "-", $_REQUEST['CategoryArray'] ) ) );
     }
 /*
-	echo "StartStamp: ".$StartStamp."<br>";
-	echo "StopStamp: ".$StopStamp."<br>";
-	echo "SectionID: ".$SectionIDOverride."<br>";
-	echo "ContentWriterID: ".$ContentsWriterID."<br>";
-	echo "PhotographerID: ".$PhotographerID."<br>";  
+	echo "StartStamp: ".$startStamp."<br>";
+	echo "StopStamp: ".$stopStamp."<br>";
+	echo "SectionID: ".$sectionIDOverride."<br>";
+	echo "ContentWriterID: ".$contentsWriterID."<br>";
+	echo "PhotographerID: ".$photographerID."<br>";  
 	echo "<pre>";
 	print_r ( $paramsArray );
 	echo "</pre>";
@@ -171,16 +171,16 @@ if ( isset($_REQUEST['SearchText']) )
 
     $article = new eZArticle();
     $totalCount = 0;
-    $articleList = $article->search( $_REQUEST['SearchText'], "time", false, $Offset, $Limit, $paramsArray, $totalCount );
+    $articleList = $article->search( $_REQUEST['SearchText'], "time", false, $offset, $limit, $paramsArray, $totalCount );
 
     $t->set_var( "url_text", htmlspecialchars( $_REQUEST['SearchText'] ) );
 }
 
-// if ( ( $MaxSearchForArticles != 0 ) && ( $MaxSearchForArticles < $totalCount ) )
+// if ( ( $maxSearchForArticles != 0 ) && ( $maxSearchForArticles < $totalCount ) )
 
 if ( isset( $articleList ) && count ( $articleList ) > 0 )
 {
-    $locale = new eZLocale( $Language );
+    $locale = new eZLocale( $language );
     $i=0;
     $t->set_var( "article_list", "" );
     foreach ( $articleList as $article )
@@ -189,7 +189,7 @@ if ( isset( $articleList ) && count ( $articleList ) > 0 )
 
         $t->set_var( "article_id", $article->id() );
 	
-        $t->set_var( "category_id", $article->GetCategory( $SectionIDOverride ) );
+        $t->set_var( "category_id", $article->GetCategory( $sectionIDOverride ) );
 
         if ( ( $i % 2 ) == 0 )
         {
@@ -213,12 +213,12 @@ if ( isset( $articleList ) && count ( $articleList ) > 0 )
 //print_r ( $t );
 
 //echo "totalCount:".$totalCount."<br>";
-//echo "Limit:".$Limit."<br>";
-//echo "Offset:".$Offset."<br>";
+//echo "Limit:".$limit."<br>";
+//echo "Offset:".$offset."<br>";
 //echo "</pre>";
 //exit();
 
-eZList::drawNavigator( $t, $totalCount, $Limit, $Offset, "article_list_page_tpl" );
+eZList::drawNavigator( $t, $totalCount, $limit, $offset, "article_list_page_tpl" );
 
 
 if ( isset( $articleList ) && count( $articleList ) > 0 )    
@@ -229,12 +229,12 @@ else
 if ( $totalCount == 0 )
     $t->set_var( "article_start", 0 );
 else
-    $t->set_var( "article_start", $Offset + 1 );
+    $t->set_var( "article_start", $offset + 1 );
 
-$t->set_var( "article_end", min( $Offset + $Limit, $totalCount ) );
+$t->set_var( "article_end", min( $offset + $limit, $totalCount ) );
 $t->set_var( "article_total", $totalCount );
 
-if ( isset ($SectionIDOverride) ) $t->set_var( "section_id", $SectionIDOverride );
+if ( isset ($sectionIDOverride) ) $t->set_var( "section_id", $sectionIDOverride );
 
 $t->pparse( "output", "article_list_page_tpl" );
 

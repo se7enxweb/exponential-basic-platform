@@ -32,7 +32,7 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
-$Limit = $ini->variable( "eZForumMain", "SearchAdminLimit" );
+$limit = $ini->variable( "eZForumMain", "SearchAdminLimit" );
 
 // include_once( "classes/eztemplate.php" );
 
@@ -53,27 +53,27 @@ $t->set_block( "search_tpl", "next_tpl", "next" );
 $t->set_var( "site_style", $SiteDesign );
 
 
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
 $t->set_var( "url_text", "" );
 $t->set_var( "search_result", "" );
 
-if ( $QueryString != "" )
+if ( $queryString != "" )
 {
-    $t->set_var( "url_text", urlencode( $QueryString ) );
+    $t->set_var( "url_text", urlencode( $queryString ) );
 
     $forum = new eZForum();
     
     // do a search in all forums
-    $messages = $forum->search( $QueryString, $Offset, $Limit, $total_count);
+    $messages = $forum->search( $queryString, $offset, $limit, $total_count);
 
     $locale = new eZLocale( $Language );
 
     $level = 0;
     $i = 0;
 
-    $AnonymousPoster = $ini->variable( "eZForumMain", "AnonymousPoster" );
+    $anonymousPoster = $ini->variable( "eZForumMain", "AnonymousPoster" );
 
     if ( count( $messages ) > 0 )
     foreach ( $messages as $message )
@@ -97,7 +97,7 @@ if ( $QueryString != "" )
         }
         else
         {
-            $t->set_var( "user", $AnonymousPoster );
+            $t->set_var( "user", $anonymousPoster );
         }
 
         $t->parse( "message", "message_tpl", true );
@@ -118,10 +118,10 @@ else
 {
     $t->parse( "empty_result", "empty_result_tpl" );
 }
-eZList::drawNavigator( $t, $total_count, $Limit, $Offset, "search_tpl" );
+eZList::drawNavigator( $t, $total_count, $limit, $offset, "search_tpl" );
 
-$t->set_var( "forum_start", $Offset + 1 );
-$t->set_var( "forum_end", min( $Offset + $Limit, $total_count ) );
+$t->set_var( "forum_start", $offset + 1 );
+$t->set_var( "forum_end", min( $offset + $limit, $total_count ) );
 $t->set_var( "forum_total", $total_count );
 
 $t->pparse("output","search_tpl");

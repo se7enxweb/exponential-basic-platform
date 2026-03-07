@@ -37,39 +37,39 @@
 // include_once( "ezsession/classes/ezpreferences.php" );
 
 // check that the folder beeing viewed is your folder
-if ( !eZMailFolder::isOwner( eZUser::currentUser(), $FolderID ) )
+if ( !eZMailFolder::isOwner( eZUser::currentUser(), $folderID ) )
 {
     eZHTTPTool::header( "Location: /error/403/" );
     exit();
 }
 
 
-if ( isset( $NewFolder ) )
+if ( isset( $newFolder ) )
 {
     eZHTTPTool::header( "Location: /mail/folderedit/" );
     exit();
 }
 
-if ( isset( $Move ) && $FolderSelectID != -1 && count( $MailArrayID ) > 0 ) // really move to other folder
+if ( isset( $move ) && $folderSelectID != -1 && count( $mailArrayID ) > 0 ) // really move to other folder
 {
-    $folder = new eZMailFolder( $FolderSelectID );
-    foreach ( $MailArrayID as $mailitemID )
+    $folder = new eZMailFolder( $folderSelectID );
+    foreach ( $mailArrayID as $mailitemID )
         $folder->addMail( $mailitemID );
 }
 
 $ini = eZINI::instance( 'site.ini' );
-if( isset( $NumMessages ) )
+if( isset( $numMessages ) )
 {
-    eZPreferences::setVariable( "eZMail_MessagesPerPage", $NumMessages );
+    eZPreferences::setVariable( "eZMail_MessagesPerPage", $numMessages );
 }
 else
 {
-    $NumMessages = eZPreferences::variable( "eZMail_MessagesPerPage" );
-    if( !$NumMessages )
+    $numMessages = eZPreferences::variable( "eZMail_MessagesPerPage" );
+    if( !$numMessages )
     {
-        $NumMessages = $ini->variable( "eZMailMain", "MailPerPageDefault" );
-        if( !$NumMessages )
-            $NumMessages = 20; // hardcoded default in case all other fails.
+        $numMessages = $ini->variable( "eZMailMain", "MailPerPageDefault" );
+        if( !$numMessages )
+            $numMessages = 20; // hardcoded default in case all other fails.
     }
 }
 
@@ -108,13 +108,13 @@ $t->set_var( "mail_status_renderer", "" );
 
 $user = eZUser::currentUser();
 
-$limit_array = array_unique( array( 20, 30, 40, 50, 60, 80, 100, 150, 200, $NumMessages ) );
+$limit_array = array_unique( array( 20, 30, 40, 50, 60, 80, 100, 150, 200, $numMessages ) );
 $currentMethod = eZPreferences::variable( "eZMail_MessagesPerPage" );
 sort( $limit_array );
 foreach ( $limit_array as $element_number )
 {
     $t->set_var( "messages_number", $element_number );
-    if ( $element_number == $NumMessages )
+    if ( $element_number == $numMessages )
         $t->set_var( "is_selected", "selected" );
     else
         $t->set_var( "is_selected", "" );
@@ -122,7 +122,7 @@ foreach ( $limit_array as $element_number )
 }
 
 
-$folder = new eZMailFolder( $FolderID );
+$folder = new eZMailFolder( $folderID );
 $isDraftsFolder = false;
 if ( $folder->folderType() == DRAFTS )
     $isDraftsFolder = true;
@@ -130,11 +130,11 @@ if ( $folder->folderType() == DRAFTS )
 
 // check if the sort mode is changed...
 $preferences = new eZPreferences();
-if ( isset( $SortMethod ) ) // the sorting method has changed..
+if ( isset( $sortMethod ) ) // the sorting method has changed..
 {
     $currentMethod = $preferences->variable( "MailSortMethod" );
     $newMethod = "";
-    switch ( $SortMethod )
+    switch ( $sortMethod )
     {
         case "subject" :
         {
@@ -165,11 +165,11 @@ if ( isset( $SortMethod ) ) // the sorting method has changed..
     $preferences->setVariable( "MailSortMethod", $newMethod );
 }
 
-$t->set_var( "current_folder_id", $FolderID );
+$t->set_var( "current_folder_id", $folderID );
 $t->set_var( "current_folder_name", htmlspecialchars( $folder->name() ) );
 
 $sort = $preferences->variable( "MailSortMethod");
-$mail = $folder->mail( $sort, $Offset, $NumMessages );
+$mail = $folder->mail( $sort, $offset, $numMessages );
 $mailCount = $folder->mailCount();
 $i = 0;
 foreach ( $mail as $mailItem )
@@ -220,7 +220,7 @@ foreach ( $folders as $folderItem )
     $t->parse( "folder_item", "folder_item_tpl", true );
 }
 
-eZList::drawNavigator( $t, $mailCount, $NumMessages, $Offset, "mail_list_page_tpl" );
+eZList::drawNavigator( $t, $mailCount, $numMessages, $offset, "mail_list_page_tpl" );
 
 $t->pparse( "output", "mail_list_page_tpl" );
 

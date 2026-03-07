@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: voucheredit.php 7465 2001-09-26 07:09:33Z ce $
+// $id: voucheredit.php 7465 2001-09-26 07:09:33Z ce $
 //
 // Created on: <20-Dec-2000 18:24:06 bf>
 //
@@ -25,7 +25,7 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /trade/voucherlist/" );
     exit();
@@ -37,20 +37,20 @@ if ( isset( $Cancel ) )
 // include_once( "classes/ezlocale.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 $move_item = true;
 
 // include_once( "eztrade/classes/ezvoucher.php" );
 
-if ( ( $Action == "Update" ) || ( isset ( $Update ) ) )
+if ( ( $action == "Update" ) || ( isset ( $update ) ) )
 {
-    $voucher = new eZVoucher( $VoucherID );
+    $voucher = new eZVoucher( $voucherID );
 
-    setType( $Price, "integer" );
+    setType( $price, "integer" );
     
-    $voucher->setPrice( $Price );
+    $voucher->setPrice( $price );
 
-    if ( $Available == "on" )
+    if ( $available == "on" )
         $voucher->setAvailable( true );
     else
         $voucher->setAvailable( false );
@@ -58,15 +58,15 @@ if ( ( $Action == "Update" ) || ( isset ( $Update ) ) )
     $voucher->store();
 }
 
-if( isset( $Ok ) )
+if( isset( $ok ) )
 {
     eZHTTPTool::header( "Location: /trade/voucherlist/" );
     exit();
 }
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    $voucher = new eZVoucher( $VoucherID );
+    $voucher = new eZVoucher( $voucherID );
 
     $voucher->delete();
     
@@ -75,7 +75,7 @@ if ( $Action == "Delete" )
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "voucheredit.php" );
+                     "kernel/eztrade/admin/intl/", $language, "voucheredit.php" );
 
 $t->setAllStrings();
 
@@ -84,15 +84,15 @@ $t->set_file( array( "voucher_edit_tpl" => "voucheredit.tpl" ) );
 $t->set_block( "voucher_edit_tpl", "used_list_tpl", "used_list" );
 $t->set_block( "used_list_tpl", "used_item_tpl", "used_item" );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 $currency = new eZCurrency();
 
 $t->set_var( "action_value", "Insert" );
 
 // edit
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $voucher = new eZVoucher( $VoucherID );
+    $voucher = new eZVoucher( $voucherID );
 
     $currency->setValue( $voucher->price() ); 
     $t->set_var( "voucher_price", $voucher->price() );

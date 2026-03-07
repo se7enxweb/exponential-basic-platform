@@ -33,6 +33,61 @@
 
 $user = eZUser::currentUser();
 
+$accountNumber          = eZHTTPTool::getVar( 'AccountNumber' );
+$action                 = eZHTTPTool::getVar( 'Action' );
+$actionValue            = eZHTTPTool::getVar( 'ActionValue' );
+$allowSimultaneousLogins = eZHTTPTool::getVar( 'AllowSimultaneousLogins' );
+$back                   = eZHTTPTool::getVar( 'Back' );
+$cancel                 = eZHTTPTool::getVar( 'Cancel' );
+$deleteAuthor           = eZHTTPTool::getVar( 'DeleteAuthor' );
+$deleteGroups           = eZHTTPTool::getVar( 'DeleteGroups' );
+$deleteIDArray          = eZHTTPTool::getVar( 'DeleteIDArray' ) ?? [];
+$description            = eZHTTPTool::getVar( 'Description' );
+$eMail                  = eZHTTPTool::getVar( 'EMail' );
+$email                  = eZHTTPTool::getVar( 'Email' );
+$firstName              = eZHTTPTool::getVar( 'FirstName' );
+$groupArray             = eZHTTPTool::getVar( 'GroupArray' ) ?? [];
+$groupArrayID           = eZHTTPTool::getVar( 'GroupArrayID' ) ?? [];
+$groupID                = eZHTTPTool::getVar( 'GroupID' );
+$groupURL               = eZHTTPTool::getVar( 'GroupURL' );
+$idArray                = eZHTTPTool::getVar( 'IDArray' ) ?? [];
+$id                     = eZHTTPTool::getVar( 'Id' );
+$index                  = eZHTTPTool::getVar( 'Index' );
+$infoSubscription       = eZHTTPTool::getVar( 'InfoSubscription' );
+$isRoot                 = eZHTTPTool::getVar( 'IsRoot' );
+$language               = eZHTTPTool::getVar( 'Language' );
+$lastName               = eZHTTPTool::getVar( 'LastName' );
+$login                  = eZHTTPTool::getVar( 'Login' );
+$mainGroup              = eZHTTPTool::getVar( 'MainGroup' );
+$max                    = eZHTTPTool::getVar( 'Max' );
+$maxLogins              = eZHTTPTool::getVar( 'MaxLogins' );
+$moduleTabBar           = eZHTTPTool::getVar( 'ModuleTabBar' );
+$name                   = eZHTTPTool::getVar( 'Name' );
+$newAuthor              = eZHTTPTool::getVar( 'NewAuthor' );
+$newPassword            = eZHTTPTool::getVar( 'NewPassword' );
+$oldPassword            = eZHTTPTool::getVar( 'OldPassword' );
+$orderBy                = eZHTTPTool::getVar( 'OrderBy' );
+$password               = eZHTTPTool::getVar( 'Password' );
+$permissionArray        = eZHTTPTool::getVar( 'PermissionArray' ) ?? [];
+$permissionID           = eZHTTPTool::getVar( 'PermissionID' );
+$phone                  = eZHTTPTool::getVar( 'Phone' );
+$refererURL             = eZHTTPTool::getVar( 'RefererURL' );
+$search                 = eZHTTPTool::getVar( 'Search' );
+$searchText             = eZHTTPTool::getVar( 'SearchText' );
+$sessionArrayID         = eZHTTPTool::getVar( 'SessionArrayID' ) ?? [];
+$sessionID              = eZHTTPTool::getVar( 'SessionID' );
+$sessionTimeout         = eZHTTPTool::getVar( 'SessionTimeout' );
+$signature              = eZHTTPTool::getVar( 'Signature' );
+$simultaneousLogins     = eZHTTPTool::getVar( 'SimultaneousLogins' );
+$singleModule           = eZHTTPTool::getVar( 'SingleModule' );
+$siteDesign             = eZHTTPTool::getVar( 'SiteDesign' );
+$store                  = eZHTTPTool::getVar( 'Store' );
+$totalTypes             = eZHTTPTool::getVar( 'TotalTypes' );
+$userArrayID            = eZHTTPTool::getVar( 'UserArrayID' ) ?? [];
+$userID                 = eZHTTPTool::getVar( 'UserID' );
+$username               = eZHTTPTool::getVar( 'Username' );
+$verifyPassword         = eZHTTPTool::getVar( 'VerifyPassword' );
+
 if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser", "ModuleEdit" ) == true)
 {
     // These should only be available if the user has permissions...
@@ -72,8 +127,8 @@ if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser"
         {
             if ( $url_array[3] == "delete" )
             {
-                $Action = "Delete";
-                $SessionID = $url_array[4];
+                $action = "Delete";
+                $sessionID = $url_array[4];
             }
             include( "kernel/ezuser/admin/sessioninfo.php" );
         }
@@ -82,8 +137,8 @@ if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser"
         // hack: Two methods to access the userlist. Through direct GroupID here, or by indexes (under)
         case "ingroup" :
         {
-            $GroupID = $url_array[3];
-            $Index = 0;
+            $groupID = $url_array[3];
+            $index = 0;
             include( "kernel/ezuser/admin/userlist.php" );
         }
         break;
@@ -91,10 +146,10 @@ if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser"
 
         case "userlist" :
         {
-            $Index = $url_array[3];
-            $OrderBy = $url_array[4];
-            if ( !isset( $GroupID ) )
-                $GroupID = $url_array[5];
+            $index = $url_array[3];
+            $orderBy = $url_array[4];
+            if ( !isset( $groupID ) )
+                $groupID = $url_array[5];
             include( "kernel/ezuser/admin/userlist.php" );
         }
         break;
@@ -109,31 +164,31 @@ if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser"
         {
             if ( $url_array[3] == "new" )
             {
-                $Action = "new";
+                $action = "new";
                 include( "kernel/ezuser/admin/useredit.php" );
             }
             else if ( $url_array[3] == "insert" )
             {
-                $Action = "insert";
+                $action = "insert";
                 include( "kernel/ezuser/admin/useredit.php" );
             }
 
             else if ( $url_array[3] == "edit" )
             {
-                $Action = "edit";
-                $UserID = $url_array[4];
+                $action = "edit";
+                $userID = $url_array[4];
                 include( "kernel/ezuser/admin/useredit.php" );
             }
             else if ( $url_array[3] == "update" )
             {
-                $Action = "update";
-                $UserID = $url_array[4];
+                $action = "update";
+                $userID = $url_array[4];
                 include( "kernel/ezuser/admin/useredit.php" );
             }
             else if ( $url_array[3] == "delete" )
             {
-                $Action = "delete";
-                $UserID = $url_array[4];
+                $action = "delete";
+                $userID = $url_array[4];
                 include( "kernel/ezuser/admin/useredit.php" );
             }
         }
@@ -147,26 +202,26 @@ if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser"
             }
             else if ( $url_array[3] == "insert" )
             {
-                $Action = "insert";
+                $action = "insert";
                 include( "kernel/ezuser/admin/groupedit.php" );
             }
 
             else if ( $url_array[3] == "edit" )
             {
-                $Action = "edit";
-                $GroupID = $url_array[4];
+                $action = "edit";
+                $groupID = $url_array[4];
                 include( "kernel/ezuser/admin/groupedit.php" );
             }
             else if ( $url_array[3] == "update" )
             {
-                $Action = "update";
-                $GroupID = $url_array[4];
+                $action = "update";
+                $groupID = $url_array[4];
                 include( "kernel/ezuser/admin/groupedit.php" );
             }
             else if ( $url_array[3] == "delete" )
             {
-                $Action = "delete";
-                $GroupID = $url_array[4];
+                $action = "delete";
+                $groupID = $url_array[4];
                 include( "kernel/ezuser/admin/groupedit.php" );
             }
         }
@@ -174,21 +229,21 @@ if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser"
 
         case "login" :
         {
-            $Action = $url_array[3];
+            $action = $url_array[3];
             include( "kernel/ezuser/admin/login.php" );
         }
         break;
 
         case "success" :
         {
-            $Action = $url_array[3];
+            $action = $url_array[3];
             include( "kernel/ezuser/admin/success.php" );
         }
         break;
 
         case "logout" :
         {
-            $Action = $url_array[3];
+            $action = $url_array[3];
             include( "kernel/ezuser/admin/login.php" );
         }
         break;
@@ -196,12 +251,12 @@ if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser"
         case "passwordchange" :
         {
             $ini = eZINI::instance( 'site.ini' );
-            $DemoSite = $ini->variable( "site", "DemoSite" );
+            $demoSite = $ini->variable( "site", "DemoSite" );
 
-            if ( $DemoSite == "enabled" ) {
+            if ( $demoSite == "enabled" ) {
                 print("<div align='center'>This is a demosite only. You are not allowed to change the admin password!</div>\n");
             }else{
-                $Action = $url_array[3];
+                $action = $url_array[3];
                 include( "kernel/ezuser/admin/passwordchange.php" );
             }
 
@@ -210,7 +265,7 @@ if ( is_a( $user, "eZUser" )  and eZPermission::checkPermission( $user, "eZUser"
 
         case "settings" :
         {
-            $Action = $url_array[3];
+            $action = $url_array[3];
             include( "kernel/ezuser/admin/settings.php" );
         }
         break;
@@ -231,37 +286,37 @@ else
         case "login" :
         {
             if ( isset( $url_array[3] ) )
-                $Action = $url_array[3];
+                $action = $url_array[3];
             else
-                $Action = "";
+                $action = "";
             include( "kernel/ezuser/admin/login.php" );
         }
         break;
 
         case "success" :
         {
-            $Action = $url_array[3];
+            $action = $url_array[3];
             include( "kernel/ezuser/admin/success.php" );
         }
         break;
 
         case "logout" :
         {
-            $Action = $url_array[3];
+            $action = $url_array[3];
             include( "kernel/ezuser/admin/login.php" );
         }
         break;
 
         case "passwordchange" :
         {
-            $Action = $url_array[3];
+            $action = $url_array[3];
             include( "kernel/ezuser/admin/passwordchange.php" );
         }
         break;
 
         case "settings" :
         {
-            $Action = $url_array[3];
+            $action = $url_array[3];
             include( "kernel/ezuser/admin/settings.php" );
         }
         break;

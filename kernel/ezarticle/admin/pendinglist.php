@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: pendinglist.php 6458 2001-08-16 09:56:22Z ce $
+// $id: pendinglist.php 6458 2001-08-16 09:56:22Z ce $
 //
 // Created on: <15-Aug-2001 16:30:02 ce>
 //
@@ -36,21 +36,21 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$Locale = new eZLocale( $Language );
-$AdminListLimit = $ini->variable( "eZArticleMain", "AdminListLimit" );
-$languageIni = new eZINI( "kernel/ezarticle/admin/intl/" . $Language . "/pendinglist.php.ini", false );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$locale = new eZLocale( $language );
+$adminListLimit = $ini->variable( "eZArticleMain", "AdminListLimit" );
+$languageIni = new eZINI( "kernel/ezarticle/admin/intl/" . $language . "/pendinglist.php.ini", false );
 
-if( isset( $DeleteArticles ) )
+if( isset( $deleteArticles ) )
 {
-    if ( count ( $ArticleArrayID ) != 0 )
+    if ( count ( $articleArrayID ) != 0 )
     {
-        foreach( $ArticleArrayID as $TArticleID )
+        foreach( $articleArrayID as $tArticleID )
         {
-            if( eZObjectPermission::hasPermission( $TArticleID, "article_article", 'w' )
-                || eZArticle::isAuthor( eZUser::currentUser(), $TArticleID ) )
+            if( eZObjectPermission::hasPermission( $tArticleID, "article_article", 'w' )
+                || eZArticle::isAuthor( eZUser::currentUser(), $tArticleID ) )
             {
-                $article = new eZArticle( $TArticleID );
+                $article = new eZArticle( $tArticleID );
 
                 // get the category to redirect to
                 $articleID = $article->id();
@@ -65,7 +65,7 @@ if( isset( $DeleteArticles ) )
                 $categoryID = $categoryID->id();
 
                 // clear the cache files.
-                eZArticleTool::deleteCache( $TArticleID, $categoryID, $categoryIDArray );
+                eZArticleTool::deleteCache( $tArticleID, $categoryID, $categoryIDArray );
                 $article->delete();
             }
         }
@@ -73,7 +73,7 @@ if( isset( $DeleteArticles ) )
 }
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "pendinglist.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "pendinglist.php" );
 
 $t->setAllStrings();
 
@@ -95,20 +95,20 @@ $t->set_block( "article_item_tpl", "article_edit_tpl", "article_edit" );
 $t->set_block( "pending_list_page_tpl", "previous_tpl", "previous" );
 $t->set_block( "pending_list_page_tpl", "next_tpl", "next" );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
 
 // set the offset/limit
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
-if ( !isset( $Limit ) )
-    $Limit = $AdminListLimit;
+if ( !isset( $limit ) )
+    $limit = $adminListLimit;
 
 // articles
 $article = new eZArticle();
 
-$articleList = $article->articles( "time", "pending",  $Offset, $Limit );
+$articleList = $article->articles( "time", "pending",  $offset, $limit );
 $articleCount = $article->articleCount( "pending" );
 
 $i=0;
@@ -162,7 +162,7 @@ foreach ( $articleList as $article )
     }
 }
 
-eZList::drawNavigator( $t, $articleCount, $AdminListLimit, $Offset, "pending_list_page_tpl" );
+eZList::drawNavigator( $t, $articleCount, $adminListLimit, $offset, "pending_list_page_tpl" );
 
 
 if ( count( $articleList ) > 0 )    

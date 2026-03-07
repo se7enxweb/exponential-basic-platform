@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: datasupplier.php 9623 2002-06-11 08:20:30Z jhe $
+// $id: datasupplier.php 9623 2002-06-11 08:20:30Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -32,7 +32,38 @@
 
 $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZImageCatalogueMain", "DefaultSection" );
-$UserComments = $ini->variable( "eZImageCatalogueMain", "UserComments" );
+$userComments = $ini->variable( "eZImageCatalogueMain", "UserComments" );
+
+// HTTP input variables (replaces register_globals extraction)
+$action             = eZHTTPTool::getVar( 'Action' );
+$cancel             = eZHTTPTool::getVar( 'Cancel' );
+$caption            = eZHTTPTool::getVar( 'Caption' );
+$description        = eZHTTPTool::getVar( 'Description' );
+$name               = eZHTTPTool::getVar( 'Name' );
+$parentID           = eZHTTPTool::getVar( 'ParentID' );
+$categoryID         = eZHTTPTool::getVar( 'CategoryID' );
+$currentCategoryID  = eZHTTPTool::getVar( 'CurrentCategoryID' );
+$sectionID          = eZHTTPTool::getVar( 'SectionID' );
+$searchText         = eZHTTPTool::getVar( 'SearchText' );
+$newCategory        = eZHTTPTool::getVar( 'NewCategory' );
+$newPhotographerName  = eZHTTPTool::getVar( 'NewPhotographerName' );
+$newPhotographerEmail = eZHTTPTool::getVar( 'NewPhotographerEmail' );
+$photographerID     = eZHTTPTool::getVar( 'PhotographerID' );
+$photoID            = eZHTTPTool::getVar( 'PhotoID' );
+$folderID           = eZHTTPTool::getVar( 'FolderID' );
+$refererURL         = eZHTTPTool::getVar( 'RefererURL' );
+$detailView         = eZHTTPTool::getVar( 'DetailView' );
+$normalView         = eZHTTPTool::getVar( 'NormalView' );
+$showOriginal       = eZHTTPTool::getVar( 'ShowOriginal' );
+$deleteCategories   = eZHTTPTool::getVar( 'DeleteCategories' );
+$deleteImages       = eZHTTPTool::getVar( 'DeleteImages' );
+// Array POST vars
+$categoryArrayID    = $_POST['CategoryArrayID']    ?? [];
+$categoryArray      = $_POST['CategoryArray']      ?? [];
+$imageArrayID       = $_POST['ImageArrayID']       ?? [];
+$readGroupArrayID   = $_POST['ReadGroupArrayID']   ?? [];
+$writeGroupArrayID  = $_POST['WriteGroupArrayID']  ?? [];
+$uploadGroupArrayID = $_POST['UploadGroupArrayID'] ?? [];
 
 function writeAtAll()
 {
@@ -54,23 +85,23 @@ switch ( $url_array[2] )
 {
     case "customimage" :
     {
-        $ImageID = $url_array[3];
-        $ImageWidth = $url_array[4];
-        $ImageHeight = $url_array[5];
+        $imageID = $url_array[3];
+        $imageWidth = $url_array[4];
+        $imageHeight = $url_array[5];
         include( "kernel/ezimagecatalogue/user/customimage.php" );
     }
     break;
 
     case "imageview" :
     {
-        $ImageID = $url_array[3];
-        $VariationID = $url_array[4];
+        $imageID = $url_array[3];
+        $variationID = $url_array[4];
         include( "kernel/ezimagecatalogue/user/imageview.php" );
 
-        if  ( isset( $PrintableVersion ) && ( $PrintableVersion != "enabled" ) &&  ( $UserComments == "enabled" ) )
+        if  ( isset( $PrintableVersion ) && ( $PrintableVersion != "enabled" ) &&  ( $userComments == "enabled" ) )
         {
-            $RedirectURL = "/imagecatalogue/imageview/$ImageID/";
-            $image = new eZImage ( $ImageID );
+            $redirectURL = "/imagecatalogue/imageview/$imageID/";
+            $image = new eZImage ( $imageID );
             if ( ( $image->id() >= 1 ) )    //  && $product->discuss() )
             {
                 for ( $i = 0; $i < count( $url_array ); $i++ )
@@ -78,11 +109,13 @@ switch ( $url_array[2] )
                     if ( ( $url_array[$i] ) == "parent" )
                     {
                         $next = $i + 1;
-                        $Offset = $url_array[$next];
+                        $offset = $url_array[$next];
                     }
                 }
                 $forum = $image->forum();
-                $ForumID = $forum->id();
+                $forumID = $forum->id();
+                // Compat alias for un-refactored ezforum module
+                $ForumID = $forumID; $Offset = $offset;
                 include( "kernel/ezforum/user/messagesimplelist.php" );
             }
         }
@@ -91,18 +124,18 @@ switch ( $url_array[2] )
 
     case "search" :
     {
-        $CategoryID = $url_array[3];
+        $categoryID = $url_array[3];
 
-        if ( !is_numeric( $CategoryID ) )
-            $CategoryID = 0;
+        if ( !is_numeric( $categoryID ) )
+            $categoryID = 0;
 
         if( isset( $url_array[4] ) )    
         {
-            $Offset = $url_array[4];
+            $offset = $url_array[4];
         }
         else
         {
-            $Offset = 0;
+            $offset = 0;
         }   
 
         include( "kernel/ezimagecatalogue/user/imagelist.php" );
@@ -119,34 +152,34 @@ switch ( $url_array[2] )
             {
                 if ( isset( $url_array[4] ) )
                 {
-                    $CategoryID = $url_array[4];
+                    $categoryID = $url_array[4];
                 }
                 else
                 {
-                    $CategoryID = 0;
+                    $categoryID = 0;
                 }
                 
-                if ( !is_numeric($CategoryID ) )
+                if ( !is_numeric($categoryID ) )
                 {
-                    $CategoryID = 0;
+                    $categoryID = 0;
                 }
                 
                 if( isset( $url_array[6] ) )    
                 {
-                    $Offset = $url_array[6];
+                    $offset = $url_array[6];
                 }
                 else
                 {
-                    $Offset = 0;
+                    $offset = 0;
                 }   
 
-                if ( $Offset == "" && is_Numeric( $url_array[4] ) && is_Numeric( $url_array[5] ) )
+                if ( $offset == "" && is_Numeric( $url_array[4] ) && is_Numeric( $url_array[5] ) )
                 {
-                    $Offset = $url_array[5];
+                    $offset = $url_array[5];
                 }
-                else if ( $Offset == "" )
+                else if ( $offset == "" )
                 {
-                    $Offset = 0;
+                    $offset = 0;
                 }
                 include( "kernel/ezimagecatalogue/user/imagelist.php" );
             }
@@ -155,7 +188,7 @@ switch ( $url_array[2] )
             case "new" :
             {
                 writeAtAll();
-                $Action = "New";
+                $action = "New";
                 include( "kernel/ezimagecatalogue/user/imageedit.php" );
             }
             break;
@@ -163,17 +196,17 @@ switch ( $url_array[2] )
             case "Insert" :
             {
                 writeAtAll();
-                $Action = "Insert";
+                $action = "Insert";
                 include( "kernel/ezimagecatalogue/user/imageedit.php" );
             }
             break;
 
             case "edit" :
             {
-                $ImageID = $url_array[4];
-                $Action = "Edit";
-                if( ( eZImage::isOwner( $user, $ImageID ) ||
-                     eZObjectPermission::hasPermission( $ImageID, "imagecatalogue_image", 'w' ) )
+                $imageID = $url_array[4];
+                $action = "Edit";
+                if( ( eZImage::isOwner( $user, $imageID ) ||
+                     eZObjectPermission::hasPermission( $imageID, "imagecatalogue_image", 'w' ) )
                     && writeAtAll() )
                 {
                     include( "kernel/ezimagecatalogue/user/imageedit.php" );
@@ -188,10 +221,10 @@ switch ( $url_array[2] )
 
             case "update" :
             {
-                $ImageID = $url_array[4];
-                $Action = "Update";
-                if( ( eZImage::isOwner( $user, $ImageID ) ||
-                     eZObjectPermission::hasPermission( $ImageID, "imagecatalogue_image", 'w' ) )
+                $imageID = $url_array[4];
+                $action = "Update";
+                if( ( eZImage::isOwner( $user, $imageID ) ||
+                     eZObjectPermission::hasPermission( $imageID, "imagecatalogue_image", 'w' ) )
                     && writeAtAll() )
                     include( "kernel/ezimagecatalogue/user/imageedit.php" );
                 else
@@ -212,12 +245,16 @@ switch ( $url_array[2] )
 
     case "download" :
     {
-        $ImageID = $url_array[3];
-        if ( !is_numeric( $ImageID ) )
-            $ImageID = 0;
-        if ( ( eZImage::isOwner( $user, $ImageID ) ||
-              eZObjectPermission::hasPermission( $ImageID, "imagecatalogue_image", 'r' ) ) )
+        $imageID = $url_array[3];
+        if ( !is_numeric( $imageID ) )
+            $imageID = 0;
+        if ( ( eZImage::isOwner( $user, $imageID ) ||
+              eZObjectPermission::hasPermission( $imageID, "imagecatalogue_image", 'r' ) ) )
+        {
+            while ( ob_get_level() > 0 )
+                ob_end_clean();
             include( "kernel/ezimagecatalogue/user/filedownload.php" );
+        }
         else
         {
             eZHTTPTool::header( "Location: /error/404" );
@@ -228,13 +265,13 @@ switch ( $url_array[2] )
 
     case "slideshow" :
     {
-        $CategoryID = $url_array[3];
-        if ( !is_numeric( $CategoryID ) )
-            $CategoryID = 0;
-        $Position = $url_array[4];
-        if ( !is_numeric( $Position ) )
-            $Position = 0;
-        $RefreshTimer = $url_array[5];
+        $categoryID = $url_array[3];
+        if ( !is_numeric( $categoryID ) )
+            $categoryID = 0;
+        $position = $url_array[4];
+        if ( !is_numeric( $position ) )
+            $position = 0;
+        $refreshTimer = $url_array[5];
         include( "kernel/ezimagecatalogue/user/slideshow.php" );
     }
     break;
@@ -247,8 +284,8 @@ switch ( $url_array[2] )
             case "new" :
             {
                 writeAtAll();
-                $CurrentCategoryID = $url_array[4];
-                $Action = "New";
+                $currentCategoryID = $url_array[4];
+                $action = "New";
                 include( "kernel/ezimagecatalogue/user/categoryedit.php" );
             }
             break;
@@ -256,17 +293,17 @@ switch ( $url_array[2] )
             case "insert" :
             {
                 writeAtAll();
-                $Action = "Insert";
+                $action = "Insert";
                 include( "kernel/ezimagecatalogue/user/categoryedit.php" );
             }
             break;
 
             case "edit" :
             {
-                $Action = "Edit";
-                $CategoryID = $url_array[4];
-                if( ( eZObjectPermission::hasPermission( $CategoryID, "imagecatalogue_category", 'w' ) ||
-                      eZImageCategory::isOwner( $user, $CategoryID ) )
+                $action = "Edit";
+                $categoryID = $url_array[4];
+                if( ( eZObjectPermission::hasPermission( $categoryID, "imagecatalogue_category", 'w' ) ||
+                      eZImageCategory::isOwner( $user, $categoryID ) )
                     && writeAtAll() )
                 {
                     include( "kernel/ezimagecatalogue/user/categoryedit.php" );
@@ -281,10 +318,10 @@ switch ( $url_array[2] )
 
             case "update" :
             {
-                $Action = "Update";
-                $CategoryID = $url_array[4];
-                if( ( eZObjectPermission::hasPermission( $CategoryID, "imagecatalogue_category", 'w' ) ||
-                     eZImageCategory::isOwner( $user, $CategoryID ) )
+                $action = "Update";
+                $categoryID = $url_array[4];
+                if( ( eZObjectPermission::hasPermission( $categoryID, "imagecatalogue_category", 'w' ) ||
+                     eZImageCategory::isOwner( $user, $categoryID ) )
                     && writeAtAll() )
                 {
                     include( "kernel/ezimagecatalogue/user/categoryedit.php" );

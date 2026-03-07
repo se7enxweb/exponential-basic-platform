@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: productsearch.php 7709 2001-10-09 08:06:02Z ce $
+// $id: productsearch.php 7709 2001-10-09 08:06:02Z ce $
 //
 // Created on: <13-Sep-2000 14:56:11 bf>
 //
@@ -31,14 +31,14 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZTradeMain", "Language" );
-$Limit = $ini->variable( "eZTradeMain", "ProductSearchLimit" );
+$language = $ini->variable( "eZTradeMain", "Language" );
+$limit = $ini->variable( "eZTradeMain", "ProductSearchLimit" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "productsearch.php" );
+                     "kernel/eztrade/admin/intl/", $language, "productsearch.php" );
 
 $t->setAllStrings();
 
@@ -53,23 +53,23 @@ $t->set_block( "product_list_tpl", "product_item_tpl", "product_item" );
 $t->set_block( "product_item_tpl", "product_active_item_tpl", "product_active_item" );
 $t->set_block( "product_item_tpl", "product_inactive_item_tpl", "product_inactive_item" );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
-if ( !isset( $Limit ) or !is_numeric( $Limit ) )
-    $Limit = 10;
-if ( !isset( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
+if ( !isset( $limit ) or !is_numeric( $limit ) )
+    $limit = 10;
+if ( !isset( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
 
-$t->set_var( "search_text", $Search );
+$t->set_var( "search_text", $search );
 
 // products
 $product = new eZProduct();
-$TotalTypes = $product->activeProductSearchCount( $Search, FALSE );
-$productList = $product->activeProductSearch( $Search, $Offset, $Limit, FALSE );
+$totalTypes = $product->activeProductSearchCount( $search, FALSE );
+$productList = $product->activeProductSearch( $search, $offset, $limit, FALSE );
 // $sortMode="time";
-// $productList = $product->activeProductSearch( $sortMode, $Search, $Offset, $Limit );
+// $productList = $product->activeProductSearch( $sortMode, $search, $offset, $limit );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 $i=0;
 $t->set_var( "product_list", "" );
 
@@ -109,13 +109,13 @@ foreach ( $productList as $product )
     $i++;
 }
 
-$t->set_var( "offset", $Offset );
+$t->set_var( "offset", $offset );
 
-$t->set_var( "product_start", $Offset + 1 );
-$t->set_var( "product_end", min( $Offset + $Limit, $TotalTypes ) );
-$t->set_var( "product_total", $TotalTypes );
+$t->set_var( "product_start", $offset + 1 );
+$t->set_var( "product_end", min( $offset + $limit, $totalTypes ) );
+$t->set_var( "product_total", $totalTypes );
 
-eZList::drawNavigator( $t, $TotalTypes, $Limit, $Offset, "product_list_tpl" );
+eZList::drawNavigator( $t, $totalTypes, $limit, $offset, "product_list_tpl" );
 
 if ( count( $productList ) > 0 )
     $t->parse( "product_list", "product_list_tpl" );

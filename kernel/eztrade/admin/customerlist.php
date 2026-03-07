@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: customerlist.php 7848 2001-10-15 11:32:18Z ce $
+// $id: customerlist.php 7848 2001-10-15 11:32:18Z ce $
 //
 // Created on: <21-Sep-2001 16:06:44 bf>
 //
@@ -33,10 +33,10 @@
 // include_once( "ezuser/classes/ezuser.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "customerlist.php" );
+                     "kernel/eztrade/admin/intl/", $language, "customerlist.php" );
 
 $t->setAllStrings();
 
@@ -47,10 +47,10 @@ $t->set_block( "customer_item_list_tpl", "customer_item_tpl", "customer_item" );
 
 $t->set_var( "customer_item", "" );
 
-if ( isset( $SearchText) && $SearchText != "" )
+if ( isset( $searchText) && $searchText != "" )
 	{
-		$SearchText = addslashes (trim ($SearchText) );
-		$customers = eZOrder::customers( $SearchText );
+		$searchText = addslashes (trim ($searchText) );
+		$customers = eZOrder::customers( $searchText );
 	}
 else
 $customers = eZOrder::customers();

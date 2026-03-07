@@ -56,24 +56,24 @@ $t->set_block( "day_tpl", "day_previous_inactive_tpl", "day_previous_inactive" )
 $t->set_block( "day_tpl", "day_next_tpl", "day_next" );
 $t->set_block( "day_tpl", "day_next_inactive_tpl", "day_next_inactive" );
 
-if ( !is_numeric( $Year ) || !is_numeric( $Month ) || !is_numeric( $Day ) )
+if ( !is_numeric( $year ) || !is_numeric( $month ) || !is_numeric( $day ) )
 {
     $cur_date = new eZDate();
-    $Year = $cur_date->year();
-    $Month = $cur_date->month();
-    $Day = $cur_date->day();
+    $year = $cur_date->year();
+    $month = $cur_date->month();
+    $day = $cur_date->day();
 }
 
-$cur_date = new eZDate( $Year, $Month, $Day );
+$cur_date = new eZDate( $year, $month, $day );
 if ( !$cur_date->isValid() )
 {
     $cur_date = new eZDate();
-    $Year = $cur_date->year();
-    $Month = $cur_date->month();
-    $Day = $cur_date->day();
+    $year = $cur_date->year();
+    $month = $cur_date->month();
+    $day = $cur_date->day();
 }
 
-$dayReport = eZPageViewQuery::dayStats( $Year, $Month, $Day );
+$dayReport = eZPageViewQuery::dayStats( $year, $month, $day );
 
 if ( count( $dayReport ) > 0 )
 {
@@ -157,47 +157,47 @@ $months = array( 1 => "jan",
                  11 => "nov",
                  12 => "dec" );
 
-$t->set_var( "this_month_named", $locale->monthName( $months[$Month], false ) );
+$t->set_var( "this_month_named", $locale->monthName( $months[$month], false ) );
 
-$t->set_var( "this_day", $Day );
-$t->set_var( "this_month", $Month );
-$t->set_var( "this_year", $Year );
+$t->set_var( "this_day", $day );
+$t->set_var( "this_month", $month );
+$t->set_var( "this_year", $year );
 
-$NextYear = $Year;
-$PrevYear = $Year;
-$NextMonth = $Month;
-$PrevMonth = $Month;
-$NextDay = $Day + 1;
-$PrevDay = $Day - 1;
-$tmp_day = new eZDate( $Year, $Month, 1 );
-if ( $NextDay > $tmp_day->daysInMonth() )
+$nextYear = $year;
+$prevYear = $year;
+$nextMonth = $month;
+$prevMonth = $month;
+$nextDay = $day + 1;
+$prevDay = $day - 1;
+$tmp_day = new eZDate( $year, $month, 1 );
+if ( $nextDay > $tmp_day->daysInMonth() )
 {
-    $NextDay = 1;
-    $NextMonth++;
+    $nextDay = 1;
+    $nextMonth++;
 }
-if ( $NextMonth > 12 )
+if ( $nextMonth > 12 )
 {
-    $NextYear++;
-    $NextMonth = 1;
+    $nextYear++;
+    $nextMonth = 1;
 }
 
-if ( $PrevDay < 1 )
+if ( $prevDay < 1 )
 {
-    $PrevMonth--;
-    if ( $PrevMonth < 1 )
+    $prevMonth--;
+    if ( $prevMonth < 1 )
     {
-        $PrevYear--;
-        $PrevMonth = 12;
+        $prevYear--;
+        $prevMonth = 12;
     }
-    $tmp_day = new eZDate( $PrevYear, $PrevMonth, 1 );
-    $PrevDay = $tmp_day->daysInMonth();
+    $tmp_day = new eZDate( $prevYear, $prevMonth, 1 );
+    $prevDay = $tmp_day->daysInMonth();
 }
-$t->set_var( "next_day", $NextDay );
-$t->set_var( "previous_day", $PrevDay );
-$t->set_var( "next_month", $NextMonth );
-$t->set_var( "previous_month", $PrevMonth );
-$t->set_var( "next_year", $NextYear );
-$t->set_var( "previous_year", $PrevYear );
+$t->set_var( "next_day", $nextDay );
+$t->set_var( "previous_day", $prevDay );
+$t->set_var( "next_month", $nextMonth );
+$t->set_var( "previous_month", $prevMonth );
+$t->set_var( "next_year", $nextYear );
+$t->set_var( "previous_year", $prevYear );
 
 $t->set_var( "day_next_inactive", "" );
 $t->set_var( "day_next", "" );
@@ -205,7 +205,7 @@ $t->set_var( "day_previous", "" );
 $t->set_var( "day_previous_inactive", "" );
 
 $cur_date = new eZDate();
-$next_date = new eZDate( $NextYear, $NextMonth, $NextDay );
+$next_date = new eZDate( $nextYear, $nextMonth, $nextDay );
 
 if ( $cur_date->isGreater( $next_date ) )
     $t->parse( "day_next_inactive", "day_next_inactive_tpl" );

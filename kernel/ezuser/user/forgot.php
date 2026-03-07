@@ -32,6 +32,9 @@ $headersInfo = getallheaders();
 
 $languageIni = new eZINI( "kernel/ezuser/user/intl/" . $Language . "/forgot.php.ini", false );
 
+$Login = eZHTTPTool::getVar( "Login" );
+$ChangeButton = eZHTTPTool::getVar( "ChangeButton" );
+
 // Get the user.
 if ( isset( $Login ) && $Login )
 {

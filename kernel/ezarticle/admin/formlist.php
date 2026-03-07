@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: formlist.php 6206 2001-07-19 12:19:22Z jakobn $
+// $id: formlist.php 6206 2001-07-19 12:19:22Z jakobn $
 //
 // Created on: <15-Jun-2001 15:02:54 pkej>
 //
@@ -30,15 +30,15 @@
 // include_once( "ezform/classes/ezform.php" );
 // include_once( "ezarticle/classes/ezarticleform.php" );
 
-$ActionValue = "list";
+$actionValue = "list";
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZFormMain", "Language" );
+$language = $ini->variable( "eZFormMain", "Language" );
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
 $selectedForm = eZArticleForm::articleHasForm( $article );
 
-if( isset( $OK ) )
+if( isset( $ok ) )
 {
     if( $selectedFormID > 0 )
     {
@@ -49,12 +49,12 @@ if( isset( $OK ) )
         $selectedForm =& $form;
     }
     
-    eZHTTPTool::header( "Location: /article/articleedit/edit/$ArticleID/" );
+    eZHTTPTool::header( "Location: /article/articleedit/edit/$articleID/" );
     exit();
 }
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "formlist.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "formlist.php" );
 $t->setAllStrings();
 
 $t->set_file( array(
@@ -111,9 +111,9 @@ else
     $t->parse( "form_list", "form_list_tpl" );
 }
 
-$t->set_var( "article_id", $ArticleID );
-$t->set_var( "action_value", $ActionValue );
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "article_id", $articleID );
+$t->set_var( "action_value", $actionValue );
+$t->set_var( "site_style", $siteDesign );
 $t->set_var( "selectedFormID", $selectedFormID );
 
 $t->pparse( "output", "form_list_page_tpl" );

@@ -23,6 +23,16 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$action      = eZHTTPTool::getVar( 'Action' );
+$cancel      = eZHTTPTool::getVar( 'Cancel' );
+$description = eZHTTPTool::getVar( 'Description' );
+$name        = eZHTTPTool::getVar( 'Name' );
+$parentID    = eZHTTPTool::getVar( 'ParentID' );
+$typeArrayID = eZHTTPTool::getVar( 'TypeArrayID' ) ?? [];
+$typeID      = eZHTTPTool::getVar( 'TypeID' );
+// URL-routing variables are set below inside the switch and override the above POST defaults.
+
 switch ( $url_array[2] )
 {
     case "typelist":
@@ -35,17 +45,17 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "edit" )
         {
-            $Action = "Edit";
-            $TypeID = $url_array[4];
+            $action = "Edit";
+            $typeID = $url_array[4];
         }
         else if ( $url_array[3] == "delete" )
         {
-            $Action = "Delete";
-            $TypeID = $url_array[4];
+            $action = "Delete";
+            $typeID = $url_array[4];
         }
         else if ( $url_array[3] == "new" )
         {
-            $Action = "New";
+            $action = "New";
         }
         
         include( "kernel/ezcalendar/admin/typeedit.php" );

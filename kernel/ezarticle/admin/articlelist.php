@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: articlelist.php 9465 2002-04-24 07:38:20Z jhe $
+// $id: articlelist.php 9465 2002-04-24 07:38:20Z jhe $
 //
 // Created on: <18-Oct-2000 14:41:37 bf>
 //
@@ -36,21 +36,21 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$Locale = new eZLocale( $Language );
-$AdminListLimit = $ini->variable( "eZArticleMain", "AdminListLimit" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$locale = new eZLocale( $language );
+$adminListLimit = $ini->variable( "eZArticleMain", "AdminListLimit" );
 
 $session = eZSession::globalSession();
 
-if ( isset( $GoTo ) && is_Numeric( $GoToCategoryID ) )
+if ( isset( $goTo ) && is_Numeric( $goToCategoryID ) )
 {
-    eZHTTPTool::header( "Location: /article/archive/$GoToCategoryID" );
+    eZHTTPTool::header( "Location: /article/archive/$goToCategoryID" );
     exit();
 }
 
-if ( isset( $StoreSelection ) )
+if ( isset( $storeSelection ) )
 {
-    switch ( $ArticleSelection )
+    switch ( $articleSelection )
     {
         case "Published" :
         {
@@ -74,18 +74,18 @@ if ( isset( $StoreSelection ) )
 
 $articleMix = $session->variable( "MixUnpublished" );
 
-$ArticleSelection =& $articleMix;
+$articleSelection =& $articleMix;
 
 if ( $articleMix == "" )
 {
     $articleMix = "All";
 }
 
-if ( isset( $CopyCategories ) )
+if ( isset( $copyCategories ) )
 {
-    if ( count( $CategoryArrayID ) != 0 )
+    if ( count( $categoryArrayID ) != 0 )
     {
-        foreach ( $CategoryArrayID as $tCategoryID )
+        foreach ( $categoryArrayID as $tCategoryID )
         {
             // copy category
             $tmpCategory = new eZArticleCategory( $tCategoryID );
@@ -115,16 +115,16 @@ if ( isset( $CopyCategories ) )
 
 
 
-if ( isset( $DeleteArticles ) )
+if ( isset( $deleteArticles ) )
 {
-    if ( count( $ArticleArrayID ) != 0 )
+    if ( count( $articleArrayID ) != 0 )
     {
-        foreach ( $ArticleArrayID as $TArticleID )
+        foreach ( $articleArrayID as $tArticleID )
         {
-            if ( eZObjectPermission::hasPermission( $TArticleID, "article_article", 'w' ) ||
-                 eZArticle::isAuthor( eZUser::currentUser(), $TArticleID ) )
+            if ( eZObjectPermission::hasPermission( $tArticleID, "article_article", 'w' ) ||
+                 eZArticle::isAuthor( eZUser::currentUser(), $tArticleID ) )
             {
-                $article = new eZArticle( $TArticleID );
+                $article = new eZArticle( $tArticleID );
 
                 // get the category to redirect to
                 $articleID = $article->id();
@@ -139,18 +139,18 @@ if ( isset( $DeleteArticles ) )
                 $categoryID = $categoryID->id();
 
                 // clear the cache files.
-                deleteCache( $TArticleID, $categoryID, $categoryIDArray );
+                deleteCache( $tArticleID, $categoryID, $categoryIDArray );
                 $article->delete();
             }
         }
-        eZHTTPTool::header( "Location: /article/archive/$CurrentCategoryID" );
+        eZHTTPTool::header( "Location: /article/archive/$currentCategoryID" );
         exit();
     }
 }
 
-if ( isset( $DeleteCategories ) )
+if ( isset( $deleteCategories ) )
 {
-    if ( count( $CategoryArrayID ) != 0 )
+    if ( count( $categoryArrayID ) != 0 )
     {
         /** Delete menubox cache **/
         $files = eZCacheFile::files( "kernel/ezarticle/cache/",
@@ -162,13 +162,13 @@ if ( isset( $DeleteCategories ) )
         }
 
         $categories = array();
-        foreach ( $CategoryArrayID as $ID )
+        foreach ( $categoryArrayID as $id )
         {
-            $categories[] = $ID;
-            $category = new eZArticleCategory( $ID );
+            $categories[] = $id;
+            $category = new eZArticleCategory( $id );
             $categories[] = $category->parent( false );
-            if ( eZObjectPermission::hasPermission( $ID , "article_category", 'w' ) ||
-                 eZArticleCategory::isOwner( eZUser::currentUser(), $ID ) )
+            if ( eZObjectPermission::hasPermission( $id , "article_category", 'w' ) ||
+                 eZArticleCategory::isOwner( eZUser::currentUser(), $id ) )
                 $category->delete();
         }
         $categories = array_unique( $categories );
@@ -188,7 +188,7 @@ if ( isset( $DeleteCategories ) )
 
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "articlelist.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "articlelist.php" );
 
 $t->setAllStrings();
 
@@ -221,22 +221,22 @@ $t->set_block( "article_item_tpl", "absolute_placement_item_tpl", "absolute_plac
 $t->set_block( "article_item_tpl", "article_edit_tpl", "article_edit" );
 
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
-$category = new eZArticleCategory( $CategoryID );
+$category = new eZArticleCategory( $categoryID );
 
 /** move article categories up/down **/
-if ( isset( $MoveCategoryUp ) || isset( $MoveCategoryDown ) )
+if ( isset( $moveCategoryUp ) || isset( $moveCategoryDown ) )
 {
-    if ( is_numeric( $MoveCategoryUp ) )
+    if ( is_numeric( $moveCategoryUp ) )
     {
-        $mvcategory = new eZArticleCategory( $MoveCategoryUp );
+        $mvcategory = new eZArticleCategory( $moveCategoryUp );
         $mvcategory->moveCategoryUp();
     }
 
-    if ( is_numeric( $MoveCategoryDown ) )
+    if ( is_numeric( $moveCategoryDown ) )
     {
-        $mvcategory = new eZArticleCategory( $MoveCategoryDown );
+        $mvcategory = new eZArticleCategory( $moveCategoryDown );
         $mvcategory->moveCategoryDown();
     }
 
@@ -250,7 +250,7 @@ if ( isset( $MoveCategoryUp ) || isset( $MoveCategoryDown ) )
         $file->delete();
     }
     $files = eZCacheFile::files( "kernel/ezarticle/cache/",
-                                 array( "articlelist", $CategoryID, NULL, NULL ), "cache", "," );
+                                 array( "articlelist", $categoryID, NULL, NULL ), "cache", "," );
     foreach ( $files as $file )
     {
         $file->delete();
@@ -260,14 +260,14 @@ if ( isset( $MoveCategoryUp ) || isset( $MoveCategoryDown ) )
 // move articles up / down
 if ( $category->sortMode() == "absolute_placement" )
 {
-    if ( is_numeric( $MoveUp ) )
+    if ( is_numeric( $moveUp ) )
     {
-        $category->moveUp( $MoveUp );
+        $category->moveUp( $moveUp );
     }
 
-    if ( is_numeric( $MoveDown ) )
+    if ( is_numeric( $moveDown ) )
     {
-        $category->moveDown( $MoveDown );
+        $category->moveDown( $moveDown );
     }
 }
 
@@ -276,7 +276,7 @@ $t->set_var( "current_category_id", $category->id() );
 //EP: CategoryDescriptionXML=enabled, description go in XML -------------------
 if ( $ini->variable( "eZArticleMain", "CategoryDescriptionXML" ) == "enabled" )
 {
-    if ( $CategoryID )
+    if ( $categoryID )
     {
         // include_once( "ezarticle/classes/ezarticlerenderer.php" );
     
@@ -325,7 +325,7 @@ foreach ( $treeArray as $catItem )
     else
         $t->set_var( "category_level", "" );
 
-    $t->set_var( "selected", $catItem[0]->id() == $CategoryID ? "selected" : "" );
+    $t->set_var( "selected", $catItem[0]->id() == $categoryID ? "selected" : "" );
     
     $t->parse( "category_tree_id", "category_tree_id_tpl", true );    
 }
@@ -378,7 +378,7 @@ foreach ( $categoryList as $categoryItem )
     $i++;
 }
 
-$t->set_var( "archive_id", $CategoryID );
+$t->set_var( "archive_id", $categoryID );
 
 if ( $i > 0 )
     $t->parse( "category_list", "category_list_tpl" );
@@ -387,11 +387,11 @@ else
 
 
 // set the offset/limit
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
-if ( !isset( $Limit ) )
-    $Limit = $AdminListLimit;
+if ( !isset( $limit ) )
+    $limit = $adminListLimit;
 
 switch ( $articleMix )
 {
@@ -422,21 +422,21 @@ switch ( $articleMix )
 
 
 // articles
-if ( is_numeric( $CategoryID ) && ( $CategoryID > 0 ) )
+if ( is_numeric( $categoryID ) && ( $categoryID > 0 ) )
 {
-    switch ( $ArticleSelection )
+    switch ( $articleSelection )
     {
        
         case "Published" :
         {
-            $articleList = $category->articles( $category->sortMode(), false, true, $Offset, $Limit );
+            $articleList = $category->articles( $category->sortMode(), false, true, $offset, $limit );
             $articleCount = $category->articleCount( false, true  );        
         }
         break;
 
         case "Unpublished" :
         {
-            $articleList = $category->articles( $category->sortMode(), false, false, $Offset, $Limit );
+            $articleList = $category->articles( $category->sortMode(), false, false, $offset, $limit );
             $articleCount = $category->articleCount( false, false  );
         }
         break;
@@ -444,7 +444,7 @@ if ( is_numeric( $CategoryID ) && ( $CategoryID > 0 ) )
         case "All" :
         default  :
         {
-            $articleList = $category->articles( $category->sortMode(), true, true, $Offset, $Limit, $category->id() );
+            $articleList = $category->articles( $category->sortMode(), true, true, $offset, $limit, $category->id() );
             $articleCount = $category->articleCount( true, true  );        
         }
     }
@@ -467,7 +467,7 @@ else
     $t->set_var( "absolute_placement_header", "" );
 }
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 
 foreach ( $articleList as $article )
 {
@@ -524,7 +524,7 @@ foreach ( $articleList as $article )
         $i++;
     }
 }
-eZList::drawNavigator( $t, $articleCount, $AdminListLimit, $Offset, "article_list_page_tpl" );
+eZList::drawNavigator( $t, $articleCount, $adminListLimit, $offset, "article_list_page_tpl" );
 
 // $i is from the last foreach loop
 if ( $i > 0 )    
@@ -538,9 +538,9 @@ $t->pparse( "output", "article_list_page_tpl" );
 /*!
   Delete cache.
 */
-function deleteCache( $ArticleID, $CategoryID, $CategoryArray )
+function deleteCache( $articleID, $categoryID, $categoryArray )
 {    
-    eZArticleTool::deleteCache( $ArticleID, $CategoryID, $CategoryArray );
+    eZArticleTool::deleteCache( $articleID, $categoryID, $categoryArray );
 }
 
 ?>

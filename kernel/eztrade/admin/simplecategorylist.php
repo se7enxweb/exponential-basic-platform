@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: categorylist.php,v 1.32.2.2 2001/11/21 17:34:16 br Exp $
+// $id: categorylist.php,v 1.32.2.2 2001/11/21 17:34:16 br Exp $
 //
 // Created on: <13-Sep-2000 14:56:11 bf>
 //
@@ -30,17 +30,17 @@
 // include_once( "classes/ezcachefile.php" );
 // include_once( "classes/ezlist.php" );
 
-function deleteCache( $ProductID, $CategoryID, $CategoryArray )
+function deleteCache( $productID, $categoryID, $categoryArray )
 {
-    if ( get_class( $ProductID ) == "ezproduct" )
+    if ( get_class( $productID ) == "ezproduct" )
     {
-        $CategoryID = $ProductID->categoryDefinition( false );
-        $CategoryArray = $ProductID->categories( false );
-        $ProductID = $ProductID->id();
+        $categoryID = $productID->categoryDefinition( false );
+        $categoryArray = $productID->categories( false );
+        $productID = $productID->id();
     }
 
     $files = eZCacheFile::files( "eztrade/cache/", array( "productlist",
-                                                          array_merge( $CategoryID, $CategoryArray ) ),
+                                                          array_merge( $categoryID, $categoryArray ) ),
                                  "cache", "," );
     foreach( $files as $file )
     {
@@ -57,14 +57,14 @@ function deleteCache( $ProductID, $CategoryID, $CategoryArray )
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZTradeMain", "Language" );
-$Limit = $ini->variable( "eZTradeMain", "ProductLimit" );
+$language = $ini->variable( "eZTradeMain", "Language" );
+$limit = $ini->variable( "eZTradeMain", "ProductLimit" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "simplecategorylist.php" );
+                     "kernel/eztrade/admin/intl/", $language, "simplecategorylist.php" );
 
 $t->setAllStrings();
 
@@ -93,7 +93,7 @@ $t->set_block( "product_item_tpl", "ex_vat_item_tpl", "ex_vat_item" );
 $t->set_block( "product_list_tpl", "absolute_placement_header_tpl", "absolute_placement_header" );
 $t->set_block( "product_item_tpl", "absolute_placement_item_tpl", "absolute_placement_item" );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
 $category = new eZProductCategory( 1 );
 // $category->copy( true );
@@ -101,9 +101,9 @@ $category = new eZProductCategory( 1 );
 
 $category = new eZProductCategory();
 
-if( isset( $ParentID ) )
+if( isset( $parentID ) )
 {
-    $category->get( $ParentID );
+    $category->get( $parentID );
 }
 else
 {
@@ -114,15 +114,15 @@ else
 
 if ( $category->sortMode() == "absolute_placement" )
 {
-    if ( is_numeric( $MoveUp ) )
+    if ( is_numeric( $moveUp ) )
     {
-        $category->moveUp( $MoveUp );
-        deleteCache( $MoveUp, false, false );
+        $category->moveUp( $moveUp );
+        deleteCache( $moveUp, false, false );
     }
-    if ( is_numeric( $MoveDown ) )
+    if ( is_numeric( $moveDown ) )
     {
-        $category->moveDown( $MoveDown );
-        deleteCache( $MoveDown, false, false );
+        $category->moveDown( $moveDown );
+        deleteCache( $moveDown, false, false );
     }
 }
 
@@ -175,16 +175,16 @@ if ( count( $categoryList ) > 0 )
 else
     $t->set_var( "category_list", "" );
 
-if ( !isset( $Limit ) or !is_numeric( $Limit ) )
-    $Limit = 10;
-if ( !isset( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
+if ( !isset( $limit ) or !is_numeric( $limit ) )
+    $limit = 10;
+if ( !isset( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
 
 // products
-$TotalTypes = $category->productCount( $category->sortMode(), true );
-$productList = $category->products( $category->sortMode(), true, $Offset, $Limit, true, $category->id() );
+$totalTypes = $category->productCount( $category->sortMode(), true );
+$productList = $category->products( $category->sortMode(), true, $offset, $limit, true, $category->id() );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 $i = 0;
 
 $t->set_var( "product_list", "" );
@@ -315,9 +315,9 @@ foreach ( $productList as $product )
     $i++;
 }
 
-$t->set_var( "offset", $Offset );
+$t->set_var( "offset", $offset );
 
-eZList::drawNavigator( $t, $TotalTypes, $Limit, $Offset, "product_list_tpl" );
+eZList::drawNavigator( $t, $totalTypes, $limit, $offset, "product_list_tpl" );
 
 if ( count( $productList ) > 0 )    
     $t->parse( "product_list", "product_list_tpl" );

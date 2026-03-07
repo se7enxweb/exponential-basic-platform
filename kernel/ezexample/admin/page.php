@@ -14,10 +14,10 @@
 
 
 <?php
-if ( isset( $Value ) )
+if ( isset( $value ) )
 {
-    print( "<pre>" . $Value . "</pre>" );
-    print( "You entered: -" . nl2br( $Value ) . "-" );
+    print( "<pre>" . $value . "</pre>" );
+    print( "You entered: -" . nl2br( $value ) . "-" );
 }
 
 

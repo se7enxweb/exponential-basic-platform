@@ -251,6 +251,13 @@ class eZOptionValue
     {
         if ( !$id )
             $id = $this->ID;
+
+        // Static cache: hasQuantity() calls totalQuantity() for the same ID
+        // immediately after productlist already called it — avoid the double query.
+        static $cache = [];
+        if ( array_key_exists( $id, $cache ) )
+            return $cache[$id];
+
         $db = eZDB::globalDatabase();
         $db->array_query( $qry_array,
                           "SELECT Q.Quantity
@@ -262,12 +269,19 @@ class eZOptionValue
             foreach( $qry_array as $row )
             {
                 if ( $row[$db->fieldName("Quantity")] == "NULL" )
+                {
+                    $cache[$id] = false;
                     return false;
+                }
                 $quantity += $row[$db->fieldName("Quantity")];
             }
         }
         else
+        {
+            $cache[$id] = false;
             return false;
+        }
+        $cache[$id] = $quantity;
         return $quantity;
     }
 

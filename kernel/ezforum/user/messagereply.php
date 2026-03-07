@@ -31,18 +31,18 @@ $wwwDir = $ini->WWWDir;
 $index = $ini->Index;
 $Language = $ini->variable( "eZForumMain", "Language" );
 
-if ( $StartAction == "reply" )
+if ( $startAction == "reply" )
 {
     if ( !is_object( $msg ) )
     {
-        $msg = new eZForumMessage( $MessageID );
+        $msg = new eZForumMessage( $messageID );
     }
 
-    $ForumID = $msg->forumId();
+    $forumID = $msg->forumId();
 
     if ( !is_object( $forum ) )
     {
-        $forum = new eZForum( $ForumID );
+        $forum = new eZForum( $forumID );
     }
 
     // send mail to forum moderator
@@ -186,19 +186,19 @@ if ( $StartAction == "reply" )
     }
 }
 
-if ( $StartAction == "moderatorapprove" )
+if ( $startAction == "moderatorapprove" )
 {
 
     if ( !is_object( $msg ) )
     {
-        $msg = new eZForumMessage( $MessageID );
+        $msg = new eZForumMessage( $messageID );
     }
 
-    $ForumID = $msg->forumId();
+    $forumID = $msg->forumId();
 
     if ( !is_object( $forum ) )
     {
-        $forum = new eZForum( $ForumID );
+        $forum = new eZForum( $forumID );
     }
 
     $messages = $forum->messageThreadTree( $msg->threadID() );

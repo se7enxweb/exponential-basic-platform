@@ -36,7 +36,7 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-if( isset( $Cancel ) )
+if( isset( $cancel ) )
 {
     if( !empty( $redirectTo ) )
     {
@@ -51,9 +51,9 @@ if( isset( $Cancel ) )
 
 
 
-$ActionValue="process";
+$actionValue="process";
 
-$form = new eZForm( $FormID );
+$form = new eZForm( $formID );
 
 $errorMessages = array();
 
@@ -73,7 +73,7 @@ $t->set_block( "form_view_page_tpl", "mail_preview_tpl", "mail_preview" );
 $t->set_var( "error", "" );
 $t->set_var( "form", "" );
 
-$t->set_var( "form_id", $FormID );
+$t->set_var( "form_id", $formID );
 $t->set_var( "form_name", $form->name() );
 $t->set_var( "form_completed_page", $form->completedPage() );
 $t->set_var( "form_instruction_page", $form->instructionPage() );
@@ -82,7 +82,7 @@ $renderer = new eZFormRenderer( $form );
 $output = $renderer->renderForm( $form );
 $t->set_var( "form", $output );
 
-if( isset( $OK ) )
+if( isset( $ok ) )
 {
     $output = $renderer->verifyForm();
     if( $output == "" )

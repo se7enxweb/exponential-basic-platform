@@ -38,7 +38,10 @@ $t = new eZTemplate( "kernel/ezuser/user/" . $ini->variable( "eZUserMain", "Temp
 "kernel/ezuser/user/" . "/intl", $Language, "norights.php" );
 $t->setAllStrings();
 
-switch ( $_REQUEST['Error'] )
+$Error = eZHTTPTool::getVar( "Error" );
+$RedirectURL = eZHTTPTool::getVar( "RedirectURL" );
+
+switch ( $Error )
 {
     case "WrongPassword":
     {

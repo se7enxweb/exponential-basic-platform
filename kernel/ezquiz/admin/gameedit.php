@@ -31,72 +31,72 @@
 // include_once( "ezquiz/classes/ezquizgame.php" );
 // include_once( "ezquiz/classes/ezquiztool.php" );
 
-if ( isset( $OK ) )
+if ( isset( $ok ) )
 {
-    $Action = "Insert";
+    $action = "Insert";
 }
 
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    $Action = "Delete";
+    $action = "Delete";
 }
 
-if ( isset( $NewQuestion ) )
+if ( isset( $newQuestion ) )
 {
-    $Action = "Insert";
+    $action = "Insert";
 }
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /quiz/game/list/" );
     exit();
 }
 
-if ( isset( $DeleteQuestions ) )
+if ( isset( $deleteQuestions ) )
 {
-    if ( count( $DeleteQuestionArray ) > 0 )
+    if ( count( $deleteQuestionArray ) > 0 )
     {
-        foreach ( $DeleteQuestionArray as $Quest )
+        foreach ( $deleteQuestionArray as $quest )
         {
-            $quest = new eZQuizQuestion( $Quest );
+            $quest = new eZQuizQuestion( $quest );
             $quest->delete();
         }
     }
 }
 
-if ( isset( $Action ) && $Action == "New" )
+if ( isset( $action ) && $action == "New" )
 {
-    $Name = false;
-    $Description = false;
-    $StartMonth = false;
-    $StartDay = false;
-    $StartYear = false;
-    $StopDay = false;
-    $StopYear = false;
-    $StopMonth = false;
+    $name = false;
+    $description = false;
+    $startMonth = false;
+    $startDay = false;
+    $startYear = false;
+    $stopDay = false;
+    $stopYear = false;
+    $stopMonth = false;
 }
-elseif ( isset( $Action ) && $Action != "Insert" )
+elseif ( isset( $action ) && $action != "Insert" )
 {
-    $Name = false;
-    $Description = false;
-    $StartMonth = false;
-    $StartDay = false;
-    $StartYear = false;
-    $StopDay = false;
-    $StopYear = false;
-    $StopMonth = false;
+    $name = false;
+    $description = false;
+    $startMonth = false;
+    $startDay = false;
+    $startYear = false;
+    $stopDay = false;
+    $stopYear = false;
+    $stopMonth = false;
     $game = false;
 }
-elseif ( isset( $Action ) && $Action != "Insert" )
+elseif ( isset( $action ) && $action != "Insert" )
 {
-    $Name = false;
-    $Description = false;
-    $StartMonth = false;
-    $StartDay = false;
-    $StartYear = false;
-    $StopDay = false;
-    $StopYear = false;
-    $StopMonth = false;
+    $name = false;
+    $description = false;
+    $startMonth = false;
+    $startDay = false;
+    $startYear = false;
+    $stopDay = false;
+    $stopYear = false;
+    $stopMonth = false;
     $game = false;
 }
 
@@ -119,18 +119,18 @@ $t->set_block( "game_edit_page", "error_stop_date_tpl", "error_stop_date" );
 $t->set_block( "game_edit_page", "error_embracing_period_tpl", "error_embracing_period" );
 $t->set_block( "game_edit_page", "error_question_tpl", "error_question" );
 
-$t->set_var( "game_name", $Name );
-$t->set_var( "game_description", $Description );
+$t->set_var( "game_name", $name );
+$t->set_var( "game_description", $description );
 
-$t->set_var( "start_month", $StartMonth );
-$t->set_var( "start_day", $StartDay );
-$t->set_var( "start_year", $StartYear );
+$t->set_var( "start_month", $startMonth );
+$t->set_var( "start_day", $startDay );
+$t->set_var( "start_year", $startYear );
 
-$t->set_var( "stop_month", $StopMonth );
-$t->set_var( "stop_day", $StopDay );
-$t->set_var( "stop_year", $StopYear );
+$t->set_var( "stop_month", $stopMonth );
+$t->set_var( "stop_day", $stopDay );
+$t->set_var( "stop_year", $stopYear );
 
-$t->set_var( "game_id", $GameID );
+$t->set_var( "game_id", $gameID );
 $t->set_var( "error_date", "" );
 $t->set_var( "error_start_date", "" );
 $t->set_var( "error_stop_date", "" );
@@ -141,11 +141,11 @@ $t->set_var( "error_question", "" );
 
 $error = false;
 $checkDate = true;
-if ( isset( $Action ) && $Action == "Insert" )
+if ( isset( $action ) && $action == "Insert" )
 {
-    if ( $GameID > 0 && !isset( $NewQuestion ) )
+    if ( $gameID > 0 && !isset( $newQuestion ) )
     {
-        $game = new  eZQuizGame( $GameID );
+        $game = new  eZQuizGame( $gameID );
 
         if ( $game->numberOfQuestions() == 0 )
         {
@@ -154,38 +154,38 @@ if ( isset( $Action ) && $Action == "Insert" )
         }
         unset( $game );
     }
-    elseif ( isset( $OK ) )
+    elseif ( isset( $ok ) )
     {
         $t->parse( "error_question", "error_question_tpl" );
         $error = true;
     }
 
-    if ( empty( $Name ) )
+    if ( empty( $name ) )
     {
         $t->parse( "error_name", "error_name_tpl" );
         $error = true;
     }
 
-    if ( $StartMonth == 0 ||
-         $StartDay == 0 ||
-         $StartYear == 0 ||
-         $StopMonth == 0 ||
-         $StopDay == 0 ||
-         $StopYear == 0 )
+    if ( $startMonth == 0 ||
+         $startDay == 0 ||
+         $startYear == 0 ||
+         $stopMonth == 0 ||
+         $stopDay == 0 ||
+         $stopYear == 0 )
     {
         $t->parse( "error_no_date", "error_no_date_tpl" );
         $error = true;
     }
 
     $startDate = new eZDate();
-    $startDate->setMonth( $StartMonth );
-    $startDate->setDay( $StartDay );
-    $startDate->setYear( $StartYear );
+    $startDate->setMonth( $startMonth );
+    $startDate->setDay( $startDay );
+    $startDate->setYear( $startYear );
 
     $stopDate = new eZDate();
-    $stopDate->setMonth( $StopMonth );
-    $stopDate->setDay( $StopDay );
-    $stopDate->setYear( $StopYear );
+    $stopDate->setMonth( $stopMonth );
+    $stopDate->setDay( $stopDay );
+    $stopDate->setYear( $stopYear );
 
     if ( $checkDate )
     {
@@ -201,7 +201,7 @@ if ( isset( $Action ) && $Action == "Insert" )
         {
             foreach ( $embracing as $checkItem )
             {
-                if ( $GameID != $checkItem->id() )
+                if ( $gameID != $checkItem->id() )
                 {
                     $stopDateCheck = $checkItem->stopDate();
                     $startDateCheck = $checkItem->startDate();
@@ -225,7 +225,7 @@ if ( isset( $Action ) && $Action == "Insert" )
         {
             foreach ( $stillOpen as $checkItem )
             {
-                if ( $GameID != $checkItem->id() )
+                if ( $gameID != $checkItem->id() )
                 {
                     $stopDateCheck = $checkItem->stopDate();
                     if ( $startDate->isGreater( $stopDateCheck, true ) )
@@ -252,7 +252,7 @@ if ( isset( $Action ) && $Action == "Insert" )
         {
             foreach ( $willOpen as $checkItem )
             {
-                if ( $GameID != $checkItem->id() )
+                if ( $gameID != $checkItem->id() )
                 {
                     $startDateCheck = $checkItem->startDate();
                     if ( $startDate->isGreater( $startDateCheck, true ) )
@@ -278,33 +278,33 @@ if ( isset( $Action ) && $Action == "Insert" )
 }
 
 
-if ( ( isset( $Action ) && $Action == "Insert" ) && ( $error == false ) )
+if ( ( isset( $action ) && $action == "Insert" ) && ( $error == false ) )
 {
-    if ( is_numeric( $GameID ) )
-        $game = new eZQuizGame( $GameID );
+    if ( is_numeric( $gameID ) )
+        $game = new eZQuizGame( $gameID );
     else
         $game = new eZQuizGame();
 
-    $game->setName( $Name );
-    $game->setDescription( $Description );
+    $game->setName( $name );
+    $game->setDescription( $description );
 
     $game->setStartDate( $startDate );
     $game->setStopDate( $stopDate );
 
     $game->store();
 
-    if ( isset( $QuestionArrayID ) && count( $QuestionArrayID ) > 0 )
+    if ( isset( $questionArrayID ) && count( $questionArrayID ) > 0 )
     {
-        for ( $i = 0; $i < count( $QuestionArrayID ); $i++ )
+        for ( $i = 0; $i < count( $questionArrayID ); $i++ )
         {
-            $question = new eZQuizQuestion( $QuestionArrayID[$i] );
-            $question->setName( $QuestionArrayName[$i] );
+            $question = new eZQuizQuestion( $questionArrayID[$i] );
+            $question->setName( $questionArrayName[$i] );
             $question->store();
         }
         unset( $question );
     }
 
-    if ( isset( $NewQuestion ) )
+    if ( isset( $newQuestion ) )
     {
         $question = new eZQuizQuestion();
         $question->setGame( $game );
@@ -314,20 +314,20 @@ if ( ( isset( $Action ) && $Action == "Insert" ) && ( $error == false ) )
         exit();
     }
 
-    if ( isset( $OK ) )
+    if ( isset( $ok ) )
     {
         eZHTTPTool::header( "Location: /quiz/game/list/" );
         exit();
     }
 }
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
-    if ( count( $GameArrayID ) > 0 )
+    if ( count( $gameArrayID ) > 0 )
     {
-        foreach ( $GameArrayID as $GameID )
+        foreach ( $gameArrayID as $gameID )
         {
-            $game = new eZQuizGame( $GameID );
+            $game = new eZQuizGame( $gameID );
             $game->delete();
         }
     }
@@ -335,10 +335,10 @@ if ( isset( $Action ) && $Action == "Delete" )
     exit();
 }
 
-if ( is_numeric( $GameID ) && !isset( $OK ) && !isset( $NewQuestion ) )
+if ( is_numeric( $gameID ) && !isset( $ok ) && !isset( $newQuestion ) )
 {
     if ( !is_a( $game, "eZQuizGame" ) )
-        $game = new eZQuizGame( $GameID );
+        $game = new eZQuizGame( $gameID );
     $t->set_var( "game_id", $game->id() );
     $t->set_var( "game_name", $game->name() );
     $t->set_var( "game_description", $game->description() );

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: customerview.php 8153 2001-11-01 13:05:52Z ce $
+// $id: customerview.php 8153 2001-11-01 13:05:52Z ce $
 //
 // Created on: <21-Sep-2001 16:06:44 bf>
 //
@@ -36,12 +36,12 @@
 // include_once( "ezuser/classes/ezuser.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "customerview.php" );
+                     "kernel/eztrade/admin/intl/", $language, "customerview.php" );
 
-$languageINI = new eZINI( "kernel/eztrade/admin/intl/" . $Language . "/customerview.php.ini", false );
+$languageINI = new eZINI( "kernel/eztrade/admin/intl/" . $language . "/customerview.php.ini", false );
 
 $t->set_file( "customer_view_tpl", "customerview.tpl" );
 $t->set_block( "customer_view_tpl", "customer_account_number_box_tpl", "customer_account_number_box" );
@@ -68,7 +68,7 @@ $t->set_block( "voucher_list_tpl", "used_item_tpl", "used_item" );
 
 $t->setAllStrings();
 
-$customer = new eZUser( $CustomerID );
+$customer = new eZUser( $customerID );
 
 $t->set_var( "customer_id", $customer->id() );
 $t->set_var( "customer_first_name", $customer->firstName() );
@@ -85,7 +85,7 @@ if ( $customer->accountNumber() != "" )
 $order = new eZOrder();
 $orders = $order->getByCustomer( $customer );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 $currency = new eZCurrency();
 
 // address list
@@ -133,7 +133,7 @@ foreach ( $orders as $order )
     $t->set_var( "order_date", $locale->format( $dateTime ) );
 
     $statusType = $status->type();
-    $statusName = preg_replace( "#intl-#", "", $statusType->name() );
+    $statusName = preg_replace( "#intl-#", "", $statusType->name() ?? '' );
 //    $statusName =  $languageINI->variable( "strings", $statusName );
     $t->set_var( "order_status", $statusName );
 

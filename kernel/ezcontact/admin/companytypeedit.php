@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: companytypeedit.php 9529 2002-05-14 11:17:05Z jhe $
+// $id: companytypeedit.php 9529 2002-05-14 11:17:05Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -30,7 +30,7 @@
 // include_once( "classes/INIFile.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZContactMain", "Language" );
+$language = $ini->variable( "eZContactMain", "Language" );
 
 // include_once( "classes/eztemplate.php" );
 // include_once( "ezcontact/classes/ezcompanytype.php" );
@@ -47,7 +47,7 @@ if ( !is_a( $user, "eZUser" ) )
     exit();
 }
 
-if ( isset( $Action ) && $Action == "edit" || isset( $Action ) && $Action == "update" )
+if ( isset( $action ) && $action == "edit" || isset( $action ) && $action == "update" )
 {
     if ( !eZPermission::checkPermission( $user, "eZContact", "CategoryModify" ) )
     {
@@ -56,7 +56,7 @@ if ( isset( $Action ) && $Action == "edit" || isset( $Action ) && $Action == "up
         exit();
     }
 }
-else if ( isset( $Action ) && $Action == "new" || isset( $Action ) && $Action ==  "insert" )
+else if ( isset( $action ) && $action == "new" || isset( $action ) && $action ==  "insert" )
 {
     if ( !eZPermission::checkPermission( $user, "eZContact", "CategoryAdd" ) )
     {
@@ -65,7 +65,7 @@ else if ( isset( $Action ) && $Action == "new" || isset( $Action ) && $Action ==
         exit();
     }
 }
-else if ( isset( $Action ) && $Action == "delete" )
+else if ( isset( $action ) && $action == "delete" )
 {
     if ( !eZPermission::checkPermission( $user, "eZContact", "CategoryDelete" ) )
     {
@@ -75,44 +75,44 @@ else if ( isset( $Action ) && $Action == "delete" )
     }
 }
 
-if ( empty( $TypeID ) )
+if ( empty( $typeID ) )
 {
-    $TypeID = 0;
+    $typeID = 0;
 }
 
 $type = new eZCompanyType();
-$type->get( $TypeID );
+$type->get( $typeID );
 
-if ( isset( $Action ) && $Action == "insert" || isset( $Action ) && $Action == "update" )
+if ( isset( $action ) && $action == "insert" || isset( $action ) && $action == "update" )
 {
     $type = new eZCompanyType();
 
-    if ( !empty( $TypeID ) )
+    if ( !empty( $typeID ) )
     {
-        $type->get( $TypeID );
+        $type->get( $typeID );
     }
-    $type->setName( $TypeName );
-    $type->setDescription( $TypeDescription );
-    if ( !empty( $TypeID ) )
+    $type->setName( $typeName );
+    $type->setDescription( $typeDescription );
+    if ( !empty( $typeID ) )
     {
-        if ( $SelectParentID != $type->id() )
+        if ( $selectParentID != $type->id() )
         {
             $tree = $type->getTree( $type->id() );
             foreach ( $tree as $item )
             {
-                if ( $item[0]->id() == $SelectParentID )
+                if ( $item[0]->id() == $selectParentID )
                 {
-                    $SelectParentID = 0;
+                    $selectParentID = 0;
                     break;
                 }
             }
         }
         else
         {
-            $SelectParentID = 0;
+            $selectParentID = 0;
         }
     }
-    $type->setParentID( $SelectParentID );
+    $type->setParentID( $selectParentID );
 
     $file = new eZPBImageFile();
     if ( $file->getUploadedFile( "ImageFile" ) )
@@ -128,14 +128,14 @@ if ( isset( $Action ) && $Action == "insert" || isset( $Action ) && $Action == "
 
     $type->store();
 
-    $TypeID = $type->id();
+    $typeID = $type->id();
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /contact/company/list/$TypeID" );
+    eZHTTPTool::header( "Location: /contact/company/list/$typeID" );
 
 }
 
-if ( !$type->id() && isset( $Action ) && $Action != "new"  )
+if ( !$type->id() && isset( $action ) && $action != "new"  )
 {
     // include_once( "classes/ezhttptool.php" );
     eZHTTPTool::header( "Location: /error.php?type=404&reason=missingpage&module=ezcontact&hint=/contact/company/list/0" );
@@ -143,21 +143,21 @@ if ( !$type->id() && isset( $Action ) && $Action != "new"  )
 }
 
 
-if ( isset( $Action ) && $Action == "delete" )
+if ( isset( $action ) && $action == "delete" )
 {
     $type = new eZCompanyType();
-    $type->get( $TypeID );
-    $ParentID = $type->parentID();
+    $type->get( $typeID );
+    $parentID = $type->parentID();
     $type->delete( );
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /contact/company/list/$ParentID" );
+    eZHTTPTool::header( "Location: /contact/company/list/$parentID" );
     exit();
 }
 
 
 $t = new eZTemplate( "kernel/ezcontact/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ),
-                     "kernel/ezcontact/admin/intl/", $Language, "companytype.php" );
+                     "kernel/ezcontact/admin/intl/", $language, "companytype.php" );
 $t->setAllStrings();
 
 $t->set_file( "type_page", "companytypeedit.tpl" );
@@ -177,13 +177,13 @@ $t->set_var( "image_item", "" );
 $t->set_var( "path_item", "" );
 $t->set_var( "current_path_item", "" );
 
-if ( empty( $TypeID ) || $TypeID == 0 )
+if ( empty( $typeID ) || $typeID == 0 )
 {
     $t->parse( "path", "path_tpl" );
 }
 else
 {
-    $paths = $type->path( $TypeID );
+    $paths = $type->path( $typeID );
 
     $countingPaths = count( $paths );
 
@@ -205,9 +205,9 @@ else
     $t->parse( "path", "path_tpl" );
 }
 
-if ( isset( $Action ) && $Action == "edit" || isset( $Action ) && $Action == "new" )
+if ( isset( $action ) && $action == "edit" || isset( $action ) && $action == "new" )
 {
-    if ( $Action == "edit" )
+    if ( $action == "edit" )
     {
         $t->set_var( "action_value", "update" );
     }
@@ -217,28 +217,28 @@ if ( isset( $Action ) && $Action == "edit" || isset( $Action ) && $Action == "ne
     }
 
     $type = new eZCompanyType();
-    $type->get( $TypeID );
+    $type->get( $typeID );
 
     $id = $type->id();
     $name = $type->name();
     $desc = $type->description();
     $parentid = $type->parentID();
-    if ( isset( $NewParentID ) )
-        $parentid = $NewParentID;
+    if ( isset( $newParentID ) )
+        $parentid = $newParentID;
 
     $t->set_var( "current_id", $id );
     $t->set_var( "current_name", $name );
     $t->set_var( "current_description", $desc );
     $t->set_var( "parent_id", $parentid );
 
-    $ImageID = $type->imageID();
+    $imageID = $type->imageID();
 
-    if ( is_numeric( $ImageID ) && $ImageID != 0 )
+    if ( is_numeric( $imageID ) && $imageID != 0 )
     {
         $imageWidth = $ini->variable( "eZContactMain", "CategoryImageWidth" );
         $imageHeight = $ini->variable( "eZContactMain", "CategoryImageHeight" );
 
-        $image = new eZImage( $ImageID );
+        $image = new eZImage( $imageID );
 
         $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 

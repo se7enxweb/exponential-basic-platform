@@ -27,20 +27,24 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $GlobalSectionID = $ini->variable( "site", "DefaultSection" );
-$PageCaching = $ini->variable( "eZNewsFeedMain", "PageCaching" );
+$pageCaching = $ini->variable( "eZNewsFeedMain", "PageCaching" );
+
+$categoryID           = eZHTTPTool::getVar( 'CategoryID' );
+$generateStaticPage   = eZHTTPTool::getVar( 'GenerateStaticPage' );
+$searchText           = eZHTTPTool::getVar( 'SearchText' );
 
 switch ( $url_array[2] )
 {
     case "latest":
     {
-        $CategoryID = $url_array[3];
-        if  ( !isset( $CategoryID ) || ( $CategoryID == "" ) )
-            $CategoryID = 0;
+        $categoryID = $url_array[3];
+        if  ( !isset( $categoryID ) || ( $categoryID == "" ) )
+            $categoryID = 0;
 
-        if ( $PageCaching == "enabled" )
+        if ( $pageCaching == "enabled" )
         {
-            $CategoryID = $url_array[3];
-            $cachedFile = "eznewsfeed/cache/latestnews," . $CategoryID . ".cache";
+            $categoryID = $url_array[3];
+            $cachedFile = "eznewsfeed/cache/latestnews," . $categoryID . ".cache";
 
             if ( file_exists( $cachedFile ) )
             {
@@ -48,13 +52,13 @@ switch ( $url_array[2] )
             }
             else
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
                 include( "kernel/eznewsfeed/user/newslist.php" );
             }            
         }
         else
         {
-            $GenerateStaticPage = "false";
+            $generateStaticPage = "false";
             include( "kernel/eznewsfeed/user/newslist.php" );
         }
     }
@@ -62,7 +66,7 @@ switch ( $url_array[2] )
 
     case "allcategories" :
     {
-        $GenerateStaticPage = "false";
+        $generateStaticPage = "false";
         include( "kernel/eznewsfeed/user/allcategories.php" );
     }
     break;

@@ -37,22 +37,22 @@ $tpl->setAllStrings();
 
 // Check which button is pressed.
 
-if ( isset( $New ) )
+if ( isset( $new ) )
 {
     $exmpl = new eZExample( );
     $exmpl->setText( "" );
     $exmpl->store();
-    updateValues( $IDArray, $TextArray );
+    updateValues( $idArray, $textArray );
 }
 
-if ( isset( $Update ) )
+if ( isset( $update ) )
 {
-    updateValues( $IDArray, $TextArray );
+    updateValues( $idArray, $textArray );
 }
 
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    foreach( $DeleteArrayID as $id )
+    foreach( $deleteArrayID as $id )
     {
         eZExample::delete( $id );
     }

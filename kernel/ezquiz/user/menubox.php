@@ -38,7 +38,7 @@ function createQuizMenu()
     global $ini;
     global $Language;
     global $quizMenuCachedFile;
-    global $GenerateStaticPage;
+    global $generateStaticPage;
 	global $GlobalSiteDesign;
 
     // include_once( "classes/eztemplate.php" );

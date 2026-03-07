@@ -29,7 +29,7 @@
 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZQuizMain", "Language" );
-$Limit = $ini->variable( "eZQuizMain", "AdminListLimit" );
+$limit = $ini->variable( "eZQuizMain", "AdminListLimit" );
 
 // include_once( "ezquiz/classes/ezquizgame.php" );
 
@@ -44,11 +44,11 @@ $t->set_file( array(
 $t->set_block( "game_page", "game_list_tpl", "game_list" );
 $t->set_block( "game_list_tpl", "game_item_tpl", "game_item" );
 
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
 $t->set_var( "site_style", $SiteDesign );
-$gameList = eZQuizGame::getAll( $Offset, $Limit );
+$gameList = eZQuizGame::getAll( $offset, $limit );
 $totalCount = eZQuizGame::count();
 
 if ( count ( $gameList ) > 0 )
@@ -72,10 +72,10 @@ if ( count ( $gameList ) > 0 )
 }
 else
 $t->set_var( "game_list", "" );
-eZList::drawNavigator( $t, $totalCount, $Limit, $Offset, "game_page" );
+eZList::drawNavigator( $t, $totalCount, $limit, $offset, "game_page" );
 
-$t->set_var( "game_start", $Offset + 1 );
-$t->set_var( "game_end", min( $Offset + $Limit, $totalCount ) );
+$t->set_var( "game_start", $offset + 1 );
+$t->set_var( "game_end", min( $offset + $limit, $totalCount ) );
 $t->set_var( "game_total", $totalCount );
 
 $t->pparse( "output", "game_page" );

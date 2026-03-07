@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: urlsupplier.php 6206 2001-07-19 12:19:22Z jakobn $
+// $id: urlsupplier.php 6206 2001-07-19 12:19:22Z jakobn $
 //
 // Created on: <04-May-2001 17:23:30 amos>
 //
@@ -25,6 +25,6 @@
 
 // include_once( "ezarticle/classes/ezarticlesupplier.php" );
 
-$Supplier = new eZArticleSupplier;
+$supplier = new eZArticleSupplier;
 
 ?>

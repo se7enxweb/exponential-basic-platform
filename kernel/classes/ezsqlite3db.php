@@ -34,13 +34,12 @@
 
 class eZSQLite3DB
 {
-    public $Type;
-
     function __construct( $databaseFileName  )
     {
         $this->DB = null;
         $this->Type = 'sqlite';
         $this->DatabaseFileName = $databaseFileName;
+        $this->TransactionDepth = 0;
 
         $ini = eZINI::instance( 'site.ini' );
         // $databaseFilePath = $ini->variable( "site", "DabaseSQLiteFile" );
@@ -63,15 +62,11 @@ class eZSQLite3DB
 
         // WAL mode has better control over concurrency.
         // Source: https://www.sqlite.org/wal.html
-        $ret = $this->query( 'PRAGMA journal_mode = wal;' );
-        //$ret = $this->query( 'PRAGMA busy_timeout = 15000;' );
-
-        if ( !$ret )
-        {
-            // No reason to continue as nothing will work.
-            print( "<H1>SQLite Error</H1><br />" . $this->error( $this->Database ) . ": " . $this->error( $this->Database )."<br /><hr />Please inform the system administrator." );
-            exit;
-        }
+        // Non-fatal: if WAL PRAGMA fails (e.g., locked by concurrent writers),
+        // the database still works in rollback-journal mode.  Calling exit here
+        // would abort in-progress downloads and serve an HTML error page instead
+        // of the binary file, causing 0-byte or truncated downloads in browsers.
+        $this->query( 'PRAGMA journal_mode = wal;' );
     }
 
     /*!
@@ -152,6 +147,10 @@ class eZSQLite3DB
         }
         else
         {
+            // Set busy timeout on the connection object directly — this takes effect
+            // immediately, before any PRAGMA statements, so journal_mode=wal and
+            // other PRAGMAs won't fail with SQLITE_BUSY under concurrent load.
+            $connection->busyTimeout( 5000 );
             $connection->createFunction( 'md5', array( $this, 'md5UDF' ) );
             $this->IsConnected = true;
         }
@@ -430,7 +429,9 @@ class eZSQLite3DB
     */
     function begin()
     {
-        $this->query( "BEGIN TRANSACTION;" );
+        if ( $this->TransactionDepth === 0 )
+            $this->query( "BEGIN TRANSACTION;" );
+        $this->TransactionDepth++;
     }
 
     /*!
@@ -438,7 +439,10 @@ class eZSQLite3DB
     */
     function commit()
     {
-        $this->query( "COMMIT;" );
+        if ( $this->TransactionDepth > 0 )
+            $this->TransactionDepth--;
+        if ( $this->TransactionDepth === 0 )
+            $this->query( "COMMIT;" );
     }
 
     /*!
@@ -446,6 +450,7 @@ class eZSQLite3DB
     */
     function rollback()
     {
+        $this->TransactionDepth = 0;
         $this->query( "ROLLBACK;" );
     }
 
@@ -562,6 +567,8 @@ class eZSQLite3DB
     var $DatabaseSQLitePath;
     var $IsConnected;
     var $ConnectRetries;
+    var $TransactionDepth = 0;
+    public $Type;
 
 }
 

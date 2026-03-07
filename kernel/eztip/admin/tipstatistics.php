@@ -53,7 +53,7 @@ $t->set_block( "tip_edit_page_tpl", "image_tpl", "image" );
 $t->set_block( "tip_edit_page_tpl", "html_item_tpl", "html_item" );
 
 
-$tip = new eZTip( $TipID );
+$tip = new eZTip( $tipID );
 
 $t->set_var( "tip_title", $tip->name() );
 $t->set_var( "tip_description", $tip->description() );

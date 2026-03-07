@@ -34,34 +34,34 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /form/form/list/" );
     exit();
 }
 
-$ActionValue="edit";
+$actionValue="edit";
 
-$form = new eZForm( $FormID );
+$form = new eZForm( $formID );
 
-if ( isset( $Action ) && $Action == "up" )
+if ( isset( $action ) && $action == "up" )
 {
-    $element = new eZFormElement( $ElementID );
+    $element = new eZFormElement( $elementID );
     $form->moveUp( $element );
-    eZHTTPTool::header( "Location: /form/form/edit/$FormID/" );
+    eZHTTPTool::header( "Location: /form/form/edit/$formID/" );
     exit();
 }
 
-if ( isset( $Action ) && $Action == "down" )
+if ( isset( $action ) && $action == "down" )
 {
-    $element = new eZFormElement( $ElementID );
+    $element = new eZFormElement( $elementID );
     $form->moveDown( $element );
-    eZHTTPTool::header( "Location: /form/form/edit/$FormID/" );
+    eZHTTPTool::header( "Location: /form/form/edit/$formID/" );
     exit();
 }
 
 
-if ( isset( $DeleteSelected ) )
+if ( isset( $deleteSelected ) )
 {
     foreach ( $elementDelete as $deleteMe )
     {
@@ -72,7 +72,7 @@ if ( isset( $DeleteSelected ) )
 
 $errorMessages = array();
 
-if ( isset( $OK ) || isset( $Update ) || isset( $Preview ) || isset( $NewElement ) )
+if ( isset( $ok ) || isset( $update ) || isset( $preview ) || isset( $newElement ) )
 {
     if ( empty( $formSender ) )
     {
@@ -126,7 +126,7 @@ if ( isset( $OK ) || isset( $Update ) || isset( $Preview ) || isset( $NewElement
         }
     }
 
-    if ( count( $errorMessages ) == 0 || isset( $NewElement ) || isset( $Update ) )
+    if ( count( $errorMessages ) == 0 || isset( $newElement ) || isset( $update ) )
     {
         $form->setName( $formName );
         $form->setReceiver( $formReceiver );
@@ -145,12 +145,12 @@ if ( isset( $OK ) || isset( $Update ) || isset( $Preview ) || isset( $NewElement
         }
         
         $form->store();
-        $FormID = $form->id();
+        $formID = $form->id();
         
         $existingElementCount = $form->numberOfElements();
         $existingElementCount++;
         
-        if ( isset( $NewElement ) )
+        if ( isset( $newElement ) )
         {
             $newElementName = $ini->variable( "eZFormMain", "DefaultElementName" );
             $newElementName = $newElementName . " " . $existingElementCount;
@@ -185,8 +185,8 @@ if ( isset( $OK ) || isset( $Update ) || isset( $Preview ) || isset( $NewElement
 
             $element->setName( $elementName[$i] );
 
-            if( isset( $Size[ $i ] ) )
-                $element->setSize( $Size[$i] );
+            if( isset( $size[ $i ] ) )
+                $element->setSize( $size[$i] );
             else
                 $element->setSize( 0 );
 
@@ -204,9 +204,9 @@ if ( isset( $OK ) || isset( $Update ) || isset( $Preview ) || isset( $NewElement
                     }
                 }
             }
-            if ( isset( $ElementBreak ) && count( $ElementBreak ) > 0 )
+            if ( isset( $elementBreak ) && count( $elementBreak ) > 0 )
             {
-                foreach ( $ElementBreak as $breakID )
+                foreach ( $elementBreak as $breakID )
                 {
                     if ( $elementID[$i] == $breakID )
                     {
@@ -224,15 +224,15 @@ if ( isset( $OK ) || isset( $Update ) || isset( $Preview ) || isset( $NewElement
 
         $form->store();
 
-        if ( isset( $OK ) && count( $errorMessages ) == 0 )
+        if ( isset( $ok ) && count( $errorMessages ) == 0 )
         {
             eZHTTPTool::header( "Location: /form/form/list/" );
             exit();
         }
 
-        if ( isset( $Preview ) && count( $errorMessages ) == 0 )
+        if ( isset( $preview ) && count( $errorMessages ) == 0 )
         {
-            eZHTTPTool::header( "Location: /form/form/preview/$FormID/" );
+            eZHTTPTool::header( "Location: /form/form/preview/$formID/" );
             exit();
         }
     }
@@ -300,7 +300,7 @@ else
     }
 }
 
-if ( isset( $Action ) && $Action != "new" && $form->numberOfTypes() == 0 && !isset( $NewElement ) && !isset( $DeleteSelected ) )
+if ( isset( $action ) && $action != "new" && $form->numberOfTypes() == 0 && !isset( $newElement ) && !isset( $deleteSelected ) )
 {
     $t->parse( "no_types_item", "no_types_item_tpl" );
 }
@@ -310,7 +310,7 @@ if ( $form->numberOfElements() == 0 )
     if ( $ini->variable( "eZFormMain", "CreateEmailDefaults" ) == "enabled" )
     {
         $form->store();
-        $FormID = $form->id();
+        $formID = $form->id();
         $elementTypeA = new eZFormElementType( 1 );
         $elementTypeB = new eZFormElementType( 2 );
         $elementA = new eZFormElement();
@@ -330,12 +330,12 @@ if ( $form->numberOfElements() == 0 )
     }
     else
     {
-        if ( isset( $Action ) && $Action != "new" && !isset( $NewElement ) && !isset( $DeleteSelected ) )
+        if ( isset( $action ) && $action != "new" && !isset( $newElement ) && !isset( $deleteSelected ) )
             $t->parse( "no_elements_item", "no_elements_item_tpl" );
     }
 }
 
-$t->set_var( "form_id", $FormID );
+$t->set_var( "form_id", $formID );
 $t->set_var( "form_name", $form->name() );
 $t->set_var( "form_receiver", $form->receiver() );
 $t->set_var( "form_cc", $form->cc() );
@@ -465,7 +465,7 @@ if ( $count > 0 )
     $t->parse( "element_list", "element_list_tpl" );
 }
 
-if ( count( $errorMessages ) > 0 && !isset( $NewElement ) && !isset( $DeleteSelected ) )
+if ( count( $errorMessages ) > 0 && !isset( $newElement ) && !isset( $deleteSelected ) )
 {
     foreach ( $errorMessages as $errorMessage )
     {
@@ -491,7 +491,7 @@ if ( count( $errorMessages ) > 0 && !isset( $NewElement ) && !isset( $DeleteSele
 
 $t->parse( "form_item", "form_item_tpl" );
 
-$t->set_var( "action_value", $ActionValue );
+$t->set_var( "action_value", $actionValue );
 $t->set_var( "site_style", $SiteDesign );
 $t->setAllStrings();
 $t->pparse( "output", "form_edit_page_tpl" );

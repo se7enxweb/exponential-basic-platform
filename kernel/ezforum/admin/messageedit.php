@@ -39,35 +39,35 @@ $error = new eZINI( "kernel/ezforum/admin/intl/" . $Language . "/messageedit.php
 require( "kernel/ezuser/admin/admincheck.php" );
 
 
-if ( isset( $DeleteMessages ) )
+if ( isset( $deleteMessages ) )
 {
-    $Action = "DeleteMessages";
+    $action = "DeleteMessages";
 }
 
-if ( $Action == "update" )
+if ( $action == "update" )
 {
     if ( eZPermission::checkPermission( $user, "eZForum", "MessageModify" ) )
     {
-        if ( $Topic != "" &&
-        $Body != "" )
+        if ( $topic != "" &&
+        $body != "" )
         {
             $msg = new eZForumMessage();
-            $msg->get( $MessageID );
-            $msg->setTopic( $Topic );
-            $msg->setBody( $Body );
+            $msg->get( $messageID );
+            $msg->setTopic( $topic );
+            $msg->setBody( $body );
 
             if ( $notice )
                 $msg->enableEmailNotice();
             else 
                 $msg->disableEmailNotice();
 
-            $ForumID = $msg->forumID();
+            $forumID = $msg->forumID();
 
-            $forum = new eZForum( $ForumID );
+            $forum = new eZForum( $forumID );
 
             $msg->store();
 
-            eZHTTPTool::header( "Location: /forum/messagelist/$ForumID/" );
+            eZHTTPTool::header( "Location: /forum/messagelist/$forumID/" );
             exit();
         }
         else
@@ -82,20 +82,20 @@ if ( $Action == "update" )
     
 }
 
-if ( $Action == "delete" )
+if ( $action == "delete" )
 {
     if ( eZPermission::checkPermission( $user, "eZForum", "MessageDelete" ) )
     {
-        if ( $MessageID != "" )
+        if ( $messageID != "" )
         {
             $msg = new eZForumMessage();
-            $msg->get( $MessageID );
+            $msg->get( $messageID );
             $msg->delete();
             
-            $ForumID = $msg->forumID();
-            $forum = new eZForum( $ForumID );
+            $forumID = $msg->forumID();
+            $forum = new eZForum( $forumID );
             
-            eZHTTPTool::header( "Location: /forum/messagelist/$ForumID" );
+            eZHTTPTool::header( "Location: /forum/messagelist/$forumID" );
             exit();
         }
         else
@@ -109,26 +109,26 @@ if ( $Action == "delete" )
     }
 }
 
-if ( $Action == "DeleteMessages" )
+if ( $action == "DeleteMessages" )
 {
-    if ( count( $MessageArrayID ) != 0 )
+    if ( count( $messageArrayID ) != 0 )
     {
-        foreach ( $MessageArrayID as $MessageID )
+        foreach ( $messageArrayID as $messageID )
         {
-            $message = new eZForumMessage( $MessageID );
+            $message = new eZForumMessage( $messageID );
             $forumID = $message->forumID();
             $message->delete();
 
         }
         
-        if ( empty( $RefererURL ) )
+        if ( empty( $refererURL ) )
         {
             eZHTTPTool::header( "Location: /forum/messagelist/$forumID" );
             exit();
         }
         else
         {
-            eZHTTPTool::header( "Location: /forum/search/$RefererURL" );
+            eZHTTPTool::header( "Location: /forum/search/$refererURL" );
             exit();
         }
     }
@@ -150,10 +150,10 @@ $t->set_var( "message_topic", "" );
 $t->set_var( "message_postingtime", "" );
 $t->set_var( "message_body", "" );
 $t->set_var( "message_user", "" );
-$t->set_var( "message_id", $MessageID );
+$t->set_var( "message_id", $messageID );
 $action_value = "update";
 
-if ( $Action == "new" )
+if ( $action == "new" )
 {
     if ( !eZPermission::checkPermission( $user, "eZForum", "MessageModifyAdd" ) )
     {
@@ -164,7 +164,7 @@ if ( $Action == "new" )
 }
 
 
-if ( $Action == "edit" )
+if ( $action == "edit" )
 {
     $languageIni = new eZINI( "kernel/ezforum/admin/" . "intl/" . $Language . "/messageedit.php.ini", false );
     $headline =  $languageIni->variable( "strings", "head_line_edit" );
@@ -176,7 +176,7 @@ if ( $Action == "edit" )
     else
     {
         $msg = new eZForumMessage();
-        $msg->get( $MessageID );
+        $msg->get( $messageID );
         $t->set_var( "message_topic", $msg->topic() );
         $t->set_var( "message_postingtime", $locale->format( $msg->postingTime() ) );
         $t->set_var( "message_body", $msg->body() );
@@ -189,23 +189,23 @@ if ( $Action == "edit" )
 
         if ( $author->id() == 0 )
         {
-            $MessageAuthor = $anonymous;
+            $messageAuthor = $anonymous;
         }
         else
         {
-            $MessageAuthor = $author->firstName() . " " . $author->lastName();
+            $messageAuthor = $author->firstName() . " " . $author->lastName();
         }
 
-        $t->set_var( "message_user", $MessageAuthor );
+        $t->set_var( "message_user", $messageAuthor );
         $action_value = "update";
-        $t->set_var( "message_id", $MessageID );
+        $t->set_var( "message_id", $messageID );
         $t->set_var( "forum_id", $msg->forumID() );
     }
 }
 
 $t->set_var( "action_value", $action_value );
 $t->set_var( "error_msg", $error_msg );
-$t->set_var( "category_id", $CategoryID );
+$t->set_var( "category_id", $categoryID );
 $t->set_var( "headline", $headline );
 $t->pparse( "output", "message_page" );
 

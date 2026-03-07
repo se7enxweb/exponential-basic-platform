@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: nopermission.php 6970 2001-09-05 11:57:07Z jhe $
+// $id: nopermission.php 6970 2001-09-05 11:57:07Z jhe $
 //
 // Created on: <19-Feb-2001 11:11:28 amos>
 //
@@ -25,10 +25,10 @@
 
 // include_once( "classes/eztemplate.php" );
 
-$ini =& $GlobalSiteIni;
-$Language = $ini->variable( "eZContactMain", "Language" );
+$ini =& $globalSiteIni;
+$language = $ini->variable( "eZContactMain", "Language" );
 $t = new eZTemplate( "kernel/ezcontact/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ),
-                     "kernel/ezcontact/admin/intl", $Language, "nopermission.php" );
+                     "kernel/ezcontact/admin/intl", $language, "nopermission.php" );
 $t->setAllStrings();
 
 $t->set_file( "permission_page", "nopermission.tpl" );
@@ -70,7 +70,7 @@ $t->set_var( "permission_category_delete_item", "" );
 $t->set_var( "permission_type_admin", "" );
 $t->set_var( "permission_consultation", "" );
 
-switch ( $Type )
+switch ( $type )
 {
     case "login":
     {
@@ -90,7 +90,7 @@ switch ( $Type )
     case "company":
     case "person":
     {
-        switch ( $Action )
+        switch ( $action )
         {
             case "new":
             case "edit":
@@ -98,8 +98,8 @@ switch ( $Type )
             case "list":
             case "view":
             {
-                $t->parse( "permission_" . $Type . "_" . $Action . "_item",
-                           "permission_" . $Type . "_" . $Action . "_item_tpl" );
+                $t->parse( "permission_" . $type . "_" . $action . "_item",
+                           "permission_" . $type . "_" . $action . "_item_tpl" );
                 break;
             }
         }
@@ -107,14 +107,14 @@ switch ( $Type )
     }
     case "category":
     {
-        switch ( $Action )
+        switch ( $action )
         {
             case "new":
             case "edit":
             case "delete":
             {
-                $t->parse( "permission_" . $Type . "_" . $Action . "_item",
-                           "permission_" . $Type . "_" . $Action . "_item_tpl" );
+                $t->parse( "permission_" . $type . "_" . $action . "_item",
+                           "permission_" . $type . "_" . $action . "_item_tpl" );
                 break;
             }
         }

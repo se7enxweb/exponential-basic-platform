@@ -34,33 +34,33 @@
 // include_once( "classes/ezhttptool.php" );
 
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /bulkmail/mailedit" );
     exit();
 }
 
-if ( isset( $Preview ) )
+if ( isset( $preview ) )
 {
-    $MailID = save_mail();
+    $mailID = save_mail();
     if ( !isset( $error ) )
     {
-        eZHTTPTool::header( "Location: /bulkmail/preview/$MailID" );
+        eZHTTPTool::header( "Location: /bulkmail/preview/$mailID" );
         exit();
     }
 }
 
-if ( isset( $Save ) )
+if ( isset( $save ) )
 {
-    $MailID = save_mail();
+    $mailID = save_mail();
 }
 
-if ( isset( $Send ) )
+if ( isset( $send ) )
 {
-    $MailID = save_mail();
+    $mailID = save_mail();
     if ( !isset( $error ) )
     {
-        eZHTTPTool::header( "Location: /bulkmail/send/$MailID" );
+        eZHTTPTool::header( "Location: /bulkmail/send/$mailID" );
         exit();
     }
 }
@@ -92,13 +92,13 @@ $t->set_var( "mail_body", "" );
 $t->set_var( "current_mail_id", "" );
 
 /** New mail, lets insert some default values **/
-if ( $MailID == 0 )
+if ( $mailID == 0 )
 {
     // put signature stuff here...
 }
 $useDefaults = $ini->variable( "eZBulkMailMain", "UseBulkmailSenderDefaults" );
 
-if ( $useDefaults == "enabled" && empty( $From ) && empty( $FromName ) )
+if ( $useDefaults == "enabled" && empty( $from ) && empty( $fromName ) )
 {
     $t->set_var( "from_value", $ini->variable( "eZBulkMailMain", "BulkmailSenderAddress" ) );
     $t->set_var( "from_name_value", $ini->variable( "eZBulkMailMain", "BulkmailSenderName" ) );
@@ -106,23 +106,23 @@ if ( $useDefaults == "enabled" && empty( $From ) && empty( $FromName ) )
 else
 {
     $user = eZUser::currentUser();
-    if ( empty( $From ) )
+    if ( empty( $from ) )
         $t->set_var( "from_value", $user->email() );
     else
-        $t->set_var( "from_value", $From );
+        $t->set_var( "from_value", $from );
 
-    if ( empty( $FromName ) )
+    if ( empty( $fromName ) )
         $t->set_var( "from_name_value", $user->name() );
     else
-        $t->set_var( "from_name_value", $FromName );
+        $t->set_var( "from_name_value", $fromName );
 }
 $categoryArrayID = array();
 /** We are editing an allready existent mail... lets insert it's values **/
-if ( $MailID != 0 ) 
+if ( $mailID != 0 ) 
 {
-    $t->set_var( "current_mail_id", $MailID );
+    $t->set_var( "current_mail_id", $mailID );
 
-    $mail = new eZBulkMail( $MailID );
+    $mail = new eZBulkMail( $mailID );
 
     if ( $mail->sender() != "" )
         $t->set_var( "from_value",  $mail->sender() );
@@ -174,34 +174,34 @@ $t->pparse( "output", "mail_edit_page_tpl" );
  */
 function save_mail()
 {
-    global $ini, $CategoryArrayID, $TemplateID, $To, $FromName, $From, $Subject, $MailBody, $MailID, $error;// instead of passing them as arguments..
+    global $ini, $categoryArrayID, $templateID, $To, $fromName, $from, $subject, $mailBody, $mailID, $error;// instead of passing them as arguments..
 
-    if( $MailID == 0 )
+    if( $mailID == 0 )
     {
         $mail = new eZBulkMail();
         $mail->setOwner( eZUser::currentUser() );
     }
     else
     {
-        $mail = new eZBulkMail( $MailID );
+        $mail = new eZBulkMail( $mailID );
     }
 
-    $mail->setSender( $From  ); // from NAME
-    $mail->setFromName( $FromName ); // from NAME
+    $mail->setSender( $from  ); // from NAME
+    $mail->setFromName( $fromName ); // from NAME
     
-    $mail->setSubject( $Subject );
-    $mail->setBodyText( $MailBody );
+    $mail->setSubject( $subject );
+    $mail->setBodyText( $mailBody );
 
     $mail->setIsDraft( true );
     
     $mail->store();
-    if( $TemplateID != -1 )
-        $mail->useTemplate( $TemplateID );
+    if( $templateID != -1 )
+        $mail->useTemplate( $templateID );
     
     $mail->addToCategory( false );
-    if( count( $CategoryArrayID ) > 0 )
+    if( count( $categoryArrayID ) > 0 )
     {
-        foreach( $CategoryArrayID as $categoryItemID )
+        foreach( $categoryArrayID as $categoryItemID )
         {
             $mail->addToCategory( $categoryItemID );
         }

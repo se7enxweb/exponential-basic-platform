@@ -40,25 +40,25 @@ $Language = $ini->variable( "eZBugMain", "Language" );
 $session = new eZSession();
 
 // This turns out to be not needed.
-// $BugID = $session->variable( "BugID" );
+// $bugID = $session->variable( "BugID" );
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $file = new eZPBImageFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     {
-        $bug = new eZBug( $BugID );
+        $bug = new eZBug( $bugID );
         $image = new eZImage();
         if( $image->checkImage( $file ) && $image->setImage( $file ) )
         {
-            $image->setName( $Name );
-            $image->setCaption( $Caption );
+            $image->setName( $name );
+            $image->setCaption( $caption );
 
             $image->store();
         
             $bug->addImage( $image );
-            eZPBLog::writeNotice( "Picture added to bug: $BugID  from IP: $REMOTE_ADDR" );
+            eZPBLog::writeNotice( "Picture added to bug: $bugID  from IP: $REMOTE_ADDR" );
         }
     }
     else
@@ -67,25 +67,25 @@ if ( $Action == "Insert" )
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /bug/report/edit/" . $BugID . "/" );
+    eZHTTPTool::header( "Location: /bug/report/edit/" . $bugID . "/" );
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
     $file = new eZPBImageFile();
     
     if ( $file->getUploadedFile( "userfile" ) )
     {
-        $bug = new eZBug( $BugID );
+        $bug = new eZBug( $bugID );
         $image = new eZImage();
         if( $image->checkImage( $file ) && $image->setImage( $file ) )
         {
-            $oldImage = new eZImage( $ImageID );
+            $oldImage = new eZImage( $imageID );
             $bug->deleteImage( $oldImage );
         
-            $image->setName( $Name );
-            $image->setCaption( $Caption );
+            $image->setName( $name );
+            $image->setCaption( $caption );
             $image->store();
         
             $bug->addImage( $image );
@@ -93,32 +93,32 @@ if ( $Action == "Update" )
     }
     else
     {
-        $image = new eZImage( $ImageID );
-        $image->setName( $Name );
-        $image->setCaption( $Caption );
+        $image = new eZImage( $imageID );
+        $image->setName( $name );
+        $image->setCaption( $caption );
         $image->store();
     }
     
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /bug/report/edit/" . $BugID . "/" );
+    eZHTTPTool::header( "Location: /bug/report/edit/" . $bugID . "/" );
     exit();
 }
 
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
     $bug = new eZBug( $ButID );
-    $image = new eZImage( $ImageID );
+    $image = new eZImage( $imageID );
         
     $bug->deleteImage( $image );
     
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /bug/report/edit/" . $BugID . "/" );
+    eZHTTPTool::header( "Location: /bug/report/edit/" . $bugID . "/" );
     exit();    
 }
 
 // store the image definition
-if ( $Action == "StoreDef" )
+if ( $action == "StoreDef" )
 {
 //    $article = new eZArticle( $ArticleID );
 //
@@ -160,10 +160,10 @@ $t->set_var( "action_value", "Insert" );
 $t->set_var( "option_id", "" );
 $t->set_var( "image", "" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $bug = new eZBug( $BugID );
-    $image = new eZImage( $ImageID );
+    $bug = new eZBug( $bugID );
+    $image = new eZImage( $imageID );
 
     $t->set_var( "image_id", $image->id() );
     $t->set_var( "name_value", $image->name() );
@@ -182,7 +182,7 @@ if ( $Action == "Edit" )
     $t->parse( "image", "image_tpl" );
 }
 
-$bug = new eZBug( $BugID );
+$bug = new eZBug( $bugID );
     
 $t->set_var( "bug_name", $bug->name() );
 $t->set_var( "bug_id", $bug->id() );

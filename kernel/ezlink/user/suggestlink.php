@@ -43,26 +43,26 @@ $error = new eZINI( "kernel/ezlink/user/intl/" . $Language . "/suggestlink.php.i
 
 //require( "kernel/ezuser/admin/admincheck.php" );
 
-if ( isset( $DeleteLinks ) )
+if ( isset( $deleteLinks ) )
 {
-    $Action = "DeleteLinks";
+    $action = "DeleteLinks";
 }
 
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    $Action = "delete";
+    $action = "delete";
 }
 
-if ( isset( $Back ) )
+if ( isset( $back ) )
 {
-    if ( $LinkID != "" )
+    if ( $linkID != "" )
     {
         $link = new eZLink();
-        $link->get( $LinkID );
+        $link->get( $linkID );
         $catDef = $link->categoryDefinition();
-        $LinkCategoryID = $catDef->id();
+        $linkCategoryID = $catDef->id();
 
-        eZHTTPTool::header( "Location: /link/category/$LinkCategoryID/" );
+        eZHTTPTool::header( "Location: /link/category/$linkCategoryID/" );
         exit();
     }
     else
@@ -72,26 +72,26 @@ if ( isset( $Back ) )
     }
 }
 
-$Accepted = $ini->variable( "eZLinkMain", "AcceptSuggestedLinks" );
+$accepted = $ini->variable( "eZLinkMain", "AcceptSuggestedLinks" );
 
 // Get images from the image browse function.
-if ( ( isset( $AddImages ) ) and ( is_numeric( $LinkID ) ) and ( is_numeric( $LinkID ) ) )
+if ( ( isset( $addImages ) ) and ( is_numeric( $linkID ) ) and ( is_numeric( $linkID ) ) )
 {
     $image = new eZImage( $ImageID );
-    $link = new eZLink( $LinkID );
+    $link = new eZLink( $linkID );
     $link->setImage( $image );
     $link->update();
-    $Action = "edit";
+    $action = "edit";
 }
 
-if ( isset( $GetSite ) && $GetSite )
+if ( isset( $getSite ) && $getSite )
 {
-    if ( $Url )
+    if ( $url )
     {
-        if ( !preg_match( "%^([a-z]+://)%", $Url ) )
-            $real_url = "https://" . $Url;
+        if ( !preg_match( "%^([a-z]+://)%", $url ) )
+            $real_url = "https://" . $url;
         else
-            $real_url = $Url;
+            $real_url = $url;
 
 
         include( "kernel/ezlink/classes/ezmeta.php" );
@@ -114,41 +114,41 @@ if ( isset( $GetSite ) && $GetSite )
         if ( isset( $metaList["keywords"] ) && $metaList["keywords"] )
             $tkeywords = $metaList["keywords"];
         else
-            $tkeywords = $Keywords;
+            $tkeywords = $keywords;
 
         if ( isset( $metaList["title"] ) &&$metaList["title"] )
             $tname = $metaList["title"];
         else if ( $metaList["abstract"] )
             $tname = $metaList["abstract"];
         else
-            $tname = $Name;
+            $tname = $name;
 
         // $tdescription = $metaList["description"];
         // $tkeywords = $metaList["keywords"];
-        // $tname = $Name;
+        // $tname = $name;
 
-        $turl = eZTextTool::htmlspecialchars( $Url );
+        $turl = eZTextTool::htmlspecialchars( $url );
     }
 
     $action_value = "insert";
-    $Action = "new";
+    $action = "new";
 
 }
 
 // Update a link.
-if ( isset( $Action ) && $Action == "update" )
+if ( isset( $action ) && $action == "update" )
 {
-    if ( $Name != "" && $LinkCategoryID != "" && $Url != "" )
+    if ( $name != "" && $linkCategoryID != "" && $url != "" )
     {
         $link = new eZLink();
-        $link->get( $LinkID );
+        $link->get( $linkID );
 
-        $link->setName( $Name );
-        $link->setDescription( $Description );
-        $link->setKeyWords( $Keywords );
-        $link->setUrl( $Url );
+        $link->setName( $name );
+        $link->setDescription( $description );
+        $link->setKeyWords( $keywords );
+        $link->setUrl( $url );
 
-        $link->setCategoryDefinition( $LinkCategoryID );
+        $link->setCategoryDefinition( $linkCategoryID );
 
         // Calculate new and unused categories
 
@@ -156,7 +156,7 @@ if ( isset( $Action ) && $Action == "update" )
         $old_categories = array_unique( array_merge( $old_maincategory->id(),
                                          $link->categories( false ) ) );
 
-        $new_categories = array_unique( array_merge( $CategoryID, $CategoryArray ) );
+        $new_categories = array_unique( array_merge( $categoryID, $categoryArray ) );
 
         $remove_categories = array_diff( $old_categories, $new_categories );
         $add_categories = array_diff( $new_categories, $old_categories );
@@ -174,7 +174,7 @@ if ( isset( $Action ) && $Action == "update" )
         }
 
         // add to categories
-        $category = new eZLinkCategory( $LinkCategoryID );
+        $category = new eZLinkCategory( $linkCategoryID );
         $link->setCategoryDefinition( $category );
         $category->addLink( $link );
 
@@ -183,12 +183,12 @@ if ( isset( $Action ) && $Action == "update" )
             eZLinkCategory::addLink( $link, $categoryItem );
         }
 
-        if ( $Accepted == "1" && eZPermission::checkPermission( $user, "eZLink", "LinkModify" ) )
+        if ( $accepted == "1" && eZPermission::checkPermission( $user, "eZLink", "LinkModify" ) )
             $link->setAccepted( true );
         else
             $link->setAccepted( false );
 
-        $link->setUrl( $Url );
+        $link->setUrl( $url );
 
         $file = new eZPBImageFile();
         if ( $file->getUploadedFile( "ImageFile" ) )
@@ -202,7 +202,7 @@ if ( isset( $Action ) && $Action == "update" )
             $link->setImage( $image );
         }
 
-        if ( $TypeID == -1 )
+        if ( $typeID == -1 )
         {
             $link->removeType();
         }
@@ -210,12 +210,12 @@ if ( isset( $Action ) && $Action == "update" )
         {
             $link->removeType();
 
-            $link->setType( new eZLinkType( $TypeID ) );
+            $link->setType( new eZLinkType( $typeID ) );
 
             $i = 0;
-            if ( count( $AttributeValue ) > 0 )
+            if ( count( $attributeValue ) > 0 )
             {
-                foreach ( $AttributeValue as $attribute )
+                foreach ( $attributeValue as $attribute )
                 {
                     $att = new eZLinkAttribute( $AttributeID[$i] );
 
@@ -228,12 +228,12 @@ if ( isset( $Action ) && $Action == "update" )
 
         $link->update();
 
-        if ( $DeleteImage )
+        if ( $deleteImage )
         {
             $link->deleteImage();
         }
 
-        eZHTTPTool::header( "Location: /link/category/$LinkCategoryID" );
+        eZHTTPTool::header( "Location: /link/category/$linkCategoryID" );
         exit();
     }
     else
@@ -249,28 +249,28 @@ if ( isset( $Action ) && $Action == "update" )
 
 
 // Insert a link.
-if ( isset( $Action ) && $Action == "insert" )
+if ( isset( $action ) && $action == "insert" )
 {
-    if ( $Name != "" && $LinkCategoryID != "" && $Url != "" )
+    if ( $name != "" && $linkCategoryID != "" && $url != "" )
     {
         $link = new eZLink();
 
-        $link->setName( $Name );
-        $link->setDescription( $Description );
-        $link->setKeyWords( $Keywords );
-        if ( $Accepted == "1" && eZPermission::checkPermission( $user, "eZLink", "LinkAdd" ) )
+        $link->setName( $name );
+        $link->setDescription( $description );
+        $link->setKeyWords( $keywords );
+        if ( $accepted == "1" && eZPermission::checkPermission( $user, "eZLink", "LinkAdd" ) )
             $link->setAccepted( true );
         else
             $link->setAccepted( false );
 
-        $link->setUrl( $Url );
+        $link->setUrl( $url );
 
-        $tname = $Name;
-        $turl = $Url;
-        if ( !$GetSite )
+        $tname = $name;
+        $turl = $url;
+        if ( !$getSite )
         {
-            $tkeywords = $Keywords;
-            $tdescription = $Description;
+            $tkeywords = $keywords;
+            $tdescription = $description;
         }
 
         $file = new eZPBImageFile();
@@ -287,18 +287,18 @@ if ( isset( $Action ) && $Action == "insert" )
 
         $link->store();
 
-        if ( $TypeID == -1 )
+        if ( $typeID == -1 )
         {
             $link->removeType();
         }
         else
         {
-            $link->setType( new eZLinkType( $TypeID ) );
+            $link->setType( new eZLinkType( $typeID ) );
 
             $i = 0;
-            if ( count( $AttributeValue ) > 0 )
+            if ( count( $attributeValue ) > 0 )
             {
-                foreach ( $AttributeValue as $attribute )
+                foreach ( $attributeValue as $attribute )
                 {
                     $att = new eZLinkAttribute( $AttributeID[$i] );
                     $att->setValue( $link, $attribute );
@@ -308,12 +308,12 @@ if ( isset( $Action ) && $Action == "insert" )
         }
 
         // Add to categories.
-        $cat = new eZLinkCategory( $LinkCategoryID );
+        $cat = new eZLinkCategory( $linkCategoryID );
         $cat->addLink( $link );
         $link->setCategoryDefinition( $cat );
-        if ( isset( $CategoryArray ) && count( $CategoryArray ) > 0 )
+        if ( isset( $categoryArray ) && count( $categoryArray ) > 0 )
         {
-            foreach ( $CategoryArray as $categoryItem )
+            foreach ( $categoryArray as $categoryItem )
             {
                 if ( $categoryItem != $cat->id() )
                     eZLinkCategory::addLink( $link, $categoryItem );
@@ -322,10 +322,10 @@ if ( isset( $Action ) && $Action == "insert" )
 
         $linkID = $link->id();
 
-        eZHTTPTool::header( "Location: /link/category/$LinkCategoryID" );
+        eZHTTPTool::header( "Location: /link/category/$linkCategoryID" );
         exit();
     }
-    else if ( !isset( $Update ) )
+    else if ( !isset( $update ) )
     {
         $error_msg = $error->variable( "strings", "error_missingdata" );
     }
@@ -333,7 +333,7 @@ if ( isset( $Action ) && $Action == "insert" )
 else
 {
 //    eZHTTPTool::header( "Location: /link/norights" );
-    // $LinkID = false;
+    // $linkID = false;
     // $error_msg = false;
     // $tdescription = false;
     // $tkeywords = false;
@@ -402,19 +402,19 @@ else
 }
 
 
-if ( isset( $Action ) && $Action == "AttributeList" )
+if ( isset( $action ) && $action == "AttributeList" )
 {
-    $tname = $Name;
-    $tkeywords = $Keywords;
-    $tdescription = $Description;
-    $turl = $Url;
+    $tname = $name;
+    $tkeywords = $keywords;
+    $tdescription = $description;
+    $turl = $url;
 
     $action_value = "update";
 
     $t->set_var( "image_item", "" );
 
 
-    if ( $Accepted )
+    if ( $accepted )
     {
         $yes_selected = "selected";
         $no_selected = "";
@@ -438,7 +438,7 @@ foreach ( $linkCategoryList as $linkCategoryItem )
     $t->set_var( "link_category_id", $linkCategoryItem[0]->id() );
     $t->set_var( "link_category_name", $linkCategoryItem[0]->name() );
 
-    if ( $LinkCategoryID == $linkCategoryItem[0]->id() )
+    if ( $linkCategoryID == $linkCategoryItem[0]->id() )
     {
         $t->set_var( "is_selected", "selected" );
     }
@@ -454,8 +454,8 @@ foreach ( $linkCategoryList as $linkCategoryItem )
 
     $link_select_dict[$linkCategoryItem[0]->id()] = $i;
 
-    if ( isset( $LinkCategoryIDArray ) && is_array( $LinkCategoryIDArray ) and in_array( $linkCategoryItem[0]->id(), $LinkCategoryIDArray )
-         and ( $LinkCategoryID != $linkCategoryItem[0]->id() ) )
+    if ( isset( $linkCategoryIDArray ) && is_array( $linkCategoryIDArray ) and in_array( $linkCategoryItem[0]->id(), $linkCategoryIDArray )
+         and ( $linkCategoryID != $linkCategoryItem[0]->id() ) )
     {
         $t->set_var( "multiple_selected", "selected" );
         $i++;
@@ -473,8 +473,8 @@ $t->set_var( "type", "" );
 $type = new eZLinkType();
 $types = $type->getAll();
 
-if ( isset( $TypeID ) )
-    $linkType = new eZLinkType( $TypeID );
+if ( isset( $typeID ) )
+    $linkType = new eZLinkType( $typeID );
 
 foreach ( $types as $typeItem )
 {
@@ -539,7 +539,7 @@ $t->set_var( "description", isset( $tdescription ) ? $tdescription : false );
 
 $t->set_var( "headline", isset( $headline ) ? $headline : false );
 $t->set_var( "error_msg", isset( $error_msg ) ? $error_msg : false );
-$t->set_var( "link_id", isset( $LinkID ) ? $LinkID : false );
+$t->set_var( "link_id", isset( $linkID ) ? $linkID : false );
 
 $t->pparse( "output", "link_edit" );
 

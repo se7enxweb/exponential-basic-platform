@@ -45,6 +45,8 @@
 
 class eZOrderItem
 {
+    public $State_ = '';
+
     /*!
       Constructs a new eZOrderItem object.
 
@@ -54,6 +56,7 @@ class eZOrderItem
     function __construct( $id="" )
     {
         $this->ExpiryDate = 0;
+        $this->State_ = '';
         if ( $id != "" )
         {
             $this->ID = $id;

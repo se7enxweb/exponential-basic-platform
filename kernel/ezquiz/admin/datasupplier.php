@@ -34,7 +34,38 @@ if( eZPermission::checkPermission( $user, "eZSiteManager", "ModuleEdit" ) == fal
     exit();
 }
 
-$url_array = explode( "/", $REQUEST_URI );
+$url_array = explode( "/", $_SERVER['REQUEST_URI'] );
+
+$action                 = eZHTTPTool::getVar( 'Action' );
+$altID                  = eZHTTPTool::getVar( 'AltID' );
+$alternativeArrayID     = eZHTTPTool::getVar( 'AlternativeArrayID' ) ?? [];
+$alternativeArrayName   = eZHTTPTool::getVar( 'AlternativeArrayName' ) ?? [];
+$alternativeDeleteArray = eZHTTPTool::getVar( 'AlternativeDeleteArray' ) ?? [];
+$alternativeID          = eZHTTPTool::getVar( 'AlternativeID' );
+$cancel                 = eZHTTPTool::getVar( 'Cancel' );
+$delete                 = eZHTTPTool::getVar( 'Delete' );
+$deleteQuestionArray    = eZHTTPTool::getVar( 'DeleteQuestionArray' ) ?? [];
+$deleteQuestions        = eZHTTPTool::getVar( 'DeleteQuestions' );
+$description            = eZHTTPTool::getVar( 'Description' );
+$gameArrayID            = eZHTTPTool::getVar( 'GameArrayID' ) ?? [];
+$gameID                 = eZHTTPTool::getVar( 'GameID' );
+$isCorrect              = eZHTTPTool::getVar( 'IsCorrect' );
+$limit                  = eZHTTPTool::getVar( 'Limit' );
+$name                   = eZHTTPTool::getVar( 'Name' );
+$newAlternative         = eZHTTPTool::getVar( 'NewAlternative' );
+$newQuestion            = eZHTTPTool::getVar( 'NewQuestion' );
+$ok                     = eZHTTPTool::getVar( 'OK' );
+$offset                 = eZHTTPTool::getVar( 'Offset' );
+$quest                  = eZHTTPTool::getVar( 'Quest' );
+$questionArrayID        = eZHTTPTool::getVar( 'QuestionArrayID' ) ?? [];
+$questionArrayName      = eZHTTPTool::getVar( 'QuestionArrayName' ) ?? [];
+$questionID             = eZHTTPTool::getVar( 'QuestionID' );
+$startDay               = eZHTTPTool::getVar( 'StartDay' );
+$startMonth             = eZHTTPTool::getVar( 'StartMonth' );
+$startYear              = eZHTTPTool::getVar( 'StartYear' );
+$stopDay                = eZHTTPTool::getVar( 'StopDay' );
+$stopMonth              = eZHTTPTool::getVar( 'StopMonth' );
+$stopYear               = eZHTTPTool::getVar( 'StopYear' );
 
 switch ( $url_array[2] )
 {
@@ -45,7 +76,7 @@ switch ( $url_array[2] )
             case "list":
             {
                 if ( $url_array[4] == "parent" )
-                    $Offset = $url_array[5];
+                    $offset = $url_array[5];
                 include( "kernel/ezquiz/admin/gamelist.php" );
             }
             break;
@@ -54,12 +85,12 @@ switch ( $url_array[2] )
             {
                 if ( isset( $url_array[4] ) && is_numeric( $url_array[4] ) )
                 {
-                    $GameID = $url_array[4];
-                    $Action = "edit";
+                    $gameID = $url_array[4];
+                    $action = "edit";
                 }
                 else
                 {
-                    $GameID = false;
+                    $gameID = false;
                 }
 
                 include ( "kernel/ezquiz/admin/gameedit.php" );
@@ -72,12 +103,12 @@ switch ( $url_array[2] )
             {
                 if ( isset( $url_array[4] ) && is_numeric( $url_array[4] ) )
                 {
-                    $GameID = $url_array[4];
+                    $gameID = $url_array[4];
                 }
                 else
                 {
-                    $GameID = false;
-                    $Action = "New";
+                    $gameID = false;
+                    $action = "New";
                 }
 
                 include ( "kernel/ezquiz/admin/gameedit.php" );
@@ -87,7 +118,7 @@ switch ( $url_array[2] )
             case "questionedit":
             {
                 if ( is_numeric( $url_array[4] ) )
-                    $QuestionID = $url_array[4];
+                    $questionID = $url_array[4];
                 include ( "kernel/ezquiz/admin/questionedit.php" );
             }
             break;

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: imageedit.php 7089 2001-09-07 17:33:55Z fh $
+// $id: imageedit.php 7089 2001-09-07 17:33:55Z fh $
 //
 // Created on: <21-Sep-2000 10:32:36 bf>
 //
@@ -33,34 +33,34 @@
 // include_once( "ezuser/classes/ezauthor.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
 // include_once( "ezarticle/classes/ezarticle.php" );
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $file = new eZPBImageFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     { 
-        $article = new eZArticle( $ArticleID );
+        $article = new eZArticle( $articleID );
         $image = new eZImage();
-        $image->setName( $Name );
-        $image->setCaption( $Caption );
-        if ( trim( $NewPhotographerName ) != "" &&
-             trim( $NewPhotographerEmail ) != ""
+        $image->setName( $name );
+        $image->setCaption( $caption );
+        if ( trim( $newPhotographerName ) != "" &&
+             trim( $newPhotographerEmail ) != ""
              )
         {
             $author = new eZAuthor( );
-            $author->setName( $NewPhotographerName );
-            $author->setEmail( $NewPhotographerEmail );
+            $author->setName( $newPhotographerName );
+            $author->setEmail( $newPhotographerEmail );
             $author->store();
             $image->setPhotographer( $author );
         }
         else
         {
-            $image->setPhotographer( $PhotoID );
+            $image->setPhotographer( $photoID );
         }
 
         if( $image->checkImage( $file ) && $image->setImage( $file ) )
@@ -71,7 +71,7 @@ if ( $Action == "Insert" )
             {
                 $article->setThumbnailImage( $image );
             }
-            eZPBLog::writeNotice( "Picture added to article: $ArticleID  from IP: $REMOTE_ADDR" );
+            eZPBLog::writeNotice( "Picture added to article: $articleID  from IP: {$_SERVER['REMOTE_ADDR']}" );
         }
     }
     else
@@ -80,33 +80,33 @@ if ( $Action == "Insert" )
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /article/articleedit/imagelist/" . $ArticleID . "/" );
+    eZHTTPTool::header( "Location: /article/articleedit/imagelist/" . $articleID . "/" );
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
     $file = new eZPBImageFile();
-    $image = new eZImage( $ImageID );
+    $image = new eZImage( $imageID );
     
-    if ( trim( $NewPhotographerName ) != "" &&
-         trim( $NewPhotographerEmail ) != ""
+    if ( trim( $newPhotographerName ) != "" &&
+         trim( $newPhotographerEmail ) != ""
          )
     {
         $author = new eZAuthor( );
-        $author->setName( $NewPhotographerName );
-        $author->setEmail( $NewPhotographerEmail );
+        $author->setName( $newPhotographerName );
+        $author->setEmail( $newPhotographerEmail );
         $author->store();
         $image->setPhotographer( $author );
     }
     else
     {
-        $image->setPhotographer( $PhotoID );
+        $image->setPhotographer( $photoID );
     }
 
     if ( $file->getUploadedFile( "userfile" ) )
     {
-        $article = new eZArticle( $ArticleID );
+        $article = new eZArticle( $articleID );
 
 
         $variations = $image->variations();
@@ -118,11 +118,11 @@ if ( $Action == "Update" )
                 foreach( $variations as $variation )
                     $variation->delete();
             }
-//            $oldImage = new eZImage( $ImageID );
+//            $oldImage = new eZImage( $imageID );
 //            $article->deleteImage( $oldImage );
 
-            $image->setName( $Name );
-            $image->setCaption( $Caption );
+            $image->setName( $name );
+            $image->setCaption( $caption );
 
             $image->store();
         
@@ -131,71 +131,71 @@ if ( $Action == "Update" )
     }
     else
     {
-        $image = new eZImage( $ImageID );
-        $image->setName( $Name );
-        $image->setCaption( $Caption );
+        $image = new eZImage( $imageID );
+        $image->setName( $name );
+        $image->setCaption( $caption );
         $image->store();
     }
     
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /article/articleedit/imagelist/" . $ArticleID . "/" );
+    eZHTTPTool::header( "Location: /article/articleedit/imagelist/" . $articleID . "/" );
     exit();
 }
 
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    $article = new eZArticle( $ArticleID );
+    $article = new eZArticle( $articleID );
 
-    if ( count ( $ImageArrayID ) != 0 )
+    if ( count ( $imageArrayID ) != 0 )
     {
-        foreach( $ImageArrayID as $ImageID )
+        foreach( $imageArrayID as $imageID )
         {
-            $image = new eZImage( $ImageID );
+            $image = new eZImage( $imageID );
             $article->deleteImage( $image );
         }
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /article/articleedit/imagelist/" . $ArticleID . "/" );
+    eZHTTPTool::header( "Location: /article/articleedit/imagelist/" . $articleID . "/" );
     exit();
 }
 
 // store the image definition
-if ( $Action == "StoreDef" )
+if ( $action == "StoreDef" )
 {
-    $article = new eZArticle( $ArticleID );
+    $article = new eZArticle( $articleID );
 
     // Unset frontpage image radiobutton
-    if ( isset( $NoFrontImage ) )
+    if ( isset( $noFrontImage ) )
     {
         $article->setThumbnailImage( false );
         // include_once( "classes/ezhttptool.php" );
-        eZHTTPTool::header( "Location: /article/articleedit/imagelist/" . $ArticleID . "/" );
+        eZHTTPTool::header( "Location: /article/articleedit/imagelist/" . $articleID . "/" );
         exit();
     }
 
-    if ( isset( $ThumbnailImageID ) && ( $ThumbnailImageID != 0 ) && ( $ThumbnailImageID != "" ) )
+    if ( isset( $thumbnailImageID ) && ( $thumbnailImageID != 0 ) && ( $thumbnailImageID != "" ) )
     {
-        $thumbnail = new eZImage( $ThumbnailImageID );
+        $thumbnail = new eZImage( $thumbnailImageID );
         $article->setThumbnailImage( $thumbnail );
     }
 
-    if ( isset( $NewImage ) )
+    if ( isset( $newImage ) )
     {
         // include_once( "classes/ezhttptool.php" );
-        eZHTTPTool::header( "Location: /article/articleedit/imageedit/new/$ArticleID/" );
+        eZHTTPTool::header( "Location: /article/articleedit/imageedit/new/$articleID/" );
         exit();
     }
 
     // include_once( "classes/ezhttptool.php" );
-    $ArticleID = $session->variable( "ArticleEditID" );
-    eZHTTPTool::header( "Location: /article/articleedit/edit/" . $ArticleID . "/" );
+    $articleID = $session->variable( "ArticleEditID" );
+    eZHTTPTool::header( "Location: /article/articleedit/edit/" . $articleID . "/" );
     exit();
 }
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "imageedit.php" );
+                     "kernel/ezarticle/user/intl/", $language, "imageedit.php" );
 
 $t->setAllStrings();
 
@@ -214,10 +214,10 @@ $t->set_var( "action_value", "Insert" );
 $t->set_var( "option_id", "" );
 $t->set_var( "image", "" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $article = new eZArticle( $ArticleID );
-    $image = new eZImage( $ImageID );
+    $article = new eZArticle( $articleID );
+    $image = new eZImage( $imageID );
 
     $photographer = $image->photographer();
     $photographerID = $photographer->id();
@@ -258,7 +258,7 @@ foreach ( $authorArray as $author )
 }
 
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
     
 $t->set_var( "article_name", $article->name() );
 $t->set_var( "article_id", $article->id() );

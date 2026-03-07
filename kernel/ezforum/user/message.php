@@ -27,8 +27,8 @@
 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZForumMain", "Language" );
-$NewMessageLimit = $ini->variable( "eZForumMain", "NewMessageLimit" );
-$AllowHTML = $ini->variable( "eZForumMain", "AllowHTML" );
+$newMessageLimit = $ini->variable( "eZForumMain", "NewMessageLimit" );
+$allowHTML = $ini->variable( "eZForumMain", "AllowHTML" );
 
 // include_once( "classes/ezlocale.php" );
 // include_once( "classes/eztexttool.php" );
@@ -62,7 +62,7 @@ $t->set_var( "private_message", "" );
 $t->set_var( "header_list", "" );
 $t->set_var( "edit_current_message_item", "" );
 
-$message = new eZForumMessage( $MessageID );
+$message = new eZForumMessage( $messageID );
 
 $forum = new eZForum( $message->forumID() );
 
@@ -127,21 +127,21 @@ else
 
 if ( $author->id() == 0 )
 {
-    $MessageAuthor = $anonymous;
+    $messageAuthor = $anonymous;
 }
 else
 {
-    $MessageAuthor = $author->firstName() . " " . $author->lastName();
+    $messageAuthor = $author->firstName() . " " . $author->lastName();
 }
 
 if ( $author->firstName()== "" && $author->lastName()=="" )
-	$MessageAuthor = $anonymous;
+	$messageAuthor = $anonymous;
 
-$t->set_var( "main-user", $MessageAuthor );
+$t->set_var( "main-user", $messageAuthor );
 
 
 $user = eZUser::currentUser();
-if ( ( $MessageAuthor != $anonymous) and ($user) )
+if ( ( $messageAuthor != $anonymous) and ($user) )
 {
 //	$user = new eZUser();
 //	$user->get( $author->id() );
@@ -195,7 +195,7 @@ foreach ( $messages as $threadmessage )
 
     $level = $threadmessage->depth();
 
-    if ( $threadmessage->id() == $MessageID )
+    if ( $threadmessage->id() == $messageID )
     {
         $t->set_var( "link_color", "linkselect" );
         $t->set_var( "td_class", "bgselect" );
@@ -213,13 +213,13 @@ foreach ( $messages as $threadmessage )
     $t->set_var( "reply_id", $threadmessage->id() );
     $t->set_var( "reply_topic", $threadmessage->topic() );
 
-    if ( $AllowHTML == "enabled" )
+    if ( $allowHTML == "enabled" )
         $t->set_var( "reply_body", eZTextTool::nl2br( $threadmessage->body( true ) ) );
     else
         $t->set_var( "reply_body", eZTextTool::nl2br( $threadmessage->body( false ) ) );
 
     $messageAge = round( $threadmessage->age() / 86400 );
-    if ( $messageAge <= $NewMessageLimit )
+    if ( $messageAge <= $newMessageLimit )
     {
         $t->parse( "new_icon", "new_icon_tpl" );
         $t->set_var( "old_icon", "" );
@@ -240,22 +240,22 @@ foreach ( $messages as $threadmessage )
     if ( $author->id() == 0 )
     {
         if ( $threadmessage->userName() )
-            $MessageAuthor = $threadmessage->userName();
+            $messageAuthor = $threadmessage->userName();
         else
-            $MessageAuthor = $anonymous;
+            $messageAuthor = $anonymous;
     }
     else
     {
-        $MessageAuthor = $author->firstName() . " " . $author->lastName();
+        $messageAuthor = $author->firstName() . " " . $author->lastName();
     }
     
 	if ( $author->firstName()== "" && $author->lastName()=="" )
-	$MessageAuthor = $anonymous;
+	$messageAuthor = $anonymous;
 
-    $t->set_var( "user", $MessageAuthor );
+    $t->set_var( "user", $messageAuthor );
 
     // $currentUser = eZUser::currentUser();
-	if ( ( $MessageAuthor != $anonymous) and ($user) )
+	if ( ( $messageAuthor != $anonymous) and ($user) )
 	{
         // $user = new eZUser();
         // $user->get( $author->id() );
@@ -284,10 +284,10 @@ foreach ( $messages as $threadmessage )
     $i++;
 }
 
-if ( !isset( $RedirectURL ) )
-    $RedirectURL = "";
+if ( !isset( $redirectURL ) )
+    $redirectURL = "";
 
-$t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $RedirectURL ) );
+$t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $redirectURL ) );
 if ( $message->id() > 0 && !$message->isTemporary() && $message->isApproved() )
 {
     $t->parse( "message_body", "message_body_tpl" );

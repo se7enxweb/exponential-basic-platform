@@ -55,7 +55,7 @@ $t->set_block( "bug_edit_tpl", "no_tpl", "no" );
 
 
 $locale = new eZLocale( $Language );
-$bug = new eZBug( $BugID );
+$bug = new eZBug( $bugID );
 
 $t->set_var( "bug_id", $bug->id() );
 $t->set_var( "name_value", $bug->name() );

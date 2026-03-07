@@ -64,7 +64,7 @@ $t->set_block( "bug_list_page_tpl", "bug_delete_button_tpl", "bug_delete_button"
 
 $t->set_var( "site_style", $SiteDesign );
 
-$module = new eZBugModule( $ModuleID );
+$module = new eZBugModule( $moduleID );
 
 $t->set_var( "current_module_id", $module->id() );
 $t->set_var( "current_module_name", $module->name() );
@@ -85,11 +85,11 @@ foreach ( $pathArray as $path )
 
 $moduleList = $module->getByParent( $module, true );
 
-if( isset( $Delete ) )
+if( isset( $delete ) )
 {
-    if( count( $BugArrayID ) > 0 )
+    if( count( $bugArrayID ) > 0 )
     {
-        foreach( $BugArrayID as $doomedBugID )
+        foreach( $bugArrayID as $doomedBugID )
         {
             $bug = new eZBug( $doomedBugID );
             $bug->delete();

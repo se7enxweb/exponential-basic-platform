@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: articlelog.php 7882 2001-10-16 11:33:52Z ce $
+// $id: articlelog.php 7882 2001-10-16 11:33:52Z ce $
 //
 // Created on: <05-Jun-2001 14:38:04 bf>
 //
@@ -29,10 +29,12 @@
 // include_once( "classes/INIFile.php" );
 
 
-$t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl", $Language, "articlelog.php" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
-$locale = new eZLocale( $Language ); 
+$t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
+                     "kernel/ezarticle/admin/intl", $language, "articlelog.php" );
+
+$locale = new eZLocale( $language ); 
 
 $t->set_file( "log_page_tpl", "articlelog.tpl" );
 
@@ -41,9 +43,9 @@ $t->setAllStrings();
 $t->set_block( "log_page_tpl", "log_list_tpl", "log_list" );
 $t->set_block( "log_list_tpl", "log_item_tpl", "log_item" );
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
 
-$t->set_var( "article_id", $ArticleID );
+$t->set_var( "article_id", $articleID );
 
 $logArray = $article->logMessages();
 

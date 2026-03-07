@@ -40,8 +40,8 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZMediaCatalogueMain", "Language" );
-$SyncDir = $ini->variable( "eZMediaCatalogueMain", "SyncDir" );
-$ImageDir = $ini->variable( "eZMediaCatalogueMain", "ImageDir" );
+$syncDir = $ini->variable( "eZMediaCatalogueMain", "SyncDir" );
+$imageDir = $ini->variable( "eZMediaCatalogueMain", "ImageDir" );
 
 $t = new eZTemplate( "kernel/ezmediacatalogue/admin/" . $ini->variable( "eZMediaCatalogueMain", "TemplateDir" ),
                      "kernel/ezmediacatalogue/admin/intl/", $Language, "medialist.php" );
@@ -88,22 +88,22 @@ $t->set_var( "default_delete" , "" );
 
 $t->set_var( "site_style", $siteDesign );
 
-$category = new eZMediaCategory( $CategoryID );
+$category = new eZMediaCategory( $categoryID );
 
 // Check if user have permission to the current category
 
 $error = true;
 
-if( !isset( $Offset ) )
-    $Offset = false;
+if( !isset( $offset ) )
+    $offset = false;
 
 if ( eZObjectPermission::hasPermission( $category->id(), "mediacatalogue_category", "r", $user )
-     || eZMediaCategory::isOwner( $user, $CategoryID ) )
+     || eZMediaCategory::isOwner( $user, $categoryID ) )
 {
     $error = false;
 }
 
-if ( $CategoryID == 0 )
+if ( $categoryID == 0 )
 {
     $t->set_var( "current_category_description", "" );
     $error = false;
@@ -161,7 +161,7 @@ function syncDir( $root, $category )
 		  $sub = new eZMediaCategory(  );
 		  $sub->setParent( $category );
 		  $sub->setName( $entry );
-		  $sub->setSectionID( $SectionID );
+		  $sub->setSectionID( $sectionID );
 		  $sub->store();
 		  eZObjectPermission::removePermissions( $sub->id(), "mediacatalogue_category", "r" );
 		  eZObjectPermission::removePermissions( $sub->id(), "mediacatalogue_category", "w" );
@@ -189,7 +189,7 @@ function syncDir( $root, $category )
 		{
 		  $media = new eZMedia();
 		  $media->setName( $entry );
-		  $media->setDescription( $Description );
+		  $media->setDescription( $description );
 		  $media->setUser( $user );
 		  $author = new eZAuthor( 1 );
 		  $media->setPhotographer( $author );
@@ -213,19 +213,19 @@ function syncDir( $root, $category )
 }
 
 
-if ( isSet ( $MediaUpload ) )
+if ( isSet ( $mediaUpload ) )
 {
   $category = new eZMediaCategory( $PicCat );
-  syncDir( $SyncMediaDir, $category );
+  syncDir( $syncMediaDir, $category );
   eZHTTPTool::header( "Location: /mediacatalogue/media/list/$PicCat/" );
   exit();
 }
 else
 {
-    $SyncMediaDir = $SyncDir;
+    $syncMediaDir = $syncDir;
 }
 
-$t->set_var( "sync_dir", $SyncMediaDir );
+$t->set_var( "sync_dir", $syncMediaDir );
 
 // ###################################################
 
@@ -259,7 +259,7 @@ foreach ( $categoryList as $categoryItem )
         $t->parse( "delete_categories_button", "delete_categories_button_tpl" );
         $t->parse( "default_delete", "default_delete_tpl" );
 
-        if ( $CategoryID == 0 )
+        if ( $categoryID == 0 )
         {
             if ( eZPermission::checkPermission( $user, "eZMediaCatalogue", "WriteToRoot" ) )
             {
@@ -290,7 +290,7 @@ else
 $limit = $ini->variable( "eZMediaCatalogueMain", "ListMediaPerPage" );
 
 // Print out all the media
-$mediaList = $category->media( "time", $Offset, $limit );
+$mediaList = $category->media( "time", $offset, $limit );
 
 $i = 0;
 $j = 0;
@@ -364,7 +364,7 @@ foreach ( $mediaList as $media )
     $counter++;
 }
 
-eZList::drawNavigator( $t, $category->mediaCount(), $limit, $Offset, "media_list_page_tpl" );
+eZList::drawNavigator( $t, $category->mediaCount(), $limit, $offset, "media_list_page_tpl" );
 
 if ( isset( $can_write ) && $can_write )
 {
@@ -401,9 +401,9 @@ else
     $t->set_var( "media_list", "" );
 }
 
-$t->set_var( "media_dir", $ImageDir );
+$t->set_var( "media_dir", $imageDir );
 
-$t->set_var( "main_category_id", $CategoryID );
+$t->set_var( "main_category_id", $categoryID );
 
 if ( $error == false )
 {

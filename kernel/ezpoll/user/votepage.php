@@ -38,11 +38,11 @@ $t = new eZTemplate( "kernel/ezpoll/user/" . $ini->variable( "eZPollMain", "Temp
 
 $t->setAllStrings();
 
-$poll = new eZPoll( $PollID );
+$poll = new eZPoll( $pollID );
 
 if ( $poll->isClosed() )
 {
-    eZHTTPTool::header( "Location: /poll/result/$PollID" );
+    eZHTTPTool::header( "Location: /poll/result/$pollID" );
     exit();
 }
 
@@ -56,7 +56,7 @@ $t->set_block( "vote_box", "no_items_tpl", "no_items" );
 
 $choice = new eZPollChoice();
 
-$choiceList = $choice->getAll( $PollID );
+$choiceList = $choice->getAll( $pollID );
 
 foreach( $choiceList as $choiceItem )
 {
@@ -81,10 +81,10 @@ else
 
 
 $poll = new eZPoll();
-$poll->get( $PollID );
+$poll->get( $pollID );
 $t->set_var( "head_line", $poll->name() );
 $t->set_var( "description", $poll->description() );
-$t->set_var( "poll_id", $PollID );
+$t->set_var( "poll_id", $pollID );
 
   
 $t->pparse( "output", "vote_box" );

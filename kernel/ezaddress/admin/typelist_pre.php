@@ -23,28 +23,28 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-if ( !isset( $Max ) )
+if ( !isset( $max ) )
 {
-    $Max = 10;
+    $max = 10;
 }
 
-if ( !isset( $Index ) )
+if ( !isset( $index ) )
 {
-    $Index = 0;
+    $index = 0;
 }
-else if ( !is_numeric( $Index ) )
+else if ( !is_numeric( $index ) )
 {
-    $Index = 0;
+    $index = 0;
 }
 
-if ( !isset( $SearchText ) )
+if ( !isset( $searchText ) )
 {
-    $SearchText = "";
+    $searchText = "";
     $search_encoded = "";
 }
 else
 {
-    $search_encoded = $SearchText;
+    $search_encoded = $searchText;
     $search_encoded = eZURITool::encode( $search_encoded );
 }
 

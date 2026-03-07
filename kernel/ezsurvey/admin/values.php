@@ -12,8 +12,8 @@
                          "kernel/ezsurvey/admin/intl", $Language, "values.php" );
                          
     
-    $SurveyID = $url_array[3];
-    $QuestionID = $url_array[4];
+    $surveyID = $url_array[3];
+    $questionID = $url_array[4];
     
     $t->set_file( "values_tpl", "values.tpl" );
     $t->setAllStrings();
@@ -22,43 +22,43 @@
     $t->set_block( "value_list_tpl", "value_item_tpl", "value_item" );
     
     $t->set_var( "value_list", "" );
-    $t->set_var( "survey_id", $SurveyID );
-    $t->set_var( "question_id", $QuestionID );
+    $t->set_var( "survey_id", $surveyID );
+    $t->set_var( "question_id", $questionID );
     
-    $question = new eZQuestion( $QuestionID );
+    $question = new eZQuestion( $questionID );
     
     // altera��o das op��es
     $i = 0;
-    if ( isset($ValueID) )
+    if ( isset($valueID) )
     {
-        foreach ($ValueID as $valueItem )
+        foreach ($valueID as $valueItem )
         {
             $questionChoice = new eZQuestionChoice( $valueItem );
             // trata da elimina��o caso tenha sido pedida
-            if ( isset($ValueDeleteID) && in_array($valueItem, $ValueDeleteID) )
+            if ( isset($valueDeleteID) && in_array($valueItem, $valueDeleteID) )
             {
                 $questionChoice->delete();
             }
             else
             {
-                $questionChoice->setContent( $Value[$i] );
+                $questionChoice->setContent( $value[$i] );
                 $questionChoice->store();
             }
             $i++;
         }
     }
     
-    if( isset( $OK ) )
+    if( isset( $ok ) )
     {
-        eZHTTPTool::header( "Location: /survey/surveyedit/edit/$SurveyID" );
+        eZHTTPTool::header( "Location: /survey/surveyedit/edit/$surveyID" );
         exit();
     }
     
     // adiciona op��o
-    if ( isset( $AddValue ) )
+    if ( isset( $addValue ) )
     {
         $questionChoice = new eZQuestionChoice();
-        $questionChoice->setQuestionID( $QuestionID );
+        $questionChoice->setQuestionID( $questionID );
         $questionChoice->setContent( "Choice " . ($question->numberOfQuestionsChoices()+1) );
         $questionChoice->store();
     }

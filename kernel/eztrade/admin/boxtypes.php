@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: boxtypes.php,v 1.4 2001/07/20 11:42:01 jakobn Exp $
+// $id: boxtypes.php,v 1.4 2001/07/20 11:42:01 jakobn Exp $
 //
 // Created on: <19-Feb-2001 13:34:10 bf>
 //
@@ -30,27 +30,27 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezboxtype.php" );
 
 
-if ( isset( $Action ) && $Action == "Store" )
+if ( isset( $action ) && $action == "Store" )
 {
     $i =0;
-    foreach ( $BoxID as $id )
+    foreach ( $boxID as $id )
     {
-        $type = new eZBoxType( $BoxID[$i] );
-        $type->setName( $BoxName[$i] );
-        $type->setLength( $Length[$i] );
-		$type->setHeight( $Height[$i] );
-		$type->setWidth( $Width[$i] );
+        $type = new eZBoxType( $boxID[$i] );
+        $type->setName( $boxName[$i] );
+        $type->setLength( $length[$i] );
+		$type->setHeight( $height[$i] );
+		$type->setWidth( $width[$i] );
         $type->store();
         $i++;
     }    
 }
 
-if ( isset( $Action ) && $Action == "Add" )
+if ( isset( $action ) && $action == "Add" )
 {
     $type = new eZBoxType();
     $type->setName( "" );
@@ -60,9 +60,9 @@ if ( isset( $Action ) && $Action == "Add" )
     $type->store();
 }
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
-    foreach ( $BoxArrayID as $id )
+    foreach ( $boxArrayID as $id )
     {
         $type = new eZBoxType( $id );
         $type->delete();
@@ -70,7 +70,7 @@ if ( isset( $Action ) && $Action == "Delete" )
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "boxtypes.php" );
+                     "kernel/eztrade/admin/intl/", $language, "boxtypes.php" );
 
 $t->setAllStrings();
 

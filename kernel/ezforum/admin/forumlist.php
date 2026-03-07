@@ -48,12 +48,12 @@ $t->set_var( "site_style", $SiteDesign );
 // Forum list for current category
 $forum = new eZForum();
 
-$category = new eZForumCategory( $CategoryID );
+$category = new eZForumCategory( $categoryID );
 
 $forumList = $category->forums();
 
 $category = new eZForumCategory();
-$category->get( $CategoryID );
+$category->get( $categoryID );
 $t->set_var( "category_name", $category->name() );
 
 if ( !$forumList )
@@ -83,7 +83,7 @@ else
 }
 
 $t->set_var( "docroot", $_SERVER['DOCUMENT_ROOT'] );
-$t->set_var( "category_id", $CategoryID );
+$t->set_var( "category_id", $categoryID );
 
 $t->pparse( "output", "forum_page");
 ?>

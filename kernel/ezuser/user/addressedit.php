@@ -37,6 +37,24 @@ $Language = $ini->variable( "eZUserMain", "Language" );
 $SelectCountry = $ini->variable( "eZUserMain", "SelectCountry" );
 $AnonymousUserGroup = $ini->variable( "eZUserMain", "AnonymousUserGroup" );
 
+$Street1 = eZHTTPTool::getVar( "Street1" );
+$Street2 = eZHTTPTool::getVar( "Street2" );
+$Zip = eZHTTPTool::getVar( "Zip" );
+$Place = eZHTTPTool::getVar( "Place" );
+$Region = eZHTTPTool::getVar( "Region" );
+$CountryID = eZHTTPTool::getVar( "CountryID" );
+$AddressID = eZHTTPTool::getVar( "AddressID" );
+$Login = eZHTTPTool::getVar( "Login" );
+$Email = eZHTTPTool::getVar( "Email" );
+$FirstName = eZHTTPTool::getVar( "FirstName" );
+$LastName = eZHTTPTool::getVar( "LastName" );
+$Password = eZHTTPTool::getVar( "Password" );
+$VerifyPassword = eZHTTPTool::getVar( "VerifyPassword" );
+$RedirectURL = eZHTTPTool::getVar( "RedirectURL" );
+$Error = false;
+$UserExistsError = false;
+$PasswordError = false;
+
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezaddress/classes/ezaddress.php" );
@@ -72,7 +90,7 @@ if ( $Action == "Insert" )
             // add the address to the user.
             $user->addAddress( $address );
 
-            eZPBLog::writeNotice( "Anonyous user added address:  (" . $user->login() . ") from IP: $REMOTE_ADDR" );                    
+            eZPBLog::writeNotice( "Anonyous user added address:  (" . $user->login() . ") from IP: " . $_SERVER['REMOTE_ADDR'] );                    
             
             if ( ( isset( $RedirectURL ) ) && ( $RedirectURL != "" ) )
             {
@@ -297,7 +315,7 @@ else
 $t->set_var( "action_value", $action_value );
 $t->set_var( "user_id", $UserID );
 
-$t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $RedirectURL ) );
+$t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $RedirectURL ?? '' ) );
 
 $t->pparse( "output", "user_edit_tpl" );
 

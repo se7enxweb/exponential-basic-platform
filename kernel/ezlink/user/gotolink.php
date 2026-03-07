@@ -29,16 +29,16 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-if ( $Action == "addhit" )
+if ( $action == "addhit" )
 {
     $hit = new eZHit();
-    $hit->setLink( $LinkID );
+    $hit->setLink( $linkID );
     $hit->setRemoteIP( $REMOTE_ADDR );
     $hit->setTime( time() );
     $hit->store();
 }
 
-$link = new eZLink( $LinkID );
+$link = new eZLink( $linkID );
 $location = $link->url();
 
 if ( !preg_match( "%^([a-z]+://)%", $location ) )

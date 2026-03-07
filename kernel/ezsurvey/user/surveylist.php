@@ -10,17 +10,17 @@
     $ini = eZINI::instance( 'site.ini' );
     $Language = $ini->variable( "eZSurveyMain", "Language" );
     
-    $SurveyID = $url_array[3];
-    $Page = $url_array[4];
+    $surveyID = $url_array[3];
+    $page = $url_array[4];
      
-    if ( $Page == "" )
+    if ( $page == "" )
     {
-        $Page = 1;
+        $page = 1;
     }
 
-    if( !isset( $ResponseID ) )
+    if( !isset( $responseID ) )
     {
-        $ResponseID = false;
+        $responseID = false;
     }
 
     $t = new eZTemplate( "kernel/ezsurvey/user/" . $ini->variable( "eZSurveyMain", "AdminTemplateDir" ),
@@ -70,7 +70,7 @@
     $t->set_block( "surveylist_tpl", "previous_page_button_tpl", "previous_page_button" );
     $t->set_block( "surveylist_tpl", "finish_button_tpl", "finish_button" );
     
-    $t->set_var( "survey_id", $SurveyID );
+    $t->set_var( "survey_id", $surveyID );
     $t->set_var( "step", "" );
     $t->set_var( "subtitle_section", "" );
     $t->set_var( "value_list", "" );
@@ -84,15 +84,15 @@
     $currentUser = eZUser::currentUser();
     $errorMessages = array();
     
-    if ( eZSurvey::existSurvey( $SurveyID ) )
+    if ( eZSurvey::existSurvey( $surveyID ) )
     {
-        if ( isset( $NextPage ) || isset( $PreviousPage ) || isset( $Finish ) )
+        if ( isset( $nextPage ) || isset( $previousPage ) || isset( $finish ) )
         {
             // response
-            if ( $ResponseID == "" )
+            if ( $responseID == "" )
             {
                 $response = new eZResponse();
-                $response->setSurveyID( $SurveyID );
+                $response->setSurveyID( $surveyID );
                 
                 if ( $currentUser != FALSE )
                 {
@@ -101,14 +101,14 @@
             }
             else
             {
-                $response = new eZResponse( $ResponseID );
+                $response = new eZResponse( $responseID );
             }
             
             $response->store();
-            $ResponseID = $response->id();
+            $responseID = $response->id();
             
             $i = 0;
-            foreach( $QuestionID as $questionIDItem )
+            foreach( $questionID as $questionIDItem )
             {
                 $question = new eZQuestion( $questionIDItem );
                 
@@ -119,16 +119,16 @@
                     case $question->TYPE_TEXTAREA:
                     case $question->TYPE_DROPDOWN:
                     {
-                        if ( $question->isRequired() && $Value[$i] == "" )
+                        if ( $question->isRequired() && $value[$i] == "" )
                         {
                             $errorMessages[] = $question->content() . " " . $t->Ini->variable( "strings", "is_required" );
                         }
                         else
                         {
                             $responseQuestion = new eZResponseQuestion();
-                            $responseQuestion->setResponseID( $ResponseID );
+                            $responseQuestion->setResponseID( $responseID );
                             $responseQuestion->setQuestionID( $questionIDItem );
-                            $responseQuestion->setChoiceID( $Value[$i] );
+                            $responseQuestion->setChoiceID( $value[$i] );
                             $responseQuestion->store();
                         }
                     }
@@ -136,20 +136,20 @@
                     
                     case $question->TYPE_NUMERIC:
                     {
-                        if ( $question->isRequired() && $Value[$i] == "" )
+                        if ( $question->isRequired() && $value[$i] == "" )
                         {
                             $errorMessages[] = $question->content() . " " . $t->Ini->variable( "strings", "is_required" );
                         }
-                        elseif ( !is_numeric( $Value[$i] ) )
+                        elseif ( !is_numeric( $value[$i] ) )
                         {
                             $errorMessages[] = $question->content() . " " . $t->Ini->variable( "strings", "not_a_number" );
                         }
                         else
                         {
                             $responseQuestion = new eZResponseQuestion();
-                            $responseQuestion->setResponseID( $ResponseID );
+                            $responseQuestion->setResponseID( $responseID );
                             $responseQuestion->setQuestionID( $questionIDItem );
-                            $responseQuestion->setChoiceID( $Value[$i] );
+                            $responseQuestion->setChoiceID( $value[$i] );
                             $responseQuestion->store();
                         }
                     }
@@ -157,22 +157,22 @@
                     
                     case $question->TYPE_DATE:
                     {
-                        $data_array = explode( "-", $Value[$i] );
+                        $data_array = explode( "-", $value[$i] );
                         
-                        if ( $question->isRequired() && $Value[$i] == "" )
+                        if ( $question->isRequired() && $value[$i] == "" )
                         {
                             $errorMessages[] = $question->content() . " " . $t->Ini->variable( "strings", "is_required" );
                         }
-                        elseif ( $Value[$i] != "" && ( count($data_array) != "3" || !checkdate( $data_array[1], $data_array[0], $data_array[2] ) ) )
+                        elseif ( $value[$i] != "" && ( count($data_array) != "3" || !checkdate( $data_array[1], $data_array[0], $data_array[2] ) ) )
                         {
                             $errorMessages[] = $question->content() . " " . $t->Ini->variable( "strings", "not_a_date" );
                         }
                         else
                         {
                             $responseQuestion = new eZResponseQuestion();
-                            $responseQuestion->setResponseID( $ResponseID );
+                            $responseQuestion->setResponseID( $responseID );
                             $responseQuestion->setQuestionID( $questionIDItem );
-                            $responseQuestion->setChoiceID( $Value[$i] );
+                            $responseQuestion->setChoiceID( $value[$i] );
                             $responseQuestion->store();
                         }
                     }
@@ -180,17 +180,17 @@
                     
                     case $question->TYPE_RADIO:
                     {
-                        if ( $question->isRequired() && count($Value[$i][0]) == 0 )
+                        if ( $question->isRequired() && count($value[$i][0]) == 0 )
                         {
                             $errorMessages[] = $question->content() . " " . $t->Ini->variable( "strings", "is_required" );
                         }
                         else
                         {
                             $responseQuestion = new eZResponseQuestion();
-                            $responseQuestion->setResponseID( $ResponseID );
+                            $responseQuestion->setResponseID( $responseID );
                             $responseQuestion->setQuestionID( $questionIDItem );
-                            $responseQuestion->setChoiceID( $Value[$i][0] );
-                            $responseQuestion->setOther( $Value[$i][1] );
+                            $responseQuestion->setChoiceID( $value[$i][0] );
+                            $responseQuestion->setOther( $value[$i][1] );
                             $responseQuestion->store();
                         }
                     }
@@ -198,23 +198,23 @@
                     
                     case $question->TYPE_CHECKBOX:
                     {
-                        if ( $question->isRequired() && count($Value[$i][0]) == 0 )
+                        if ( $question->isRequired() && count($value[$i][0]) == 0 )
                         {
                             $errorMessages[] = $question->content() . " " . $t->Ini->variable( "strings", "is_required" );
                         }
                         else
                         {
                             $responseQuestion = new eZResponseQuestion();
-                            $responseQuestion->setResponseID( $ResponseID );
+                            $responseQuestion->setResponseID( $responseID );
                             $responseQuestion->setQuestionID( $questionIDItem );
                             
                             $k = 0;
-                            for ( $j = 0; $j < count($Value[$i][0]); $j++ )
+                            for ( $j = 0; $j < count($value[$i][0]); $j++ )
                             {
-                                $questionChoice = new eZQuestionChoice( $Value[$i][0][$j] );
+                                $questionChoice = new eZQuestionChoice( $value[$i][0][$j] );
                                 
-                                $choice_array[] = $Value[$i][0][$j];
-                                $other_array[] = ( $questionChoice->isOther() ? $Value[$i][1][$k++] : "" );
+                                $choice_array[] = $value[$i][0][$j];
+                                $other_array[] = ( $questionChoice->isOther() ? $value[$i][1][$k++] : "" );
                             }
                             
                             $responseQuestion->setChoiceID( $choice_array );
@@ -227,17 +227,17 @@
                     
                     case $question->TYPE_RATE:
                     {
-                        if ( $question->isRequired() && count($Value[$i]) != count($Rank[$i]) )
+                        if ( $question->isRequired() && count($value[$i]) != count($rank[$i]) )
                         {
                             $errorMessages[] = $question->content() . " " . $t->Ini->variable( "strings", "is_required" );
                         }
-                        elseif ( count($Value[$i]) > 0 )
+                        elseif ( count($value[$i]) > 0 )
                         {
                             $responseQuestion = new eZResponseQuestion();
-                            $responseQuestion->setResponseID( $ResponseID );
+                            $responseQuestion->setResponseID( $responseID );
                             $responseQuestion->setQuestionID( $questionIDItem );
-                            $responseQuestion->setChoiceID( $Rank[$i] );
-                            $responseQuestion->setOther( $Value[$i] );
+                            $responseQuestion->setChoiceID( $rank[$i] );
+                            $responseQuestion->setOther( $value[$i] );
                             $responseQuestion->store();
                         }
                     }
@@ -246,12 +246,12 @@
                 $i++;
             }
             
-            if ( isset( $Finish ) && count($errorMessages) == 0 )
+            if ( isset( $finish ) && count($errorMessages) == 0 )
             {
                 $response->setComplete( 'Y' );
                 $response->store();
                 $response->sendMail();
-                eZHTTPTool::header( "Location: /survey/thanks/show/$SurveyID" );
+                eZHTTPTool::header( "Location: /survey/thanks/show/$surveyID" );
                 exit();
             }
         }
@@ -259,18 +259,18 @@
         // page count
         if ( count( $errorMessages ) == 0 )
         {
-            if ( isset( $NextPage ) )
+            if ( isset( $nextPage ) )
             {
-                $Page++;
+                $page++;
             }
-            if ( isset( $PreviousPage ) )
+            if ( isset( $previousPage ) )
             {
-                $Page--;
+                $page--;
             }
         }
         
         // lista perguntas
-        $survey = new eZSurvey( $SurveyID );
+        $survey = new eZSurvey( $surveyID );
         
         if ( is_object( $currentUser ) && $survey->hasCompleted( $currentUser->id() ) )
         {
@@ -281,7 +281,7 @@
         else
         {
             $t->set_var( "already_responded", "" );
-            $t->set_var( "page_number", $Page );
+            $t->set_var( "page_number", $page );
             $t->set_var( "check_value", "" );
             // Title
             $t->set_var( "title", $survey->title() );
@@ -302,7 +302,7 @@
             for ( $i = 1; $i <= $totalPages; $i++ )
             {
                 $t->set_var( "page", $i );
-                if ( $Page == $i )
+                if ( $page == $i )
                 {
                     $t->parse( "step_on", "step_on_tpl" );
                     $t->set_var( "step_off", "" );
@@ -315,7 +315,7 @@
                 $t->parse( "step", "step_tpl", true );
             }
             
-            $question_array = $survey->surveyQuestions( "Position", $Page );
+            $question_array = $survey->surveyQuestions( "Position", $page );
             
             $position = 0;
             
@@ -353,7 +353,7 @@
                     $questionChoice_array = $questionItem->questionChoices();
                 }
                 
-                $responseQuestion = new eZResponseQuestion( $ResponseID, $questionItem->id() );
+                $responseQuestion = new eZResponseQuestion( $responseID, $questionItem->id() );
                 $responded = $responseQuestion->choiceID();
                 $respondedOther = $responseQuestion->other();
                 
@@ -649,10 +649,10 @@
             }
             
             // set the response id
-            $t->set_var( "response_id", $ResponseID );
+            $t->set_var( "response_id", $responseID );
             
             // Next page button
-            if ( $Page < $totalPages )
+            if ( $page < $totalPages )
             {
                 $t->parse( "next_page_button", "next_page_button_tpl" );
             }
@@ -662,7 +662,7 @@
             }
                 
             // Previous page button
-            if ( $Page > 1 )
+            if ( $page > 1 )
             {
                 $t->parse( "previous_page_button", "previous_page_button_tpl" );
             }

@@ -39,7 +39,7 @@ $t->set_file( array(
     "report_success_tpl" => "reportsuccess.tpl"
     ) );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $GlobalSiteDesign ?? '' );
 
 $t->pparse( "output", "report_success_tpl" );
 

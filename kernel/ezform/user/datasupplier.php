@@ -31,7 +31,16 @@ $eZFormOperation = $url_array[2];
 $eZFormName = $url_array[3];
 $eZFormAction = $url_array[3];
 
-function errorPage( $PrimaryName, $PrimaryURL, $type )
+$actionValue       = eZHTTPTool::getVar( 'ActionValue' );
+$cancel            = eZHTTPTool::getVar( 'Cancel' );
+$formID            = eZHTTPTool::getVar( 'FormID' );
+$info              = eZHTTPTool::getVar( 'Info' );
+$ok                = eZHTTPTool::getVar( 'OK' ) ?? eZHTTPTool::getVar( 'Ok' );
+$primaryName       = eZHTTPTool::getVar( 'PrimaryName' );
+$primaryURL        = eZHTTPTool::getVar( 'PrimaryURL' );
+$sectionIDOverride = eZHTTPTool::getVar( 'SectionIDOverride' );
+
+function errorPage( $primaryName, $primaryURL, $type )
 {
 //    $ini = eZINI::instance( 'site.ini' );
     $ini = eZINI::instance( 'site.ini' );
@@ -41,8 +50,8 @@ function errorPage( $PrimaryName, $PrimaryURL, $type )
                          "kernel/ezform/admin/intl", $ini->variable( "eZFormMain", "Language" ), "errors.php" );
 
     $t->set_file( "page", "errormessage.tpl"  );
-    $t->set_var( "primary_url", $PrimaryURL  );
-    $t->set_var( "primary_url_name", $t->Ini->variable( "strings", $PrimaryName  ) );
+    $t->set_var( "primary_url", $primaryURL  );
+    $t->set_var( "primary_url_name", $t->Ini->variable( "strings", $primaryName  ) );
 
     $t->set_var( "error_header", $t->Ini->variable( "strings", error_ . $type . _header ) );
     $t->set_var( "error_1", $t->Ini->variable( "strings", error_ . $type . _1 ) );
@@ -52,8 +61,8 @@ function errorPage( $PrimaryName, $PrimaryURL, $type )
     $t->setAllStrings();
 
     $error = $t->parse( "error", "page" );
-    $Info = stripslashes( $error );
-    $error = urlencode( $Info );
+    $info = stripslashes( $error );
+    $error = urlencode( $info );
     return $error;
 }
 
@@ -112,8 +121,8 @@ switch ( $eZFormOperation )
 {
     case "form":
     {
-        $FormID = $url_array[4];
-        $SectionIDOverride = $url_array[5];
+        $formID = $url_array[4];
+        $sectionIDOverride = $url_array[5];
 
         switch ( $eZFormAction )
         {

@@ -33,7 +33,7 @@
 
 // include_once( "ezuser/classes/ezuser.php" );
 
-if ( isSet ( $Back ) )
+if ( isSet ( $back ) )
 {
     eZHTTPTool::header( "Location: /trade/checkout/" );
     exit();
@@ -64,7 +64,7 @@ $t->set_var( "account_number", $accountNumber );
 $t->set_block( "voucher_tpl", "error_tpl", "error" );
 $t->set_var( "error", "" );
 
-if ( $Action == "Verify" )
+if ( $action == "Verify" )
 {
   $user = eZUser::currentUser();
   $accountNumber = $user->accountNumber();
@@ -88,19 +88,19 @@ if ( $Action == "Verify" )
     }
     
     $t->parse( "error", "error_tpl" );
-    $PaymentSuccess = "false";
+    $paymentSuccess = "false";
   */
 
   // bypass the payment.
-  $PaymentSuccess = "true";
+  $paymentSuccess = "true";
 
 }
 
 
-// $ChargeTotal is the value to charge the customer with
+// $chargeTotal is the value to charge the customer with
 
-$t->set_var( "order_id", $PreOrderID );
-$t->set_var( "payment_type", $PaymentType );
+$t->set_var( "order_id", $preOrderID );
+$t->set_var( "payment_type", $paymentType );
 
 $t->pparse( "output", "voucher_tpl" );
 ?>

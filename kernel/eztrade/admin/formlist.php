@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: formlist.php 7602 2001-10-01 10:27:12Z pkej $
+// $id: formlist.php 7602 2001-10-01 10:27:12Z pkej $
 //
 // Created on: <15-Jun-2001 15:02:54 pkej>
 //
@@ -30,15 +30,15 @@
 // include_once( "ezform/classes/ezform.php" );
 // include_once( "eztrade/classes/ezproductform.php" );
 
-$ActionValue = "list";
+$actionValue = "list";
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZFormMain", "Language" );
+$language = $ini->variable( "eZFormMain", "Language" );
 
-$product = new eZProduct( $ProductID );
+$product = new eZProduct( $productID );
 $selectedForm = eZProductForm::productHasForm( $product );
 
-if( isset( $OK ) )
+if( isset( $ok ) )
 {
     if( $selectedFormID > 0 )
     {
@@ -49,12 +49,12 @@ if( isset( $OK ) )
         $selectedForm =& $form;
     }
     
-    eZHTTPTool::header( "Location: /trade/productedit/edit/$ProductID/" );
+    eZHTTPTool::header( "Location: /trade/productedit/edit/$productID/" );
     exit();
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "formlist.php" );
+                     "kernel/eztrade/admin/intl/", $language, "formlist.php" );
 $t->setAllStrings();
 
 $t->set_file( array(
@@ -111,9 +111,9 @@ else
     $t->parse( "form_list", "form_list_tpl" );
 }
 
-$t->set_var( "product_id", $ProductID );
-$t->set_var( "action_value", $ActionValue );
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "product_id", $productID );
+$t->set_var( "action_value", $actionValue );
+$t->set_var( "site_style", $siteDesign );
 $t->pparse( "output", "form_list_page_tpl" );
 
 ?>

@@ -120,7 +120,7 @@ class eZNewsImporter
             break;
           }
 
-          if( isset( $newsList ) )
+          if( isset( $newsList ) && is_array( $newsList ) )
           {
               foreach ( $newsList as $newsItem )
               {

@@ -30,16 +30,16 @@
 
 // include_once( "ezform/classes/ezform.php" );
 
-$ActionValue = "list";
+$actionValue = "list";
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFormMain", "Language" );
 $Limit = $ini->variable( "eZFormMain", "AdminFormListLimit" );
 
-if ( !$Offset )
-    $Offset = 0;
+if ( !$offset )
+    $offset = 0;
 
-if( isset( $DeleteSelected ) )
+if( isset( $deleteSelected ) )
 {
     foreach( $formDelete as $deleteMe )
     {
@@ -67,7 +67,7 @@ $t->set_var( "form_list", "" );
 $t->set_var( "no_forms_item", "" );
 
 $totalCount = eZForm::count();
-$forms = eZForm::getAll( $Offset, $Limit );
+$forms = eZForm::getAll( $offset, $Limit );
 
 
 if( count( $forms ) == 0 )
@@ -100,9 +100,9 @@ else
     $t->parse( "form_list", "form_list_tpl" );
 }
 
-eZList::drawNavigator( $t, $totalCount, $Limit, $Offset, "form_list_page_tpl" );
+eZList::drawNavigator( $t, $totalCount, $Limit, $offset, "form_list_page_tpl" );
 
-$t->set_var( "action_value", $ActionValue );
+$t->set_var( "action_value", $actionValue );
 $t->set_var( "site_style", $SiteDesign );
 $t->pparse( "output", "form_list_page_tpl" );
 

@@ -37,15 +37,15 @@ $move_item = true;
 
 // include_once( "eztrade/classes/ezvoucher.php" );
 
-if ( ( isset( $Action ) && $Action == "Update" ) || ( isset ( $Update ) ) )
+if ( ( isset( $action ) && $action == "Update" ) || ( isset ( $update ) ) )
 {
     $voucher = new eZVoucher( $VoucherID );
 
-    setType( $Price, "integer" );
+    setType( $price, "integer" );
 
-    $voucher->setPrice( $Price );
+    $voucher->setPrice( $price );
 
-    if ( $Available == "on" )
+    if ( $available == "on" )
         $voucher->setAvailable( true );
     else
         $voucher->setAvailable( false );
@@ -53,13 +53,13 @@ if ( ( isset( $Action ) && $Action == "Update" ) || ( isset ( $Update ) ) )
     $voucher->store();
 }
 
-if( isset( $Ok ) )
+if( isset( $ok ) )
 {
     eZHTTPTool::header( "Location: /trade/voucherlist/" );
     exit();
 }
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
     $voucher = new eZVoucher( $VoucherID );
 

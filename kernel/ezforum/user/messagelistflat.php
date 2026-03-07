@@ -39,8 +39,8 @@ $ini = eZINI::instance( 'site.ini' );
 // include_once( "ezforum/classes/ezforum.php" );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
-$UserLimit = $ini->variable( "eZForumMain", "MessageUserLimit" );
-$NewMessageLimit = $ini->variable( "eZForumMain", "NewMessageLimit" );
+$userLimit = $ini->variable( "eZForumMain", "MessageUserLimit" );
+$newMessageLimit = $ini->variable( "eZForumMain", "NewMessageLimit" );
 
 $t = new eZTemplate( "kernel/ezforum/user/" . $ini->variable( "eZForumMain", "TemplateDir" ),
                      "kernel/ezforum/user/intl", $Language, "messagelistflat.php" );
@@ -56,7 +56,7 @@ $t->set_block( "message_item_tpl", "old_icon_tpl", "old_icon" );
 
 $t->setAllStrings();
 
-$forum = new eZForum( $ForumID );
+$forum = new eZForum( $forumID );
 
 $categories = $forum->categories();
 
@@ -96,10 +96,10 @@ if ( count( $categories ) > 0 )
 
 $locale = new eZLocale( $Language );
 
-if ( !$Offset )
-    $Offset = 0;
+if ( !$offset )
+    $offset = 0;
 
-$messageList = $forum->messageTreeArray( $Offset, $UserLimit, false, false );
+$messageList = $forum->messageTreeArray( $offset, $userLimit, false, false );
 $messageCount = $forum->messageCount( false, true );
 
 if ( !$messageList )
@@ -137,7 +137,7 @@ else
 
 
         $messageAge = round( $message[$db->fieldName( "Age" )] / 86400 );
-        if ( $messageAge <= $NewMessageLimit )
+        if ( $messageAge <= $newMessageLimit )
         {
             $t->parse( "new_icon", "new_icon_tpl" );
             $t->set_var( "old_icon", "" );
@@ -173,10 +173,10 @@ else
         $i++;
     }
 }
-eZList::drawNavigator( $t, $messageCount, $UserLimit, $Offset, "messagelist_tpl" );
+eZList::drawNavigator( $t, $messageCount, $userLimit, $offset, "messagelist_tpl" );
 
-$t->set_var( "forum_start", $Offset + 1 );
-$t->set_var( "forum_end", min( $Offset + $UserLimit, $messageCount ) );
+$t->set_var( "forum_start", $offset + 1 );
+$t->set_var( "forum_end", min( $offset + $userLimit, $messageCount ) );
 $t->set_var( "forum_total", $messageCount );
 
 $t->set_var( "newmessage", $newmessage );

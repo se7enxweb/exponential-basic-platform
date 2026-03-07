@@ -31,23 +31,36 @@ $ini = eZINI::instance( 'site.ini' );
 $PageCaching = $ini->variable( "eZQuizMain", "PageCaching" );
 $GlobalSectionID = $ini->variable( "eZQuizMain", "DefaultSection" );
 
+$action             = eZHTTPTool::getVar( 'Action' );
+$gameID             = eZHTTPTool::getVar( 'GameID' );
+$generateStaticPage = eZHTTPTool::getVar( 'GenerateStaticPage' );
+$limit              = eZHTTPTool::getVar( 'Limit' );
+$listLimit          = eZHTTPTool::getVar( 'ListLimit' );
+$nextButton         = eZHTTPTool::getVar( 'NextButton' );
+$offset             = eZHTTPTool::getVar( 'Offset' );
+$placement          = eZHTTPTool::getVar( 'Placement' );
+$questionNum        = eZHTTPTool::getVar( 'QuestionNum' );
+$saveButton         = eZHTTPTool::getVar( 'SaveButton' );
+$scoreCurrent       = eZHTTPTool::getVar( 'ScoreCurrent' );
+$userID             = eZHTTPTool::getVar( 'UserID' );
+
 switch ( $url_array[2] )
 {
     case "game":
     {
-        $Action = $url_array[3];
+        $action = $url_array[3];
 
-        switch ( $Action )
+        switch ( $action )
         {
             case "future":
             case "past":
             case "list":
             {
-                $Offset = $url_array[4];
+                $offset = $url_array[4];
 
-                if  ( !is_numeric( $Offset ) )
+                if  ( !is_numeric( $offset ) )
                 {
-                    $Offset = 0;
+                    $offset = 0;
                 }
 
                 include( "kernel/ezquiz/user/quizlist.php" );
@@ -57,16 +70,16 @@ switch ( $url_array[2] )
             case "score":
             case "scores":
             {
-                $Offset = $url_array[5];
+                $offset = $url_array[5];
 
-                if ( !is_numeric( $Offset ) )
+                if ( !is_numeric( $offset ) )
                 {
-                    $Offset = 0;
+                    $offset = 0;
                 }
 
-                $GameID = $url_array[4];
+                $gameID = $url_array[4];
 
-                if( !is_numeric( $GameID ) )
+                if( !is_numeric( $gameID ) )
                 {
                     eZHTTPTool::header( "Location: /quiz/game/list" );
                 }
@@ -79,13 +92,13 @@ switch ( $url_array[2] )
             case "view":
             case "play":
             {
-                $GameID = $url_array[4];
+                $gameID = $url_array[4];
 
                 $user = eZUser::currentUser();
 
                 if ( !is_a( $user, "eZUser" ) )
                 {
-                   eZHTTPTool::header( "Location: /user/login?RedirectURL=" . urlencode( "/quiz/game/play/$GameID" ) );
+                   eZHTTPTool::header( "Location: /user/login?RedirectURL=" . urlencode( "/quiz/game/play/$gameID" ) );
                 }
                 else
                 {
@@ -93,7 +106,7 @@ switch ( $url_array[2] )
                     // include_once( "classes/ezdate.php" );
                     // include_once( "ezquiz/classes/ezquizgame.php" );
 
-                    $game = new eZQuizGame( $GameID );
+                    $game = new eZQuizGame( $gameID );
                     $gameStop = $game->stopDate();
                     $gameStart = $game->startDate();
                     $today = new eZDate();
@@ -104,10 +117,10 @@ switch ( $url_array[2] )
                     {
                         if ( $today->isGreater( $gameStop, true ) )
                         {
-                            $QuestionNum = $url_array[5];
-                            if ( !is_numeric( $QuestionNum ) )
+                            $questionNum = $url_array[5];
+                            if ( !is_numeric( $questionNum ) )
                             {
-                                $QuestionNum = 0;
+                                $questionNum = 0;
                             }
 
                             include( "kernel/ezquiz/user/quizplay.php" );
@@ -132,7 +145,7 @@ switch ( $url_array[2] )
 
     case "my":
     {
-        $Action = $url_array[3];
+        $action = $url_array[3];
 
         $user =  eZUser::currentUser();
 
@@ -141,16 +154,16 @@ switch ( $url_array[2] )
         }
 
 
-        switch ( $Action )
+        switch ( $action )
         {
             case "open":
             case "closed":
             {
-                $Offset = $url_array[4];
+                $offset = $url_array[4];
 
-                if  ( !is_numeric( $Offset ) )
+                if  ( !is_numeric( $offset ) )
                 {
-                    $Offset = 0;
+                    $offset = 0;
                 }
 
                 include( "kernel/ezquiz/user/quizlist.php" );
@@ -160,11 +173,11 @@ switch ( $url_array[2] )
             case "score":
             case "scores":
             {
-                $Offset = $url_array[4];
+                $offset = $url_array[4];
 
-                if ( !is_numeric( $Offset ) )
+                if ( !is_numeric( $offset ) )
                 {
-                    $Offset = 0;
+                    $offset = 0;
                 }
 
                 include( "kernel/ezquiz/user/quizmyscores.php" );

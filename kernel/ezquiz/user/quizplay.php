@@ -43,11 +43,11 @@ $t = new eZTemplate( "kernel/ezquiz/user/" . $ini->variable( "eZQuizMain", "Temp
 
 $intl = new eZINI( "kernel/ezquiz/user/intl/". $Language . "/quiz.php.ini" );
 
-if ( isset( $SaveButton ) )
+if ( isset( $saveButton ) )
 {
     // Do we have the same user uploading the data?
     // Me? Paranoid?
-    if ( $UserID == $user->id() )
+    if ( $userID == $user->id() )
     {
         $question = new eZQuizQuestion( $QuestionID );
         $game = $question->game();
@@ -58,7 +58,7 @@ if ( isset( $SaveButton ) )
             $score->setUser( $user );
             $score->setGame( $game );
         }
-        $score->setNextQuestion( $Placement );
+        $score->setNextQuestion( $placement );
         $score->store();
         
         eZHTTPTool::header( "Location: /quiz/my/open/" );
@@ -67,11 +67,11 @@ if ( isset( $SaveButton ) )
 
 
 
-if ( isset( $NextButton ) )
+if ( isset( $nextButton ) )
 {
     // Do we have the same user uploading the data?
     // Me? Paranoid?
-    if ( $UserID == $user->id() )
+    if ( $userID == $user->id() )
     {
         $question = new eZQuizQuestion( $QuestionID );
         $alternative = new eZQuizAlternative( $AlternativeID );
@@ -95,7 +95,7 @@ if ( isset( $NextButton ) )
             $score->getUserGame( $user, $game );
             if ( $answer->hasAnswered() )
             {
-                $QuestionNum = $score->nextQuestion();
+                $questionNum = $score->nextQuestion();
             }
             else
             {
@@ -104,9 +104,9 @@ if ( isset( $NextButton ) )
                 $score->setGame( $game );
                 $score->setUser( $user );
                 
-                $score->setNextQuestion( $QuestionNum );
+                $score->setNextQuestion( $questionNum );
                 
-                if ( $QuestionNum > $game->numberOfQuestions() )
+                if ( $questionNum > $game->numberOfQuestions() )
                 {
                     $score->setFinishedGame( true );
                     // include_once( "ezquiz/classes/ezquiztool.php" );
@@ -149,8 +149,8 @@ $t->set_var( "high_score_item", "" );
 $t->set_var( "your_score_item", "" );
 $t->set_var( "error_item", "" );
 
-$game = new eZQuizGame( $GameID );
-$t->set_var( "game_id", $GameID );
+$game = new eZQuizGame( $gameID );
+$t->set_var( "game_id", $gameID );
 $t->set_var( "user_id", $user->id() );
 $t->set_var( "game_name", $game->name() );
 $t->set_var( "questions", $game->numberOfQuestions() );
@@ -182,36 +182,36 @@ if ( $score->isFinishedGame() )
 
 if ( $score->nextQuestion() > 1 )
 {
-    $QuestionNum = $score->nextQuestion();
+    $questionNum = $score->nextQuestion();
 }
 
-if ( $QuestionNum == 0 )
+if ( $questionNum == 0 )
 {
     $t->parse( "start_item", "start_item_tpl" );
 }
 elseif ( empty( $error ) )
 {
-    if ( $QuestionNum >= 1 )
+    if ( $questionNum >= 1 )
     {
-        $QuestionNum = $score->nextQuestion();
+        $questionNum = $score->nextQuestion();
     }
     
     $questionCount = $game->numberOfQuestions();
-    $currentQuestion = $game->question( $QuestionNum );
+    $currentQuestion = $game->question( $questionNum );
 
     if ( $questionCount <= 0 )
     {
         $t->set_var( "error_message", $intl->variable( "strings", "error_no_questions" ) );
         $t->parse( "error_item", "error_item_tpl" );
     }
-    else if ( $QuestionNum <= $questionCount )
+    else if ( $questionNum <= $questionCount )
     {
         $t->set_var( "question_id", $currentQuestion->id() );
 
-        $t->set_var( "placement", $QuestionNum );
-        $QuestionNum++;
+        $t->set_var( "placement", $questionNum );
+        $questionNum++;
 
-        $t->set_var( "next_question_num", $QuestionNum );
+        $t->set_var( "next_question_num", $questionNum );
         $t->set_var( "question_name", $currentQuestion->name() );
 
         $alternatives = $currentQuestion->alternatives();

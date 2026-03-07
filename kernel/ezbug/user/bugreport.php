@@ -71,15 +71,16 @@ $t->set_var( "inserted_images", "" );
 // you must save the bug before you can add images/files.
 $successfull = 0;
 $actionValue = "new";
-if ( $Action == "New" )
+$bugID = isset( $bugID ) ? $bugID : 0;
+if ( $action == "New" )
 {
     $bug = new eZBug();
-    $bug->setName( $Name );
-    $bug->setDescription( $Description );
+    $bug->setName( $name );
+    $bug->setDescription( $description );
     $bug->store();
 
     $category = new eZBugCategory( $BugCategoryID );
-    $module = new eZBugModule( $ModuleID );
+    $module = new eZBugModule( $moduleID );
     $bug->removeFromCategories();
     $bug->removeFromModules();
 
@@ -90,27 +91,27 @@ if ( $Action == "New" )
     if ( $user )
         $bug->setUser( $user );
     else
-        $bug->setUserEmail( $Email );
+        $bug->setUserEmail( $email );
 
-    if ( $IsPrivate == "true" )
+    if ( $isPrivate == "true" )
         $bug->setIsPrivate( true );
 
-    $bug->setVersion( $Version );
+    $bug->setVersion( $version );
     $bug->setIsHandled( false );
     $bug->store();
 
     $actionValue = "update";
-    $BugID = $bug->id();
+    $bugID = $bug->id();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
-    $bug = new eZBug( $BugID );
-    $bug->setName( $Name );
-    $bug->setDescription( $Description );
+    $bug = new eZBug( $bugID );
+    $bug->setName( $name );
+    $bug->setDescription( $description );
 
     $category = new eZBugCategory( $BugCategoryID );
-    $module = new eZBugModule( $ModuleID );
+    $module = new eZBugModule( $moduleID );
     $bug->removeFromCategories();
     $bug->removeFromModules();
 
@@ -121,18 +122,18 @@ if ( $Action == "Update" )
     if ( $user )
         $bug->setUser( $user );
     else
-        $bug->setUserEmail( $Email );
+        $bug->setUserEmail( $email );
 
-    if ( $IsPrivate == "true" )
+    if ( $isPrivate == "true" )
         $bug->setIsPrivate( true );
 
-    $bug->setVersion( $Version );
+    $bug->setVersion( $version );
     $bug->setIsHandled( false );
     $bug->store();
 
     $actionValue = "update";
-    $BugID = $bug->id();
-    $Action = "Edit";
+    $bugID = $bug->id();
+    $action = "Edit";
 }
 
 
@@ -140,7 +141,7 @@ if ( $Action == "Update" )
 if ( isset( $Ok ) ) // here check for errors. and display them if nescacary
 {
     $user = eZUser::currentUser();
-    if ( ( $Name != "" ) && ( $Description != "" ) )
+    if ( ( $name != "" ) && ( $description != "" ) )
     {
         if ( $user )
         {
@@ -151,7 +152,7 @@ if ( isset( $Ok ) ) // here check for errors. and display them if nescacary
         }
         else
         {
-            if ( $Email != "" )
+            if ( $email != "" )
             {
                 $successfull = 2;
                 send_email( $bug, $ini, $Language );
@@ -160,44 +161,44 @@ if ( isset( $Ok ) ) // here check for errors. and display them if nescacary
             }
             else
             {
-                $EmailError = true;
+                $emailError = true;
             }
         }
     }
     else
     {
-        $AllFieldsError = true;
+        $allFieldsError = true;
     }
 }
 
-if ( isset( $InsertFile ) )
+if ( isset( $insertFile ) )
 {
-    $session->setVariable( "CurrentBugEdit", $BugID );
-    eZHTTPTool::header( "Location: /bug/report/fileedit/new/" . $BugID . "/" );
+    $session->setVariable( "CurrentBugEdit", $bugID );
+    eZHTTPTool::header( "Location: /bug/report/fileedit/new/" . $bugID . "/" );
     exit();
 }
 
-if ( isset( $InsertImage ) )
+if ( isset( $insertImage ) )
 {
-    $session->setVariable( "CurrentBugEdit", $BugID );
-    eZHTTPTool::header( "Location: /bug/report/imageedit/new/" . $BugID . "/" );
+    $session->setVariable( "CurrentBugEdit", $bugID );
+    eZHTTPTool::header( "Location: /bug/report/imageedit/new/" . $bugID . "/" );
     exit();
 }
 
-if ( isset( $DeleteSelected ) )
+if ( isset( $deleteSelected ) )
 {
-    if ( count( $ImageArrayID ) > 0 )
+    if ( count( $imageArrayID ) > 0 )
     {
-        foreach ( $ImageArrayID as $imageID )
+        foreach ( $imageArrayID as $imageID )
         {
             $image = new eZImage( $imageID );
             $bug->deleteImage( $image );
         }
     }
 
-    if ( isset( $FileArrayID ) && count( $FileArrayID ) > 0 )
+    if ( isset( $fileArrayID ) && count( $fileArrayID ) > 0 )
     {
-        foreach ( $FileArrayID as $fileID )
+        foreach ( $fileArrayID as $fileID )
         {
             $file = new eZVirtualFile( $fileID );
             $bug->deleteFile( $file );
@@ -209,18 +210,18 @@ if ( isset( $DeleteSelected ) )
 $catName = "";
 $modName = "";
 
-if( isset( $Description ) )
+if( isset( $description ) )
 {
-    $t->set_var( "description_value", $Description );
+    $t->set_var( "description_value", $description );
 }
 else
 {
     $t->set_var( "description_value", '' );
 }
 
-if( isset( $Name ) )
+if( isset( $name ) )
 {
-    $t->set_var( "title_value", eZTextTool::htmlspecialchars( $Name ) );
+    $t->set_var( "title_value", eZTextTool::htmlspecialchars( $name ) );
 }
 else
 {
@@ -232,7 +233,7 @@ $t->set_var( "image", "" );
 $t->set_var( "private_checked", "" );
 $t->set_var( "version_value", "" );
 
-if ( isset( $IsPrivate ) && $IsPrivate == "On" )
+if ( isset( $isPrivate ) && $isPrivate == "On" )
     $t->set_var( "private_checked", "checked" );
 
 $user = eZUser::currentUser();
@@ -241,9 +242,9 @@ if ( $user )
 else
     $t->set_var( "usr_email", '' );
 
-if( $Action == "Edit" ) // load values from database
+if( $action == "Edit" ) // load values from database
 {
-    $bug = new eZBug( $BugID );
+    $bug = new eZBug( $bugID );
     $module = $bug->module();
     if ( $module )
         $modName = $module->name();
@@ -335,7 +336,7 @@ if (isset( $anyDeleteItems ) &&  $anyDeleteItems )
     $t->parse( "delete_items", "delete_items_tpl", false );
 
 // if any errors are set, lets display them to the user.
-if ( isset( $AllFieldsError ) && $AllFieldsError == true )
+if ( isset( $allFieldsError ) && $allFieldsError == true )
 {
     $t->parse( "all_fields_error", "all_fields_error_tpl" );
 }
@@ -344,7 +345,7 @@ else
     $t->set_var( "all_fields_error", "" );
 }
 
-if ( isset( $EmailError ) && $EmailError == true )
+if ( isset( $emailError ) && $emailError == true )
 {
     $t->parse( "email_error", "email_error_tpl" );
 }
@@ -402,7 +403,7 @@ foreach ( $modules as $module )
 
 $t->set_var( "action_value", $actionValue );
 
-$t->set_var( "bug_id", $BugID );
+$t->set_var( "bug_id", $bugID );
 
 $t->pparse( "output", "bug_report_tpl" );
 
@@ -450,7 +451,7 @@ function send_email( $bug, $ini, $Language )
     if ( $user )
         $mailTemplate->set_var( "bug_reporter", $user->namedEmail() );
     else
-        $mailTemplate->set_var( "bug_reporter", $Email );
+        $mailTemplate->set_var( "bug_reporter", $email );
     $mailTemplate->set_var( "bug_description", $bug->description( false ) );
 
     $mail->setSubject( "[Bug][" . $bug->id() ."] " . $bug->name( false ) );

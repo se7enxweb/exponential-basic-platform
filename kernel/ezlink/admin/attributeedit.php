@@ -25,9 +25,9 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
-    eZHTTPTool::header( "Location: /link/linkedit/edit/$LinkID/" );
+    eZHTTPTool::header( "Location: /link/linkedit/edit/$linkID/" );
     exit();
 }
 
@@ -45,24 +45,24 @@ $Language = $ini->variable( "eZLinkMain", "Language" );
 // include_once( "ezlink/classes/ezlinktype.php" );
 // include_once( "ezlink/classes/ezlinkattribute.php" );
 
-$link = new eZLink( $LinkID );
+$link = new eZLink( $linkID );
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
-    if ( $TypeID == -1 )
+    if ( $typeID == -1 )
     {
         $link->removeType();
     }
     else
     {
-        $link->setType( new eZLinkType( $TypeID ) );
+        $link->setType( new eZLinkType( $typeID ) );
 
         $i = 0;
-        if ( count( $AttributeValue ) > 0 )
+        if ( count( $attributeValue ) > 0 )
         {
-            foreach ( $AttributeValue as $attribute )
+            foreach ( $attributeValue as $attribute )
             {
-                $att = new eZLinkAttribute( $AttributeID[$i] );
+                $att = new eZLinkAttribute( $attributeID[$i] );
                 
                 $att->setValue( $link, $attribute );
 
@@ -71,9 +71,9 @@ if ( $Action == "Update" )
         }
     }
     
-    if ( isset( $OK ) )
+    if ( isset( $ok ) )
     {
-        eZHTTPTool::header( "Location: /link/linkedit/edit/$LinkID/" );
+        eZHTTPTool::header( "Location: /link/linkedit/edit/$linkID/" );
         exit();
     }
 }
@@ -93,7 +93,7 @@ $t->set_block( "attribute_edit_page", "type_tpl", "type" );
 
 //default values
     
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {    
     
 }
@@ -153,7 +153,7 @@ else
 }
 
 $t->set_var( "link_name", $link->title() );
-$t->set_var( "link_id", $LinkID );
+$t->set_var( "link_id", $linkID );
 
 $t->pparse( "output", "attribute_edit_page" );
 

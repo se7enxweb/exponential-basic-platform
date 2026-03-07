@@ -48,22 +48,22 @@ $t->set_block( "status_page", "status_item_tpl", "status_item" );
 
 //$t->set_var( "site_style", $SiteDesign );
 
-if( isset( $Ok ) || isset( $AddStatus ) )
+if( isset( $ok ) || isset( $addStatus ) )
 {
     $i = 0;
-    if( count( $StatusID ) > 0 )
+    if( count( $statusID ) > 0 )
     {
-        foreach( $StatusID as $itemID )
+        foreach( $statusID as $itemID )
         {
             $status = new eZBugStatus( $itemID );
-            $status->setName( $StatusName[$i] );
+            $status->setName( $statusName[$i] );
             $status->store();
             $i++;
         }
     }
 }
 
-if( isset( $AddStatus ) )
+if( isset( $addStatus ) )
 {
     $newItem = new eZBugStatus();
     $newName = $LanguageIni->variable( "strings", "newstatus" );
@@ -71,13 +71,13 @@ if( isset( $AddStatus ) )
     $newItem->store();
 }
 
-if( isset( $DeleteStatus ) )
+if( isset( $deleteStatus ) )
 {
-    if( count( $StatusArrayID ) > 0 )
+    if( count( $statusArrayID ) > 0 )
     {
-        foreach( $StatusArrayID as $deleteItemID )
+        foreach( $statusArrayID as $deleteItemID )
         {
-            $item = new eZBugStatus( $StatusID[ $deleteItemID ] );
+            $item = new eZBugStatus( $statusID[ $deleteItemID ] );
             $item->delete();
         }
     }

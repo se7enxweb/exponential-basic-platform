@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: orderlist.php 8562 2001-11-21 16:10:04Z br $
+// $id: orderlist.php 8562 2001-11-21 16:10:04Z br $
 //
 // Created on: <30-Sep-2000 13:03:13 bf>
 //
@@ -30,7 +30,7 @@
 // include_once( "classes/ezlist.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
@@ -39,19 +39,19 @@ $Language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezorderstatustype.php" );
 
-//echo $HideFollowup;
+//echo $hideFollowup;
 //print_r($HTTP_POST_VARS);
 //exit();
 
 
 
-if ( isset( $Hide ) )
+if ( isset( $hide ) )
 {
     $session = eZSession::globalSession();
     $session->setVariable( "OrderList", "Hide" );
 }
 
-if ( isset( $Show ) )
+if ( isset( $show ) )
 {
     $session = eZSession::globalSession();
     $session->setVariable( "OrderList", "Show" );
@@ -59,13 +59,13 @@ if ( isset( $Show ) )
 
 $checkMode = eZSession::globalSession();
 if ( $checkMode->variable( "OrderList" ) == "Hide" )
-    $HideFollowup = "on";
+    $hideFollowup = "on";
 else
-	$HideFollowup = "";
+	$hideFollowup = "";
 
-if( isset( $Delete ) && count( $OrderArrayID ) > 0 )
+if( isset( $delete ) && count( $orderArrayID ) > 0 )
 {
-    foreach( $OrderArrayID as $orderid )
+    foreach( $orderArrayID as $orderid )
     {
         $order = new eZOrder( $orderid );
         $order->delete();
@@ -77,11 +77,11 @@ if( isset( $Delete ) && count( $OrderArrayID ) > 0 )
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "orderlist.php" );
+                     "kernel/eztrade/admin/intl/", $language, "orderlist.php" );
 
-$languageINI = new eZINI( "kernel/eztrade/admin/intl/" . $Language . "/orderlist.php.ini", false );
+$languageINI = new eZINI( "kernel/eztrade/admin/intl/" . $language . "/orderlist.php.ini", false );
 
-$PricesIncludeVAT = $ini->variable( "eZTradeMain", "AdminShowIncTaxColumn" ) == "enabled" ? true : false;
+$pricesIncludeVAT = $ini->variable( "eZTradeMain", "AdminShowIncTaxColumn" ) == "enabled" ? true : false;
 
 
 $t->setAllStrings();
@@ -95,20 +95,20 @@ $t->set_block( "order_item_list_tpl", "order_item_tpl", "order_item" );
 $t->set_block( "order_list_tpl", "previous_tpl", "previous" );
 $t->set_block( "order_list_tpl", "next_tpl", "next" );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
-if ( isset( $URLQueryText ) )
+if ( isset( $urlQueryText ) )
 {
-    $QueryText = urldecode( $URLQueryText );
+    $queryText = urldecode( $urlQueryText );
 }
 else
 {
-    $QueryText = "";
+    $queryText = "";
 }
 
-$t->set_var( "query_string", $QueryText );
+$t->set_var( "query_string", $queryText );
 
-if ( $HideFollowup = "on" )
+if ( $hideFollowup = "on" )
 	$t->set_var( "followup_checked", "checked" );
 else
 	$t->set_var( "followup_checked", "" );
@@ -116,35 +116,35 @@ else
 $t->set_var( "previous", "" );
 $t->set_var( "next", "" );
 
-if ( !isset( $OrderBy ) )
-    $OrderBy = "Date";
+if ( !isset( $orderBy ) )
+    $orderBy = "Date";
 
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
-if ( !isset( $Limit ) )
-    $Limit = 15;
+if ( !isset( $limit ) )
+    $limit = 15;
 
-$t->set_var( "current_offset", $Offset );
+$t->set_var( "current_offset", $offset );
 
 $order = new eZOrder();
 
 // perform search
-if ( isset( $QueryText ) && $QueryText != "" )
+if ( isset( $queryText ) && $queryText != "" )
 {
-    $orderArray = $order->search( $QueryText, $Offset, $Limit );
-    $total_count = $order->getSearchCount( $QueryText );
+    $orderArray = $order->search( $queryText, $offset, $limit );
+    $total_count = $order->getSearchCount( $queryText );
 }
 else
 {
-    $orderArray = $order->getAll( $Offset, $Limit, $OrderBy );
+    $orderArray = $order->getAll( $offset, $limit, $orderBy );
     $total_count = $order->getTotalCount( );
 }
 
 if ( !$orderArray )
     $t->set_var( "order_item", "" );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 $currency = new eZCurrency();
 $i = 0;
 
@@ -232,7 +232,7 @@ foreach ( $orderArray as $order )
 
     $order->orderTotals( $tax, $total );
     
-    if ( $PricesIncludeVAT == true )
+    if ( $pricesIncludeVAT == true )
         $currency->setValue( $total["inctax"] );
     else
         $currency->setValue( $total["extax"] );
@@ -248,10 +248,10 @@ foreach ( $orderArray as $order )
     $i++;
 }
 
-eZList::drawNavigator( $t, $total_count, $Limit, $Offset, "order_list_tpl" );
+eZList::drawNavigator( $t, $total_count, $limit, $offset, "order_list_tpl" );
 
 
-$t->set_var( "url_query_string", isset( $QueryText ) ? urlencode( $QueryText ) : '' );
+$t->set_var( "url_query_string", isset( $queryText ) ? urlencode( $queryText ) : '' );
 $t->parse( "order_item_list", "order_item_list_tpl" );
 $t->pparse( "output", "order_list_tpl" );
 

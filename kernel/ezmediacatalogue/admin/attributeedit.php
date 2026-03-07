@@ -25,9 +25,9 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
-    eZHTTPTool::header( "Location: /mediacatalogue/mediaedit/edit/$MediaID/" );
+    eZHTTPTool::header( "Location: /mediacatalogue/mediaedit/edit/$mediaID/" );
     exit();
 }
 
@@ -45,24 +45,24 @@ $Language = $ini->variable( "eZMediaMain", "Language" );
 // include_once( "ezmedia/classes/ezmediatype.php" );
 // include_once( "ezmedia/classes/ezmediaattribute.php" );
 
-$media = new eZMedia( $MediaID );
+$media = new eZMedia( $mediaID );
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
-    if ( $TypeID == -1 )
+    if ( $typeID == -1 )
     {
         $media->removeType();
     }
     else
     {
-        $media->setType( new eZMediaType( $TypeID ) );
+        $media->setType( new eZMediaType( $typeID ) );
 
         $i = 0;
-        if ( count( $AttributeValue ) > 0 )
+        if ( count( $attributeValue ) > 0 )
         {
-            foreach ( $AttributeValue as $attribute )
+            foreach ( $attributeValue as $attribute )
             {
-                $att = new eZMediaAttribute( $AttributeID[$i] );
+                $att = new eZMediaAttribute( $attributeID[$i] );
                 
                 $att->setValue( $media, $attribute );
 
@@ -71,9 +71,9 @@ if ( $Action == "Update" )
         }
     }
     
-    if ( isset( $OK ) )
+    if ( isset( $ok ) )
     {
-        eZHTTPTool::header( "Location: /media/mediaedit/edit/$MediaID/" );
+        eZHTTPTool::header( "Location: /media/mediaedit/edit/$mediaID/" );
         exit();
     }
 }
@@ -93,7 +93,7 @@ $t->set_block( "attribute_edit_page", "type_tpl", "type" );
 
 //default values
     
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {    
     
 }
@@ -153,7 +153,7 @@ else
 }
 
 $t->set_var( "media_name", $media->title() );
-$t->set_var( "media_id", $MediaID );
+$t->set_var( "media_id", $mediaID );
 
 $t->pparse( "output", "attribute_edit_page" );
 

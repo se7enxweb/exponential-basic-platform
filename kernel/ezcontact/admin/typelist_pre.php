@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: typelist_pre.php 6436 2001-08-14 14:12:16Z jhe $
+// $id: typelist_pre.php 6436 2001-08-14 14:12:16Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -24,28 +24,28 @@
 //
 
 
-if ( !isset( $Max ) )
+if ( !isset( $max ) )
 {
-    $Max = 10;
+    $max = 10;
 }
 
-if ( !isset( $Offset ) )
+if ( !isset( $offset ) )
 {
-    $Offset = 0;
+    $offset = 0;
 }
-else if ( !is_numeric( $Offset ) )
+else if ( !is_numeric( $offset ) )
 {
-    $Offset = 0;
+    $offset = 0;
 }
 
-if ( !isset( $SearchText ) )
+if ( !isset( $searchText ) )
 {
-    $SearchText = "";
+    $searchText = "";
     $search_encoded = "";
 }
 else
 {
-    $search_encoded = $SearchText;
+    $search_encoded = $searchText;
     $search_encoded = eZURITool::encode( $search_encoded );
 }
 

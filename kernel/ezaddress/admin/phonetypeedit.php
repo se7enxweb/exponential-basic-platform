@@ -26,12 +26,12 @@
 // include_once( "ezaddress/classes/ezphonetype.php" );
 
 $language_file = "phonetype.php";
-$item_type = new eZPhoneType( $PhoneTypeID );
+$item_type = new eZPhoneType( $phoneTypeID );
 $item_types = array();
 
-if ( isset( $ItemArrayID ) and is_array( $ItemArrayID ) )
+if ( isset( $itemArrayID ) and is_array( $itemArrayID ) )
 {
-    foreach( $ItemArrayID as $item_id )
+    foreach( $itemArrayID as $item_id )
     {
         $item_types[] = new eZPhoneType( $item_id );
     }

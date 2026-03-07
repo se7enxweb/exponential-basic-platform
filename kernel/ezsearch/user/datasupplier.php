@@ -27,6 +27,16 @@ $ini = eZINI::instance( 'site.ini' );
 
 $GlobalSectionID = $ini->variable( "eZSearchMain", "DefaultSection" );
 
+$limit                       = eZHTTPTool::getVar( 'Limit' );
+$moduleName                  = eZHTTPTool::getVar( 'ModuleName' );
+$offset                      = eZHTTPTool::getVar( 'Offset' );
+$resultArray                 = $_POST['ResultArray'] ?? [];
+$resultArrayDetailViewPath   = eZHTTPTool::getVar( 'ResultArrayDetailViewPath' );
+$searchModules               = $_POST['SearchModules'] ?? [];
+$searchResult                = eZHTTPTool::getVar( 'SearchResult' );
+$searchText                  = eZHTTPTool::getVar( 'SearchText' );
+$sectionIDOverride           = eZHTTPTool::getVar( 'SectionIDOverride' );
+
 switch( $url_array[2] )
 {
     default:

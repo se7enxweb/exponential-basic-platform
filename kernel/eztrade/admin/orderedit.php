@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: orderedit.php 9167 2002-02-07 08:39:29Z jhe $
+// $id: orderedit.php 9167 2002-02-07 08:39:29Z jhe $
 //
 // Created on: <30-Sep-2000 13:03:13 bf>
 //
@@ -23,7 +23,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     // include_once( "classes/ezhttptool.php" );
     eZHTTPTool::header( "Location: /trade/orderlist/" );
@@ -39,19 +39,21 @@ if ( isset( $Cancel ) )
 
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
-$ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
+$language = $ini->variable( "eZTradeMain", "Language" );
+$showPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
 
-$languageINI = new eZINI( "kernel/eztrade/admin/intl/" . $Language . "/orderedit.php.ini", false );
+$languageINI = new eZINI( "kernel/eztrade/admin/intl/" . $language . "/orderedit.php.ini", false );
 
-$PricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" );
-// Unclear: $PricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enabled" && $total["shiptax"] ? true : false;
+$pricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" );
+// Unclear: $pricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enabled" && $total["shiptax"] ? true : false;
 
-$ShowExTaxColumn = $ini->variable( "eZTradeMain", "AdminShowExTaxColumn" ) == "enabled" ? true : false;
-//$ShowIncTaxColumn = $ini->variable( "eZTradeMain", "AdminShowIncTaxColumn" ) == "enabled" && $total["shiptax"]  ? true : false;
-// Unclear:$ShowIncTaxColumn = $total["shiptax"] ? true : false;
-$ShowExTaxTotal = $ini->variable( "eZTradeMain", "ShowExTaxTotal" ) == "enabled" ? true : false;
-$ColSpanSizeTotals = $ini->variable( "eZTradeMain", "ColSpanSizeTotals" );
+$showExTaxColumn = $ini->variable( "eZTradeMain", "AdminShowExTaxColumn" ) == "enabled" ? true : false;
+$showIncTaxColumn = $ini->variable( "eZTradeMain", "AdminShowIncTaxColumn" ) == "enabled" ? true : false;
+//$showIncTaxColumn = $ini->variable( "eZTradeMain", "AdminShowIncTaxColumn" ) == "enabled" && $total["shiptax"]  ? true : false;
+// Unclear:$showIncTaxColumn = $total["shiptax"] ? true : false;
+$showSavingsColumn = $ini->variable( "eZTradeMain", "AdminShowSavingsColumn" ) == "enabled" ? true : false;
+$showExTaxTotal = $ini->variable( "eZTradeMain", "ShowExTaxTotal" ) == "enabled" ? true : false;
+$colSpanSizeTotals = $ini->variable( "eZTradeMain", "ColSpanSizeTotals" );
 $wwwDir = $ini->variable( "site", "UserSiteURL" );
 $adminEmail = $ini->variable( "eZTradeMain", "mailToAdmin" );
 $upscheck = $ini->variable( "eZTradeMain", "UPSXMLShipping" )=="enabled"?1:0;
@@ -62,17 +64,17 @@ else
 $checkups=1;
 
 $tester =  0;
-if ( $Action == "newstatus" )
+if ( $action == "newstatus" )
 {
     $status = new eZOrderStatus();
     
     // store the status
-    $statusType = new eZOrderStatusType( $StatusID );
+    $statusType = new eZOrderStatusType( $statusID );
 
     $status = new eZOrderStatus();
     $status->setType( $statusType );
-    $status->setComment( $StatusComment );
-    $status->setOrderID( $OrderID );
+    $status->setComment( $statusComment );
+    $status->setOrderID( $orderID );
 
     $user = eZUser::currentUser();
 
@@ -81,24 +83,24 @@ if ( $Action == "newstatus" )
     $status->store();            
 
 	//send customer email notice of status change
-	if ( $MailNotice == "on" )
+	if ( $mailNotice == "on" )
 	{
 		$mailTemplate = new eZTemplate( "eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "eztrade/admin/intl/", $Language, "orderedit.php" );
+                     "eztrade/admin/intl/", $language, "orderedit.php" );
 					 
         $mailTemplate->setAllStrings();
 
         $subjectLine = $mailTemplate->Ini->variable( "strings", "subject" );
-        $subjectLine = $subjectLine . " #" . $OrderID;
+        $subjectLine = $subjectLine . " #" . $orderID;
 		
 	    $statusName = preg_replace( "#intl-#", "", $statusType->Name() );
 		$statusName = $mailTemplate->Ini->variable( "strings", "reason" ).": ".$statusName;
-		$StatusComment = $mailTemplate->Ini->variable( "strings", "comment" ).": ".$StatusComment;
+		$statusComment = $mailTemplate->Ini->variable( "strings", "comment" ).": ".$statusComment;
 				
-		$MailBody = "$MailBody\n";
-		$MailBody .= "========================================\n";
-		$MailBody .= "$statusName\n";
-		$MailBody .= "$StatusComment";
+		$mailBody = "$mailBody\n";
+		$mailBody .= "========================================\n";
+		$mailBody .= "$statusName\n";
+		$mailBody .= "$statusComment";
 		
         // send a notice mail
         $noticeMail = new eZMail();
@@ -106,24 +108,24 @@ if ( $Action == "newstatus" )
         $noticeMail->setFrom( $adminEmail );
 //        $noticeMail->setCc( $adminEmail );
 		
-        $noticeMail->setTo( $CustomerEmail );
+        $noticeMail->setTo( $customerEmail );
 
         $noticeMail->setSubject( $subjectLine );
-        $noticeMail->setBodyText( $MailBody );
+        $noticeMail->setBodyText( $mailBody );
 
         $noticeMail->send();
 	}		
         
 
     include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /trade/orderedit/$OrderID" );
+    eZHTTPTool::header( "Location: /trade/orderedit/$orderID" );
     exit();
 }
 
 
-if ( $Action == "delete" )
+if ( $action == "delete" )
 {
-    $order = new eZOrder( $OrderID );
+    $order = new eZOrder( $orderID );
     $order->delete();
     
     // include_once( "classes/ezhttptool.php" );
@@ -132,7 +134,7 @@ if ( $Action == "delete" )
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "orderedit.php" );
+                     "kernel/eztrade/admin/intl/", $language, "orderedit.php" );
 
 $t->setAllStrings();
 
@@ -189,7 +191,7 @@ $t->set_block( "cart_item_basis_tpl", "basis_ex_tax_item_tpl", "basis_ex_tax_ite
 $t->set_block( "full_cart_tpl", "tax_specification_tpl", "tax_specification" );
 $t->set_block( "tax_specification_tpl", "tax_item_tpl", "tax_item" );
 
-$order = new eZOrder( $OrderID );
+$order = new eZOrder( $orderID );
 
 // get the customer
 
@@ -225,7 +227,7 @@ if ( $user )
 
     // print preorder id
     $preOrderId = new eZPreOrder();
-    $preOrderId->getByOrderId( $OrderID );
+    $preOrderId->getByOrderId( $orderID );
     if ( $preOrderId->id() )
     {
         $t->set_var( "preorder_id", $preOrderId->id() );
@@ -299,7 +301,7 @@ if ( $user )
     $t->set_var( "billing_place", $billingAddress->place() );
     $t->set_var( "billing_phone", $billingAddress->phone() );
     
-    $PriceGroup = eZPriceGroup::correctPriceGroup( $user->groups( false ) );
+    $priceGroup = eZPriceGroup::correctPriceGroup( $user->groups( false ) );
 
     $country = $billingAddress->country();
     if ( is_object( $country ) )
@@ -325,26 +327,26 @@ if ( $user )
 }
 
 // fetch the order items
-if ( $Action == "edit" )
+if ( $action == "edit" )
 {
     // fetch the order items
-    $items = $order->items( $OrderType );
+    $items = $order->items( $orderType );
 }
 else
 {
     $items =  $order->items();
 }
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 $currency = new eZCurrency();
 
 $i = 0;
 $sum = 0.0;
 $totalVAT = 0.0;
 
-function turnColumnsOnOff( $rowName, $t = false, $ShowSavingsColumn = false, $ShowExTaxColumn = false, $ShowIncTaxColumn = false )
+function turnColumnsOnOff( $rowName, $t = false, $showSavingsColumn = false, $showExTaxColumn = false, $showIncTaxColumn = false )
 {
-    if ( $ShowSavingsColumn == true )
+    if ( $showSavingsColumn == true )
     {
         $t->parse( $rowName . "_savings_item", $rowName . "_savings_item_tpl" );
     }
@@ -353,7 +355,7 @@ function turnColumnsOnOff( $rowName, $t = false, $ShowSavingsColumn = false, $Sh
         $t->set_var( $rowName . "_savings_item", "" );
     }
 
-    if ( $ShowExTaxColumn == true )
+    if ( $showExTaxColumn == true )
     {
         $t->parse( $rowName . "_ex_tax_item", $rowName . "_ex_tax_item_tpl" );
     }
@@ -364,7 +366,7 @@ function turnColumnsOnOff( $rowName, $t = false, $ShowSavingsColumn = false, $Sh
 
       $t->parse( $rowName . "_inc_tax_item", $rowName . "_inc_tax_item_tpl" );
     /*
-    if ($total["shiptax"] or $ShowIncTaxColumn == true )
+    if ($total["shiptax"] or $showIncTaxColumn == true )
     {
         $t->parse( $rowName . "_inc_tax_item", $rowName . "_inc_tax_item_tpl" );
     }
@@ -375,7 +377,7 @@ function turnColumnsOnOff( $rowName, $t = false, $ShowSavingsColumn = false, $Sh
     */
 }
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 $currency = new eZCurrency();
 
 $numberOfItems = 0;
@@ -393,7 +395,7 @@ foreach ( $items as $item )
     $t->set_var( "product_id", $product->id() );
     $t->set_var( "product_name", $product->name() );
     $t->set_var( "product_number", $product->productNumber() );
-    $t->set_var( "product_price", $item->localePrice( false, true, $PricesIncludeVAT ) );
+    $t->set_var( "product_price", $item->localePrice( false, true, $pricesIncludeVAT ) );
     $t->set_var( "product_count", $item->count() );
     $t->set_var( "product_total_ex_tax", $item->localePrice( true, true, false ) );
     $t->set_var( "product_total_inc_tax", $item->localePrice( true, true, true ) );
@@ -409,7 +411,7 @@ foreach ( $items as $item )
 
     foreach ( $optionValues as $optionValue )
     {
-        turnColumnsOnOff( "option", $t, $ShowSavingsColumn, $ShowExTaxColumn, $ShowIncTaxColumn );
+        turnColumnsOnOff( "option", $t, $showSavingsColumn, $showExTaxColumn, $showIncTaxColumn );
     
         $t->set_var( "option_id", "" );
         $t->set_var( "option_name", $optionValue->valueName() );
@@ -419,8 +421,8 @@ foreach ( $items as $item )
         
         $numberOfOptions++;
     }
-    turnColumnsOnOff( "cart", $t, $ShowSavingsColumn, $ShowExTaxColumn, $ShowIncTaxColumn );
-    turnColumnsOnOff( "basis", $t, $ShowSavingsColumn, $ShowExTaxColumn, $ShowIncTaxColumn );
+    turnColumnsOnOff( "cart", $t, $showSavingsColumn, $showExTaxColumn, $showIncTaxColumn );
+    turnColumnsOnOff( "basis", $t, $showSavingsColumn, $showExTaxColumn, $showIncTaxColumn );
     
     if ( $numberOfOptions ==  0 )
     {
@@ -431,7 +433,7 @@ foreach ( $items as $item )
     {
         if ( false )
         {
-            $t->set_var( "basis_price", $item->localePrice( false, false, $PricesIncludeVAT ) );
+            $t->set_var( "basis_price", $item->localePrice( false, false, $pricesIncludeVAT ) );
             $t->parse( "cart_item_basis", "cart_item_basis_tpl", true );
         }
         else
@@ -445,19 +447,19 @@ foreach ( $items as $item )
 
 if ( $numberOfItems > 0 )
 {
-    $ShowCart = true;
+    $showCart = true;
 }
 
 $t->setAllStrings();
 
-turnColumnsOnOff( "header", $t, $ShowSavingsColumn, $ShowExTaxColumn, $ShowIncTaxColumn );
+turnColumnsOnOff( "header", $t, $showSavingsColumn, $showExTaxColumn, $showIncTaxColumn );
 
-if ( $ShowCart == true )
+if ( $showCart == true )
 {
     
     $order->orderTotals( $tax, $total );
 if($total["shiptax"]){
-  $ShowIncTaxColumn = true;
+  $showIncTaxColumn = true;
 }
 
     $t->set_var( "empty_cart", "" );
@@ -480,16 +482,16 @@ if($total["shiptax"]){
     $currency->setValue( $total["shipextax"] );
     $t->set_var( "shipping_ex_tax", $locale->format( $currency ) );
     
-    if ( $ShowSavingsColumn == false )
+    if ( $showSavingsColumn == false )
     {
-        $ColSpanSizeTotals--;
+        $colSpanSizeTotals--;
     }
     
-    $SubTotalsColumns = $ColSpanSizeTotals;
+    $subTotalsColumns = $colSpanSizeTotals;
     
-    if ( $ShowExTaxColumn == true )
+    if ( $showExTaxColumn == true )
     {
-        if ( $ShowExTaxTotal == true or $ShowIncTaxColumn == false )
+        if ( $showExTaxTotal == true or $showIncTaxColumn == false )
         {
             $t->parse( "total_ex_tax_item", "total_ex_tax_item_tpl" );
             $t->parse( "subtotal_ex_tax_item", "subtotal_ex_tax_item_tpl" );
@@ -504,13 +506,13 @@ if($total["shiptax"]){
     }
     else
     {
-        $ColSpanSizeTotals--;
+        $colSpanSizeTotals--;
         $t->set_var( "total_ex_tax_item", "" );
         $t->set_var( "subtotal_ex_tax_item", "" );
         $t->set_var( "shipping_ex_tax_item", "" );
     }
 
-    if ( $ShowIncTaxColumn == true )
+    if ( $showIncTaxColumn == true )
     {
         $t->parse( "total_inc_tax_item", "total_inc_tax_item_tpl" );
         $t->parse( "subtotal_inc_tax_item", "subtotal_inc_tax_item_tpl" );
@@ -518,22 +520,22 @@ if($total["shiptax"]){
     }
     else
     {
-        $ColSpanSizeTotals--;
+        $colSpanSizeTotals--;
         $t->set_var( "total_inc_tax_item", "" );
         $t->set_var( "subtotal_inc_tax_item", "" );
         $t->set_var( "shipping_inc_tax_item", "" );
     }
     
-    if ( $ShowIncTaxColumn and $ShowExTaxColumn and $ShowExTaxTotal )
+    if ( $showIncTaxColumn and $showExTaxColumn and $showExTaxTotal )
     {
-        $t->set_var( "subtotals_span_size", $SubTotalsColumns - 1 );
+        $t->set_var( "subtotals_span_size", $subTotalsColumns - 1 );
     }
     else
     {
-        $t->set_var( "subtotals_span_size", $ColSpanSizeTotals  );        
+        $t->set_var( "subtotals_span_size", $colSpanSizeTotals  );        
     }
     
-    $t->set_var( "totals_span_size", $ColSpanSizeTotals );
+    $t->set_var( "totals_span_size", $colSpanSizeTotals );
     $t->parse( "cart_item_list", "cart_item_list_tpl" );
     $t->parse( "full_cart", "full_cart_tpl" );
 
@@ -585,8 +587,8 @@ $t->set_var( "voucher_item_list", "" );
 
 if ( count ( $usedVouchers ) > 0 )
 {
-    turnColumnsOnOff( "voucher_used_header", $t , $ShowSavingsColumn, $ShowExTaxColumn, $ShowIncTaxColumn );
-    turnColumnsOnOff( "voucher_left_header", $t , $ShowSavingsColumn, $ShowExTaxColumn, $ShowIncTaxColumn );
+    turnColumnsOnOff( "voucher_used_header", $t , $showSavingsColumn, $showExTaxColumn, $showIncTaxColumn );
+    turnColumnsOnOff( "voucher_left_header", $t , $showSavingsColumn, $showExTaxColumn, $showIncTaxColumn );
     $j = 0;
     foreach ( $usedVouchers as $voucherUsed )
     {
@@ -608,8 +610,8 @@ if ( count ( $usedVouchers ) > 0 )
         $currency->setValue( $total["inctax"] );
         $t->set_var( "voucher_left_inc_tax", $locale->format( $currency ) );
 
-        turnColumnsOnOff( "voucher_used", $t, $ShowSavingsColumn, $ShowExTaxColumn, $ShowIncTaxColumn );
-        turnColumnsOnOff( "voucher_left", $t, $ShowSavingsColumn, $ShowExTaxColumn, $ShowIncTaxColumn );
+        turnColumnsOnOff( "voucher_used", $t, $showSavingsColumn, $showExTaxColumn, $showIncTaxColumn );
+        turnColumnsOnOff( "voucher_left", $t, $showSavingsColumn, $showExTaxColumn, $showIncTaxColumn );
         $t->parse( "voucher_item", "voucher_item_tpl", true );
         
     }

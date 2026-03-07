@@ -29,6 +29,23 @@ $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZBulkmailMain", "DefaultSection" );
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 
+$action            = eZHTTPTool::getVar( 'Action' );
+$categoryAll       = eZHTTPTool::getVar( 'CategoryAll' );
+$categoryArrayID   = $_POST['CategoryArrayID'] ?? [];
+$categoryID        = eZHTTPTool::getVar( 'CategoryID' );
+$email             = eZHTTPTool::getVar( 'Email' );
+$hash              = eZHTTPTool::getVar( 'Hash' );
+$mailID            = eZHTTPTool::getVar( 'MailID' );
+$new               = eZHTTPTool::getVar( 'New' );
+$offset            = eZHTTPTool::getVar( 'Offset' );
+$ok                = eZHTTPTool::getVar( 'Ok' );
+$password          = eZHTTPTool::getVar( 'Password' );
+$sendDelay         = eZHTTPTool::getVar( 'SendDelay' );
+$subscribe         = eZHTTPTool::getVar( 'Subscribe' );
+$subscribeButton   = eZHTTPTool::getVar( 'SubscribeButton' );
+$unSubscribe       = eZHTTPTool::getVar( 'UnSubscribe' );
+$unSubscribeButton = eZHTTPTool::getVar( 'UnSubscribeButton' );
+
 switch ( $url_array[2] )
 {
     case "subscriptionlist":
@@ -39,13 +56,13 @@ switch ( $url_array[2] )
 
     case "bulklist":
     {
-        $CategoryID = $url_array[3];
+        $categoryID = $url_array[3];
         include( "kernel/ezbulkmail/user/bulklist.php" );
     }
     break;
 
     case "newsubscription" :
-        $New = "new";
+        $new = "new";
     case "login" :
     {
         if ( $ini->variable( "eZBulkMailMain", "UseEZUser" ) == "enabled" )
@@ -68,7 +85,7 @@ switch ( $url_array[2] )
 
     case "confirmsubscription" :
     {
-        $Hash = $url_array[3];
+        $hash = $url_array[3];
         include( "kernel/ezbulkmail/user/subscriptionlogin.php" );
     }
     break;
@@ -81,16 +98,16 @@ switch ( $url_array[2] )
 
     case "singlelistsubscribe" :
     {
-        $Subscribe = "yes";
-        $Hash = $url_array[3];
+        $subscribe = "yes";
+        $hash = $url_array[3];
         include( "kernel/ezbulkmail/user/singlelist.php" );
     }
     break;
     
     case "singlelistunsubscribe" :
     {
-        $UnSubscribe = "yes";
-        $Hash = $url_array[3];
+        $unSubscribe = "yes";
+        $hash = $url_array[3];
         include( "kernel/ezbulkmail/user/singlelist.php" );
     }
     break;
@@ -104,8 +121,8 @@ switch ( $url_array[2] )
 
     case "view" :
     {
-        $MailID = $url_array[3];
-        if( !is_numeric( $MailID ) )
+        $mailID = $url_array[3];
+        if( !is_numeric( $mailID ) )
         {
             eZHTTPTool::header( "Location: /error/404" );
             exit();

@@ -31,7 +31,7 @@
 // include_once( "classes/ezcctool.php" );
 // include_once( "eztrade/classes/ezvoucher.php" );
 
-if ( isset ( $Back ) )
+if ( isset ( $back ) )
 {
     eZHTTPTool::header( "Location: /trade/checkout/" );
     exit();
@@ -54,7 +54,7 @@ $t->setAllStrings();
 $t->set_block( "voucher_tpl", "error_tpl", "error" );
 $t->set_var( "error", "" );
 
-if ( $Action == "Verify" )
+if ( $action == "Verify" )
 {
     $voucher = eZVoucher::getFromKeyNumber( $KeyNumber );
     if ( is_a ( $voucher, "eZVoucher" ) )
@@ -76,14 +76,14 @@ if ( $Action == "Verify" )
     }
 
     $t->parse( "error", "error_tpl" );
-    $PaymentSuccess = false;
+    $paymentSuccess = false;
 }
 
 
-// $ChargeTotal is the value to charge the customer with
+// $chargeTotal is the value to charge the customer with
 
-$t->set_var( "order_id", $PreOrderID );
-$t->set_var( "payment_type", $PaymentType );
+$t->set_var( "order_id", $preOrderID );
+$t->set_var( "payment_type", $paymentType );
 
 $t->pparse( "output", "voucher_tpl" );
 ?>

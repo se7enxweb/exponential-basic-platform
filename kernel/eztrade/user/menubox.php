@@ -29,6 +29,8 @@ $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTradeMain", "Language" );
 $CategoryListProductImages = $ini->variable( "eZTradeMain", "CategoryListProductImages" ) == "enabled" ? true : false;
 
+$categoryID = $categoryID ?? eZHTTPTool::getVar( 'CategoryID' );
+
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezdb.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
@@ -49,7 +51,7 @@ $t->set_block( "category_image_list_tpl", "category_image_tpl", "category_image"
 $t->set_var( "sitedesign", $GlobalSiteDesign );
 
 $category = new eZProductCategory(  );
-$category->get( $CategoryID );
+$category->get( $categoryID );
 
 $categoryList = $category->getByParent( $category );
 

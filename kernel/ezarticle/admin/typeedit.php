@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: typeedit.php 6206 2001-07-19 12:19:22Z jakobn $
+// $id: typeedit.php 6206 2001-07-19 12:19:22Z jakobn $
 //
 // Created on: <20-Dec-2000 18:24:06 bf>
 //
@@ -25,7 +25,7 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /article/type/list/" );
     exit();
@@ -36,36 +36,36 @@ if ( isset( $Cancel ) )
 
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 $move_item = true;
 
 // include_once( "ezarticle/classes/ezarticletype.php" );
 // include_once( "ezarticle/classes/ezarticleattribute.php" );
 
-if( isset( $Ok ) || isset( $NewAttribute ) )
+if( isset( $ok ) || isset( $newAttribute ) )
 {
-    if( is_numeric( $TypeID ) )
+    if( is_numeric( $typeID ) )
     {
-        $type = new eZArticleType( $TypeID );
+        $type = new eZArticleType( $typeID );
     }
     else
     {
         $type = new eZArticleType();
     }
 
-    $type->setName( htmlspecialchars( $Name ) );
+    $type->setName( htmlspecialchars( $name ) );
     $type->store();
 
-    $TypeID = $type->id();
+    $typeID = $type->id();
 
     // update attributes
     $i =0;
-    if ( isset( $AttributeName ) && count( $AttributeName ) > 0 )
+    if ( isset( $attributeName ) && count( $attributeName ) > 0 )
     {
 
-        foreach ( $AttributeName as $attribute )
+        foreach ( $attributeName as $attribute )
         {
-            $att = new eZArticleAttribute( $AttributeID[$i] );
+            $att = new eZArticleAttribute( $attributeID[$i] );
             $att->setName( htmlspecialchars( $attribute ) );
             $att->setType( $type );
             $att->store();            
@@ -74,64 +74,64 @@ if( isset( $Ok ) || isset( $NewAttribute ) )
         }
     }
     
-    $Action = "edit";
-    $ActionValue = "update";
+    $action = "edit";
+    $actionValue = "update";
 }
 
-if ( isset( $NewAttribute ) )
+if ( isset( $newAttribute ) )
 {
     $attribute = new eZArticleAttribute();
     $attribute->setType( $type );
     $attribute->setName( "New attribute" );
     $attribute->store();
-    $ActionValue = "update";
-    $Action = "edit";
+    $actionValue = "update";
+    $action = "edit";
 }
 
 
-if( isset( $Action ) && $Action == "up" && isset( $AttributeID ) )
+if( isset( $action ) && $action == "up" && isset( $attributeID ) )
 {
-    $attribute = new eZArticleAttribute( $AttributeID );
+    $attribute = new eZArticleAttribute( $attributeID );
     $attribute->moveUp();
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /article/type/edit/$TypeID/?$Action=update" );
+    eZHTTPTool::header( "Location: /article/type/edit/$typeID/?$action=update" );
     exit();
 }
 
-if( isset( $Action ) && $Action == "down" && isset( $AttributeID ) )
+if( isset( $action ) && $action == "down" && isset( $attributeID ) )
 {
-    $attribute = new eZArticleAttribute( $AttributeID );
+    $attribute = new eZArticleAttribute( $attributeID );
     $attribute->moveDown();
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /article/type/edit/$TypeID/?$Action=update" );
+    eZHTTPTool::header( "Location: /article/type/edit/$typeID/?$action=update" );
     exit();
 }
 
-if( isset( $Ok ) )
+if( isset( $ok ) )
 {
     eZHTTPTool::header( "Location: /article/type/list/" );
     exit();
 }
 
-if ( isset ( $DeleteSelected ) )
+if ( isset ( $deleteSelected ) )
 {
-    if ( count ( $DeleteAttributes ) > 0 )
+    if ( count ( $deleteAttributes ) > 0 )
     {
-        foreach ( $DeleteAttributes as $attID )
+        foreach ( $deleteAttributes as $attID )
         {
             $attribute = new eZArticleAttribute( $attID );
             $attribute->delete();
         }
     }
-    $Action = "edit";
-    $ActionValue = "update";
+    $action = "edit";
+    $actionValue = "update";
 }
 
 
-if ( $Action == "delete" )
+if ( $action == "delete" )
 {
     $type = new eZArticleType();
-    $type->get( $TypeID );
+    $type->get( $typeID );
 
     $type->delete();
     
@@ -140,7 +140,7 @@ if ( $Action == "delete" )
 }
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "typeedit.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "typeedit.php" );
 
 $t->setAllStrings();
 
@@ -169,20 +169,20 @@ $t->set_var( "description_value", "" );
 $t->set_var( "name_value", "" );
 $t->set_var( "type_id", "" );
 
-if( !isset( $ActionValue ) )
+if( !isset( $actionValue ) )
 {
-    $ActionValue = "insert";
+    $actionValue = "insert";
 }
 // edit
-if ( $Action == "edit" )
+if ( $action == "edit" )
 {
     $type = new eZArticleType();
-    $type->get( $TypeID );
+    $type->get( $typeID );
 
     $t->set_var( "name_value", $type->name() );
     
-    $t->set_var( "action_value", $ActionValue );
-    $t->set_var( "type_id", $TypeID );
+    $t->set_var( "action_value", $actionValue );
+    $t->set_var( "type_id", $typeID );
 
 
     $attributes = $type->attributes();

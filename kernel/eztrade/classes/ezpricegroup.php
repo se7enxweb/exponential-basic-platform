@@ -159,6 +159,17 @@ class eZPriceGroup
     */
     static public function priceGroups( $inUser, $as_object = true )
     {
+        // Cache per user+mode: same user call is repeated for every product on a listing page
+        static $cache = [];
+        if ( is_a( $inUser, "eZUser" ) )
+            $userID = $inUser->id();
+        else if ( is_numeric( $inUser ) )
+            $userID = (int) $inUser;
+        else
+            $userID = 0;
+        $cacheKey = "$userID|" . ( $as_object ? 'obj' : 'id' );
+        if ( isset( $cache[$cacheKey] ) ) return $cache[$cacheKey];
+
         $group_string = false;
         if ( is_a( $inUser, "eZUser" ) )
         {
@@ -195,6 +206,7 @@ class eZPriceGroup
                 $ret[] = $as_object ? new eZPriceGroup( $row[$db->fieldName("ID")] ) : $row[$db->fieldName("ID")];
             }
         }
+        $cache[$cacheKey] = $ret;
         return $ret;
     }
 
@@ -412,6 +424,10 @@ class eZPriceGroup
     */
     static public function correctPrice( $productid, $priceid, $optionid = 0, $valueid = 0 )
     {
+        static $cache = [];
+        $key = "$productid|" . ( is_array( $priceid ) ? implode( ',', $priceid ) : $priceid ) . "|$optionid|$valueid";
+        if ( isset( $cache[$key] ) ) return $cache[$key];
+
         $db = eZDB::globalDatabase();
 
         $ini = eZINI::instance( 'site.ini' );
@@ -449,8 +465,12 @@ class eZPriceGroup
 
             }
             if ( isset( $array ) && count( $array ) == 1 )
-                return $array[0][$db->fieldName("Price")];
+            {
+                $cache[$key] = $array[0][$db->fieldName("Price")];
+                return $cache[$key];
+            }
         }
+        $cache[$key] = false;
         return false;
     }
 
@@ -459,10 +479,15 @@ class eZPriceGroup
     */
     static public function prices( $productid, $optionid = 0, $valueid = 0 )
     {
+        static $cache = [];
+        $key = "$productid|$optionid|$valueid";
+        if ( isset( $cache[$key] ) ) return $cache[$key];
+
         $db = eZDB::globalDatabase();
         $db->array_query( $array, "SELECT PriceID, Price FROM eZTrade_ProductPriceLink
                                    WHERE ProductID='$productid' AND OptionID='$optionid'
                                          AND ValueID='$valueid'" );
+        $cache[$key] = $array;
         return $array;
     }
 

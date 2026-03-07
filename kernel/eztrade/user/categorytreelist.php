@@ -47,7 +47,7 @@ $t->set_block( "top_category_tpl", "level_1_category_tpl", "level_1_category" );
 $t->setAllStrings();
 
 $category = new eZProductCategory(  );
-$category->get( $CategoryID );
+$category->get( $categoryID );
 
 
 $categoryList = $category->getByParent( $category );

@@ -36,13 +36,13 @@ $errorIni = new eZINI( "kernel/ezpoll/admin/intl/" . $Language . "/pollist.php.i
 require( "kernel/ezuser/admin/admincheck.php" );
 
 // Language
-$LangaugeIni = new eZINI( "kernel/ezpoll/admin/" . "intl/" . $Language . "/pollist.php.ini", false );
-$yes = $LangaugeIni->variable( "strings", "yes" );
-$no = $LangaugeIni->variable( "strings", "no" );
-$closed = $LangaugeIni->variable( "strings", "closed" );
-$notClosed = $LangaugeIni->variable( "strings", "not_closed" );
+$langaugeIni = new eZINI( "kernel/ezpoll/admin/" . "intl/" . $Language . "/pollist.php.ini", false );
+$yes = $langaugeIni->variable( "strings", "yes" );
+$no = $langaugeIni->variable( "strings", "no" );
+$closed = $langaugeIni->variable( "strings", "closed" );
+$notClosed = $langaugeIni->variable( "strings", "not_closed" );
 
-if ( isset( $Action ) && $Action == "StoreMainPoll" )
+if ( isset( $action ) && $action == "StoreMainPoll" )
 {
     // clear the menu cache
     $files = eZCacheFile::files( "kernel/ezpoll/cache/",
@@ -70,7 +70,7 @@ if ( isset( $Action ) && $Action == "StoreMainPoll" )
     }
 }
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
     // clear the menu cache
     $files = eZCacheFile::files( "ezpoll/cache/",
@@ -82,9 +82,9 @@ if ( isset( $Action ) && $Action == "Delete" )
         $file->delete();
     }
     
-    if( count( $PollArrayID ) > 0 )
+    if( count( $pollArrayID ) > 0 )
     {
-        foreach( $PollArrayID as $doomedPoll )
+        foreach( $pollArrayID as $doomedPoll )
         {
             $poll = new eZPoll( $doomedPoll );
             $poll->delete();

@@ -38,16 +38,16 @@ $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZTodoMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZTodoMain", "DocumentRoot" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /todo/statustypelist/" );
     exit();
 }
 
-if ( isset( $Action ) && $Action == "insert" )
+if ( isset( $action ) && $action == "insert" )
 {
     $type = new eZStatus();
-    $type->setName( $Name );
+    $type->setName( $name );
     $type->store();
 
     eZHTTPTool::header( "Location: /todo/statustypelist/" );
@@ -55,11 +55,11 @@ if ( isset( $Action ) && $Action == "insert" )
 }
 
 // Update a category.
-if ( isset( $Action ) && $Action == "update" )
+if ( isset( $action ) && $action == "update" )
 {
     $type = new eZStatus();
-    $type->get( $CategoryID );
-    $type->setName( $Name );
+    $type->get( $categoryID );
+    $type->setName( $name );
     $type->store();
 
     eZHTTPTool::header( "Location: /todo/statustypelist/" );
@@ -67,11 +67,11 @@ if ( isset( $Action ) && $Action == "update" )
 }
 
 // Delete a category.
-if ( isset( $Action ) && $Action == "delete" )
+if ( isset( $action ) && $action == "delete" )
 {
 
     $type = new eZStatus();
-    $type->get( $CategoryID );
+    $type->get( $categoryID );
     $type->delete();
 
     eZHTTPTool::header( "Location: /todo/statustypelist/" );
@@ -89,15 +89,15 @@ $t->setAllStrings();
 $t->set_var( "action_value", "insert" );
 
 // Edit a category.
-if ( isset( $Action ) && $Action == "edit" )
+if ( isset( $action ) && $action == "edit" )
 {
     $type = new eZStatus();
-    $type->get( $CategoryID );
+    $type->get( $categoryID );
 
-    $CategoryName = $type->name();
+    $categoryName = $type->name();
 
     {
-        $type_array = $type->get( $CategoryID );
+        $type_array = $type->get( $categoryID );
         if ( is_bool( $type_array ) )
             $type_array = array();
         for ( $i=0; $i<count( $type_array); $i++ )
@@ -106,11 +106,11 @@ if ( isset( $Action ) && $Action == "edit" )
         }
     }
 
-    $t->set_var( "status_type_id", $CategoryID );
+    $t->set_var( "status_type_id", $categoryID );
     $t->set_var( "action_value", "update" );
 }
 
-$t->set_var( "status_type_name", $CategoryName );
+$t->set_var( "status_type_name", $categoryName );
 $t->set_var( "document_root", $DOC_ROOT );
 
 $t->pparse( "output", "statustypeedit" );

@@ -36,14 +36,14 @@ $ini = eZINI::instance( 'site.ini' );
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 $Language = $ini->variable( "eZGroupEventCalendarMain", "Language" );
 
-$TemplateDir = $ini->variable( "eZGroupEventCalendarMain", "TemplateDir" );
+$templateDir = $ini->variable( "eZGroupEventCalendarMain", "TemplateDir" );
 $GlobalSectionID = $ini->variable( "eZGroupEventCalendarMain", "DefaultSection" );
 
-$Locale = new eZLocale( $Language );
+$locale = new eZLocale( $Language );
 
 $today = new eZDateTime();
-if ( $Year == false )
-    $Year = $today->year();
+if ( $year == false )
+    $year = $today->year();
 
 // init the section
 $sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
@@ -53,16 +53,16 @@ $templateDirTmp = $sectionObject->templateStyle();
 
 if ( $templateDirTmp != null && trim( $templateDirTmp ) != "" )
 {
-    $TemplateDir = "kernel/ezgroupeventcalendar/user/" . preg_replace( "/(.+)\/.+(\/?)/", "/\\1/$templateDirTmp\\2", $TemplateDir );
+    $templateDir = "kernel/ezgroupeventcalendar/user/" . preg_replace( "/(.+)\/.+(\/?)/", "/\\1/$templateDirTmp\\2", $templateDir );
 }
 else
 {
-    $TemplateDir = "kernel/ezgroupeventcalendar/user/" . $ini->variable( "eZGroupEventCalendarMain", "TemplateDir" );
+    $templateDir = "kernel/ezgroupeventcalendar/user/" . $ini->variable( "eZGroupEventCalendarMain", "TemplateDir" );
 }
 
-$t = new eZTemplate( $TemplateDir,
+$t = new eZTemplate( $templateDir,
                      "kernel/ezgroupeventcalendar/user/intl", $Language, "yearview.php",
-                     "default", "kernel/ezgroupeventcalendar" . "/user", $Year );
+                     "default", "kernel/ezgroupeventcalendar" . "/user", $year );
 
 $t->set_file( "year_view_page_tpl", "yearview.tpl" );
 $t->set_var("date_year", $today->year());
@@ -73,10 +73,10 @@ $build = false;
 if ( $t->hasCache() )
 {
 //    print( "cached<br />" );
-    $file = new eZCacheFile( "ezgroupeventcalendar/user/cache", array( "yearview.tpl", "default", $Language, $Year ), "cache", "-" );
+    $file = new eZCacheFile( "ezgroupeventcalendar/user/cache", array( "yearview.tpl", "default", $Language, $year ), "cache", "-" );
     $dt = $file->lastModified();
 
-    if ( $Year == $today->year() && $dt->day() != $today->day() )
+    if ( $year == $today->year() && $dt->day() != $today->day() )
     {
         $file->delete();
         $build = true;
@@ -108,20 +108,20 @@ if ( $build == true )
 
     $date = new eZDate();
 
-    if ( $Year != "" )
+    if ( $year != "" )
     {
-        $date->setYear( $Year );
+        $date->setYear( $year );
     }
     else
     {
-        $Year = $date->year();
+        $year = $date->year();
     }
 
-    $session->setVariable( "Year", $Year );
+    $session->setVariable( "Year", $year );
 
-    $t->set_var( "year_number", $Year );
-    $t->set_var( "prev_year_number", $Year - 1 );
-    $t->set_var( "next_year_number", $Year + 1 );
+    $t->set_var( "year_number", $year );
+    $t->set_var( "prev_year_number", $year - 1 );
+    $t->set_var( "next_year_number", $year + 1 );
 
     $i=0;
     for ( $month=1; $month<13; $month++ )
@@ -144,7 +144,7 @@ if ( $build == true )
 
         $date->setMonth( $month );
         $t->set_var( "month_number", $month );
-        $t->set_var( "month_name", $Locale->monthName( $date->month(), false ) );
+        $t->set_var( "month_name", $locale->monthName( $date->month(), false ) );
 
         $t->set_var( "week", "" );
         for ( $week=0; $week<6; $week++ )
@@ -155,7 +155,7 @@ if ( $build == true )
             for ( $day=1; $day<=7; $day++ )
             {
                 $date->setDay( 1 );
-                $firstDay = $date->dayOfWeek( $Locale->mondayFirst() );
+                $firstDay = $date->dayOfWeek( $locale->mondayFirst() );
 
                 $currentDay = $day + ( $week * 7 ) - $firstDay + 1;
 

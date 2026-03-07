@@ -400,14 +400,7 @@ class ezpbKernelAdmin implements ezpWebBasedKernelHandler
     $GLOBALS["DEBUG_EZTEMPLATE"] = false;
 
     global $GlobalSiteIni;
-    $GlobalSiteIni =& $ini;
-
-    // Set the global nVH variables.
-    $GlobalSiteIni->Index = $index;
-    $GlobalSiteIni->WWWDir = $wwwDir;
-    $GlobalSiteIni->SiteDir = $siteDir;
-    unset( $index );
-    unset( $wwwDir );
+    $GlobalSiteIni = $ini;
 
     // Find out, where our files are.
     if ( preg_match( "/(.*\/)([^\/]+\.php)$/", $_SERVER['SCRIPT_FILENAME'], $regs ) )
@@ -456,7 +449,7 @@ class ezpbKernelAdmin implements ezpWebBasedKernelHandler
         $index = "";
     else
     {
-        // Get the right $REQUEST_URI, when using nVH setup.
+        // Get the right $_SERVER['REQUEST_URI'], when using nVH setup.
         if ( preg_match( "/^$wwwDir$index(.+)/", $_SERVER['PHP_SELF'], $req ) )
             $_SERVER['REQUEST_URI'] = $req[1];
     }
@@ -464,6 +457,11 @@ class ezpbKernelAdmin implements ezpWebBasedKernelHandler
     // Remove url parameters
     preg_match( "/([^?]+)/", $_SERVER['REQUEST_URI'], $regs );
     $_SERVER['REQUEST_URI'] = $regs[1];
+
+    // Set the global nVH variables now that index/wwwDir/siteDir are computed.
+    $GlobalSiteIni->Index = $index;
+    $GlobalSiteIni->WWWDir = $wwwDir;
+    $GlobalSiteIni->SiteDir = $siteDir;
 
     // Start the buffer cache
     ob_start();
@@ -497,6 +495,13 @@ try
     $user = eZUser::currentUser();
     if ( $user )
     {
+        // Redirect-only modules must run before any HTML output.
+        if ( $url_array[2] == "gotolink" )
+        {
+            include( "kernel/ez" . $url_array[1] . "/admin/datasupplier.php" );
+            exit();
+        }
+
         if ( $url_array[1] == "help" )
         {
             $HelpMode  = "enabled";
@@ -602,6 +607,7 @@ try
                 }
             }
 
+            /*
             // 7x Register Globals Replacement
             foreach($_COOKIE as $key => $value) {
                 if(!is_array($value)){
@@ -648,6 +654,7 @@ try
                     ${$key} = $value;
                 }
             }
+            */
 
             // parse the URI
             $page = "";
@@ -1066,7 +1073,7 @@ $ini = eZINI::instance();
             $templateResult = $moduleResult['content'];
         }
         */
-        $templateResult = $moduleResult;
+        $templateResult = $moduleResult ?? null;
 
         eZDebug::addTimingPoint( "Script end" );
 
@@ -1079,7 +1086,7 @@ $ini = eZINI::instance();
 
         $this->shutdown();
 
-        return new ezpbKernelResult( $content, array( 'module_result' => $moduleResult ) );
+        return new ezpbKernelResult( $content, array( 'module_result' => $moduleResult ?? null ) );
     }
 
     /**

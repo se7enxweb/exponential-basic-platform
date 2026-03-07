@@ -122,7 +122,7 @@ class eZImage
         $description = $db->escapeString( $this->Description );
         $caption = $db->escapeString( $this->Caption );
         $filename = $db->escapeString( $this->FileName );
-        $originalfilename = $db->fieldName( $this->OriginalFileName );
+        $originalfilename = $db->escapeString( $this->OriginalFileName );
         $keywords = $db->escapeString( $this->Keywords );
 
         if ( !isset( $this->ID ) )
@@ -350,6 +350,24 @@ class eZImage
     /*!
       Fetches the object information from the database.
     */
+    /** Pre-fetched image rows keyed by image ID. Populated by prefetch(). */
+    static $rowCache = [];
+
+    /*!
+      Batch-prefetches eZImage rows for a list of IDs into the static cache so
+      that individual get() calls can skip their SELECT queries.
+    */
+    static function prefetch( array $ids )
+    {
+        if ( empty( $ids ) ) return;
+        $db = eZDB::globalDatabase();
+        $idList = implode( ',', array_map( 'intval', $ids ) );
+        $rows = [];
+        $db->array_query( $rows, "SELECT * FROM eZImageCatalogue_Image WHERE ID IN ($idList)" );
+        foreach ( $rows as $row )
+            self::$rowCache[ $row[$db->fieldName( 'ID' )] ] = $row;
+    }
+
     function get( $id="" )
     {
         $db = eZDB::globalDatabase();
@@ -357,7 +375,12 @@ class eZImage
         $ret = false;
         if ( $id != "" )
         {
-            $db->array_query( $image_array, "SELECT * FROM eZImageCatalogue_Image WHERE ID='$id'" );
+            // Fast path: use prefetched row if available
+            if ( isset( self::$rowCache[$id] ) )
+                $image_array = [ self::$rowCache[$id] ];
+            else
+                $db->array_query( $image_array, "SELECT * FROM eZImageCatalogue_Image WHERE ID='$id'" );
+
             if ( count( $image_array ) > 0 )
             {
                 if ( count( $image_array ) > 1 )
@@ -1075,7 +1098,8 @@ class eZImage
            if ( $postfix != "" )
            {
                // Copy the file since we support it directly
-   			   if ( array_pop(explode('.', $file->tmpName() )) == $suffix ) {
+   			   $tmpNameParts = explode( '.', $file->tmpName() );
+   			   if ( array_pop( $tmpNameParts ) == $suffix ) {
 			   		$fname = basename($file->tmpName(), '.'.$suffix);
 					$tmpname = $fname . $uniqueID . '.' . $suffix;
 					$postfix = "";

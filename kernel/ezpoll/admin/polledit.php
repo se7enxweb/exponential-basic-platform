@@ -39,25 +39,25 @@ $errorIni = new eZINI( "kernel/ezpoll/admin/intl/" . $Language . "/polledit.php.
  
 require( "kernel/ezuser/admin/admincheck.php" );
 
-if ( isset( $Back ) )
+if ( isset( $back ) )
 {
     eZHTTPTool::header( "Location: /poll/pollist/" );
     exit();
 }
 
 // Insert
-if ( isset( $Action ) && $Action == "New" )
+if ( isset( $action ) && $action == "New" )
 {
-    $PollID = false;
-    $ShowResult = false;
+    $pollID = false;
+    $showResult = false;
 }
 // Insert
-if ( isset( $Action ) && $Action == "Insert" )
+if ( isset( $action ) && $action == "Insert" )
 {
-    if ( $Name )
+    if ( $name )
     {
         $poll = new eZPoll();
-        if ( $IsEnabled == "on" )
+        if ( $isEnabled == "on" )
         {
             $poll->setIsEnabled ( true );
         }
@@ -66,7 +66,7 @@ if ( isset( $Action ) && $Action == "Insert" )
             $poll->setIsEnabled ( false );
         }
 
-        if ( isset( $IsClosed ) && $IsClosed == "on" )
+        if ( isset( $isClosed ) && $isClosed == "on" )
         {
             $poll->setIsClosed ( true );
         }
@@ -75,7 +75,7 @@ if ( isset( $Action ) && $Action == "Insert" )
             $poll->setIsClosed ( false );
         }
         
-        if ( $ShowResult == "on" )
+        if ( $showResult == "on" )
         {
             $poll->setShowResult ( true );
         }
@@ -84,7 +84,7 @@ if ( isset( $Action ) && $Action == "Insert" )
             $poll->setShowResult ( false );
         }
         
-        if ( isset( $Anonymous ) && $Anonymous == "on" )
+        if ( isset( $anonymous ) && $anonymous == "on" )
         {
             $poll->setAnonymous ( true );
         }
@@ -93,25 +93,25 @@ if ( isset( $Action ) && $Action == "Insert" )
         $poll->setAnonymous ( false );
         }
         
-        if ( !$Description )
+        if ( !$description )
         {
             $languageIni = new eZINI( "kernel/ezpoll/admin/" . "intl/" . $Language . "/polledit.php.ini", false );
-            $Description =  $languageIni->variable( "strings", "description_default" );
+            $description =  $languageIni->variable( "strings", "description_default" );
         }
         
-        $poll->setName( $Name );
-        $poll->setDescription( $Description );
+        $poll->setName( $name );
+        $poll->setDescription( $description );
         $poll->store();
         
-        $PollID = $poll->id();
+        $pollID = $poll->id();
         
         // clear the menu cache
         if ( file_exists("ezpoll/cache/menubox.cache" )  )
             eZPBFile::unlink( "ezpoll/cache/menubox.cache" );
         
-        if ( isset( $Choice ) == true  )
+        if ( isset( $choice ) == true  )
         {
-            $Action = "Edit";
+            $action = "Edit";
         }
         else
         {
@@ -125,22 +125,22 @@ if ( isset( $Action ) && $Action == "Insert" )
     }
 }
 
-if ( isset ( $Choice ) )
+if ( isset ( $choice ) )
 {
     $item = new eZPollChoice();
     $item->setName( $errorIni->variable( "strings", "newitem") );
-    $item->setPollID( $PollID );
+    $item->setPollID( $pollID );
     $item->store();
     
 }
 
-if ( isset( $DeleteChoice ) )
+if ( isset( $deleteChoice ) )
 {
-    if( count( $PollArrayID ) > 0 )
+    if( count( $pollArrayID ) > 0 )
     {
-        foreach( $PollArrayID as $itemIndex )
+        foreach( $pollArrayID as $itemIndex )
         {
-            $item = new eZPollChoice( $PollChoiceID[$itemIndex] );
+            $item = new eZPollChoice( $pollChoiceID[$itemIndex] );
             $item->delete();
         }
     }
@@ -148,12 +148,12 @@ if ( isset( $DeleteChoice ) )
 
 
 // Update
-if ( isset( $Action ) && $Action == "Update" )
+if ( isset( $action ) && $action == "Update" )
 {
     $poll = new eZPoll();
-    $poll->get( $PollID );
+    $poll->get( $pollID );
 
-    if ( $IsEnabled== "on" )
+    if ( $isEnabled== "on" )
     {
         $poll->setIsEnabled ( true );
     }
@@ -162,7 +162,7 @@ if ( isset( $Action ) && $Action == "Update" )
         $poll->setIsEnabled ( false );
     }
 
-    if ( $IsClosed == "on" )
+    if ( $isClosed == "on" )
     {
         $poll->setIsClosed ( true );
     }
@@ -171,7 +171,7 @@ if ( isset( $Action ) && $Action == "Update" )
         $poll->setIsClosed ( false );
     }
 
-    if ( $ShowResult == "on" )
+    if ( $showResult == "on" )
     {
         $poll->setShowResult ( true );
     }
@@ -180,7 +180,7 @@ if ( isset( $Action ) && $Action == "Update" )
         $poll->setShowResult ( false );
     }
 
-    if ( $Anonymous == "on" )
+    if ( $anonymous == "on" )
     {
         $poll->setAnonymous ( true );
     }
@@ -189,17 +189,17 @@ if ( isset( $Action ) && $Action == "Update" )
         $poll->setAnonymous ( false );
     }
 
-    $poll->setName( $Name );
-    $poll->setDescription( $Description );
+    $poll->setName( $name );
+    $poll->setDescription( $description );
     $poll->store();
 
-    if( count( $PollChoiceID ) > 0 )
+    if( count( $pollChoiceID ) > 0 )
     {
         $i = 0;
-        foreach( $PollChoiceID as $itemID )
+        foreach( $pollChoiceID as $itemID )
         {
             $item = new eZPollChoice( $itemID );
-            $item->setName( $PollChoiceName[$i] );
+            $item->setName( $pollChoiceName[$i] );
             $item->store();
             $i++;
         }
@@ -208,21 +208,21 @@ if ( isset( $Action ) && $Action == "Update" )
     if ( file_exists("ezpoll/cache/menubox.cache" )  )
         eZPBFile::unlink( "ezpoll/cache/menubox.cache" );
 
-    if( isset( $Ok ) )
+    if( isset( $ok ) )
     {
         eZHTTPTool::header( "Location: /poll/pollist/" );
         exit();
     }
 
-    eZHTTPTool::header( "Location: /poll/polledit/edit/$PollID" );
+    eZHTTPTool::header( "Location: /poll/polledit/edit/$pollID" );
     exit();
 }
 
 // Delete
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
     $poll = new eZPoll();
-    $poll->get( $PollID );
+    $poll->get( $pollID );
     $poll->delete();
 
     // clear the menu cache
@@ -246,39 +246,39 @@ $t->set_block( "poll_edit_page", "poll_choice_tpl", "poll_choice" );
 $t->set_var( "site_style", $SiteDesign );
 
 $Action_value = "insert";
-$Name = "";
-$Description = "";
-$IsEnabled = "";
-$IsClosed = "";
-$Anonymous = "";
+$name = "";
+$description = "";
+$isEnabled = "";
+$isClosed = "";
+$anonymous = "";
 $nopolls = "";
 // Edit
-if ( isset( $Action ) && $Action == "Edit" )
+if ( isset( $action ) && $action == "Edit" )
 {
     $poll = new eZPoll();
-    $poll->get( $PollID );
+    $poll->get( $pollID );
 
-    $Name = $poll->name();
-    $Description = $poll->description();
+    $name = $poll->name();
+    $description = $poll->description();
 
     if ( $poll->isEnabled() == true )
     {
-        $IsEnabled = "checked";
+        $isEnabled = "checked";
     }
 
     if ( $poll->isClosed() == true )
     {
-        $IsClosed = "checked";
+        $isClosed = "checked";
     }
 
     if ( $poll->showResult() == true )
     {
-        $ShowResult = "checked";
+        $showResult = "checked";
     }
 
     if ( $poll->anonymous() == true )
     {
-        $Anonymous = "checked";
+        $anonymous = "checked";
     }
 
     $Action_value = "update";
@@ -289,7 +289,7 @@ if ( isset( $Action ) && $Action == "Edit" )
 // Poll choice list
 $pollChoice = new eZPollChoice();
 
-$pollChoiceList = $pollChoice->getAll( $PollID );
+$pollChoiceList = $pollChoice->getAll( $pollID );
 
 if ( !$pollChoiceList )
 {
@@ -317,13 +317,13 @@ foreach( $pollChoiceList as $pollChoiceItem )
     $i++;
 }
 
-$t->set_var( "poll_id", $PollID );
-$t->set_var( "name_value", $Name );
-$t->set_var( "description_value", $Description );
-$t->set_var( "is_enabled", $IsEnabled );
-$t->set_var( "is_closed", $IsClosed );
-$t->set_var( "show_result", $ShowResult );
-$t->set_var( "anonymous", $Anonymous );
+$t->set_var( "poll_id", $pollID );
+$t->set_var( "name_value", $name );
+$t->set_var( "description_value", $description );
+$t->set_var( "is_enabled", $isEnabled );
+$t->set_var( "is_closed", $isClosed );
+$t->set_var( "show_result", $showResult );
+$t->set_var( "anonymous", $anonymous );
 
 $t->set_var( "action_value", $Action_value );
 $t->set_var( "nopolls", $nopolls );

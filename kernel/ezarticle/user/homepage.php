@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: listtable.php,v 1.2 2001/07/19 12:48:35 jakobn Exp $
+// $id: listtable.php,v 1.2 2001/07/19 12:48:35 jakobn Exp $
 //
 // Created on: <22-Jun-2001 13:12:22 br>
 //
@@ -43,33 +43,33 @@
 		
 $ini = eZINI::instance( 'site.ini' );
 
-$PricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enabled" ? true : false;
-$Dealer = $ini->variable( "homepage", "DealerDescription" );
-$Distributor = $ini->variable( "homepage", "DistributorDescription" );
-$DistProdCats = $ini->variable( "homepage", "DistProdCats" );
-$DistThumbWidth = $ini->variable( "homepage", "DistThumbWidth" );
-$DistThumbHeight = $ini->variable( "homepage", "DistThumbHeight" );
-$DealerProdCats = $ini->variable( "homepage", "DealerProdCats" );
-$DealerThumbWidth = $ini->variable( "homepage", "DealerThumbWidth" );
-$DealerThumbHeight = $ini->variable( "homepage", "DealerThumbHeight" );
-$ArticleLimit = $ini->variable( "homepage", "ArticleLimit" );
-$ArticleThumbWidth = $ini->variable( "homepage", "ArticleThumbWidth" );
-$ArticleThumbHeight = $ini->variable( "homepage", "ArticleThumbHeight" );
-$HotDealsLimit = $ini->variable( "homepage", "HotDealsLimit" );
-$HotDealsThumbWidth = $ini->variable( "homepage", "HotDealsThumbWidth" );
-$HotDealsThumbHeight = $ini->variable( "homepage", "HotDealsThumbHeight" );
-$GalleryLimit = $ini->variable( "homepage", "GalleryLimit" );
-$CommentLimit = $ini->variable( "homepage", "CommentLimit" );
-$CommentLetterLimit = $ini->variable( "homepage", "CommentLetterLimit" );
-$Anonymous = $ini->variable( "eZForumMain", "AnonymousPoster" ); 
-$GalleryThumbWidth = $ini->variable( "homepage", "GalleryThumbWidth" );
-$GalleryThumbHeight = $ini->variable( "homepage", "GalleryThumbHeight" );
-$Language = $ini->variable( "eZUserMain", "Language" );
+$pricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enabled" ? true : false;
+$dealer = $ini->variable( "homepage", "DealerDescription" );
+$distributor = $ini->variable( "homepage", "DistributorDescription" );
+$distProdCats = $ini->variable( "homepage", "DistProdCats" );
+$distThumbWidth = $ini->variable( "homepage", "DistThumbWidth" );
+$distThumbHeight = $ini->variable( "homepage", "DistThumbHeight" );
+$dealerProdCats = $ini->variable( "homepage", "DealerProdCats" );
+$dealerThumbWidth = $ini->variable( "homepage", "DealerThumbWidth" );
+$dealerThumbHeight = $ini->variable( "homepage", "DealerThumbHeight" );
+$articleLimit = $ini->variable( "homepage", "ArticleLimit" );
+$articleThumbWidth = $ini->variable( "homepage", "ArticleThumbWidth" );
+$articleThumbHeight = $ini->variable( "homepage", "ArticleThumbHeight" );
+$hotDealsLimit = $ini->variable( "homepage", "HotDealsLimit" );
+$hotDealsThumbWidth = $ini->variable( "homepage", "HotDealsThumbWidth" );
+$hotDealsThumbHeight = $ini->variable( "homepage", "HotDealsThumbHeight" );
+$galleryLimit = $ini->variable( "homepage", "GalleryLimit" );
+$commentLimit = $ini->variable( "homepage", "CommentLimit" );
+$commentLetterLimit = $ini->variable( "homepage", "CommentLetterLimit" );
+$anonymous = $ini->variable( "eZForumMain", "AnonymousPoster" ); 
+$galleryThumbWidth = $ini->variable( "homepage", "GalleryThumbWidth" );
+$galleryThumbHeight = $ini->variable( "homepage", "GalleryThumbHeight" );
+$language = $ini->variable( "eZUserMain", "Language" );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                       "kernel/ezarticle/user/intl", $Language, "homepage.php" );
+                       "kernel/ezarticle/user/intl", $language, "homepage.php" );
 $t->setAllStrings();
 
 // get all fields from the database.
@@ -122,9 +122,9 @@ $t->pparse( "output", "listtable_tpl" );
 */
 
 
-$distProdArray = explode(';', $DistProdCats);
+$distProdArray = explode(';', $distProdCats);
 //print_r($distProdArray);
-$dealerProdArray = explode(';', $DealerProdCats);
+$dealerProdArray = explode(';', $dealerProdCats);
 //print_r($dealerProdArray);
 
 $user = eZUser::currentUser();
@@ -152,7 +152,7 @@ foreach ($distProdArray as $distProdCatID )
 	$image = $distCategory->image();
 	if ( $image->id() != 0 )
 	{
-		$variation = $image->requestImageVariation( $DistThumbWidth, $DistThumbHeight );
+		$variation = $image->requestImageVariation( $distThumbWidth, $distThumbHeight );
 		$t->set_var( "thumbnail_image_uri", $variation->imagePath() );
 		$t->set_var( "thumbnail_image_width", $variation->width() );
 		$t->set_var( "thumbnail_image_height", $variation->height() );
@@ -175,8 +175,8 @@ foreach ($dealerProdArray as $dealerProdCatID )
 	{
 		$t->set_var("dealer_row_close", "</tr>");
 	} 
-	$t->set_var( "dealer", $Dealer );
-		$t->set_var( "distributor", $Distributor );
+	$t->set_var( "dealer", $dealer );
+		$t->set_var( "distributor", $distributor );
 
 	$dealerCategory = new eZProductCategory( $dealerProdCatID );
 	$t->set_var( "category_id", $dealerCategory->id() );
@@ -187,7 +187,7 @@ foreach ($dealerProdArray as $dealerProdCatID )
 	$image = $dealerCategory->image();
 	if ( $image->id() != 0 )
 	{
-		$variation = $image->requestImageVariation( $DealerThumbWidth, $DealerThumbHeight );
+		$variation = $image->requestImageVariation( $dealerThumbWidth, $dealerThumbHeight );
 		$t->set_var( "thumbnail_image_uri", $variation->imagePath() );
 		$t->set_var( "thumbnail_image_width", $variation->width() );
 		$t->set_var( "thumbnail_image_height", $variation->height() );
@@ -199,12 +199,12 @@ $t->parse( "dealer_image_box", "dealer_image_box_tpl", true );
 
 // products
 $product = new eZProduct();
-$productList = $product->hotDealProducts( $HotDealsLimit );
+$productList = $product->hotDealProducts( $hotDealsLimit );
 
 $i = 0;
 foreach ($productList as $product)
 {
-	if ($i < $HotDealsLimit )
+	if ($i < $hotDealsLimit )
 	{
 		$t->set_var( "product_id", $product->id() );
 		// prevent html from being excaped ! render that html!
@@ -215,7 +215,7 @@ foreach ($productList as $product)
 		if ( $product->showPrice() == true )
 			{
 				$currency = new eZCurrency();
-				$currency->setValue( $product->correctPrice( $PricesIncludeVAT ) );
+				$currency->setValue( $product->correctPrice( $pricesIncludeVAT ) );
 				$t->set_var( "product_price", $locale->format( $currency ) );
 				$t->parse( "price", "price_tpl" );	
 			}
@@ -225,15 +225,15 @@ foreach ($productList as $product)
 		if ( $product->forum() )
 			{
 				$forum = $product->forum();
-				$MessageCount = $forum->messageCount( false, true );
-			if ( $MessageCount > 0 )
+				$messageCount = $forum->messageCount( false, true );
+			if ( $messageCount > 0 )
 				{
-					if ( $MessageCount == 1)
+					if ( $messageCount == 1)
 						$messageText = $t->get_var("intl-message");
 					else
 						$messageText = $t->get_var("intl-messages");
 
-					$t->set_var( "messages", $MessageCount."&nbsp;".$messageText );
+					$t->set_var( "messages", $messageCount."&nbsp;".$messageText );
 					$t->parse( "product_message_count", "product_message_count_tpl" );
 				}
 			else
@@ -246,7 +246,7 @@ foreach ($productList as $product)
 		if( is_object( $image ) )
 		{
 		$t->set_var( "image_caption", $image->caption() );
-		$variation = $image->requestImageVariation( $HotDealsThumbWidth, $HotDealsThumbHeight );
+		$variation = $image->requestImageVariation( $hotDealsThumbWidth, $hotDealsThumbHeight );
 		$t->set_var( "product_image_path", $variation->imagePath() );
 		$t->set_var( "product_image_width", $variation->width() );
 		$t->set_var( "product_image_height", $variation->height() );
@@ -258,21 +258,21 @@ $i++;
 $t->parse( "product_list", "product_list_tpl", true );
 
 $i = 0;
-if ( $i < $GalleryLimit )
+if ( $i < $galleryLimit )
 {
-	$imageCategories = eZImageCategory::getAll($GalleryLimit);
+	$imageCategories = eZImageCategory::getAll($galleryLimit);
 	foreach ($imageCategories as $category)
 	{
 			$images = $category->images( "time", 0, 1 );
 			if (count( $images ) < 1)
 			{
-				$GalleryLimit++;
+				$galleryLimit++;
 			}
 	}
 	$i++;
 }
 
-$imageCategories = eZImageCategory::getAll($GalleryLimit);
+$imageCategories = eZImageCategory::getAll($galleryLimit);
 $iei=0;
 foreach ($imageCategories as $category)
 	{
@@ -294,8 +294,8 @@ foreach ($imageCategories as $category)
 		}
 		$images = $category->images( "time", 0, 1 );
 		$t->set_var( "category_id", $category->id() );
-		if ( strlen( $category->name() ) > ($GalleryThumbWidth/10) )
-			$name = substr($category->name(), 0, $GalleryThumbWidth/10);
+		if ( strlen( $category->name() ) > ($galleryThumbWidth/10) )
+			$name = substr($category->name(), 0, $galleryThumbWidth/10);
 		else
 			$name = $category->name();
 		$t->set_var( "category_name", stripslashes($name) );
@@ -304,11 +304,11 @@ foreach ($imageCategories as $category)
 			$t->set_var( "category_description", $category->description() );
 		else
 			$t->set_var( "category_description", stripslashes( $category->name() ) );
-//		print_r( $images[0]->requestImageVariation( $GalleryThumbWidth, $GalleryThumbHeight ) ); exit();
+//		print_r( $images[0]->requestImageVariation( $galleryThumbWidth, $galleryThumbHeight ) ); exit();
 //		$image = new eZImage( $images[0]->id() );
 		if ( isset( $images[0] ) )
 			{	
-				$variation = $images[0]->requestImageVariation( $GalleryThumbWidth, $GalleryThumbHeight );
+				$variation = $images[0]->requestImageVariation( $galleryThumbWidth, $galleryThumbHeight );
 				$t->set_var( "thumbnail_image_uri", $variation->imagePath() );
 				$t->set_var( "thumbnail_image_width", $variation->width() );
 				$t->set_var( "thumbnail_image_height", $variation->height() );
@@ -324,7 +324,7 @@ $t->parse( "image_list", "image_list_tpl", true );
 
 
 $time = new eZDateTime();
-$messages = eZForumMessage::lastMessages( $CommentLimit );
+$messages = eZForumMessage::lastMessages( $commentLimit );
 
 foreach ($messages as $message)  
 {	
@@ -333,7 +333,7 @@ foreach ($messages as $message)
 		$t->set_var( "date_posted", $locale->format( $time ) );	
 		$t->set_var( "message_topic", stripslashes($message['Topic']) );
 		if ( $message['UserID'] == 0 )
-		    $messageAuthorName = $Anonymous;
+		    $messageAuthorName = $anonymous;
 		else
 		{
 			$messageAuthor = new eZUser( $message['UserID'] );
@@ -344,7 +344,7 @@ foreach ($messages as $message)
 		
 		if( isset( $message['Body'] ) )
 		{
-			$messageHeader = substr($message['Body'], 0, $CommentLetterLimit );
+			$messageHeader = substr($message['Body'], 0, $commentLetterLimit );
 			$t->set_var( "message_header", stripslashes($messageHeader)."..." );
 		}
 
@@ -359,7 +359,7 @@ else
 	$t->set_var( "message_list", "" );
 
 $article = new eZArticle();
-$articleList = $article->articles( "time", false, 0, $ArticleLimit );
+$articleList = $article->articles( "time", false, 0, $articleLimit );
 
 foreach($articleList as $article)
 {
@@ -370,7 +370,7 @@ foreach($articleList as $article)
 	    $thumbnailImage = $article->thumbnailImage();
 		if ( $thumbnailImage )
 		{
-			$variation = $thumbnailImage->requestImageVariation( $ArticleThumbWidth, $ArticleThumbHeight );
+			$variation = $thumbnailImage->requestImageVariation( $articleThumbWidth, $articleThumbHeight );
 			$t->set_var( "thumbnail_image_uri", $variation->imagePath() );
 			$t->set_var( "thumbnail_image_width", $variation->width() );
 			$t->set_var( "thumbnail_image_height", $variation->height() );
@@ -393,15 +393,15 @@ foreach($articleList as $article)
 	if ( $article->forum() )
 		{
 			$forum = $article->forum();
-			$MessageCount = $forum->messageCount( false, true );
-				if ( $MessageCount > 0 )
+			$messageCount = $forum->messageCount( false, true );
+				if ( $messageCount > 0 )
 					{
-						if ( $MessageCount == 1)
+						if ( $messageCount == 1)
 							$messageText = $t->get_var("intl-message");
 						else
 							$messageText = $t->get_var("intl-messages");
 
-						$t->set_var( "messages", $MessageCount."&nbsp;".$messageText );
+						$t->set_var( "messages", $messageCount."&nbsp;".$messageText );
 						$t->parse( "message_count", "message_count_tpl" );
 					}
 				else
@@ -418,15 +418,15 @@ $t->parse( "article_list", "article_list_tpl", true );
 //echo "</pre>";
 
 
-if ( isset( $GenerateStaticPage ) and $GenerateStaticPage == "true" and $cachedFile != "" )
+if ( isset( $generateStaticPage ) and $generateStaticPage == "true" and $cachedFile != "" )
 {
     $fp = eZPBFile::fopen( $cachedFile, "w+");
 
     // add PHP code in the cache file to store variables
     $output = "<?php\n";
-    $output .= "\$GlobalSectionID=\"$GlobalSectionID\";\n";
-    // $output .= "\$SiteTitleAppend=\"$SiteTitleAppend\";\n";
-    // $output .= "\$SiteDescriptionOverride=\"$SiteDescriptionOverride\";\n";
+    $output .= "\$globalSectionID=\"$globalSectionID\";\n";
+    // $output .= "\$siteTitleAppend=\"$siteTitleAppend\";\n";
+    // $output .= "\$siteDescriptionOverride=\"$siteDescriptionOverride\";\n";
     // $output .= "\$eZLanguageOverride=\"$eZLanguageOverride\";\n";
     $output .= "?>\n";
 

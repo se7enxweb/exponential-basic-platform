@@ -1081,7 +1081,7 @@ class eZOrder
     /*!
       Returns true if the user is the owner of this order.
     */
-    function isOwner( &$user )
+    function isOwner( $user )
     {
        $db = eZDB::globalDatabase();
 

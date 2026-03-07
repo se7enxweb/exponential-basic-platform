@@ -54,17 +54,17 @@ $t->set_block( "month_tpl", "month_previous_inactive_tpl", "month_previous_inact
 $t->set_block( "month_tpl", "month_next_tpl", "month_next" );
 $t->set_block( "month_tpl", "month_next_inactive_tpl", "month_next_inactive" );
 
-if ( isset( $Year ) && !is_numeric( $Year ) || isset( $Month ) && !is_numeric( $Month ) )
+if ( isset( $year ) && !is_numeric( $year ) || isset( $month ) && !is_numeric( $month ) )
 {
     $cur_date = new eZDate();
-    $Year = $cur_date->year();
-    $Month = $cur_date->month();
+    $year = $cur_date->year();
+    $month = $cur_date->month();
 }
 
 $query = new eZPageViewQuery();
 
 // exit pages
-$exitPages = $query->topExitPage( $Month, $Year );
+$exitPages = $query->topExitPage( $month, $year );
 $exitPageArray = array();
 
 foreach ( $exitPages as $index => $page )
@@ -84,7 +84,7 @@ foreach ( $exitPages as $index => $page )
 arsort( $exitPageArray );
 
 $pageView = new eZPageView();
-$ExitPageLimit = 20;
+$exitPageLimit = 20;
 
 $i=0;
 foreach ( $exitPageArray as $exitPage )
@@ -100,12 +100,12 @@ foreach ( $exitPageArray as $exitPage )
     $t->parse( "exit_page", "exit_page_tpl", true );
     
     $i++;
-    if ( $i>=$ExitPageLimit )
+    if ( $i>=$exitPageLimit )
         break;
 }
 
 // entry pages
-$entryPages = $query->topEntryPage( $Month, $Year );
+$entryPages = $query->topEntryPage( $month, $year );
 
 $entryPageArray = array();
 
@@ -125,7 +125,7 @@ foreach ( $entryPages as $index => $page )
 
 arsort( $entryPageArray );
 
-$EntryPageLimit = 20;
+$entryPageLimit = 20;
 
 $i=0;
 foreach ( $entryPageArray as $entryPage )
@@ -141,13 +141,13 @@ foreach ( $entryPageArray as $entryPage )
     $t->parse( "entry_page", "entry_page_tpl", true );
     
     $i++;
-    if ( $i>=$EntryPageLimit )
+    if ( $i>=$entryPageLimit )
         break;
 }
 
 
-$next_month = new eZDate( $Year, $Month, 1, 0, 1, 0 );
-$prev_month = new eZDate( $Year, $Month, 1, 0, -1, 0 );
+$next_month = new eZDate( $year, $month, 1, 0, 1, 0 );
+$prev_month = new eZDate( $year, $month, 1, 0, -1, 0 );
 
 $t->set_var( "next_month", $next_month->month() );
 $t->set_var( "previous_month", $prev_month->month() );
@@ -170,8 +170,8 @@ $t->parse( "month_previous", "month_previous_tpl" );
 
 $t->parse( "month", "month_tpl" );
 
-$t->set_var( "this_month", $Month );
-$t->set_var( "this_year", $Year );
+$t->set_var( "this_month", $month );
+$t->set_var( "this_year", $year );
 
 $t->pparse( "output", "entry_exit_report_tpl" );
 

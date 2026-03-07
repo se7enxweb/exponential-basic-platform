@@ -70,8 +70,8 @@ $t->set_block( "link_page_tpl", "path_item_tpl", "path_item" );
 
 $t->set_var( "site_style", $SiteDesign );
 
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
 if ( !isset( $total_sub_links ) )
     $total_sub_links = 0;
@@ -89,7 +89,7 @@ if ( !isset( $categories ) )
 $linkCategory = new eZLinkCategory();
 
 
-$linkCategory->get( $LinkCategoryID );
+$linkCategory->get( $linkCategoryID );
 
 // path
 $pathArray = $linkCategory->path();
@@ -102,9 +102,9 @@ foreach ( $pathArray as $path )
     $t->parse( "path_item", "path_item_tpl", true );
 }
 
-$linkCategoryList = $linkCategory->getByParent( $LinkCategoryID );
+$linkCategoryList = $linkCategory->getByParent( $linkCategoryID );
 
-if ( $LinkCategoryID == "incoming" )
+if ( $linkCategoryID == "incoming" )
 {
     $linkCategoryList = array();
 }
@@ -178,14 +178,14 @@ else
 
 // List all the links in category
 $link = new eZLinkCategory();
-if ( $LinkCategoryID == "incoming" )
+if ( $linkCategoryID == "incoming" )
 {
-    $linkList = $link->links( $Offset, $AdminLimit, true );
+    $linkList = $link->links( $offset, $AdminLimit, true );
     $linkCount = $link->linkCount( true );
 }
 else
 {
-    $linkList = $linkCategory->links( $Offset, $AdminLimit );
+    $linkList = $linkCategory->links( $offset, $AdminLimit );
     $linkCount = $linkCategory->linkCount();
 }
 
@@ -255,14 +255,14 @@ else
     $t->parse( "link_list", "link_list_tpl", true );
 }
 
-eZList::drawNavigator( $t, $linkCount, $AdminLimit, $Offset, "link_page_tpl" );
+eZList::drawNavigator( $t, $linkCount, $AdminLimit, $offset, "link_page_tpl" );
 
 $t->set_var( "categories", $categories );
 $t->set_var( "links", $links );
 $t->set_var( "document_root", $DOC_ROOT );
 
-$t->set_var( "link_start", $Offset + 1 );
-$t->set_var( "link_end", min( $Offset + $AdminLimit, $linkCount ) );
+$t->set_var( "link_start", $offset + 1 );
+$t->set_var( "link_end", min( $offset + $AdminLimit, $linkCount ) );
 $t->set_var( "link_total", $linkCount );
 
 $t->pparse( "output", "link_page_tpl" );

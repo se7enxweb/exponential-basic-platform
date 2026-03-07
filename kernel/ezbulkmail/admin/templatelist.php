@@ -29,15 +29,15 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/INIFile.php" );
 
-if( isset( $New ) )
+if( isset( $new ) )
 {
     eZHTTPTool::header( "Location: /bulkmail/templateedit/0" );
     exit();
 }
 
-if( isset( $Delete ) && count( $TemplateArrayID ) > 0 )
+if( isset( $delete ) && count( $templateArrayID ) > 0 )
 {
-    foreach( $TemplateArrayID as $templateID )
+    foreach( $templateArrayID as $templateID )
         eZBulkMailTemplate::delete( $templateID );
 }
 

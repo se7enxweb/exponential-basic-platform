@@ -34,7 +34,7 @@ $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZNewsFeedMain", "Language" );
 
-if ( $SearchText == "" )
+if ( $searchText == "" )
 {   //show anohther template if the search is 
     $t = new eZTemplate( "kernel/eznewsfeed/user/" . $ini->variable( "eZNewsFeedMain", "TemplateDir" ),
                          "kernel/eznewsfeed/user/intl/", $Language, "search.php" );
@@ -69,7 +69,7 @@ else
     // news
     
     // fetch the n next news items
-    $newsList = $news->search( $SearchText );
+    $newsList = $news->search( $searchText );
     
     $locale = new eZLocale( $Language );
     $i=0;

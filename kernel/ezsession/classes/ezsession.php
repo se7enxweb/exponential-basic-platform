@@ -258,7 +258,21 @@ class eZSession
 			{
 	            // escape the hash value.
 	            $hash = $db->escapeString( $hash );
-				$db->array_query( $session_array, "SELECT * FROM eZSession_Session WHERE Hash='$hash'" );
+
+	            // Retry the session lookup when the DB is momentarily busy/locked.
+	            // Without this, an empty result causes globalSession() to call store(),
+	            // generating a new cookie and losing authenticated state.
+	            $session_array = array();
+	            $maxFetchAttempts = 3;
+	            for ( $attempt = 1; $attempt <= $maxFetchAttempts; $attempt++ )
+	            {
+	                $session_array = array();
+	                $db->array_query( $session_array, "SELECT * FROM eZSession_Session WHERE Hash='$hash'" );
+	                if ( count( $session_array ) == 1 )
+	                    break;
+	                if ( $attempt < $maxFetchAttempts )
+	                    usleep( 200000 ); // 200ms between retries
+	            }
 
 				if ( count( $session_array ) == 1 )
 				{

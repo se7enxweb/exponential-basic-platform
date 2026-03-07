@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: menumaker.php 8283 2001-11-05 16:44:16Z th $
+// $id: menumaker.php 8283 2001-11-05 16:44:16Z th $
 //
 // Definition of ||| class
 //
@@ -37,8 +37,8 @@
 
 function menuMaker()
 {
-    global $CategoryID;
-    global $GlobalSiteDesign;
+    global $categoryID;
+    global $globalSiteDesign;
     // include_once( "classes/INIFile.php" );
     // include_once( "classes/ezcachefile.php" );
     // include_once( "classes/eztemplate.php" );
@@ -49,9 +49,9 @@ function menuMaker()
     
     $ini = eZINI::instance( 'site.ini' );
     
-    $Language = $ini->variable( "eZArticleMain", "Language" );
+    $language = $ini->variable( "eZArticleMain", "Language" );
     $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                         "kernel/ezarticle/user/intl", $Language, "menumaker.php" );
+                         "kernel/ezarticle/user/intl", $language, "menumaker.php" );
     
     $t->setAllStrings();
     
@@ -68,13 +68,13 @@ function menuMaker()
     $t->set_var( "menu_header", "" );
     $t->set_var( "menu_category", "" );
     
-    if ( !isset( $CategoryID  ) )
+    if ( !isset( $categoryID  ) )
     {
         $category_id = 0;
     }
     else
     {
-        $category_id = $CategoryID;
+        $category_id = $categoryID;
     }
     
     $articleCategory = new eZArticleCategory( $category_id );
@@ -86,7 +86,7 @@ function menuMaker()
     {
         foreach( $article_art_array as $article_item )
         {
-            $t->set_var( "sitedesign", $GlobalSiteDesign );
+            $t->set_var( "sitedesign", $globalSiteDesign );
             $t->set_var( "article_link_text", $article_item->name() );
             $t->set_var( "article_id", $article_item->id() );
             $t->parse( "menu_article", "menu_article_tpl", true );
@@ -113,7 +113,7 @@ function menuMaker()
         {
             foreach( $article_cat_array as $article_item )
             {
-                $t->set_var( "sitedesign", $GlobalSiteDesign );
+                $t->set_var( "sitedesign", $globalSiteDesign );
                 $t->set_var( "category_link_text", $article_item->name() );
                 $t->set_var( "category_id", $article_item->id() );
                 $t->parse( "menu_category", "menu_category_tpl", true );
@@ -124,7 +124,7 @@ function menuMaker()
         {
             foreach( $article_art_array as $article_item )
             {
-                $t->set_var( "sitedesign", $GlobalSiteDesign );
+                $t->set_var( "sitedesign", $globalSiteDesign );
                 $t->set_var( "article_link_text", $article_item->name() );
                 $t->set_var( "article_id", $article_item->id() );
                 $t->parse( "menu_article", "menu_article_tpl", true );

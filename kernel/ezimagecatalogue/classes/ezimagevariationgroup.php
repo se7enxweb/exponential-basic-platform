@@ -79,10 +79,19 @@ class eZImageVariationGroup
     */
     function get( $id="" )
     {
-        $db = eZDB::globalDatabase();
-        
         if ( $id != "" )
         {
+            // Fast path: all thumbnail calls on a listing page share the same group ID
+            if ( isset( self::$getCache[$id] ) )
+            {
+                $cached = self::$getCache[$id];
+                $this->ID     = $cached['ID'];
+                $this->Width  = $cached['Width'];
+                $this->Height = $cached['Height'];
+                return;
+            }
+
+            $db = eZDB::globalDatabase();
             $db->array_query( $image_variation_array, "SELECT * FROM eZImageCatalogue_ImageVariationGroup WHERE ID='$id'" );
             if ( count( $image_variation_array ) > 1 )
             {
@@ -90,18 +99,29 @@ class eZImageVariationGroup
             }
             else if( count( $image_variation_array ) == 1 )
             {
-                $this->ID = $image_variation_array[0][$db->fieldName("ID")];
-                $this->Width = $image_variation_array[0][$db->fieldName("Width")];
+                $this->ID     = $image_variation_array[0][$db->fieldName("ID")];
+                $this->Width  = $image_variation_array[0][$db->fieldName("Width")];
                 $this->Height = $image_variation_array[0][$db->fieldName("Height")];
+                self::$getCache[$id] = [ 'ID' => $this->ID, 'Width' => $this->Width, 'Height' => $this->Height ];
             }
         }
     }
+
+    /** Caches groupExists() lookups. All thumbnails on a listing page share the same dimensions. */
+    static $existsCache = [];
+
+    /** Caches get() rows by ID. On a listing page every product uses the same variation group. */
+    static $getCache = [];
 
     /*!
       Returns the ID the the group if there exists a image group with the requested size, false if not.
     */
     function groupExists( $width, $height )
     {
+        $key = "{$width}x{$height}";
+        if ( array_key_exists( $key, self::$existsCache ) )
+            return self::$existsCache[$key];
+
         $db = eZDB::globalDatabase();
         
         $ret = false;
@@ -115,6 +135,7 @@ class eZImageVariationGroup
             $ret = $group_array[0][$db->fieldName("ID")];
         }
 
+        self::$existsCache[$key] = $ret;
         return $ret;
     }
 

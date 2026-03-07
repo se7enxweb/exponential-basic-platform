@@ -30,15 +30,15 @@
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/INIFile.php" );
 
-if( isset( $New ) )
+if( isset( $new ) )
 {
     eZHTTPTool::header( "Location: /bulkmail/mailedit/" );
     exit();
 }
 
-if( isset( $Delete ) )
+if( isset( $delete ) )
 {
-    foreach( $MailArrayID as $mailID )
+    foreach( $mailArrayID as $mailID )
         eZBulkMail::delete( $mailID );
 }
 

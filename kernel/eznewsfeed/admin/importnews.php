@@ -31,9 +31,9 @@
 // include_once( "classes/ezdatetime.php" );
 
 // fetch one site
-if ( isset( $Action ) && $Action == "Fetch" )
+if ( isset( $action ) && $action == "Fetch" )
 {
-    $site = new eZSourceSite( $SourceSiteID );
+    $site = new eZSourceSite( $sourceSiteID );
 
     $newsImporter = new eZNewsImporter( $site->decoder(),
                                         $site->url(),
@@ -44,7 +44,7 @@ if ( isset( $Action ) && $Action == "Fetch" )
     $newsImporter->importNews();
 }
 // fetch every site
-if ( isset( $Action ) && $Action == "ImportNews" && !isset( $Delete ) )
+if ( isset( $action ) && $action == "ImportNews" && !isset( $delete ) )
 {
     $sourceSite = new eZSourceSite();
     
@@ -67,11 +67,11 @@ if ( isset( $Action ) && $Action == "ImportNews" && !isset( $Delete ) )
 }
 
 // Delete selected sites.
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    if ( isset( $DeleteArray ) && count( $DeleteArray ) > 0 )
+    if ( isset( $deleteArray ) && count( $deleteArray ) > 0 )
     {
-        foreach( $DeleteArray as $row )
+        foreach( $deleteArray as $row )
         {
             eZSourceSite::delete( $row );
         }

@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: typeedit.php 6927 2001-09-04 12:06:17Z jhe $
+// $id: typeedit.php 6927 2001-09-04 12:06:17Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -35,8 +35,8 @@
   $page_path: The base name of the url, for example: /contact/consultationtype
 */
 
-$ini =& $GlobalSiteIni;
-$Language = $ini->variable( "eZContactMain", "Language" );
+$ini =& $globalSiteIni;
+$language = $ini->variable( "eZContactMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZContactMain", "DocumentRoot" );
 
 // include_once( "classes/eztemplate.php" );
@@ -49,20 +49,20 @@ $DOC_ROOT = $ini->variable( "eZContactMain", "DocumentRoot" );
 require( "kernel/ezuser/admin/admincheck.php" );
 
 $t = new eZTemplate( $DOC_ROOT . "/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ),
-                     $DOC_ROOT . "admin/intl", $Language, $language_file );
+                     $DOC_ROOT . "admin/intl", $language, $language_file );
 $t->setAllStrings();
 
 $item_error = true;
 
 if ( empty( $HTTP_REFERER ) )
 {
-    if ( empty( $BackUrl ) )
+    if ( empty( $backUrl ) )
     {
         $back_command = "$page_path/list";
     }
     else
     {
-        $back_command = $BackUrl;
+        $back_command = $backUrl;
     }
 }
 else
@@ -70,20 +70,20 @@ else
     $back_command = $HTTP_REFERER;
 }
 
-if ( $Action == "delete" )
+if ( $action == "delete" )
 {
     // Check to see if the count has changed since the confirmation was done
     $item_id = $item_type->id();
     $reconfirm = "Location: $page_path/confirm/$item_id";
     $count = $item_type->count();
-    if ( !isset( $TypeCount ) )
+    if ( !isset( $typeCount ) )
     {
-        $Action = "confirm";
-        $TypeError = true;
+        $action = "confirm";
+        $typeError = true;
     }
-    else if ( $count != $TypeCount )
+    else if ( $count != $typeCount )
     {
-        $Action = "confirm";
+        $action = "confirm";
     }
     else
     {
@@ -96,7 +96,7 @@ if ( $Action == "delete" )
     }
 }
 
-if ( $Action == "up" )
+if ( $action == "up" )
 {
     $item_type->moveUp();
     // include_once( "classes/ezhttptool.php" );
@@ -104,7 +104,7 @@ if ( $Action == "up" )
     exit();
 }
 
-if ( $Action == "down" )
+if ( $action == "down" )
 {
     $item_type->moveDown();
     // include_once( "classes/ezhttptool.php" );
@@ -112,9 +112,9 @@ if ( $Action == "down" )
     exit();
 }
 
-if ( $Action == "insert" or $Action == "update" )
+if ( $action == "insert" or $action == "update" )
 {
-    if ( $Action == "insert" )
+    if ( $action == "insert" )
         unset( $item_type->ID );
 
     if ( isset( $func_call_set ) and is_array( $func_call_set ) )
@@ -127,7 +127,7 @@ if ( $Action == "insert" or $Action == "update" )
     }
     else
     {
-        $item_type->setName( $ItemName );
+        $item_type->setName( $itemName );
     }
     $item_type->store();
     // include_once( "classes/ezhttptool.php" );
@@ -168,26 +168,26 @@ $t->set_var( "item_view_command", "$page_path/view" );
 $t->set_var( "item_list_command", "$page_path/list" );
 $t->set_var( "item_new_command", "$page_path/new" );
 
-$t->set_var( "item_id", isset( $ItemID ) ? $ItemID : false );
-$t->set_var( "item_name", isset( $ItemName ) ? $ItemName : false );
+$t->set_var( "item_id", isset( $itemID ) ? $itemID : false );
+$t->set_var( "item_name", isset( $itemName ) ? $itemName : false );
 
 $t->set_var( "back_url", $back_command );
 $t->set_var( "item_back_command", $back_command );
 
-if ( $Action == "confirm" )
+if ( $action == "confirm" )
 {
     $t->set_var( "error_count_change_item", "" );
     $t->set_var( "error_no_confirm_item", "" );
 
-    if ( isset( $TypeCount ) )
+    if ( isset( $typeCount ) )
     {
-        if ( $TypeCount != $item_type->count() )
+        if ( $typeCount != $item_type->count() )
         {
             $t->parse( "error_count_change_item", "error_count_change_item_tpl" );
             $error = true;
         }
     }
-    if ( isset( $TypeError ) )
+    if ( isset( $typeError ) )
     {
         $t->parse( "error_no_confirm_item", "error_no_confirm_item_tpl" );
         $error = true;
@@ -221,7 +221,7 @@ else
     }
 }
 
-if ( $Action == "edit" )
+if ( $action == "edit" )
 {
     $action_value = "update";
 
@@ -231,14 +231,14 @@ if ( $Action == "edit" )
     }
 }
 
-if ( $Action == "confirm" )
+if ( $action == "confirm" )
 {
     $action_value = "delete";
     $t->set_var( "confirm_item", $item_type->name() );
     $t->set_var( "item_count", $item_type->count() );
 }
 
-if ( $Action == "new" )
+if ( $action == "new" )
 {
     $action_value = "insert";
     $item_error = false;
@@ -253,7 +253,7 @@ else
     $t->parse( "line_item", "line_item_tpl" );
 }
 
-if ( $Action == "confirm" )
+if ( $action == "confirm" )
 {
     $t->set_var( "type_edit", "" );
     $t->parse( "type_confirm", "type_confirm_tpl", true );

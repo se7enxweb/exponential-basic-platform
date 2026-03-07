@@ -57,16 +57,16 @@ $t->set_var( "mail_repliedall", "" );
 $t->set_var( "mail_edit_item", "" );
 
 $t->set_var( "site_style", $SiteDesign );
-$t->set_var( "search_string", htmlspecialchars( $SearchText ) );
+$t->set_var( "search_string", htmlspecialchars( $searchText ) );
 
-if ( isset( $Move ) )
+if ( isset( $move ) )
 {
-    $folder = new eZMailFolder( $FolderSelectID );
-    foreach ( $MailArrayID as $mailitemID )
+    $folder = new eZMailFolder( $folderSelectID );
+    foreach ( $mailArrayID as $mailitemID )
         $folder->addMail( $mailitemID );
 }
 
-$mailList = eZMail::search( $SearchText );
+$mailList = eZMail::search( $searchText );
 
 $i = 0;
 foreach ( $mailList as $mailItem )

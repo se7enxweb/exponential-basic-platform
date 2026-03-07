@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: topiclist.php 9552 2002-05-22 10:34:54Z jhe $
+// $id: topiclist.php 9552 2002-05-22 10:34:54Z jhe $
 //
 // Created on: <03-Sep-2001 15:35:07 bf>
 //
@@ -29,12 +29,12 @@
 // include_once( "classes/INIFile.php" );
 
 // include_once( "ezarticle/classes/eztopic.php" );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl", $Language, "topiclist.php" );
+                     "kernel/ezarticle/user/intl", $language, "topiclist.php" );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 
 $t->set_file( "topic_page_tpl", "topiclist.tpl" );
 
@@ -46,7 +46,7 @@ $t->set_block( "topic_item_tpl", "article_item_tpl", "article_item" );
 
 $topic = new eZTopic();
 
-if ( $topic->get( $TopicID ) )
+if ( $topic->get( $topicID ) )
 {
     $topicArray = array( $topic );
 }

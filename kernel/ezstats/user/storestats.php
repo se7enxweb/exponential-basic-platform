@@ -28,11 +28,11 @@ ob_start( );
 // get right path 
 //chdir( "../../" );
 
-$REQUEST_URI = preg_replace( "#/stats/store(.*?)1x1.gif$#", "\\1", $REQUEST_URI );
-//$REQUEST_URI = preg_replace( "#/stats/store(.*?)1x1.png$#", "\\1", $REQUEST_URI );
+$_SERVER['REQUEST_URI'] = preg_replace( "#/stats/store(.*?)1x1.gif$#", "\\1", $_SERVER['REQUEST_URI'] );
+//$_SERVER['REQUEST_URI'] = preg_replace( "#/stats/store(.*?)1x1.png$#", "\\1", $_SERVER['REQUEST_URI'] );
 
-$REQUEST_URI = preg_replace( "#/rx.*?-(.*)$#", "\\1", $REQUEST_URI );
-//$REQUEST_URI = preg_replace( "#/rx.*?-(.*)$#", "\\1", $REQUEST_URI );
+$_SERVER['REQUEST_URI'] = preg_replace( "#/rx.*?-(.*)$#", "\\1", $_SERVER['REQUEST_URI'] );
+//$_SERVER['REQUEST_URI'] = preg_replace( "#/rx.*?-(.*)$#", "\\1", $_SERVER['REQUEST_URI'] );
 
 // do the statistics
 // include_once( "ezstats/classes/ezpageview.php" );

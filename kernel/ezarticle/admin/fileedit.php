@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: fileedit.php 6760 2001-08-30 07:55:56Z bf $
+// $id: fileedit.php 6760 2001-08-30 07:55:56Z bf $
 //
 // Created on: <21-Dec-2000 18:01:48 bf>
 //
@@ -32,25 +32,25 @@
 // include_once( "ezfilemanager/classes/ezvirtualfile.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
 // include_once( "ezarticle/classes/ezarticle.php" );
 
-if ( isset( $DeleteSelected ) )
-    $Action = "Delete";
+if ( isset( $deleteSelected ) )
+    $action = "Delete";
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $file = new eZFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     { 
-        $article = new eZArticle( $ArticleID );
+        $article = new eZArticle( $articleID );
 
         $uploadedFile = new eZVirtualFile();
-        $uploadedFile->setName( $Name );
-        $uploadedFile->setDescription( $Description );
+        $uploadedFile->setName( $name );
+        $uploadedFile->setDescription( $description );
 
         $uploadedFile->setFile( $file );
         
@@ -61,7 +61,7 @@ if ( $Action == "Insert" )
 
         $article->addFile( $uploadedFile );
 
-        eZPBLog::writeNotice( "File added to article $ArticleID  from IP: $REMOTE_ADDR" );
+        eZPBLog::writeNotice( "File added to article $articleID  from IP: {$_SERVER['REMOTE_ADDR']}" );
     }
     else
     {
@@ -69,24 +69,24 @@ if ( $Action == "Insert" )
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /article/articleedit/filelist/" . $ArticleID . "/" );
+    eZHTTPTool::header( "Location: /article/articleedit/filelist/" . $articleID . "/" );
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
     $file = new eZFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     {
-        $article = new eZArticle( $ArticleID );
+        $article = new eZArticle( $articleID );
 
-        $oldFile = new eZFile( $FileID );
+        $oldFile = new eZFile( $fileID );
         $article->deleteFile( $oldFile );
 
         $uploadedFile = new eZVirtualFile();
-        $uploadedFile->setName( $Name );
-        $uploadedFile->setDescription( $Description );
+        $uploadedFile->setName( $name );
+        $uploadedFile->setDescription( $description );
 
         $uploadedFile->setFile( $file );
 
@@ -96,38 +96,38 @@ if ( $Action == "Update" )
     }
     else
     {
-        $uploadedFile = new eZVirtualFile( $FileID );
-        $uploadedFile->setName( $Name );
-        $uploadedFile->setDescription( $Description );
+        $uploadedFile = new eZVirtualFile( $fileID );
+        $uploadedFile->setName( $name );
+        $uploadedFile->setDescription( $description );
         $uploadedFile->store();
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /article/articleedit/filelist/" . $ArticleID . "/" );
+    eZHTTPTool::header( "Location: /article/articleedit/filelist/" . $articleID . "/" );
     exit();
 }
 
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    $article = new eZArticle( $ArticleID );
+    $article = new eZArticle( $articleID );
 
-    if ( count ( $FileArrayID ) != 0 )
+    if ( count ( $fileArrayID ) != 0 )
     {
-        foreach( $FileArrayID as $FileID )
+        foreach( $fileArrayID as $fileID )
         {
-            $file = new eZVirtualFile( $FileID );
+            $file = new eZVirtualFile( $fileID );
             $article->deleteFile( $file );
         }
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /article/articleedit/filelist/" . $ArticleID . "/" );
+    eZHTTPTool::header( "Location: /article/articleedit/filelist/" . $articleID . "/" );
     exit();    
 }
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "fileedit.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "fileedit.php" );
 
 $t->setAllStrings();
 
@@ -141,10 +141,10 @@ $t->set_var( "action_value", "Insert" );
 $t->set_var( "option_id", "" );
 $t->set_var( "file", "" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $article = new eZArticle( $ArticleID );
-    $file = new eZVirtualFile( $FileID );
+    $article = new eZArticle( $articleID );
+    $file = new eZVirtualFile( $fileID );
 
     $t->set_var( "article_name", $article->name() );
 
@@ -154,7 +154,7 @@ if ( $Action == "Edit" )
     $t->set_var( "action_value", "Update" );
 }
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
     
 $t->set_var( "article_name", $article->name() );
 $t->set_var( "article_id", $article->id() );

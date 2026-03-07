@@ -83,6 +83,13 @@ class eZObjectPermission
         if ( $permission != 'u' && $permission != 'w' && $permission != 'r' )
             return false;
 
+        // Static cache to avoid repeated identical DB queries within the same request
+        static $cache = [];
+        $userID = is_object( $user ) ? $user->id() : 'anon';
+        $cacheKey = $objectID . '|' . $moduleTable . '|' . $permission . '|' . $userID;
+        if ( array_key_exists( $cacheKey, $cache ) )
+            return $cache[$cacheKey];
+
         $SQLGroups = "GroupID = '-1'";
         if ( is_a( $user, "eZUser" ) )
         {
@@ -130,10 +137,9 @@ class eZObjectPermission
         $database = eZDB::globalDatabase();
 
         $database->query_single( $res, $query );
-        if ( $res[$database->fieldName( "ID" )] != 0 )
-            return true;
-
-        return false;
+        $result = ( $res[$database->fieldName( "ID" )] != 0 );
+        $cache[$cacheKey] = $result;
+        return $result;
     }
 
 

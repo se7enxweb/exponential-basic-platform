@@ -41,11 +41,11 @@
 
     $errorMessages = array();
     
-    $SurveyID = $url_array[4];
+    $surveyID = $url_array[4];
     
-    if ( is_numeric($SurveyID) )
+    if ( is_numeric($surveyID) )
     {
-        $survey = new eZSurvey($SurveyID);
+        $survey = new eZSurvey($surveyID);
     }
     else
     {
@@ -58,7 +58,7 @@
     }
     
     // copia o survey e edita-o
-    if ( $Action == "copy" )
+    if ( $action == "copy" )
     {
         $survey = $survey->copySurvey( "C�pia de " . $survey->title() );
         $currentUser = eZUser::currentUser();
@@ -66,63 +66,63 @@
         {
             $survey->setUserID( $currentUser->id() );
         }
-        $Action = "edit";
+        $action = "edit";
     }
     
     // altera posi��es
-    if ( $Action == "down" )
+    if ( $action == "down" )
     {
-        $question = new eZQuestion( $QuestionID );
+        $question = new eZQuestion( $questionID );
         $question->moveDown();
-        $Action = "edit";
+        $action = "edit";
     }
     
-    if ( $Action == "up" )
+    if ( $action == "up" )
     {
-        $question = new eZQuestion( $QuestionID );
+        $question = new eZQuestion( $questionID );
         $question->moveUp();
-        $Action = "edit";
+        $action = "edit";
     }
     
-    if ( $Action == "edit" )
+    if ( $action == "edit" )
     {
         // altera��es
-        if ( isset( $OK ) || isset( $NewElement ) || isset( $Update ) || isset( $DeleteSelected ) || isset( $Preview ) )
+        if ( isset( $ok ) || isset( $newElement ) || isset( $update ) || isset( $deleteSelected ) || isset( $preview ) )
         {
             $save = true;
             
             // grava��o do survey
             if ( $save )
             {
-                $survey->setTitle( $Title );
-                $survey->setSubTitle( $SubTitle );
-                $survey->setInfo( $Info );
-                $survey->setEMail( $EMail );
-                $survey->setThankHead( $ThankHead );
-                $survey->setThankBody( $ThankBody );
-                $survey->setStatus( $Status );
-                $survey->setSectionID( $Section );
+                $survey->setTitle( $title );
+                $survey->setSubTitle( $subTitle );
+                $survey->setInfo( $info );
+                $survey->setEMail( $eMail );
+                $survey->setThankHead( $thankHead );
+                $survey->setThankBody( $thankBody );
+                $survey->setStatus( $status );
+                $survey->setSectionID( $section );
 
-                if ( isset( $Public ) && $Public == "N" )
+                if ( isset( $public ) && $public == "N" )
                 {
-                    $Public = "N";
+                    $public = "N";
                 }
                 else
                 {
-                    $Public = "Y";
+                    $public = "Y";
                 }
 
-                $survey->setPublic( $Public );
+                $survey->setPublic( $public );
                 
                 $survey->store();
             }
             
-            $t->set_var( "title_value", $Title );
-            $t->set_var( "subtitle_value", $SubTitle );
-            $t->set_var( "info_value", $Info );
-            $t->set_var( "email_value", $EMail );
-            $t->set_var( "thankhead_value", $ThankHead );
-            $t->set_var( "thankbody_value", $ThankBody );
+            $t->set_var( "title_value", $title );
+            $t->set_var( "subtitle_value", $subTitle );
+            $t->set_var( "info_value", $info );
+            $t->set_var( "email_value", $eMail );
+            $t->set_var( "thankhead_value", $thankHead );
+            $t->set_var( "thankbody_value", $thankBody );
             
             foreach ( $survey->statusOptions() as $statusItem )
             {
@@ -137,7 +137,7 @@
                 $t->set_var( "section_value", $sectionItem->id() );
                 $t->set_var( "section_name", $sectionItem->name() );
                 
-                if ( $sectionItem->id() == $Section )
+                if ( $sectionItem->id() == $section )
                 {
                     $t->set_var( "selected", "selected" );
                 }
@@ -186,7 +186,7 @@
         }
         
         // inser��o de uma nova pergunta.
-        if ( isset( $NewElement ) && $survey->id() != "" )
+        if ( isset( $newElement ) && $survey->id() != "" )
         {
             $question = new eZQuestion();
             
@@ -223,7 +223,7 @@
                 {
                     $question->setContent( $elementName[$i] );
                     $question->setQuestionTypeID( $elementTypeID[$i] );
-                    $question->setLength( $Size[$i] );
+                    $question->setLength( $size[$i] );
                     
                     // Is required?
                     if ( isset($elementRequired) && in_array($elementItem, $elementRequired) )
@@ -231,37 +231,37 @@
                     else
                         $question->setRequired( "N" );
                     
-                    if ( isset( $Public ) && $Public == "N" )
+                    if ( isset( $public ) && $public == "N" )
                     {
-                        $Public = "N";
+                        $public = "N";
                     }
                     else
                     {
-                        $Public = "Y";
+                        $public = "Y";
                     }
 
-                    $question->setPublic( $Public );
+                    $question->setPublic( $public );
                     $question->store();
                 }
             }
         }
         
-        if( isset( $OK ) )
+        if( isset( $ok ) )
         {
             eZHTTPTool::header( "Location: /survey/surveylist/list" );
             exit();
         }
         
         
-        if( isset( $Preview ) )
+        if( isset( $preview ) )
         {
-            eZHTTPTool::header( "Location: /survey/preview/$SurveyID" );
+            eZHTTPTool::header( "Location: /survey/preview/$surveyID" );
             exit();
         }
         
-        if( isset( $Stats ) )
+        if( isset( $stats ) )
         {
-            eZHTTPTool::header( "Location: /survey/stats/$SurveyID" );
+            eZHTTPTool::header( "Location: /survey/stats/$surveyID" );
             exit();
         }
         
@@ -359,7 +359,7 @@
         }
     }
     
-    if ( $Action == "new" )
+    if ( $action == "new" )
     {
         $survey = new eZSurvey();
         $count = eZSurvey::numberOfSurveys() + 1;

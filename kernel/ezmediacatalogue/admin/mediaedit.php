@@ -35,8 +35,8 @@
 
 $user = eZUser::currentUser();
 
-$CurrentCategoryID = eZHTTPTool::getVar( "CategoryID" );
-$CategoryID = eZHTTPTool::getVar( "CategoryID" );
+$currentCategoryID = eZHTTPTool::getVar( "CategoryID" );
+$categoryID = eZHTTPTool::getVar( "CategoryID" );
 
 if ( !$user )
 {
@@ -44,44 +44,44 @@ if ( !$user )
     exit();
 }
 
-if ( isset( $NewCategory ) )
+if ( isset( $newCategory ) )
 {
-    eZHTTPTool::header( "Location: /mediacatalogue/category/new/$CurrentCategoryID/" );
+    eZHTTPTool::header( "Location: /mediacatalogue/category/new/$currentCategoryID/" );
     exit();
 }
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
-    eZHTTPTool::header( "Location: /mediacatalogue/media/list/" . $CurrentCategoryID . "/" );
+    eZHTTPTool::header( "Location: /mediacatalogue/media/list/" . $currentCategoryID . "/" );
     exit();
 }
 
-if ( isset( $DeleteMedia ) )
+if ( isset( $deleteMedia ) )
 {
-    $Action = "DeleteMedia";
+    $action = "DeleteMedia";
 }
 
-if ( isset( $DeleteCategories ) )
+if ( isset( $deleteCategories ) )
 {
-    $Action = "DeleteCategories";
+    $action = "DeleteCategories";
 }
 
-if ( isset( $Action ) && $Action == "New" )
+if ( isset( $action ) && $action == "New" )
 {
-    $Name = false;
-    $Description = false;
-    $Caption = false;
+    $name = false;
+    $description = false;
+    $caption = false;
     $mediaType = false;
     $readGroupArrayID[0] = -1;
     $writeGroupArrayID[0] = -1;
     $uploadGroupArrayID[0] = -1;
 }
 
-if ( isset( $Action ) && $Action == "Edit" )
+if ( isset( $action ) && $action == "Edit" )
 {
-    $Name = false;
-    $Description = false;
-    $Caption = false;
+    $name = false;
+    $description = false;
+    $caption = false;
 }
 
 // include_once( "classes/INIFile.php" );
@@ -121,9 +121,9 @@ $t->set_block( "attribute_list_tpl", "attribute_tpl", "attribute" );
 
 $t->set_var( "errors", "&nbsp;" );
 
-$t->set_var( "name_value", "$Name" );
-$t->set_var( "media_description", "$Description" );
-$t->set_var( "caption_value", "$Caption" );
+$t->set_var( "name_value", "$name" );
+$t->set_var( "media_description", "$description" );
+$t->set_var( "caption_value", "$caption" );
 
 $error = false;
 $nameCheck = true;
@@ -151,11 +151,11 @@ $t->set_block( "errors_tpl", "error_write_everybody_permission_tpl", "error_writ
 $t->set_var( "error_write_everybody_permission", "&nbsp;" );
 
 // Check for errors when inserting or updating.
-if ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "Update" )
+if ( isset( $action ) && $action == "Insert" || isset( $action ) && $action == "Update" )
 {
     if ( $nameCheck )
     {
-        if ( empty( $Name ) )
+        if ( empty( $name ) )
         {
             $t->parse( "error_name", "error_name_tpl" );
             $error = true;
@@ -164,7 +164,7 @@ if ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "
 
     if ( $captionCheck )
     {
-        if ( empty( $Caption ) )
+        if ( empty( $caption ) )
         {
             $t->parse( "error_caption", "error_caption_tpl" );
             $error = true;
@@ -173,7 +173,7 @@ if ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "
 
     if ( $descriptionCheck )
     {
-        if ( empty( $Description ) )
+        if ( empty( $description ) )
         {
             $t->parse( "error_description", "error_description_tpl" );
             $error = true;
@@ -182,12 +182,12 @@ if ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "
 
     if ( $permissionCheck )
     {
-        if ( empty( $ReadGroupArrayID ) )
+        if ( empty( $readGroupArrayID ) )
         {
             $t->parse( "error_read_everybody_permission", "error_read_everybody_permission_tpl" );
             $error = true;
         }
-        if ( empty( $WriteGroupArrayID ) )
+        if ( empty( $writeGroupArrayID ) )
         {
             $t->parse( "error_write_everybody_permission", "error_write_everybody_permission_tpl" );
             $error = true;
@@ -214,7 +214,7 @@ if ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "
         }
         else
         {
-            if ( $Action == "Insert" )
+            if ( $action == "Insert" )
             {
                 $error = true;
                 $t->parse( "error_file_upload", "error_file_upload_tpl" );
@@ -225,9 +225,9 @@ if ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "
     if ( $error )
     {
         $t->parse( "errors", "errors_tpl" );
-        if ( count( $WriteGroupArrayID ) != 0 )
+        if ( count( $writeGroupArrayID ) != 0 )
         {
-            foreach ( $WriteGroupArrayID as $unf )
+            foreach ( $writeGroupArrayID as $unf )
             {
                 if ( $unf == 0 )
                     $writeGroupArrayID[] = -1;
@@ -236,9 +236,9 @@ if ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "
             }
         }
 
-        if ( count( $ReadGroupArrayID ) != 0 )
+        if ( count( $readGroupArrayID ) != 0 )
         {
-            foreach ( $ReadGroupArrayID as $unf )
+            foreach ( $readGroupArrayID as $unf )
             {
                 if ( $unf == 0 )
                     $readGroupArrayID[] = -1;
@@ -250,12 +250,12 @@ if ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "
 }
 
 // Insert if error == false
-if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "Update" ) && $error == false )
+if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action == "Update" ) && $error == false )
 {
-    $media = new eZMedia( $MediaID );
-    $media->setName( $Name );
-    $media->setCaption( $Caption );
-    $media->setDescription( $Description );
+    $media = new eZMedia( $mediaID );
+    $media->setName( $name );
+    $media->setCaption( $caption );
+    $media->setDescription( $description );
     $media->setUser( $user );
 
     if ( $fileOK )
@@ -263,23 +263,23 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
         $media->setMedia( $file );
     }
 
-    if ( trim( $NewCreatorName ) != "" &&
-         trim( $NewCreatorEmail ) != "" )
+    if ( trim( $newCreatorName ) != "" &&
+         trim( $newCreatorEmail ) != "" )
     {
         $author = new eZAuthor();
-        $author->setName( $NewCreatorName );
-        $author->setEmail( $NewCreatorEmail );
+        $author->setName( $newCreatorName );
+        $author->setEmail( $newCreatorEmail );
         $author->store();
         $media->setPhotographer( $author );
     }
     else
     {
-        $media->setPhotographer( $PhotoID );
+        $media->setPhotographer( $photoID );
     }
 
     $media->store();
 
-    if ( $TypeID == -1 )
+    if ( $typeID == -1 )
     {
         $media->removeType();
     }
@@ -287,14 +287,14 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
     {
         $media->removeType();
 
-        $media->setType( new eZMediaType( $TypeID ) );
+        $media->setType( new eZMediaType( $typeID ) );
 
         $i = 0;
-        if ( count( $AttributeValue ) > 0 )
+        if ( count( $attributeValue ) > 0 )
         {
-            foreach ( $AttributeValue as $attribute )
+            foreach ( $attributeValue as $attribute )
             {
-                $att = new eZMediaAttribute( $AttributeID[$i] );
+                $att = new eZMediaAttribute( $attributeID[$i] );
 
                 $att->setValue( $media, $attribute );
 
@@ -303,39 +303,39 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
         }
     }
 
-    if ( count( $ReadGroupArrayID ) > 0 )
+    if ( count( $readGroupArrayID ) > 0 )
     {
-        foreach ( $ReadGroupArrayID as $Read )
+        foreach ( $readGroupArrayID as $read )
         {
-            if ( $Read == 0 )
+            if ( $read == 0 )
                 $group = -1;
             else
-                $group = new eZUserGroup( $Read );
+                $group = new eZUserGroup( $read );
 
             eZObjectPermission::setPermission( $group, $media->id(), "mediacatalogue_media", "r" );
         }
     }
 
-    if ( count( $WriteGroupArrayID ) > 0 )
+    if ( count( $writeGroupArrayID ) > 0 )
     {
-        foreach ( $WriteGroupArrayID as $Write )
+        foreach ( $writeGroupArrayID as $write )
         {
-            if ( $Write == 0 )
+            if ( $write == 0 )
                 $group = -1;
             else
-                $group = new eZUserGroup( $Write );
+                $group = new eZUserGroup( $write );
 
             eZObjectPermission::setPermission( $group, $media->id(), "mediacatalogue_media", "w" );
         }
     }
 
-    if ( isset( $Action ) && $Action == "Insert" )
+    if ( isset( $action ) && $action == "Insert" )
     {
-        $category = new eZMediaCategory( $CategoryID );
+        $category = new eZMediaCategory( $categoryID );
 
         $media->setCategoryDefinition( $category );
 
-        $categories = array_unique( array_merge( $CategoryArray, $CategoryID ) );
+        $categories = array_unique( array_merge( $categoryArray, $categoryID ) );
 
         foreach ( $categories as $categoryItem )
         {
@@ -343,7 +343,7 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
         }
         eZPBLog::writeNotice( "Video added to catalogue: $media->name() from IP: $REMOTE_ADDR" );
     }
-    elseif ( isset( $Action ) && $Action == "Update" )
+    elseif ( isset( $action ) && $action == "Update" )
     {
         $categoryArray = $media->categories();
         // Calculate new and unused categories
@@ -353,9 +353,9 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
             $old_categories = array_unique( array_merge( $old_maincategory->id(),
                                                           $media->categories( false ) ) );
 
-        $new_categories = array_unique( array_merge( $CategoryID, $CategoryArray ) );
+        $new_categories = array_unique( array_merge( $categoryID, $categoryArray ) );
 
-        $category = new eZMediaCategory( $CategoryID );
+        $category = new eZMediaCategory( $categoryID );
         $media->setCategoryDefinition( $category );
 
         $remove_categories = array_diff( $old_categories, $new_categories );
@@ -371,41 +371,41 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
         }
     }
 
-    if ( !isset( $Update ) )
+    if ( !isset( $update ) )
     {
-        eZHTTPTool::header( "Location: /mediacatalogue/media/list/" . $CategoryID . "/" );
+        eZHTTPTool::header( "Location: /mediacatalogue/media/list/" . $categoryID . "/" );
         exit();
     }
     else
     {
-        //$Action = "Edit";
-        $MediaID = $media->id();
+        //$action = "Edit";
+        $mediaID = $media->id();
     }
 }
 
 // Delete an media
-if ( isset( $Action ) && $Action == "DeleteMedia" )
+if ( isset( $action ) && $action == "DeleteMedia" )
 {
-    if ( count( $MediaArrayID ) != 0 )
+    if ( count( $mediaArrayID ) != 0 )
     {
-        foreach ( $MediaArrayID as $MediaID )
+        foreach ( $mediaArrayID as $mediaID )
         {
-            $media = new eZMedia( $MediaID );
+            $media = new eZMedia( $mediaID );
             $media->delete();
         }
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /mediacatalogue/media/list/" . $CurrentCategoryID . "/" );
+    eZHTTPTool::header( "Location: /mediacatalogue/media/list/" . $currentCategoryID . "/" );
     exit();
 }
 
 // Delete a category
-if ( isset( $Action ) && $Action == "DeleteCategories" )
+if ( isset( $action ) && $action == "DeleteCategories" )
 {
-    if ( count( $CategoryArrayID ) > 0 )
+    if ( count( $categoryArrayID ) > 0 )
     {
-        foreach ( $CategoryArrayID as $categoryID )
+        foreach ( $categoryArrayID as $categoryID )
         {
             $category = new eZMediaCategory( $categoryID );
             $category->delete();
@@ -413,12 +413,12 @@ if ( isset( $Action ) && $Action == "DeleteCategories" )
     }
 
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /mediacatalogue/media/list/" . $CurrentCategoryID . "/" );
+    eZHTTPTool::header( "Location: /mediacatalogue/media/list/" . $currentCategoryID . "/" );
     exit();
 }
 
 // Set the default values to null
-if ( isset( $Action ) && $Action == "New" || $error )
+if ( isset( $action ) && $action == "New" || $error )
 {
     $t->set_var( "action_value", "Insert" );
     $t->set_var( "media", "" );
@@ -438,9 +438,9 @@ if ( isset( $Action ) && $Action == "New" || $error )
 }
 
 // Sets the values to the current media
-if ( isset( $Action ) && $Action == "Edit" )
+if ( isset( $action ) && $action == "Edit" )
 {
-    $media = new eZMedia( $MediaID );
+    $media = new eZMedia( $mediaID );
 
     $t->set_var( "media_id", $media->id() );
     $t->set_var( "name_value", $media->name() );
@@ -451,7 +451,7 @@ if ( isset( $Action ) && $Action == "Edit" )
     $t->set_var( "media_alt", $media->caption() );
 
     $photographer = $media->photographer();
-    $PhotographerID = $photographer->id();
+    $photographerID = $photographer->id();
 
 // author select
 
@@ -459,7 +459,7 @@ if ( isset( $Action ) && $Action == "Edit" )
     $authorArray = $author->getAll();
     foreach ( $authorArray as $author )
     {
-        if ( $PhotographerID == $author->id() )
+        if ( $photographerID == $author->id() )
         {
             $t->set_var( "selected", "selected" );
         }
@@ -496,7 +496,7 @@ foreach ( $treeArray as $catItem )
     if ( eZObjectPermission::hasPermission( $catItem[0]->id(), "media_category", 'w', $user ) == true  ||
          eZMediaCategory::isOwner( eZUser::currentUser(), $catItem[0]->id() ) )
     {
-        if ( $Action == "Edit" )
+        if ( $action == "Edit" )
         {
             $defCat = $media->categoryDefinition();
 
@@ -535,7 +535,7 @@ foreach ( $treeArray as $catItem )
         }
         else
         {
-            if ( $CategoryID == $catItem[0]->id() )
+            if ( $categoryID == $catItem[0]->id() )
                 $t->set_var( "selected", "selected" );
             else
                 $t->set_var( "selected", "" );
@@ -562,8 +562,8 @@ foreach ( $treeArray as $catItem )
 $type = new eZMediaType();
 $types = $type->getAll();
 
-if ( isset( $TypeID ) )
-    $mediaType = new eZMediaType( $TypeID );
+if ( isset( $typeID ) )
+    $mediaType = new eZMediaType( $typeID );
 
 foreach ( $types as $typeItem )
 {
@@ -645,7 +645,7 @@ foreach ( $groups as $group )
         }
     }
 
-    if ( isset( $Action ) && $Action == "new" )
+    if ( isset( $action ) && $action == "new" )
         $t->set_var( "read_everybody", "selected" );
     $t->parse( "read_group_item", "read_group_item_tpl", true );
 

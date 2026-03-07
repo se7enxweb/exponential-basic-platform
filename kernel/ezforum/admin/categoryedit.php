@@ -40,15 +40,15 @@ $error = new eZINI( "kernel/ezforum/admin/intl/" . $Language . "/categoryedit.ph
 
 require( "kernel/ezuser/admin/admincheck.php" );
 
-if ( isset( $DeleteCategories ) )
+if ( isset( $deleteCategories ) )
 {
-    $Action = "DeleteCategories";
+    $action = "DeleteCategories";
 }
 
 $cat = new eZForumCategory();
 
 
-if ( $Action == "insert" )
+if ( $action == "insert" )
 {
 
     if ( eZPermission::checkPermission( $user, "eZForum", "CategoryAdd" ) )
@@ -63,15 +63,15 @@ if ( $Action == "insert" )
             $file->delete();
         }
         
-        if ( $Name != "" && $Description != "" )
+        if ( $name != "" && $description != "" )
         {
             $cat = new eZForumCategory();
-            $cat->setName( $Name );
-            $cat->setDescription( $Description );
-            $cat->setSectionID( $SectionID );
+            $cat->setName( $name );
+            $cat->setDescription( $description );
+            $cat->setSectionID( $sectionID );
    
             $cat->store();
-            eZPBLog::writeNotice( "Forum category created: $Name from IP: $REMOTE_ADDR" );
+            eZPBLog::writeNotice( "Forum category created: $name from IP: $REMOTE_ADDR" );
             eZHTTPTool::header( "Location: /forum/categorylist/" );
         }
         else
@@ -87,7 +87,7 @@ if ( $Action == "insert" )
     }
 }
 
-if ( $Action == "delete" )
+if ( $action == "delete" )
 {
     if ( eZPermission::checkPermission( $user, "eZForum", "CategoryDelete" ) )
     {
@@ -101,10 +101,10 @@ if ( $Action == "delete" )
             $file->delete();
         }
         
-        if ( $CategoryID != "" )
+        if ( $categoryID != "" )
         {
             $cat = new eZForumCategory();
-            $cat->get( $CategoryID );
+            $cat->get( $categoryID );
             $categoryName = $cat->name();
             $cat->delete( );
             eZPBLog::writeNotice( "Forum category deleted: $categoryName from IP: $REMOTE_ADDR" );
@@ -123,7 +123,7 @@ if ( $Action == "delete" )
     }
 }
 
-if ( $Action == "DeleteCategories" )
+if ( $action == "DeleteCategories" )
 {
     // clear the menu cache
     $files = eZCacheFile::files( "kernel/ezforum/cache/",
@@ -137,11 +137,11 @@ if ( $Action == "DeleteCategories" )
 
     if ( eZPermission::checkPermission( $user, "eZForum", "CategoryDelete" ) )
     {
-        if ( count( $CategoryArrayID ) != 0 )
+        if ( count( $categoryArrayID ) != 0 )
         {
-            foreach ( $CategoryArrayID as $CategoryID )
+            foreach ( $categoryArrayID as $categoryID )
             {
-                $cat = new eZForumCategory( $CategoryID );
+                $cat = new eZForumCategory( $categoryID );
                 $categoryName = $cat->name();
                 $cat->delete( );
                 eZPBLog::writeNotice( "Forum category deleted: $categoryName from IP: $REMOTE_ADDR" );
@@ -158,7 +158,7 @@ if ( $Action == "DeleteCategories" )
 }
 
 
-if ( $Action == "update" )
+if ( $action == "update" )
 {
     if ( eZPermission::checkPermission( $user, "eZForum", "CategoryModify" ) )
     {
@@ -172,16 +172,16 @@ if ( $Action == "update" )
             $file->delete();
         }
         
-        if ( $Name != "" &&
-        $Description != "" )
+        if ( $name != "" &&
+        $description != "" )
         {
             $cat = new eZForumCategory();
-            $cat->get( $CategoryID );
-            $cat->setName( $Name );
-            $cat->setDescription( $Description );
-            $cat->setSectionID( $SectionID );
+            $cat->get( $categoryID );
+            $cat->setName( $name );
+            $cat->setDescription( $description );
+            $cat->setSectionID( $sectionID );
             $cat->store();
-            eZPBLog::writeNotice( "Forum category updated: $Name from IP: $REMOTE_ADDR" );
+            eZPBLog::writeNotice( "Forum category updated: $name from IP: $REMOTE_ADDR" );
             eZHTTPTool::header( "Location: /forum/categorylist/" );
         }
         else
@@ -207,10 +207,10 @@ $t->set_block( "category_page", "section_item_tpl", "section_item" );
 
 $t->set_var( "category_name", "" );
 $t->set_var( "category_description", "" );
-$t->set_var( "category_id", $CategoryID );
+$t->set_var( "category_id", $categoryID );
 $action_value = "update";
 
-if ( $Action == "new" )
+if ( $action == "new" )
 {
     if ( !eZPermission::checkPermission( $user, "eZForum", "CategoryAdd" ) )
     {
@@ -223,7 +223,7 @@ if ( $Action == "new" )
 $languageIni = new eZINI( "kernel/ezforum/admin/" . "intl/" . $Language . "/categoryedit.php.ini", false );
 $headline =  $languageIni->variable( "strings", "head_line_insert" );
 
-if ( $Action == "edit" )
+if ( $action == "edit" )
 {
     $languageIni = new eZINI( "kernel/ezforum/admin/" . "intl/" . $Language . "/categoryedit.php.ini", false );
     $headline =  $languageIni->variable( "strings", "head_line_edit" );
@@ -236,7 +236,7 @@ if ( $Action == "edit" )
     else
     {
         $cat = new eZForumCategory();
-        $cat->get( $CategoryID );    
+        $cat->get( $categoryID );    
         $t->set_var( "category_name", $cat->name() );
         $t->set_var( "category_description", $cat->description() );
         $action_value = "update";

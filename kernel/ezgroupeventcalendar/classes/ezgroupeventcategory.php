@@ -250,7 +250,7 @@ class eZGroupEventCategory
         {
             array_push( $tree, array( $return_array[] = new eZGroupEventCategory( $EventCategory->id() ), $level ) );
 
-            if ( $EventCategory != 0 )
+            if ( $EventCategory->id() != 0 )
             {
                 $tree = array_merge( $tree, $this->getTree( $EventCategory->id(), $level ) );
             }

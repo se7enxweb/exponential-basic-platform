@@ -225,7 +225,7 @@ $t->parse( "order_disclaimer", "order_disclaimer_tpl" );
 $t->parse( "shipping_disclaimer", "shipping_disclaimer_tpl" );
 
 
-if ( isset ( $RemoveVoucher ) )
+if ( isset ( $removeVoucher ) )
 
 {
     if ( count ( $RemoveVoucherArray ) > 0 )
@@ -246,7 +246,7 @@ if ( isset ( $RemoveVoucher ) )
 //wha?
 $test = "test";
 
-if ( isset( $SendOrder ) )
+if ( isset( $sendOrder ) )
 {
 
   // die ( eZHTTPTool::getVar( "ShippingTypeID", true ) );
@@ -258,16 +258,16 @@ if ( isset( $SendOrder ) )
     // $currentTypeID = $currentTypeID['0'];
     // $currentTypeID[0] = $currentTypeID['0'];
 
-    // $ShippingTypeID = $currentTypeID['0'];
-    // echo '<br /> CurrentTypeID:: ' . $ShippingTypeID;
+    // $shippingTypeID = $currentTypeID['0'];
+    // echo '<br /> CurrentTypeID:: ' . $shippingTypeID;
 
     // echo "REQUEST: <br><br>";
     // print_r($_REQUEST);
 
 /*
     echo "<br><br>";
-    $ShippingTypeID = $_REQUEST[ShippingTypeID];
-    echo 'ShippingType: ' . $ShippingTypeID['0'];
+    $shippingTypeID = $_REQUEST[ShippingTypeID];
+    echo 'ShippingType: ' . $shippingTypeID['0'];
 */
  
 }else{
@@ -413,7 +413,7 @@ if(empty($currentTypeID[0]))
 
     $order->setShippingTypeID($currentTypeID[0]);
 
-    $order->setComment( stripslashes($Comment) );
+    $order->setComment( stripslashes($comment) );
 
     $order->setPersonID( $cart->personID() );
     $order->setCompanyID( $cart->companyID() );
@@ -593,16 +593,15 @@ if ($cart->AddressID){
 }else {
   $addressList = $thisuser->addresses();
 
-  if( isset($addressList[1]) ){
-    $taxaddressObj = $addressList[1];
+  if( !empty($addressList) ){
+    $taxaddressObj = isset($addressList[1]) ? $addressList[1] : $addressList[0];
+    $taxaddressID = $taxaddressObj->ID();
   }else{
-    $taxaddressObj = $addressList[0];
+    $taxaddressID = null;
   }
 
   //$taxaddressObj = $address->mainAddress($thisuser);
   // print_r($addressList);
-
-  $taxaddressID = $taxaddressObj->ID();
 }
 	
 /////////////////////////////////////////////////////////////////
@@ -614,7 +613,7 @@ if ($cart->AddressID){
     $shippingAddress = new eZAddress( $taxaddressID );
     $shippingRegion = $shippingAddress->region();
 
-//    $billingAddress = new eZAddress( $BillingAddressID );
+//    $billingAddress = new eZAddress( $billingAddressID );
 //    $billingRegion = $billingAddress->region();
 //    $country = $address->country();
 
@@ -1093,7 +1092,7 @@ if($checkups==1)
         $ColSpanSizeTotals--;
     }
 
-    $SubTotalsColumns = $ColSpanSizeTotals;
+    $subTotalsColumns = $ColSpanSizeTotals;
 
     if ( $ShowExTaxColumn == true )
     {
@@ -1136,7 +1135,7 @@ if($checkups==1)
 
     if ( $ShowIncTaxColumn and $ShowExTaxColumn and $ShowExTaxTotal )
     {
-        $t->set_var( "subtotals_span_size", $SubTotalsColumns - 1 );
+        $t->set_var( "subtotals_span_size", $subTotalsColumns - 1 );
     }
     else
     {
@@ -1268,12 +1267,12 @@ foreach ( $addressArray as $address )
     unset( $mainAddress );
     $t->set_var( "is_selected", "" );
 	
-    if ( isset( $BillingAddressID ) && $BillingAddressID == "" )
+    if ( isset( $billingAddressID ) && $billingAddressID == "" )
 	{
 	    $mainAddress = $addressList[0];
 
 	  //$mainAddress = $address->mainAddress( $user );
-	$BillingAddressID = $mainAddress->id();
+	$billingAddressID = $mainAddress->id();
 	}
 
 /*	
@@ -1288,7 +1287,7 @@ foreach ( $addressArray as $address )
 
     if ( $ini->variable( "eZTradeMain", "ShowBillingAddress" ) == "enabled" )
         {
-			if ( isset( $BillingAddressID ) && (int)$BillingAddressID == $address->id() )
+			if ( isset( $billingAddressID ) && (int)$billingAddressID == $address->id() )
 				$t->set_var( "billing_selected", "selected" );
 			else 
 				$t->set_var( "billing_selected", "" );

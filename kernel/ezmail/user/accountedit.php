@@ -31,12 +31,12 @@
 
 // include_once( "ezmail/classes/ezmailaccount.php" );
 
-if( !eZMailAccount::isOwner( eZUser::currentUser(), $AccountID ) )
-    $AccountID = 0;
+if( !eZMailAccount::isOwner( eZUser::currentUser(), $accountID ) )
+    $accountID = 0;
 
-if( isset( $Ok ) )
+if( isset( $ok ) )
 {
-    if( $AccountID == 0 )
+    if( $accountID == 0 )
     {
         $account = new eZMailAccount();
         $account->setUser( eZUser::currentUser() );
@@ -44,16 +44,16 @@ if( isset( $Ok ) )
     }
     else
     {
-        $account = new eZMailAccount( $AccountID );
+        $account = new eZMailAccount( $accountID );
     }
 
-    $account->setName( $Name );
-    if( $Password != "" )
-        $account->setPassword( $Password );
-    $account->setLoginName( $Login );
-    $account->setServer( $Server );
-    $account->setServerPort( $Port );
-    if( isset( $DelFromServer ) )
+    $account->setName( $name );
+    if( $password != "" )
+        $account->setPassword( $password );
+    $account->setLoginName( $login );
+    $account->setServer( $server );
+    $account->setServerPort( $port );
+    if( isset( $delFromServer ) )
         $account->setDeleteFromServer( 1 );
     else
         $account->setDeleteFromServer( 0 );
@@ -63,7 +63,7 @@ if( isset( $Ok ) )
     exit();
 }
 
-if( isset( $Cancel ) )
+if( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /mail/config" );
     exit();
@@ -81,7 +81,7 @@ $t->set_file( array(
     "account_edit_page_tpl" => "accountedit.tpl"
     ) );
 
-$t->set_var( "current_account_id", $AccountID );
+$t->set_var( "current_account_id", $accountID );
 $t->set_var( "name_value", "" );
 $t->set_var( "login_value", "" );
 $t->set_var( "password_value", "" );
@@ -89,9 +89,9 @@ $t->set_var( "port_value", "110" );
 $t->set_var( "server_value" ,"" );
 $t->set_var( "delete_from_server_checked", "" );
 
-if( $AccountID != 0 ) // TODO: check that user really is the owner of the account.
+if( $accountID != 0 ) // TODO: check that user really is the owner of the account.
 {
-    $account = new eZMailAccount( $AccountID );
+    $account = new eZMailAccount( $accountID );
     $t->set_var( "name_value", htmlspecialchars( $account->name() ) );
     $t->set_var( "login_value", htmlspecialchars( $account->loginName() ) );
     $t->set_var( "password_value", htmlspecialchars( $account->password() ) );

@@ -29,7 +29,7 @@
 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZLinkMain", "Language" );
-$UserLimit = $ini->variable( "eZLinkMain", "UserLinkLimit" );
+$userLimit = $ini->variable( "eZLinkMain", "UserLinkLimit" );
 $languageIni = new eZINI( "kernel/ezlink/user/intl/". $Language . "/onepagelinklist.php.ini", false );
 $IDArrayStr = $ini->variable( "eZLinkMain", "CategoryIDSequence" );
 eval( "\$IDArray = array( $IDArrayStr );" );
@@ -70,11 +70,11 @@ $t->set_block( "link_page_tpl", "path_tpl", "path" );
 
 $t->set_var( "category_list", "" );
 
-if ( !$Offset )
-    $Offset = 0;
+if ( !$offset )
+    $offset = 0;
 
 // List all the categories
-$linkCategory = new eZLinkCategory( $LinkCategoryID );
+$linkCategory = new eZLinkCategory( $linkCategoryID );
 
 // Path
 $pathArray = $linkCategory->path();
@@ -126,7 +126,7 @@ else
     $i=0;
     foreach( $linkCategory_array as $categoryItem )
     {
-        $links = $categoryItem->links( $Offset, $UserLimit );
+        $links = $categoryItem->links( $offset, $userLimit );
         $linkCount = $categoryItem->linkCount();
         if ( $categoryItem->linkCount() != 0 )
         {
@@ -175,7 +175,7 @@ else
             
             if ( count( $links ) == 0 )
             {
-                if ( $LinkCategoryID == 0 )
+                if ( $linkCategoryID == 0 )
                 {
                     $t->set_var( "link_list", "" );
                 }
@@ -292,10 +292,10 @@ else
                 }
                 $t->parse( "link_list", "link_list_tpl", true );
             }
-            eZList::drawNavigator( $t, $linkCount, $UserLimit, $Offset, "category_item_tpl" );
+            eZList::drawNavigator( $t, $linkCount, $userLimit, $offset, "category_item_tpl" );
             
-            $t->set_var( "link_start", $Offset + 1 );
-            $t->set_var( "link_end", min( $Offset + $UserLimit, $linkCount ) );
+            $t->set_var( "link_start", $offset + 1 );
+            $t->set_var( "link_end", min( $offset + $userLimit, $linkCount ) );
             $t->set_var( "link_total", $linkCount );
             
             $i++;

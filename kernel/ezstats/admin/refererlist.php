@@ -44,20 +44,20 @@ $t->set_file( "referer_page_tpl", "refererlist.tpl" );
 $t->set_block( "referer_page_tpl", "referer_list_tpl", "referer_list" );
 $t->set_block( "referer_list_tpl", "referer_tpl", "referer" );
 
-if ( !isset( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
 
-if ( !isset( $ViewLimit ) or !is_numeric( $ViewLimit ) )
-    $ViewLimit = 20;
+if ( !isset( $viewLimit ) or !is_numeric( $viewLimit ) )
+    $viewLimit = 20;
 
-$latest = eZPageViewQuery::topReferers( $ViewLimit, $ExcludeDomain, $Offset );
-$ItemCount = eZPageViewQuery::topReferersCount( $ExcludeDomain );
+$latest = eZPageViewQuery::topReferers( $viewLimit, $excludeDomain, $offset );
+$itemCount = eZPageViewQuery::topReferersCount( $excludeDomain );
 
-$t->set_var( "item_start", $Offset + 1 );
-$t->set_var( "item_end", $Offset + $ViewLimit );
-$t->set_var( "item_count", $ItemCount );
-$t->set_var( "item_limit", $ViewLimit );
-$t->set_var( "exclude_domain", trim( $ExcludeDomain ) );
+$t->set_var( "item_start", $offset + 1 );
+$t->set_var( "item_end", $offset + $viewLimit );
+$t->set_var( "item_count", $itemCount );
+$t->set_var( "item_limit", $viewLimit );
+$t->set_var( "exclude_domain", trim( $excludeDomain ) );
 
 if ( count( $latest ) > 0 )
 {
@@ -77,7 +77,7 @@ if ( count( $latest ) > 0 )
         $i++;
     }
 
-    eZList::drawNavigator( $t, $ItemCount, $ViewLimit, $Offset, "referer_list_tpl" );
+    eZList::drawNavigator( $t, $itemCount, $viewLimit, $offset, "referer_list_tpl" );
     $t->parse( "referer_list", "referer_list_tpl" );
 }
 else
@@ -85,8 +85,8 @@ else
     $t->set_var( "referer_list", "" );
 }
 
-$t->set_var( "view_mode", $ViewMode );
-$t->set_var( "view_limit", $ViewLimit );
+$t->set_var( "view_mode", $viewMode );
+$t->set_var( "view_limit", $viewLimit );
 
 $t->pparse( "output", "referer_page_tpl" );
 

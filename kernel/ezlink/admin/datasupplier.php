@@ -23,7 +23,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-// $url_array = explode( "/", $REQUEST_URI );
+// $url_array = explode( "/", $_SERVER['REQUEST_URI'] );
 
 $user = eZUser::currentUser();
 // include_once( "ezuser/classes/ezpermission.php" );
@@ -34,6 +34,47 @@ if( eZPermission::checkPermission( $user, "eZLink", "ModuleEdit" ) == false )
     eZHTTPTool::header( "Location: /error/403" );
     exit();
 }
+
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$ok               = eZHTTPTool::getVar( 'OK' );
+$browse           = eZHTTPTool::getVar( 'Browse' );
+$back             = eZHTTPTool::getVar( 'Back' );
+$delete           = eZHTTPTool::getVar( 'Delete' );
+$deleteLinks      = eZHTTPTool::getVar( 'DeleteLinks' );
+$update           = eZHTTPTool::getVar( 'Update' );
+$attributes       = eZHTTPTool::getVar( 'Attributes' );
+$name             = eZHTTPTool::getVar( 'Name' );
+$url              = eZHTTPTool::getVar( 'Url' );
+$keywords         = eZHTTPTool::getVar( 'Keywords' );
+$description      = eZHTTPTool::getVar( 'Description' );
+$accepted         = eZHTTPTool::getVar( 'Accepted' );
+$linkCategoryID   = eZHTTPTool::getVar( 'LinkCategoryID' );
+$categoryArray    = eZHTTPTool::getVar( 'CategoryArray' ) ?? [];
+$typeID           = eZHTTPTool::getVar( 'TypeID' );
+$attributeValue   = eZHTTPTool::getVar( 'AttributeValue' ) ?? [];
+$attributeID      = eZHTTPTool::getVar( 'AttributeID' ) ?? [];
+$imageID          = eZHTTPTool::getVar( 'ImageID' );
+$linkArrayID      = eZHTTPTool::getVar( 'LinkArrayID' ) ?? [];
+$getSite          = eZHTTPTool::getVar( 'GetSite' );
+$addImages        = eZHTTPTool::getVar( 'AddImages' );
+$deleteImage      = eZHTTPTool::getVar( 'DeleteImage' );
+$queryString      = eZHTTPTool::getVar( 'QueryString' );
+$deleteCategories = eZHTTPTool::getVar( 'DeleteCategories' );
+$categoryArrayID  = eZHTTPTool::getVar( 'CategoryArrayID' ) ?? [];
+$sectionID        = eZHTTPTool::getVar( 'SectionID' );
+$parentCategory   = eZHTTPTool::getVar( 'ParentCategory' );
+$deleteSelected   = eZHTTPTool::getVar( 'DeleteSelected' );
+$deleteAttributes = eZHTTPTool::getVar( 'DeleteAttributes' ) ?? [];
+$newAttribute     = eZHTTPTool::getVar( 'NewAttribute' );
+$attributeName    = eZHTTPTool::getVar( 'AttributeName' ) ?? [];
+$actionValueArray = eZHTTPTool::getVar( 'ActionValueArray' ) ?? [];
+$cancel           = eZHTTPTool::getVar( 'Cancel' );
+$deleteArrayID    = eZHTTPTool::getVar( 'DeleteArrayID' ) ?? [];
+$okType           = eZHTTPTool::getVar( 'Ok' );   // typeedit.php uses 'Ok' not 'OK'
+$action           = eZHTTPTool::getVar( 'Action' ); // typeedit.php form hidden field
+$offset           = eZHTTPTool::getVar( 'Offset' );
+$lgid             = eZHTTPTool::getVar( 'LGID' );
+// URL-routing variables are set below inside the switch and override the above POST defaults.
 
 switch ( $url_array[2] )
 {
@@ -59,25 +100,35 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "edit" )
         {
-            $TypeID = $url_array[4];
-            $Action = "Edit";
+            $typeID = $url_array[4];
+            $action = "Edit";
+        }
+        if ( $url_array[3] == "Insert" || $url_array[3] == "insert" )
+        {
+            $typeID = $url_array[4];
+            $action = "Insert";
+        }
+        if ( $url_array[3] == "Update" || $url_array[3] == "update" )
+        {
+            $typeID = $url_array[4];
+            $action = "Update";
         }
         if ( $url_array[3] == "delete" )
         {
-            $TypeID = $url_array[4];
-            $Action = "Delete";
+            $typeID = $url_array[4];
+            $action = "Delete";
         }
         if ( $url_array[3] == "up" )
         {
-            $TypeID = $url_array[4];
-            $AttributeID = $url_array[5];
-            $Action = "up";
+            $typeID = $url_array[4];
+            $attributeID = $url_array[5];
+            $action = "up";
         }
         if ( $url_array[3] == "down" )
         {
-            $TypeID = $url_array[4];
-            $AttributeID = $url_array[5];
-            $Action = "down";
+            $typeID = $url_array[4];
+            $attributeID = $url_array[5];
+            $action = "down";
         }
  
         include( "kernel/ezlink/admin/typeedit.php" );
@@ -88,11 +139,11 @@ switch ( $url_array[2] )
     {
         if ( $url_array[4] == "parent" )
         {
-            $Offset = $url_array[5];
-            if ( !is_numeric( $Offset ) )
-                $Offset = 0;
+            $offset = $url_array[5];
+            if ( !is_numeric( $offset ) )
+                $offset = 0;
         }
-        $LinkCategoryID = $url_array[3];
+        $linkCategoryID = $url_array[3];
         include( "kernel/ezlink/admin/linkcategorylist.php" );
     }
     break;
@@ -100,7 +151,7 @@ switch ( $url_array[2] )
     case "unacceptedlist":
     {
         if ( $url_array[3] )
-            $Offset = $url_array[3];
+            $offset = $url_array[3];
         include( "kernel/ezlink/admin/unacceptedlist.php" );
     }
     break;
@@ -116,60 +167,46 @@ switch ( $url_array[2] )
         {
             case "new" :
             {
-                $Action = "new";
+                $action = "new";
                 include( "kernel/ezlink/admin/linkedit.php" );
             }
             break;
             
             case "insert" :
             {
-                $LinkID = $url_array[4];
-                if ( isset( $Update ) )
-                {
-                    $Action = "AttributeList";
-                }
-                else
-                {
-                    $Action = "insert";
-                }
+                $linkID = $url_array[4];
+                $action = isset( $update ) ? "AttributeList" : "insert";
                 include( "kernel/ezlink/admin/linkedit.php" );
             }
             break;
             
             case "edit" :
             {
-                $LinkID = $url_array[4];
-                $Action = "edit";
+                $linkID = $url_array[4];
+                $action = "edit";
                 include( "kernel/ezlink/admin/linkedit.php" );
             }
             break;
             
             case "update" :
             {
-                $LinkID = $url_array[4];
-                if ( isset( $Update ) )
-                {
-                    $Action = "AttributeList";
-                }
-                else
-                {
-                    $Action = "update";
-                }
+                $linkID = $url_array[4];
+                $action = isset( $update ) ? "AttributeList" : "update";
                 include( "kernel/ezlink/admin/linkedit.php" );
             }
             break;
             
             case "delete" :
             {
-                $LinkID = $url_array[4];
-                $Action = "delete";
+                $linkID = $url_array[4];
+                $action = "delete";
                 include( "kernel/ezlink/admin/linkedit.php" );
             }
             break;
             
             case "attributeedit" :
             {
-                $LinkID = $url_array[4];
+                $linkID = $url_array[4];
                 include( "kernel/ezlink/admin/attributeedit.php" );
             }
             break;
@@ -181,32 +218,32 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "new" )
         {
-            $Action = "new";
+            $action = "new";
             include( "kernel/ezlink/admin/categoryedit.php" );
         }
         else if ( $url_array[3] == "insert" )
         {
-            $LinkCategoryID = $url_array[4];
-            $Action = "insert";
+            $linkCategoryID = $url_array[4];
+            $action = "insert";
             include( "kernel/ezlink/admin/categoryedit.php" );
         }
 
         else if ( $url_array[3] == "edit" )
         {
-            $LinkCategoryID = $url_array[4];
-            $Action = "edit";
+            $linkCategoryID = $url_array[4];
+            $action = "edit";
             include( "kernel/ezlink/admin/categoryedit.php" );
         }
         else if ( $url_array[3] == "update" )
         {
-            $LinkCategoryID = $url_array[4];
-            $Action = "update";
+            $linkCategoryID = $url_array[4];
+            $action = "update";
             include( "kernel/ezlink/admin/categoryedit.php" );
         }
         else if ( $url_array[3] == "delete" )
         {
-            $LinkCategoryID = $url_array[4];
-            $Action = "delete";
+            $linkCategoryID = $url_array[4];
+            $action = "delete";
             include( "kernel/ezlink/admin/categoryedit.php" );
         }
     }
@@ -218,8 +255,8 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "parent" )
         {
-            $QueryString = urldecode( $url_array[4] );
-            $Offset = $url_array[5];
+            $queryString = urldecode( $url_array[4] );
+            $offset = $url_array[5];
         }
         include( "kernel/ezlink/admin/search.php" );
     }
@@ -229,8 +266,8 @@ switch ( $url_array[2] )
         break;
     case "gotolink" :
     {
-        $Action = $url_array[3];
-        $LinkID = $url_array[4];
+        $action = $url_array[3];
+        $linkID = $url_array[4];
         include( "kernel/ezlink/admin/gotolink.php" );
     }
     break;

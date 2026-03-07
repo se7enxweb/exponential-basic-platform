@@ -33,7 +33,7 @@
 // include_once( "ezfilemanager/classes/ezvirtualfile.php" );
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
-$Limit = $ini->variable( "eZFileManagerMain", "SearchListLimit" );
+$limit = $ini->variable( "eZFileManagerMain", "SearchListLimit" );
 
 $t = new eZTemplate( "kernel/ezfilemanager/user/" . $ini->variable( "eZFileManagerMain", "TemplateDir" ),
                      "kernel/ezfilemanager/user/intl/", $Language, "search.php" );
@@ -48,18 +48,18 @@ $t->set_block( "search_list_tpl", "empty_search_tpl", "empty_search" );
 
 $t->set_block( "file_tpl", "read_tpl", "read" );
 
-$t->set_var( "search_text", htmlspecialchars( $SearchText ) );
+$t->set_var( "search_text", htmlspecialchars( $searchText ) );
 
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
-if ( $SearchText )
+if ( $searchText )
 {
     $file = new eZVirtualFile();
-    $fileList = $file->search( $SearchText, $Offset, $Limit );
-    $totalCount = $file->searchCount( $SearchText, $user ? $user->id() : -1 );
+    $fileList = $file->search( $searchText, $offset, $limit );
+    $totalCount = $file->searchCount( $searchText, $user ? $user->id() : -1 );
 
-    $t->set_var( "url_text", urlencode( $SearchText ) );
+    $t->set_var( "url_text", urlencode( $searchText ) );
 }
 
 if ( count( $fileList ) > 0 )
@@ -104,10 +104,10 @@ else
     $t->parse( "empty_search", "empty_search_tpl" );
 }
 
-eZList::drawNavigator( $t, $totalCount, $Limit, $Offset, "search_list_tpl" );
+eZList::drawNavigator( $t, $totalCount, $limit, $offset, "search_list_tpl" );
 
-$t->set_var( "file_start", $Offset + 1 );
-$t->set_var( "file_end", min( $Offset + $Limit, $totalCount ) );
+$t->set_var( "file_start", $offset + 1 );
+$t->set_var( "file_end", min( $offset + $limit, $totalCount ) );
 $t->set_var( "file_total", $totalCount );
 
 $t->pparse( "output", "search_list_tpl" );

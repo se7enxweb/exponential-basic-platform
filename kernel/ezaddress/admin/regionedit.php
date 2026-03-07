@@ -27,11 +27,11 @@
 						//print_r($_POST); exit();
 												
 $language_file = "region.php";
-$item_type = new eZRegion( $RegionID );
-if ( isset( $ItemArrayID ) and is_array( $ItemArrayID ) )
+$item_type = new eZRegion( $regionID );
+if ( isset( $itemArrayID ) and is_array( $itemArrayID ) )
 {
     $item_types = array();
-    foreach( $ItemArrayID as $item_id )
+    foreach( $itemArrayID as $item_id )
     {
         $item_types[] = new eZRegion( $item_id );
     }

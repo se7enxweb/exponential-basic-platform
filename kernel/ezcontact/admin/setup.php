@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: setup.php 6237 2001-07-20 12:01:51Z jakobn $
+// $id: setup.php 6237 2001-07-20 12:01:51Z jakobn $
 //
 // Created on: <25-Jan-2001 00:58:23 amos>
 //
@@ -27,15 +27,15 @@
 // include_once( "classes/ezmenubox.php" );
 // include_once( "classes/INIFile.php" );
 
-$ini =& $GlobalSiteIni;
-$SiteDesign = $ini->variable( "site", "SiteStyle" );
+$ini =& $globalSiteIni;
+$siteDesign = $ini->variable( "site", "SiteStyle" );
 
 $menuItems = array(
     array( "/contact/consultationtype/list/", "{intl-consultationtypelist}" ),
     array( "/contact/projecttype/list/", "{intl-projecttypelist}" )
     );
 
-eZMenuBox::createBox( "eZContact", "ezcontact", "admin", $SiteDesign, $menuItems,
+eZMenuBox::createBox( "eZContact", "ezcontact", "admin", $siteDesign, $menuItems,
                       true, "menuitems.tpl", false, true );
 
 ?>

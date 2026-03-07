@@ -61,9 +61,9 @@ $t->set_block( "ad_item_tpl", "no_image_tpl", "no_image" );
 
 $t->set_var( "site_style", $SiteDesign );
 
-if ( !is_numeric( $CategoryID ) )
-    $CategoryID = 0;
-$category = new eZAdCategory( $CategoryID );
+if ( !is_numeric( $categoryID ) )
+    $categoryID = 0;
+$category = new eZAdCategory( $categoryID );
 
 $t->set_var( "current_category_id", $category->id() );
 $t->set_var( "current_category_name", $category->name() );

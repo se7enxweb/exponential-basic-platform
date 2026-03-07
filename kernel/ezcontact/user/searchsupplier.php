@@ -23,27 +23,27 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-$ModuleName = "eZ contact";
-$SearchResult[0]["DetailedSearchPath"] = "/contact/search/company/";
-$SearchResult[0]["DetailedSearchVariable"] = "SearchText";
-$SearchResult[0]["DetailViewPath"] = "/contact/company/view/";
-$SearchResult[0]["IconPath"] = "/design/base/images/icons/document.gif";
+$moduleName = "eZ contact";
+$searchResult[0]["DetailedSearchPath"] = "/contact/search/company/";
+$searchResult[0]["DetailedSearchVariable"] = "SearchText";
+$searchResult[0]["DetailViewPath"] = "/contact/company/view/";
+$searchResult[0]["IconPath"] = "/design/base/images/icons/document.gif";
 
 // include_once( "ezcontact/classes/ezcompany.php" );
 
-$SearchResult[0]["Result"] = eZCompany::search( $SearchText );
-$SearchResult[0]["SearchCount"] = count( $SearchResult[0]["Result"] );
-$SearchResult[0]["SubModuleName"] = "Company";
+$searchResult[0]["Result"] = eZCompany::search( $searchText );
+$searchResult[0]["SearchCount"] = count( $searchResult[0]["Result"] );
+$searchResult[0]["SubModuleName"] = "Company";
 
-$SearchResult[1]["DetailedSearchPath"] = "/contact/search/person/";
-$SearchResult[1]["DetailedSearchVariable"] = "SearchText";
-$SearchResult[1]["DetailViewPath"] = "/contact/person/view/";
-$SearchResult[1]["IconPath"] = "/design/base/images/icons/document.gif";
+$searchResult[1]["DetailedSearchPath"] = "/contact/search/person/";
+$searchResult[1]["DetailedSearchVariable"] = "SearchText";
+$searchResult[1]["DetailViewPath"] = "/contact/person/view/";
+$searchResult[1]["IconPath"] = "/design/base/images/icons/document.gif";
 
 // include_once( "ezcontact/classes/ezperson.php" );
 
-$SearchResult[1]["Result"] = eZPerson::search( $SearchText );
-$SearchResult[1]["SearchCount"] = count( $SearchResult[1]["Result"] );
-$SearchResult[1]["SubModuleName"] = "Person";
+$searchResult[1]["Result"] = eZPerson::search( $searchText );
+$searchResult[1]["SearchCount"] = count( $searchResult[1]["Result"] );
+$searchResult[1]["SubModuleName"] = "Person";
 
 ?>

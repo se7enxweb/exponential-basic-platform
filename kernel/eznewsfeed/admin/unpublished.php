@@ -32,20 +32,20 @@
 // include_once( "classes/ezdb.php" );
 
 $db = eZDB::globalDatabase();
-if ( isset( $Publish ) )
-    $Action = "Publish";
+if ( isset( $publish ) )
+    $action = "Publish";
 
-if ( isset( $Delete ) )
-    $Action = "Delete";
+if ( isset( $delete ) )
+    $action = "Delete";
 
-if( isset( $DeleteCat ) )
-    $Action = "DeleteCat";
+if( isset( $deleteCat ) )
+    $action = "DeleteCat";
 
-if ( isset( $Action ) && $Action == "Publish" )
+if ( isset( $action ) && $action == "Publish" )
 {
-    if ( isset( $NewsPublishIDArray ) && count( $NewsPublishIDArray ) > 0 )
+    if ( isset( $newsPublishIDArray ) && count( $newsPublishIDArray ) > 0 )
     {
-        foreach ( $NewsPublishIDArray as $newsID )
+        foreach ( $newsPublishIDArray as $newsID )
         {
             $news = new eZNews( $newsID );
             $news->setName( $db->escapeString( $news->name() ) );
@@ -65,7 +65,7 @@ if ( isset( $Action ) && $Action == "Publish" )
         {
             if ( ereg( "latestnews,([^,]+)\..*", $entry, $regArray  ) )
             {
-                if ( $regArray[1] == $CategoryID )
+                if ( $regArray[1] == $categoryID )
                 {
                     eZPBFile::unlink( "eznewsfeed/cache/" . $entry );
                 }
@@ -73,7 +73,7 @@ if ( isset( $Action ) && $Action == "Publish" )
             
             if ( ereg( "headlines,([^,]+)\..*", $entry, $regArray  ) )
             {
-                if ( $regArray[1] == $CategoryID )
+                if ( $regArray[1] == $categoryID )
                 {
                     eZPBFile::unlink( "eznewsfeed/cache/" . $entry );
                 }
@@ -84,11 +84,11 @@ if ( isset( $Action ) && $Action == "Publish" )
 }
 
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
-    if ( count( $NewsDeleteIDArray ) > 0 )
+    if ( count( $newsDeleteIDArray ) > 0 )
     {
-        foreach ( $NewsDeleteIDArray as $newsID )
+        foreach ( $newsDeleteIDArray as $newsID )
         {
             $news = new eZNews( $newsID );
             $news->delete();
@@ -96,11 +96,11 @@ if ( isset( $Action ) && $Action == "Delete" )
     }
 }
 
-if( isset( $Action ) && $Action == "DeleteCat" )
+if( isset( $action ) && $action == "DeleteCat" )
 {
-    if( count( $CategoryArrayID ) > 0 )
+    if( count( $categoryArrayID ) > 0 )
     {
-        foreach( $CategoryArrayID as $categoryID )
+        foreach( $categoryArrayID as $categoryID )
         {
             $category = new eZNewsCategory( $categoryID );
             $category->delete();
@@ -137,7 +137,7 @@ $t->set_block( "news_unpublished_page_tpl", "next_tpl", "next" );
 
 $t->set_var( "site_style", $SiteDesign );
 
-$category = new eZNewsCategory( $CategoryID );
+$category = new eZNewsCategory( $categoryID );
 
 $t->set_var( "current_category_id", $category->id() );
 $t->set_var( "current_category_name", $category->name() );
@@ -193,14 +193,14 @@ else
     $t->set_var( "category_list", "" );
 
 
-if ( !isset( $Limit ) )
-    $Limit = 20;
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $limit ) )
+    $limit = 20;
+if ( !isset( $offset ) )
+    $offset = 0;
 
 
 // news
-$newsList = $category->newsList( "time", "only", $Offset, $Limit );
+$newsList = $category->newsList( "time", "only", $offset, $limit );
 $newsListCount = $category->newsListCount( "time", "only" );
 
 $locale = new eZLocale( $Language );
@@ -241,8 +241,8 @@ else
     $t->set_var( "news_list", "" );
 
 
-$prevOffs = $Offset - $Limit;
-$nextOffs = $Offset + $Limit;
+$prevOffs = $offset - $limit;
+$nextOffs = $offset + $limit;
         
 if ( $prevOffs >= 0 )
 {

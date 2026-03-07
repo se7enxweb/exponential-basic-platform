@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: typelist.php 6927 2001-09-04 12:06:17Z jhe $
+// $id: typelist.php 6927 2001-09-04 12:06:17Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -34,11 +34,11 @@
   $page_path: The base name of the url, for example: /contact/consultationtype
   You can also enable item placement by setting the $move_item variable to true, to make sure an
   item can be moved it must implement the moveUp() and moveDown() functions.
-  If the $SortPage variable is set all items will have hyperlinked names linked to the variable content.
+  If the $sortPage variable is set all items will have hyperlinked names linked to the variable content.
 */
 
-$ini =& $GlobalSiteIni;
-$Language = $ini->variable( "eZContactMain", "Language" );
+$ini =& $globalSiteIni;
+$language = $ini->variable( "eZContactMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZContactMain", "DocumentRoot" );
 
 // include_once( "classes/eztemplate.php" );
@@ -51,20 +51,20 @@ $DOC_ROOT = $ini->variable( "eZContactMain", "DocumentRoot" );
 require( "kernel/ezuser/admin/admincheck.php" );
 
 $t = new eZTemplate( $DOC_ROOT . "/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ),
-                     $DOC_ROOT . "admin/intl", $Language, $language_file );
+                     $DOC_ROOT . "admin/intl", $language, $language_file );
 $t->setAllStrings();
 
 $item_error = true;
 
 if ( empty( $_SERVER['HTTP_REFERER'] ) )
 {
-    if ( empty( $BackUrl ) )
+    if ( empty( $backUrl ) )
     {
         $back_command = "$page_path/list";
     }
     else
     {
-        $back_command = $BackUrl;
+        $back_command = $backUrl;
     }
 }
 else
@@ -125,18 +125,18 @@ $t->set_var( "item_delete_command", "$page_path/delete" );
 $t->set_var( "item_view_command", "$page_path/view" );
 $t->set_var( "item_list_command", "$page_path/list" );
 $t->set_var( "item_new_command", "$page_path/new" );
-$t->set_var( "item_id", isset( $ItemID ) ? $ItemID : false );
-$t->set_var( "item_name", isset( $ItemName ) ? $ItemName : false );
+$t->set_var( "item_id", isset( $itemID ) ? $itemID : false );
+$t->set_var( "item_name", isset( $itemName ) ? $itemName : false );
 $t->set_var( "back_url", $back_command );
 $t->set_var( "item_back_command", $back_command );
 
-$t->set_var( "action", $Action );
-$t->set_var( "type", $ListType );
+$t->set_var( "action", $action );
+$t->set_var( "type", $listType );
 
-$t->set_var( "search_form_text", isset( $SearchText ) ? $SearchText : false );
+$t->set_var( "search_form_text", isset( $searchText ) ? $searchText : false );
 $t->set_var( "search_text", isset( $search_encoded ) ? $search_encoded : false );
 
-if ( isset( $Searchable ) )
+if ( isset( $searchable ) )
     $t->parse( "search_item", "search_item_tpl" );    
 
 $count = count( $item_type_array );
@@ -173,9 +173,9 @@ foreach ( $item_type_array as $item )
         $t->set_var( "item_name", $item->name() );
     }
 
-    if ( isset( $SortPage ) )
+    if ( isset( $sortPage ) )
     {
-        $t->set_var( "item_sort_command", $SortPage );
+        $t->set_var( "item_sort_command", $sortPage );
         $t->parse( "item_linked", "item_linked_tpl" );
     }
     else
@@ -224,7 +224,7 @@ else
     $t->parse( "list_item", "list_item_tpl" );
 }
 
-if ( isset( $total_types ) && $total_types > $Max || $Offset > 0 )
+if ( isset( $total_types ) && $total_types > $max || $offset > 0 )
 {
     $t->set_var( "type_list_previous", "" );
     $t->set_var( "type_list_item", "" );
@@ -232,18 +232,18 @@ if ( isset( $total_types ) && $total_types > $Max || $Offset > 0 )
     $t->set_var( "type_list_previous_inactive", "" );
     $t->set_var( "type_list_next_inactive", "" );
 
-    if ( $Offset > 0 )
+    if ( $offset > 0 )
     {
-        $t->set_var( "item_previous_index", max( $Offset - $Max, 0 ) );
+        $t->set_var( "item_previous_index", max( $offset - $max, 0 ) );
         $t->parse( "type_list_previous", "type_list_previous_tpl" );
     }
     else
     {
         $t->parse( "type_list_previous_inactive", "type_list_previous_inactive_tpl" );
     }
-    if ( $Offset + $Max < $total_types )
+    if ( $offset + $max < $total_types )
     {
-        $t->set_var( "item_next_index", $Offset + $Max );
+        $t->set_var( "item_next_index", $offset + $max );
         $t->parse( "type_list_next", "type_list_next_tpl" );
     }
     else
@@ -255,11 +255,11 @@ if ( isset( $total_types ) && $total_types > $Max || $Offset > 0 )
     $i = 0;
     while ( $total > 0 )
     {
-        $t->set_var( "item_index", $i*$Max );
+        $t->set_var( "item_index", $i*$max );
         $t->set_var( "type_item_name", $i );
         $t->parse( "type_list_item", "type_list_item_tpl", true );
 
-        $total = $total - $Max;
+        $total = $total - $max;
         $i++;
     }
 

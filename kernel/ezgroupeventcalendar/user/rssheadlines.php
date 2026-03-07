@@ -39,56 +39,56 @@ include_once( "classes/ezvardump.php" );
 
 // get ini variables
 $ini = eZINI::instance( 'site.ini' );
-$Title = htmlspecialchars($ini->variable( "eZGroupEventCalendarRSS", "Title" ));
-$Link = $ini->variable( "eZGroupEventCalendarRSS", "Link" );
-$Description = htmlspecialchars($ini->variable( "eZGroupEventCalendarRSS", "Description" ));
+$title = htmlspecialchars($ini->variable( "eZGroupEventCalendarRSS", "Title" ));
+$link = $ini->variable( "eZGroupEventCalendarRSS", "Link" );
+$description = htmlspecialchars($ini->variable( "eZGroupEventCalendarRSS", "Description" ));
 $Language = $ini->variable( "eZGroupEventCalendarRSS", "Language" );
-$Encoding = $ini->variable( "eZGroupEventCalendarRSS", "Encoding" );
+$encoding = $ini->variable( "eZGroupEventCalendarRSS", "Encoding" );
 
 $Image = $ini->variable( "eZGroupEventCalendarRSS", "Image" );
-// $CategoryID = $ini->variable( "eZGroupEventCalendarRSS", "CategoryID" );
-$GroupID = $ini->variable( "eZGroupEventCalendarRSS", "GroupID" );
-$Limit = $ini->variable( "eZGroupEventCalendarRSS", "Limit" );
-$LimitDirectionForward = true;
-$RssVersion = $ini->variable( "eZGroupEventCalendarRSS", "RssVersion" );
+// $categoryID = $ini->variable( "eZGroupEventCalendarRSS", "CategoryID" );
+$groupID = $ini->variable( "eZGroupEventCalendarRSS", "GroupID" );
+$limit = $ini->variable( "eZGroupEventCalendarRSS", "Limit" );
+$limitDirectionForward = true;
+$rssVersion = $ini->variable( "eZGroupEventCalendarRSS", "RssVersion" );
 
 $headerInfo = ( getallheaders() );
-$Host =  $headerInfo["Host"] ;
+$host =  $headerInfo["Host"] ;
 
 //debug : disable rss output
-$Debug = false;
+$debug = false;
 
 // clear what might be in the output buffer
 ob_end_clean();
 
-if (!$Debug){
-  if ( $RssVersion == "0.9" ){
+if (!$debug){
+  if ( $rssVersion == "0.9" ){
   // xml header
   header( "Content-type: text/xml" );
-  print( "<?xml version=\"1.0\" encoding=\"$Encoding\"?>\n\n" );
+  print( "<?xml version=\"1.0\" encoding=\"$encoding\"?>\n\n" );
 
   // rss header
   //print( "<!DOCTYPE rss PUBLIC \"-//Netscape Communications//DTD RSS 0.91//EN\" \"http://my.netscape.com/publish/formats/rss-0.91.dtd\">\n\n" );
   print( "<rss version=\"0.92\">\n" );
 
   print( "<channel>\n" );
-  print( "<title>$Title</title>\n" ); 
-  print( "<link>$Link</link>\n" );
-  print( "<description>$Description</description>\n" );
+  print( "<title>$title</title>\n" ); 
+  print( "<link>$link</link>\n" );
+  print( "<description>$description</description>\n" );
   print( "<language>$Language</language>\n" );
   //print( "<language/>");
 
   // Print Channel Image Tag
   print( "<image>\n" );
-  print( "<url>http://".$Host.$Image."</url>\n" );
-  print( "<link>http://".$Link."</link>\n" );
+  print( "<url>http://".$host.$Image."</url>\n" );
+  print( "<link>http://".$link."</link>\n" );
   print( "<title>".Title."</title>\n" );
   print( "</image>\n" );
- }elseif ( $RssVersion == "1.0" ) {
+ }elseif ( $rssVersion == "1.0" ) {
 
   // xml header
   header( "Content-type: text/xml" );
-  print( "<?xml version=\"1.0\" encoding=\"$Encoding\"?>\n\n" );
+  print( "<?xml version=\"1.0\" encoding=\"$encoding\"?>\n\n" );
 
   // rss header
   print( '<rdf:RDF 
@@ -96,31 +96,31 @@ if (!$Debug){
   xmlns="http://purl.org/rss/1.0/"
   xmlns:dc="http://purl.org/dc/elements/1.1/">'. "\n" );
 
-  print( '<channel rdf:about="http://'. $Host .'/groupcalendar/rss">'. "\n" );
-  print( "<title>$Title</title>\n" );
-  print( "<link>$Link</link>\n" );
-  print( "<description>$Description</description>\n" );
+  print( '<channel rdf:about="http://'. $host .'/groupcalendar/rss">'. "\n" );
+  print( "<title>$title</title>\n" );
+  print( "<link>$link</link>\n" );
+  print( "<description>$description</description>\n" );
 
   // print( "<language>$Language</language>\n" );
   // Print Channel Image Tag
 	// print( "<image>\n" );
-	// print( "<url>http://".$Host.$Image."</url>\n" );
-	//  print( "<link>http://".$Link."</link>\n" );
+	// print( "<url>http://".$host.$Image."</url>\n" );
+	//  print( "<link>http://".$link."</link>\n" );
 	// print( "<title>".Title."</title>\n" );
 	// print( "</image>\n" );
  }
-} //end if(!$Debug)
+} //end if(!$debug)
 
 
-// get articles. Always sort by date/time (newest first) + $Limit (5|7|30 days)
-for ($i=0; $i<=$Limit; $i++){
-  if($Debug)
+// get articles. Always sort by date/time (newest first) + $limit (5|7|30 days)
+for ($i=0; $i<=$limit; $i++){
+  if($debug)
     print("<br /> it - $i || ");
 
   $currentDate = new eZDateTime();
   $currentDate = $currentDate->date();
 
-  if($LimitDirectionForward){
+  if($limitDirectionForward){
     $currentDate->move(0,0,"+$i");
   }else{ 
     $currentDate->move(0,0,"-$i");
@@ -133,13 +133,13 @@ for ($i=0; $i<=$Limit; $i++){
   $dateDay = addZero( $dateLimit->day() );
   $date = $dateYear ."-". $dateMonth ."-". $dateDay ; //." ".  $dateHour .":". $dateMinute;
 
-  if($Debug)
+  if($debug)
     print "$date <br />";
 
-  if ( $GroupID == 0)
+  if ( $groupID == 0)
   {
     $event = new eZGroupEvent();
-    if($Limit){
+    if($limit){
       $eventList = $event->getAllByDate($dateLimit);
     }else {
       $eventList = $event->getAll();
@@ -148,11 +148,11 @@ for ($i=0; $i<=$Limit; $i++){
   else
   {
     $event = new eZGroupEvent();
-    $eventList = $event->getByGroup($GroupID);
+    $eventList = $event->getByGroup($groupID);
   }
 
   // build combined result set
-  if($Debug){
+  if($debug){
     // Var_Dump::display($eventList);
     print("EventListIterationCount: ". sizeof($eventList)."<br />");
   }
@@ -161,23 +161,23 @@ for ($i=0; $i<=$Limit; $i++){
     $it = $eventList[$e];
     if( $it != false)
       $eventListLimited[] = $it;
-    if($Debug)
+    if($debug)
       print "$e : EventListIterationObj: ". $eventList[$e] ."<br />";
   }
 }
 
-if($Debug)
+if($debug)
    print("<br />|| ". sizeof($eventListLimited)." || <br />");
 
 // Var_Dump::display($eventListLimited);
 
-if ( $RssVersion != "0.9" ){
+if ( $rssVersion != "0.9" ){
   print("<items>\n");
   print("<rdf:Seq>\n");
   foreach( $eventListLimited as $event )
   {
     $eventID = $event->id();
-    print('<rdf:li resource="http://'. $Host .'/groupeventcalendar/eventview/'. $eventID .'/"/>'. "\n");    
+    print('<rdf:li resource="http://'. $host .'/groupeventcalendar/eventview/'. $eventID .'/"/>'. "\n");    
   }
   print("</rdf:Seq>\n");
   print("</items>\n");
@@ -195,8 +195,8 @@ if ( $RssVersion != "0.9" ){
      prefix relative Links in href and src attributes with the Hostname, 
      so the feed does not contain relative links and feedreaders can parse the links and show the images.
     */
-    $description = str_replace("href=\"/", "href=\"http://".$Host."/", $description);
-    $description = str_replace("src=\"/", "src=\"http://".$Host."/", $description);
+    $description = str_replace("href=\"/", "href=\"http://".$host."/", $description);
+    $description = str_replace("src=\"/", "src=\"http://".$host."/", $description);
 
     $date = $event->dateTime();
 
@@ -232,11 +232,11 @@ if ( $RssVersion != "0.9" ){
     // $description = htmlspecialchars( $description );
 
 
-    if ( $RssVersion == "0.9" ){
+    if ( $rssVersion == "0.9" ){
   
     print( "<item>\n" );
     print( "<title>" . htmlspecialchars($event->name()) . "</title>\n" );
-    print( "<link>http://" . $Host . "/groupeventcalendar/eventview/$eventID/</link>\n" );
+    print( "<link>http://" . $host . "/groupeventcalendar/eventview/$eventID/</link>\n" );
     
     //      $published = $event->published();
     //      print( $locale->format( $published ) );
@@ -244,20 +244,20 @@ if ( $RssVersion != "0.9" ){
     // encode HTML special character like < , > and " and print the tag   
      print( "<description>". $description ."</description>\n" );    
      print( "</item>\n" );
-    }elseif ( $RssVersion == "1.0" ) {
-      print('<item rdf:about="http://'. $Host .'/groupeventcalendar/eventview/'. $eventID .'/">'. "\n");
+    }elseif ( $rssVersion == "1.0" ) {
+      print('<item rdf:about="http://'. $host .'/groupeventcalendar/eventview/'. $eventID .'/">'. "\n");
       print("<title>". htmlspecialchars($event->name()) . "</title>\n" );
       print( "<description>". $description ."</description>\n" );
-      print( "<link>http://" . $Host . "/groupeventcalendar/eventview/$eventID/</link>\n" );
+      print( "<link>http://" . $host . "/groupeventcalendar/eventview/$eventID/</link>\n" );
       print("<dc:date>".$date."</dc:date>\n");  
       print("</item>\n");
     }
  }
 
- if ( $RssVersion == "0.9" ){
+ if ( $rssVersion == "0.9" ){
    print( "\n</channel>\n" );
    print( "\n</rss>\n" );
- }elseif ( $RssVersion == "1.0" ) {
+ }elseif ( $rssVersion == "1.0" ) {
    print("</rdf:RDF>\n");
  }
 

@@ -48,21 +48,21 @@ function addZero( $value )
     return $ret;
 }
 
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    $Action = "delete";
+    $action = "delete";
 }
-if ( isset( $List ) )
+if ( isset( $list ) )
 {
     eZHTTPTool::header( "Location: /todo" );
     exit();
 }
-if ( isset( $Edit ) )
+if ( isset( $edit ) )
 {
-    $Action = "edit";
+    $action = "edit";
 }
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /todo" );
     exit();
@@ -73,7 +73,7 @@ if ( isset( $Cancel ) )
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTodoMain", "Language" );
-$NotDoneID = $ini->variable( "eZTodoMain", "NotDoneID" );
+$notDoneID = $ini->variable( "eZTodoMain", "NotDoneID" );
 
 $iniLanguage = new eZINI( "kernel/eztodo/user/intl/" . $Language . "/todoedit.php.ini", false );
 
@@ -98,15 +98,15 @@ $locale = new eZLocale( $Language );
 $user = eZUser::currentUser();
 $redirect = true;
 
-if ( isset( $AddLog ) )
+if ( isset( $addLog ) )
 {
     $log = new eZTodoLog();
-    $log->setLog( $Log );
+    $log->setLog( $log );
     $log->store();
-    $todo = new eZTodo( $TodoID );
+    $todo = new eZTodo( $todoID );
     $todo->addLog( $log );
 
-    $Action = "update";
+    $action = "update";
     $redirect = false;
 }
 
@@ -116,12 +116,12 @@ if ( !$user )
     exit();
 }
 
-$CategoryID = eZHTTPTool::getVar( "CategoryID", true );
-$PriorityID = eZHTTPTool::getVar( "PriorityID", true );
-$UserID = eZHTTPTool::getVar( "UserID", true );
-$Name = eZHTTPTool::getVar( "Name", true );
-$Description = eZHTTPTool::getVar( "Description", true );
-$StatusID = eZHTTPTool::getVar( "StatusID", true );
+$categoryID = eZHTTPTool::getVar( "CategoryID", true );
+$priorityID = eZHTTPTool::getVar( "PriorityID", true );
+$userID = eZHTTPTool::getVar( "UserID", true );
+$name = eZHTTPTool::getVar( "Name", true );
+$description = eZHTTPTool::getVar( "Description", true );
+$statusID = eZHTTPTool::getVar( "StatusID", true );
 
 $t = new eZTemplate( "kernel/eztodo/user/" . $ini->variable( "eZTodoMain", "TemplateDir" ),
                      "kernel/eztodo/user/intl", $Language, "todoedit.php" );
@@ -142,8 +142,8 @@ $t->set_block( "list_logs_tpl", "log_item_tpl", "log_item" );
 $t->set_block( "todo_edit_page", "errors_tpl", "errors" );
 $t->set_var( "errors", "&nbsp;" );
 
-$t->set_var( "name", $Name );
-$t->set_var( "description", $Description );
+$t->set_var( "name", $name );
+$t->set_var( "description", $description );
 $t->set_var( "list_logs", "" );
 $t->set_var( "send_mail", "" );
 $t->set_var( "log_item", "" );
@@ -167,9 +167,9 @@ $t->set_block( "errors_tpl", "error_user_tpl", "error_user" );
 $t->set_var( "error_user", "&nbsp;" );
 
 
-if ( ( $userCheck ) && ( $Action == "update" ) || ( $Action == "updateStatus" ) )
+if ( ( $userCheck ) && ( $action == "update" ) || ( $action == "updateStatus" ) )
 {
-    $todo = new eZTodo( $TodoID );
+    $todo = new eZTodo( $todoID );
 
     if ( ( $todo->userID() == $user->id() ) || ( $todo->ownerID() == $user->id() ) ||
          ( eZPermission::checkPermission( $user, "eZTodo", "EditOthers" ) == true ) )
@@ -183,11 +183,11 @@ if ( ( $userCheck ) && ( $Action == "update" ) || ( $Action == "updateStatus" ) 
 }
 
 
-if ( isset( $Action ) && $Action == "insert" || isset( $Action ) && $Action == "update" )
+if ( isset( $action ) && $action == "insert" || isset( $action ) && $action == "update" )
 {
     if ( $nameCheck )
     {
-        if ( empty( $Name ) )
+        if ( empty( $name ) )
         {
             $t->parse( "error_name", "error_name_tpl" );
             $error = true;
@@ -195,13 +195,13 @@ if ( isset( $Action ) && $Action == "insert" || isset( $Action ) && $Action == "
     }
     if ( $descriptionCheck )
     {
-        if ( empty( $Description ) )
+        if ( empty( $description ) )
         {
             $t->parse( "error_description", "error_description_tpl" );
             $error = true;
         }
     }
-    if ( $user->id() != $UserID )
+    if ( $user->id() != $userID )
     {
         if ( eZPermission::checkPermission( $user, "eZTodo", "AddOthers" ) == false )
         {
@@ -209,13 +209,13 @@ if ( isset( $Action ) && $Action == "insert" || isset( $Action ) && $Action == "
             $error = true;
         }
     }
-    if ( $DeadlineYear > 0 )
+    if ( $deadlineYear > 0 )
     {
-        $Due = new eZDateTime( $DeadlineYear, $DeadlineMonth, $DeadlineDay );
+        $due = new eZDateTime( $deadlineYear, $deadlineMonth, $deadlineDay );
     }
     else
     {
-        $Due = "";
+        $due = "";
     }
 }
 
@@ -225,20 +225,20 @@ if ( $error )
 }
 
 // Save a todo in the database.
-if ( isset( $Action ) && $Action == "insert" && $error == false )
+if ( isset( $action ) && $action == "insert" && $error == false )
 {
     $todo = new eZTodo();
-    $todo->setName( $Name );
-    $todo->setDescription( $Description );
-    $todo->setCategoryID( $CategoryID );
-    $todo->setPriorityID( $PriorityID );
-    $todo->setDue( $Due );
-    $todo->setUserID( $UserID );
+    $todo->setName( $name );
+    $todo->setDescription( $description );
+    $todo->setCategoryID( $categoryID );
+    $todo->setPriorityID( $priorityID );
+    $todo->setDue( $due );
+    $todo->setUserID( $userID );
     $todo->setOwnerID( $user->id() );
-    $todo->setStatusID( $StatusID );
+    $todo->setStatusID( $statusID );
     $date = new eZDateTime();
 
-    if ( $IsPublic == "on" )
+    if ( $isPublic == "on" )
     {
         $todo->setIsPublic( true );
     }
@@ -248,8 +248,8 @@ if ( isset( $Action ) && $Action == "insert" && $error == false )
     }
 
     $todo->store();
-    deleteCache( "default", $Language, $Due->year(), addZero( $Due->month() ) , addZero( $Due->day() ), $UserID );
-    if ( $SendMail == "on" )
+    deleteCache( "default", $Language, $due->year(), addZero( $due->month() ) , addZero( $due->day() ), $userID );
+    if ( $sendMail == "on" )
     {
         $mailTemplate = new eZTemplate( "kernel/eztodo/user/" . $ini->variable( "eZTodoMain", "TemplateDir" ),
                                         "kernel/eztodo/user/intl", $Language, "sendmail.php" );
@@ -260,11 +260,11 @@ if ( isset( $Action ) && $Action == "insert" && $error == false )
         $mailTemplate->set_block( "send_mail_tpl", "todo_is_public_tpl", "todo_is_public" );
         $mailTemplate->set_block( "send_mail_tpl", "todo_is_not_public_tpl", "todo_is_not_public" );
 
-        $category = new eZCategory( $CategoryID );
-        $priority = new eZPriority( $PriorityID );
-        $status = new eZStatus ( $StatusID );
+        $category = new eZCategory( $categoryID );
+        $priority = new eZPriority( $priorityID );
+        $status = new eZStatus ( $statusID );
         $owner = new eZUser( $user->id() );
-        $user = new eZUser( $UserID );
+        $user = new eZUser( $userID );
 
         if ( $todo->IsPublic() )
         {
@@ -277,15 +277,15 @@ if ( isset( $Action ) && $Action == "insert" && $error == false )
             $mailTemplate->parse( "todo_is_not_public", "todo_is_not_public_tpl" );
         }
 
-        $mailTemplate->set_var( "todo_name", $Name );
+        $mailTemplate->set_var( "todo_name", $name );
         $mailTemplate->set_var( "todo_category", $category->name() );
         $mailTemplate->set_var( "todo_priority", $priority->name() );
         $mailTemplate->set_var( "todo_status", $status->name() );
         $mailTemplate->set_var( "todo_owner", $owner->firstName() . " " . $owner->lastName() );
-        $mailTemplate->set_var( "todo_description", $Description );
+        $mailTemplate->set_var( "todo_description", $description );
 
         $mail = new eZMail();
-        $mail->setSubject( "Todo: " . $Name );
+        $mail->setSubject( "Todo: " . $name );
         $mail->setFrom( $owner->email() );
         $mail->setTo( $user->email() );
         $mail->setBody( $mailTemplate->parse( "dummy", "send_mail_tpl" ) );
@@ -299,30 +299,30 @@ if ( isset( $Action ) && $Action == "insert" && $error == false )
 
 
 // Update a todo in the database.
-if ( isset( $Action ) && $Action == "update" && $error == false )
+if ( isset( $action ) && $action == "update" && $error == false )
 {
     $userID = $user->ID();
     $todo = new eZTodo();
-    $todo->get( $TodoID );
+    $todo->get( $todoID );
     $oldDue = $todo->due();
 
     if ( $oldDue )
     {
         deleteCache( "default", $Language, $oldDue->year(), addZero( $oldDue->month() ) , addZero( $oldDue->day() ), $userID );
     }
-    deleteCache( "default", $Language, $DeadlineYear, addZero( $DeadlineMonth ), addZero( $DeadlineDay ), $userID );
+    deleteCache( "default", $Language, $deadlineYear, addZero( $deadlineMonth ), addZero( $deadlineDay ), $userID );
 
     $oldstatus = $todo->statusID();
 
-    $todo->setName( $Name );
-    $todo->setDescription( $Description );
-    $todo->setCategoryID( $CategoryID );
-    $todo->setPriorityID( $PriorityID );
-    $todo->setDue( $Due );
+    $todo->setName( $name );
+    $todo->setDescription( $description );
+    $todo->setCategoryID( $categoryID );
+    $todo->setPriorityID( $priorityID );
+    $todo->setDue( $due );
     $todo->setUserID( $userID );
-    $todo->setStatusID( $StatusID );
+    $todo->setStatusID( $statusID );
 
-    if ( $IsPublic == "on" )
+    if ( $isPublic == "on" )
     {
         $todo->setIsPublic( true );
     }
@@ -344,11 +344,11 @@ if ( isset( $Action ) && $Action == "update" && $error == false )
         $mailTemplate->set_block( "send_mail_tpl", "todo_is_public_tpl", "todo_is_public" );
         $mailTemplate->set_block( "send_mail_tpl", "todo_is_not_public_tpl", "todo_is_not_public" );
 
-        $category = new eZCategory( $CategoryID );
-        $priority = new eZPriority( $PriorityID );
-        $status = new ezStatus( $StatusID );
+        $category = new eZCategory( $categoryID );
+        $priority = new eZPriority( $priorityID );
+        $status = new ezStatus( $statusID );
         $owner = new eZUser( $user->id() );
-        $user = new eZUser( $UserID );
+        $user = new eZUser( $userID );
 
         if ( $todo->IsPublic() )
         {
@@ -362,18 +362,18 @@ if ( isset( $Action ) && $Action == "update" && $error == false )
         }
 
         $locale = new eZLocale( $Language );
-        $mailTemplate->set_var( "todo_name", $Name );
+        $mailTemplate->set_var( "todo_name", $name );
         $mailTemplate->set_var( "todo_category", $category->name() );
         $mailTemplate->set_var( "todo_priority", $priority->name() );
         $mailTemplate->set_var( "todo_status", $status->name() );
         $mailTemplate->set_var( "todo_owner", $owner->firstName() . " " . $owner->lastName() );
-        $mailTemplate->set_var( "todo_description", $Description );
+        $mailTemplate->set_var( "todo_description", $description );
 
         $mailTemplate->set_var( "time", $locale->format( $log->created() ) );
         $mailTemplate->set_var( "log", $log->log() );
 
         $mail = new eZMail();
-        $mail->setSubject( "Todo log: " . $Name );
+        $mail->setSubject( "Todo log: " . $name );
         $mail->setFrom( $owner->email() );
         $mail->setTo( $user->email() );
         $mail->setBody( $mailTemplate->parse( "dummy", "send_mail_tpl" ) );
@@ -389,27 +389,27 @@ if ( isset( $Action ) && $Action == "update" && $error == false )
     }
     else
     {
-        $Action = "edit";
+        $action = "edit";
     }
 }
 
 // Delete a todo in the database.
-if ( isset( $Action ) && $Action == "delete" )
+if ( isset( $action ) && $action == "delete" )
 {
     $todo = new eZTodo();
-    $todo->get( $TodoID );
+    $todo->get( $todoID );
     if ( $todo->userID == $user->id() || $todo->ownerID == $user->id() )
         $todo->delete();
     eZHTTPTool::header( "Location: /todo/todolist/" );
     exit();
 }
 
-if ( isset( $Action ) && $Action == "new" )
+if ( isset( $action ) && $action == "new" )
 {
-    $Deadline = new eZDateTime();
-    $DeadlineDay = $Deadline->day();
-    $DeadlineMonth = $Deadline->month();
-    $DeadlineYear = $Deadline->year();
+    $deadline = new eZDateTime();
+    $deadlineDay = $deadline->day();
+    $deadlineMonth = $deadline->month();
+    $deadlineYear = $deadline->year();
     $action_value = "insert";
     $name = "";
     $description = "";
@@ -418,7 +418,7 @@ if ( isset( $Action ) && $Action == "new" )
     $day = "";
     $hour = "";
     $min = "";
-    $Comment = "";
+    $comment = "";
     $categoryID = false;
     $priorityID = false;
     $t->set_var( "text", "" );
@@ -427,18 +427,18 @@ if ( isset( $Action ) && $Action == "new" )
 
 if ( $error )
 {
-    $priorityID = $PriorityID;
-    $t->set_var( "todo_is_public", $IsPublic == "on" ? "checked" : "" );
-    $t->set_var( "send_mail_checkbox", $SendMail == "on" ? "checked" : "" );
+    $priorityID = $priorityID;
+    $t->set_var( "todo_is_public", $isPublic == "on" ? "checked" : "" );
+    $t->set_var( "send_mail_checkbox", $sendMail == "on" ? "checked" : "" );
     $t->parse( "send_mail", "send_mail_tpl" );
 }
 
 // default user
-$OwnerID = $user->id();
+$ownerID = $user->id();
 
 $datetime = new eZDateTime();
 
-if ( isset( $Action ) && $Action == "new" || $error )
+if ( isset( $action ) && $action == "new" || $error )
 {
     $t->set_var( "current_date", $locale->format( $datetime ) );
     $t->set_var( "first_name", $user->firstName() );
@@ -451,7 +451,7 @@ if ( isset( $Action ) && $Action == "new" || $error )
         $t->set_var( "day_id", $i );
         $t->set_var( "day_value", $i );
         $t->set_var( "selected", "" );
-        if ( ( $DeadlineDay == "" and $i == 1 ) or $DeadlineDay == $i )
+        if ( ( $deadlineDay == "" and $i == 1 ) or $deadlineDay == $i )
             $t->set_var( "selected", "selected" );
         $t->parse( "day_item", "day_item_tpl", true );
     }
@@ -471,28 +471,28 @@ if ( isset( $Action ) && $Action == "new" || $error )
 
     for ( $i = 1; $i <= count( $month_array ); $i++ )
     {
-        if ( $i == $DeadlineMonth )
+        if ( $i == $deadlineMonth )
             $t->set_var( $month_array[$i], "selected" );
         else
             $t->set_var( $month_array[$i], "" );
     }
 
-    if ( $DeadlineYear > 0 )
-        $t->set_var( "deadlineyear", $DeadlineYear );
+    if ( $deadlineYear > 0 )
+        $t->set_var( "deadlineyear", $deadlineYear );
     else
         $t->set_var( "deadlineyear", "" );
 
-    $t->set_var( "comment", $Comment );
+    $t->set_var( "comment", $comment );
 
     $userID = $user->id();
 }
 
 // Edit a todo.
-if ( $Action == "edit" )
+if ( $action == "edit" )
 {
     // Return the current time
 
-    $todo = new eZTodo( $TodoID );
+    $todo = new eZTodo( $todoID );
 
     if ( $todo->status() == true )
     {
@@ -520,20 +520,20 @@ if ( $Action == "edit" )
     $priorityID = $todo->priorityID();
     $userID = $todo->userID();
     $ownerID = $todo->ownerID();
-    $StatusID = $todo->statusID();
+    $statusID = $todo->statusID();
 
     $duestamp = $todo->due();
     if ( $duestamp )
     {
-        $DeadlineDay = $duestamp->day();
-        $DeadlineMonth = $duestamp->month();
-        $DeadlineYear = $duestamp->year();
+        $deadlineDay = $duestamp->day();
+        $deadlineMonth = $duestamp->month();
+        $deadlineYear = $duestamp->year();
     }
     else
     {
-        $DeadlineDay = "";
-        $DeadlineMonth = "";
-        $DeadlineYear = "";
+        $deadlineDay = "";
+        $deadlineMonth = "";
+        $deadlineYear = "";
     }
     // Get the owner
     $owner = new eZUser( $todo->ownerID() );
@@ -559,7 +559,7 @@ if ( $Action == "edit" )
         $t->set_var( "day_id", $i );
         $t->set_var( "day_value", $i );
         $t->set_var( "selected", "" );
-        if ( ( $DeadlineDay == "" and $i == 1 ) or $DeadlineDay == $i )
+        if ( ( $deadlineDay == "" and $i == 1 ) or $deadlineDay == $i )
             $t->set_var( "selected", "selected" );
         $t->parse( "day_item", "day_item_tpl", true );
     }
@@ -582,15 +582,15 @@ if ( $Action == "edit" )
         $t->set_var( $month, "" );
     }
 
-    $var_name =& $month_array[$DeadlineMonth];
+    $var_name =& $month_array[$deadlineMonth];
     if ( $var_name == "" )
         $var_name =& $month_array[1];
 
     $t->set_var( $var_name, "selected" );
 
-    $t->set_var( "deadlineyear", $DeadlineYear );
+    $t->set_var( "deadlineyear", $deadlineYear );
 
-    $t->set_var( "comment", $Comment );
+    $t->set_var( "comment", $comment );
 
     $headline = "Rediger todo";
     $submit_description = "Rediger";
@@ -643,15 +643,15 @@ for ( $i = 0; $i < count( $priority_array ); $i++ )
 $status = new eZStatus();
 $status_array = $status->getAll();
 
-if ( $Action == "new")
-    $StatusID = $NotDoneID;
+if ( $action == "new")
+    $statusID = $notDoneID;
 
 for ( $i = 0; $i < count( $status_array ); $i++ )
 {
     $t->set_var( "status_id", $status_array[$i]->id() );
     $t->set_var( "status_name", $status_array[$i]->name() );
 
-    if ( $StatusID == $status_array[$i]->id() )
+    if ( $statusID == $status_array[$i]->id() )
     {
         $t->set_var( "is_selected", "selected" );
     }
@@ -676,7 +676,7 @@ foreach ( $user_array as $userItem )
     $t->set_var( "user_lastname", $userItem->lastName() );
 
     // User select
-    if ( $UserID == $userItem->id() )
+    if ( $userID == $userItem->id() )
     {
         $t->set_var( "user_is_selected", "selected" );
     }

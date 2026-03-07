@@ -30,25 +30,25 @@ $PageCaching = $ini->variable( "eZTradeMain", "PageCaching");
 $PureStatic = "false";
 //$PureStatic = "true";
 
-//unset( $CacheFile );
-$GenerateStaticPage = "false";
-//$GenerateStaticPage = "true";
+//unset( $cacheFile );
+$generateStaticPage = "false";
+//$generateStaticPage = "true";
 
 
 if ( $PageCaching == "enabled" )
 {
     // include_once( "classes/ezcachefile.php" );
-    $CacheFile = new eZCacheFile( "kernel/eztrade/cache/",
-                                  array( "cateorylist", $CategoryID, $GlobalSiteDesign ), 
+    $cacheFile = new eZCacheFile( "kernel/eztrade/cache/",
+                                  array( "cateorylist", $categoryID, $GlobalSiteDesign ), 
                                   "cache", "," );
-    if ( $CacheFile->exists() )
+    if ( $cacheFile->exists() )
     {
-        include( $CacheFile->filename( true ) );
+        include( $cacheFile->filename( true ) );
         $PureStatic = "true";
     }
     else
     {
-        $GenerateStaticPage = "true";
+        $generateStaticPage = "true";
     }
 }
 
@@ -88,7 +88,7 @@ if ( $PureStatic == "false" )
     $t->setAllStrings();
 
     $category = new eZProductCategory(  );
-    $category->get( $CategoryID );
+    $category->get( $categoryID );
 
 
     $categoryList = $category->getByParent( $category );
@@ -181,12 +181,12 @@ if ( $PureStatic == "false" )
 
 
 
-    if ( $GenerateStaticPage == "true" )
+    if ( $generateStaticPage == "true" )
     {
         $output = $t->parse( "output", "category_list_page_tpl" );
         // print the output the first time while printing the cache file.
         print( $output );
-        $CacheFile->store( $output );
+        $cacheFile->store( $output );
     }
     else
     {

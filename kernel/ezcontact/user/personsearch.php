@@ -69,27 +69,27 @@ $t->set_var( "result_category", "" );
 $t->set_var( "companies_table", "" );
 $t->set_var( "command_type", "person" );
 
-$t->set_var( "search_text", htmlspecialchars( $SearchText ) );
-$t->set_var( "current_id", isset( $SearchCategory ) ? $SearchCategory : false );
+$t->set_var( "search_text", htmlspecialchars( $searchText ) );
+$t->set_var( "current_id", isset( $searchCategory ) ? $searchCategory : false );
 
-$Action = "new";
+$action = "new";
 $results = "false";
 
-if ( isset( $SearchObject ) && $SearchObject == "person" )
+if ( isset( $searchObject ) && $searchObject == "person" )
 {
-    $Action = "search";
+    $action = "search";
 }
 
-if ( !empty( $SearchText ) )
+if ( !empty( $searchText ) )
 {
-    $Action = "search";
+    $action = "search";
 }
 $person = new eZPerson();
 $result = false;
 $personArray = array();
-if ( $Action == "search" )
+if ( $action == "search" )
 {
-    $personArray = $person->search( $SearchText );
+    $personArray = $person->search( $searchText );
     $count = count( $personArray );
     if ( $count > 0 )
     {
@@ -103,7 +103,7 @@ if ( $results )
     $t->set_var( "results", $count );
     $i = 0;
 
-    $can_view_stats = eZPermission::checkPermission( $user, "eZContact", "PersonStats" ) && isset( $ShowStats ) && $ShowStats;
+    $can_view_stats = eZPermission::checkPermission( $user, "eZContact", "PersonStats" ) && isset( $showStats ) && $showStats;
     $t->set_var( "person_stats_header", "" );
     if ( $can_view_stats )
         $t->parse( "person_stats_header", "person_stats_header_tpl" );
@@ -138,7 +138,7 @@ if ( $results )
     }
     else
     {
-        $can_view_stats = eZPermission::checkPermission( $user, "eZContact", "PersonStats" ) && isset( $ShowStats ) && $ShowStats;
+        $can_view_stats = eZPermission::checkPermission( $user, "eZContact", "PersonStats" ) && isset( $showStats ) && $showStats;
         $t->set_var( "person_stats_header", "" );
         if ( $can_view_stats )
             $t->parse( "person_stats_header", "person_stats_header_tpl" );

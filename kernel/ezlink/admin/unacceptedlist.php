@@ -57,12 +57,12 @@ $t->set_block( "link_item_tpl", "multiple_category_tpl", "multiple_category" );
 $t->set_var( "site_style", $SiteDesign );
 $t->set_var( "link_item", "" );
 
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
 $link = new eZLink();
 
-$linkList = $link->getNotAccepted( $Offset, $AdminLimit );
+$linkList = $link->getNotAccepted( $offset, $AdminLimit );
 $linkCount = $link->unAcceptedCount();
 
 $category = new eZLinkCategory();
@@ -124,10 +124,10 @@ foreach ( $linkList as $linkItem )
     $i++;
     $t->parse( "link_item", "link_item_tpl", true );
 }
-eZList::drawNavigator( $t, $linkCount, $AdminLimit, $Offset, "unacceptedlist" );
+eZList::drawNavigator( $t, $linkCount, $AdminLimit, $offset, "unacceptedlist" );
 
-$t->set_var( "link_start", $Offset + 1 );
-$t->set_var( "link_end", min( $Offset + $AdminLimit, $linkCount ) );
+$t->set_var( "link_start", $offset + 1 );
+$t->set_var( "link_end", min( $offset + $AdminLimit, $linkCount ) );
 $t->set_var( "link_total", $linkCount );
 
 $t->pparse( "output", "unacceptedlist" );

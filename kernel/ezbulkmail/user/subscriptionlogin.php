@@ -34,13 +34,13 @@ $Language = $ini->variable( "eZBulkMailMain", "Language" );
 $TemplateDir = $ini->variable( "eZBulkMailMain", "TemplateDir" ); 
 $languageIni = new eZINI( "kernel/ezbulkmail/user/intl/" . $Language . "/subscriptionlogin.php.ini", false );
 
-if( isset( $Hash ) )
+if( isset( $hash ) )
 {
     $change = new eZBulkMailForgot();
 
-    if ( $change->check( $Hash ) )
+    if ( $change->check( $hash ) )
     {
-        $change->get( $change->check( $Hash ) );
+        $change->get( $change->check( $hash ) );
         $subscriptionaddress = new eZBulkMailSubscriptionAddress();
         $subscriptionaddress->setEMail( $change->mail() );
         $subscriptionaddress->setEncryptetPassword( $change->password() );
@@ -54,23 +54,23 @@ if( isset( $Hash ) )
     }
 }
 
-if( isset( $Ok ) )
+if( isset( $ok ) )
 {
-    if( $Action == "login" )
+    if( $action == "login" )
     {
         // check if password and email is correct.. if so, let the user continue..
-        if( eZBulkMailSubscriptionAddress::validate( $Email, $Password ) )
+        if( eZBulkMailSubscriptionAddress::validate( $email, $password ) )
         {
-            $session->setVariable( "BulkMailAddress", $Email );
+            $session->setVariable( "BulkMailAddress", $email );
             eZHTTPTool::header( "Location: /bulkmail/subscriptionlist/" );
             exit();
         }
     }
-    else if( $Action == "create" )
+    else if( $action == "create" )
     {
         // TODO:check if address allready exists!!
         $subscriptionaddress = new eZBulkMailSubscriptionAddress();
-        if( $subscriptionaddress->setEMail( $Email ) && $Password != "" && $Password == $Password2 ) // check if passwords are alike and that we have a valid email address...
+        if( $subscriptionaddress->setEMail( $email ) && $password != "" && $password == $Password2 ) // check if passwords are alike and that we have a valid email address...
         {
             $headersInfo = getallheaders();
             // send an email to the new address asking to confirm it..
@@ -78,9 +78,9 @@ if( isset( $Ok ) )
             $bodyText = $languageIni->variable( "strings", "body_text" );
 
             $forgot = new eZBulkMailForgot();
-            $forgot->get( $Email );
-            $forgot->setMail( $Email );
-            $forgot->setPassword( $Password );
+            $forgot->get( $email );
+            $forgot->setMail( $email );
+            $forgot->setPassword( $password );
             $forgot->store();
 
             $mailTemplate = new eZTemplate( "kernel/ezbulkmail/user/" . $ini->variable( "eZBulkMailMain", "TemplateDir" ),
@@ -89,7 +89,7 @@ if( isset( $Ok ) )
             $mailTemplate->set_file( "subscription_mail_tpl", "subscriptionmail.tpl" );
  
             $mailpassword = new eZMail();
-            $mailpassword->setTo( $Email );
+            $mailpassword->setTo( $email );
             $mailpassword->setSubject( $subjectText );
 
             $mailTemplate->set_var( "activation_link",  "http://" . $headersInfo["Host"] . "/bulkmail/confirmsubscription/" . $forgot->Hash() );
@@ -103,10 +103,10 @@ if( isset( $Ok ) )
         }
         else // we have some sort of error... find out what it is, and present it to the user..
         {
-            $New = "new";
-            if( $subscriptionaddress->setEMail( $Email) == false )
+            $new = "new";
+            if( $subscriptionaddress->setEMail( $email) == false )
                 $error = "emailerror";
-            else if( $Password == "" )
+            else if( $password == "" )
                 $error = "zeropassword";
             else
                 $error = "unlikepasswords";
@@ -136,7 +136,7 @@ $t->set_var( "login", "" );
 $t->set_var( "second_password", "" );
 $t->set_var( "action_value", "login" );
 
-if( isset( $New ) )
+if( isset( $new ) )
 {
     $t->parse( "second_password", "second_password_tpl" );
     $t->set_var( "action_value", "create" );

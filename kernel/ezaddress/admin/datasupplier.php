@@ -23,11 +23,11 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-//print $REQUEST_URI;
+//print $_SERVER["REQUEST_URI"];
 
 // include_once( "classes/ezuritool.php" );
 
-$ListType = $url_array[2];
+$listType = $url_array[2];
 
 
 $url_array = eZURITool::split( $_SERVER['REQUEST_URI'] );
@@ -39,13 +39,13 @@ for( $i = $url_array_count; $i <= 25; $i++ )
     $url_array[$i] = false;
 }
 
-switch ( $ListType )
+switch ( $listType )
 {
     case "phonetype":
     {
-        $PhoneTypeID = $url_array[4];
-        $Action = $url_array[3];
-        switch( $Action )
+        $phoneTypeID = $url_array[4];
+        $action = $url_array[3];
+        switch( $action )
         {
             // intentional fall through
             case "new":
@@ -61,20 +61,20 @@ switch ( $ListType )
             case "list":
             {
                 if ( is_numeric( $url_array[4] ) )
-                    $Index = $url_array[4];
+                    $index = $url_array[4];
                 else
-                    $Index = false;
+                    $index = false;
                 include( "kernel/ezaddress/admin/phonetypelist.php" );
                 break;
             }
             case "search":
             {
                 if ( is_numeric( $url_array[4] ) )
-                    $Index = $url_array[4];
-                if ( count( $url_array ) >= 5 && !isset( $SearchText ) )
+                    $index = $url_array[4];
+                if ( count( $url_array ) >= 5 && !isset( $searchText ) )
                 {
-                    $SearchText = $url_array[5];
-                    $SearchText = eZURITool::decode( $SearchText );
+                    $searchText = $url_array[5];
+                    $searchText = eZURITool::decode( $searchText );
                 }
                 include( "kernel/ezaddress/admin/phonetypelist.php" );
                 break;
@@ -82,7 +82,7 @@ switch ( $ListType )
             default:
             {
                 // include_once( "classes/ezhttptool.php" );
-                eZHTTPTool::header( "Location: /address/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+                eZHTTPTool::header( "Location: /address/error?Type=404&Uri=" . urlencode( $_SERVER['REQUEST_URI'] ) . "&Query=" . urlencode( $_SERVER['QUERY_STRING'] ?? '' ) . "&BackUrl=" . urlencode( $_SERVER['HTTP_REFERER'] ?? '' ) );
                 break;
             }
         }
@@ -92,10 +92,10 @@ switch ( $ListType )
     case "addresstype":
     {
         if( isset( $url_array[4] ) )
-            $AddressTypeID = $url_array[4];
+            $addressTypeID = $url_array[4];
         else
-            $AddressTypeID = false;
-        $Action = $url_array[3];
+            $addressTypeID = false;
+        $action = $url_array[3];
         switch( $url_array[3] )
         {
             // intentional fall through
@@ -112,22 +112,22 @@ switch ( $ListType )
             case "list":
             {
                 if ( isset( $url_array[4] ) && is_numeric( $url_array[4] ) )
-                    $Index = $url_array[4];
+                    $index = $url_array[4];
                 else
-                    $Index = false;
+                    $index = false;
                 include( "kernel/ezaddress/admin/addresstypelist.php" );
                 break;
             }
             case "search":
             {
                 if ( isset( $url_array[4] ) && is_numeric( $url_array[4] ) )
-                    $Index = $url_array[4];
+                    $index = $url_array[4];
                 else
-                    $Index = false;
-                if ( count( $url_array ) >= 5 && !isset( $SearchText ) )
+                    $index = false;
+                if ( count( $url_array ) >= 5 && !isset( $searchText ) )
                 {
-                    $SearchText = $url_array[5];
-                    $SearchText = eZURITool::decode( $SearchText );
+                    $searchText = $url_array[5];
+                    $searchText = eZURITool::decode( $searchText );
                 }
                 include( "kernel/ezaddress/admin/addresstypelist.php" );
                 break;
@@ -135,7 +135,7 @@ switch ( $ListType )
             default:
             {
                 // include_once( "classes/ezhttptool.php" );
-                eZHTTPTool::header( "Location: /address/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+                eZHTTPTool::header( "Location: /address/error?Type=404&Uri=" . urlencode( $_SERVER['REQUEST_URI'] ) . "&Query=" . urlencode( $_SERVER['QUERY_STRING'] ?? '' ) . "&BackUrl=" . urlencode( $_SERVER['HTTP_REFERER'] ?? '' ) );
                 break;
             }
         }
@@ -144,13 +144,13 @@ switch ( $ListType )
     
     case "onlinetype":
     {
-        $Action = $url_array[3];
+        $action = $url_array[3];
         if( isset( $url_array[4] ) )
-            $OnlineTypeID = $url_array[4];
+            $onlineTypeID = $url_array[4];
         else
-            $OnlineTypeID = false;
+            $onlineTypeID = false;
         
-        switch( $Action )
+        switch( $action )
         {
             // intentional fall through
             case "new":
@@ -166,20 +166,20 @@ switch ( $ListType )
             case "list":
             {
                 if ( isset( $url_array[4] ) && is_numeric( $url_array[4] ) )
-                    $Index = $url_array[4];
+                    $index = $url_array[4];
                 else
-                    $Index = false;
+                    $index = false;
                 include( "kernel/ezaddress/admin/onlinetypelist.php" );
                 break;
             }
             case "search":
             {
                 if ( is_numeric( $url_array[4] ) )
-                    $Index = $url_array[4];
-                if ( count( $url_array ) >= 5 && !isset( $SearchText ) )
+                    $index = $url_array[4];
+                if ( count( $url_array ) >= 5 && !isset( $searchText ) )
                 {
-                    $SearchText = $url_array[5];
-                    $SearchText = eZURITool::decode( $SearchText );
+                    $searchText = $url_array[5];
+                    $searchText = eZURITool::decode( $searchText );
                 }
                 include( "kernel/ezaddress/admin/onlinetypelist.php" );
                 break;
@@ -187,7 +187,7 @@ switch ( $ListType )
             default:
             {
                 // include_once( "classes/ezhttptool.php" );
-                eZHTTPTool::header( "Location: /address/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+                eZHTTPTool::header( "Location: /address/error?Type=404&Uri=" . urlencode( $_SERVER['REQUEST_URI'] ) . "&Query=" . urlencode( $_SERVER['QUERY_STRING'] ?? '' ) . "&BackUrl=" . urlencode( $_SERVER['HTTP_REFERER'] ?? '' ) );
                 break;
             }
         }
@@ -197,12 +197,12 @@ switch ( $ListType )
     case "country":
     {
         if( isset( $url_array[4] ) )
-            $CountryID = $url_array[4];
+            $countryID = $url_array[4];
         else
-            $CountryID = false;
+            $countryID = false;
 
-        $Action = $url_array[3];
-        switch ( $Action )
+        $action = $url_array[3];
+        switch ( $action )
         {
             // intentional fall through
             case "new":
@@ -218,20 +218,20 @@ switch ( $ListType )
             case "list":
             {
                 if ( isset( $url_array[4] ) && is_numeric( $url_array[4] ) )
-                    $Index = $url_array[4];
+                    $index = $url_array[4];
                 else
-                    $Index = false;
+                    $index = false;
                 include( "kernel/ezaddress/admin/countrylist.php" );
                 break;
             }
             case "search":
             {
                 if ( is_numeric( $url_array[4] ) )
-                    $Index = $url_array[4];
-                if ( count( $url_array ) >= 5 && !isset( $SearchText ) )
+                    $index = $url_array[4];
+                if ( count( $url_array ) >= 5 && !isset( $searchText ) )
                 {
-                    $SearchText = $url_array[5];
-                    $SearchText = eZURITool::decode( $SearchText );
+                    $searchText = $url_array[5];
+                    $searchText = eZURITool::decode( $searchText );
                 }
                 include( "kernel/ezaddress/admin/countrylist.php" );
                 break;
@@ -240,7 +240,7 @@ switch ( $ListType )
             default:
             {
                 // include_once( "classes/ezhttptool.php" );
-                eZHTTPTool::header( "Location: /address/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+                eZHTTPTool::header( "Location: /address/error?Type=404&Uri=" . urlencode( $_SERVER['REQUEST_URI'] ) . "&Query=" . urlencode( $_SERVER['QUERY_STRING'] ?? '' ) . "&BackUrl=" . urlencode( $_SERVER['HTTP_REFERER'] ?? '' ) );
                 break;
             }
         }
@@ -249,9 +249,9 @@ switch ( $ListType )
 
     case "region":
     {
-        $RegionID = $url_array[4];
-        $Action = $url_array[3];
-        switch ( $Action )
+        $regionID = $url_array[4];
+        $action = $url_array[3];
+        switch ( $action )
         {
             // intentional fall through
             case "new":
@@ -267,18 +267,18 @@ switch ( $ListType )
             case "list":
             {
                 if ( is_numeric( $url_array[4] ) )
-                    $Index = $url_array[4];
+                    $index = $url_array[4];
                 include( "kernel/ezaddress/admin/regionlist.php" );
                 break;
             }
             case "search":
             {
                 if ( is_numeric( $url_array[4] ) )
-                    $Index = $url_array[4];
-                if ( count( $url_array ) >= 5 && !isset( $SearchText ) )
+                    $index = $url_array[4];
+                if ( count( $url_array ) >= 5 && !isset( $searchText ) )
                 {
-                    $SearchText = $url_array[5];
-                    $SearchText = eZURITool::decode( $SearchText );
+                    $searchText = $url_array[5];
+                    $searchText = eZURITool::decode( $searchText );
                 }
                 include( "kernel/ezaddress/admin/regionlist.php" );
                 break;
@@ -287,7 +287,7 @@ switch ( $ListType )
             default:
             {
                 // include_once( "classes/ezhttptool.php" );
-                eZHTTPTool::header( "Location: /address/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+                eZHTTPTool::header( "Location: /address/error?Type=404&Uri=" . urlencode( $_SERVER['REQUEST_URI'] ) . "&Query=" . urlencode( $_SERVER['QUERY_STRING'] ?? '' ) . "&BackUrl=" . urlencode( $_SERVER['HTTP_REFERER'] ?? '' ) );
                 break;
             }
         }
@@ -302,7 +302,7 @@ switch ( $ListType )
 
     default :
         // include_once( "classes/ezhttptool.php" );
-        eZHTTPTool::header( "Location: /address/error?Type=404&Uri=$REQUEST_URI&Query=$QUERY_STRING&BackUrl=$HTTP_REFERER" );
+        eZHTTPTool::header( "Location: /address/error?Type=404&Uri=" . urlencode( $_SERVER['REQUEST_URI'] ) . "&Query=" . urlencode( $_SERVER['QUERY_STRING'] ?? '' ) . "&BackUrl=" . urlencode( $_SERVER['HTTP_REFERER'] ?? '' ) );
         break;
 }
 

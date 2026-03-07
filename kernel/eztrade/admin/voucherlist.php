@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: voucherlist.php 7416 2001-09-24 10:19:16Z ce $
+// $id: voucherlist.php 7416 2001-09-24 10:19:16Z ce $
 //
 // Created on: <20-Dec-2000 18:18:28 bf>
 //
@@ -29,15 +29,15 @@
 // include_once( "classes/ezcurrency.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
 // include_once( "eztrade/classes/ezvoucher.php" );
 
-if( isset( $Delete ) )
+if( isset( $delete ) )
 {
-    foreach( $DeleteArrayID as $voucherID )
+    foreach( $deleteArrayID as $voucherID )
     {
         $voucher = new eZVoucher( $voucherID );
         $voucher->delete();
@@ -45,7 +45,7 @@ if( isset( $Delete ) )
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "voucherlist.php" );
+                     "kernel/eztrade/admin/intl/", $language, "voucherlist.php" );
 
 $t->setAllStrings();
 
@@ -60,7 +60,7 @@ $t->set_block( "voucher_list_tpl", "voucher_item_tpl", "voucher_item" );
 $t->set_block( "voucher_item_tpl", "voucher_is_available_tpl", "voucher_is_available" );
 $t->set_block( "voucher_item_tpl", "voucher_is_not_available_tpl", "voucher_is_not_available" );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
 $voucherlist = eZVoucher::getAll( );
 
@@ -68,7 +68,7 @@ $voucherlist = eZVoucher::getAll( );
 $i=0;
 $t->set_var( "voucher_list", "" );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 $currency = new eZCurrency();
 
 foreach ( $voucherlist as $voucherItem )

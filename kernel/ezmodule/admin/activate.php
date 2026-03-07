@@ -33,12 +33,12 @@ $single_module = eZModuleHandler::useSingleModule();
 
 if ( $single_module )
 {
-    $modules = array( $ModuleName );
-    eZModuleHandler::setOpen( $ModuleName );
+    $modules = array( $moduleName );
+    eZModuleHandler::setOpen( $moduleName );
 }
 else
 {
-    switch( $ModuleName )
+    switch( $moduleName )
     {
         case "all":
         {
@@ -53,13 +53,13 @@ else
         default:
         {
             $modules = eZModuleHandler::active();
-            if ( $Activate )
+            if ( $activate )
             {
-                $modules = eZModuleHandler::append( $modules, $ModuleName );
+                $modules = eZModuleHandler::append( $modules, $moduleName );
             }
             else
             {
-                $modules = eZModuleHandler::remove( $modules, $ModuleName );
+                $modules = eZModuleHandler::remove( $modules, $moduleName );
             }
         }
     }
@@ -69,11 +69,11 @@ eZModuleHandler::setActive( $modules );
 
 $uri =& $_REQUEST["RefURL"];
 
-if( strtolower( $ModuleName ) != 'all' && strtolower( $ModuleName ) != 'none' )
+if( strtolower( $moduleName ) != 'all' && strtolower( $moduleName ) != 'none' )
 {
     // set the first menu item active
     unset( $menuItems );
-    include( "kernel/" . strtolower($ModuleName) ."/admin/menubox.php" );
+    include( "kernel/" . strtolower($moduleName) ."/admin/menubox.php" );
     $uri = $menuItems[0][0];
     unset( $menuItems );
 }

@@ -63,7 +63,7 @@ $t->set_block( "bug_item_tpl", "bug_is_open_tpl", "bug_is_open" );
 $t->set_block( "bug_item_tpl", "bug_edit_tpl", "bug_edit" );
 
 $t->set_block( "bug_list_page_tpl", "bug_edit_buttons_tpl", "bug_edit_buttons" );
-$module = new eZBugModule( $ModuleID );
+$module = new eZBugModule( $moduleID );
 
 $t->set_var( "current_module_id", $module->id() );
 $t->set_var( "current_module_name", $module->name() );
@@ -79,11 +79,11 @@ if ( eZObjectPermission::hasPermission( $module->id(), "bug_module", "w", $user 
 }
 
 // check if delete was pressed && if the user has rights to delete
-if( isset( $Delete ) && $gotRights == true )
+if( isset( $delete ) && $gotRights == true )
 {
-if( count( $BugArrayID ) > 0 )
+if( count( $bugArrayID ) > 0 )
     {
-        foreach( $BugArrayID as $doomedBugID )
+        foreach( $bugArrayID as $doomedBugID )
         {
             $bug = new eZBug( $doomedBugID );
             $bug->delete();

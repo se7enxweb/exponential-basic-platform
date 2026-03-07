@@ -29,28 +29,28 @@
 // include_once( "ezcontact/classes/ezcompanytype.php" );
 // include_once( "ezmail/classes/ezmail.php" );
 
-if ( isset( $Back ) )
+if ( isset( $back ) )
 {
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /mail/view/$MailID" );
+    eZHTTPTool::header( "Location: /mail/view/$mailID" );
     exit();
 }
 
-if ( isset( $OK ) )
+if ( isset( $ok ) )
 {
-    eZMail::removeContacts( $MailID );
-    foreach ( $CompanyID as $company )
+    eZMail::removeContacts( $mailID );
+    foreach ( $companyID as $company )
     {
         if ( $company > -1 )
-            eZMail::addContact( $MailID, $company, true );
+            eZMail::addContact( $mailID, $company, true );
     }
-    foreach ( $PersonID as $person )
+    foreach ( $personID as $person )
     {
         if ( $person > -1 )
-            eZMail::addContact( $MailID, $person, false );
+            eZMail::addContact( $mailID, $person, false );
     }
     // include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /mail/view/$MailID" );
+    eZHTTPTool::header( "Location: /mail/view/$mailID" );
     exit();
 }
 
@@ -68,7 +68,7 @@ $t->set_block( "company_list_tpl", "company_select_tpl", "company_select" );
 $t->set_block( "mail_link_page_tpl", "person_list_tpl", "person_list" );
 $t->set_block( "person_list_tpl", "person_select_tpl", "person_select" );
 
-$t->set_var( "mail_id", $MailID );
+$t->set_var( "mail_id", $mailID );
 
 $top_name = $t->get_var( "intl-top_category" );
 if ( !is_string( $top_name ) )
@@ -76,12 +76,12 @@ if ( !is_string( $top_name ) )
 $companyTypeList = eZCompanyType::getTree( 0, 0, true, $top_name );
 $categoryList = array();
 
-if ( !isset( $PersonID ) )
-    $PersonID = false;
+if ( !isset( $personID ) )
+    $personID = false;
 
 
-$categoryList = eZPerson::companies( $PersonID, false );
-$category_values = (new eZMail())->getContacts( $MailID );
+$categoryList = eZPerson::companies( $personID, false );
+$category_values = (new eZMail())->getContacts( $mailID );
 $t->set_var( "is_top_selected", in_array( 0, $category_values ) ? "selected" : "" );
 foreach ( $companyTypeList as $companyTypeItem )
 {

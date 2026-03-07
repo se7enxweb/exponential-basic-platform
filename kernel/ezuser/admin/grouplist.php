@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: grouplist.php 6235 2001-07-20 11:45:40Z jakobn $
+// $id: grouplist.php 6235 2001-07-20 11:45:40Z jakobn $
 //
 // Created on: <20-Sep-2000 13:32:11 ce>
 //
@@ -27,7 +27,7 @@
 // include_once( "classes/eztemplate.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZUserMain", "Language" );
+$language = $ini->variable( "eZUserMain", "Language" );
 
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezuser/classes/ezusergroup.php" );
@@ -35,7 +35,7 @@ $Language = $ini->variable( "eZUserMain", "Language" );
 require( "kernel/ezuser/admin/admincheck.php" );
 
 $t = new eZTemplate( "kernel/ezuser/admin/" . $ini->variable( "eZUserMain", "AdminTemplateDir" ),
-                     "kernel/ezuser/admin/" . "/intl", $Language, "grouplist.php" );
+                     "kernel/ezuser/admin/" . "/intl", $language, "grouplist.php" );
 $t->setAllStrings();
 
 $t->set_file( array(
@@ -44,7 +44,7 @@ $t->set_file( array(
 
 $t->set_block( "group_list_page", "group_item_tpl", "group_item" );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
 $group = new eZUserGroup();
 

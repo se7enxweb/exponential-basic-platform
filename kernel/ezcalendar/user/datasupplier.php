@@ -26,11 +26,45 @@
 $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZCalendarMain", "DefaultSection" );
 
+$action              = eZHTTPTool::getVar( 'Action' );
+$allDay              = eZHTTPTool::getVar( 'AllDay' );
+$appointmentArrayID  = $_POST['AppointmentArrayID'] ?? [];
+$appointmentID       = eZHTTPTool::getVar( 'AppointmentID' );
+$cancel              = eZHTTPTool::getVar( 'Cancel' );
+$changeView          = eZHTTPTool::getVar( 'ChangeView' );
+$dateError           = eZHTTPTool::getVar( 'DateError' );
+$deleteAppointments  = eZHTTPTool::getVar( 'DeleteAppointments' );
+$description         = eZHTTPTool::getVar( 'Description' );
+$getByUser           = eZHTTPTool::getVar( 'GetByUser' );
+$getByUserID         = eZHTTPTool::getVar( 'GetByUserID' );
+$goDay               = eZHTTPTool::getVar( 'GoDay' );
+$goMonth             = eZHTTPTool::getVar( 'GoMonth' );
+$goToday             = eZHTTPTool::getVar( 'GoToday' );
+$goYear              = eZHTTPTool::getVar( 'GoYear' );
+$intervalStr         = eZHTTPTool::getVar( 'IntervalStr' );
+$isPrivate           = eZHTTPTool::getVar( 'IsPrivate' );
+$locale              = eZHTTPTool::getVar( 'Locale' );
+$name                = eZHTTPTool::getVar( 'Name' );
+$priority            = eZHTTPTool::getVar( 'Priority' );
+$start               = eZHTTPTool::getVar( 'Start' );
+$startTime           = eZHTTPTool::getVar( 'StartTime' );
+$startTimeError      = eZHTTPTool::getVar( 'StartTimeError' );
+$startTimeStr        = eZHTTPTool::getVar( 'StartTimeStr' );
+$stop                = eZHTTPTool::getVar( 'Stop' );
+$stopTimeError       = eZHTTPTool::getVar( 'StopTimeError' );
+$stopTimeStr         = eZHTTPTool::getVar( 'StopTimeStr' );
+$storeSiteCache      = eZHTTPTool::getVar( 'StoreSiteCache' );
+$titleError          = eZHTTPTool::getVar( 'TitleError' );
+$trusteeUser         = eZHTTPTool::getVar( 'TrusteeUser' );
+$trusteesList        = $_POST['TrusteesList'] ?? [];
+$userError           = eZHTTPTool::getVar( 'UserError' );
+$viewType            = eZHTTPTool::getVar( 'ViewType' );
+
 switch ( $url_array[2] )
 {
     case "yearview" :
     {
-        $Year = $url_array[3];
+        $year = $url_array[3];
 
         include( "kernel/ezcalendar/user/yearview.php" );
     }
@@ -38,8 +72,8 @@ switch ( $url_array[2] )
 
     case "monthview" :
     {
-        $Year = $url_array[3];
-        $Month = $url_array[4];
+        $year = $url_array[3];
+        $month = $url_array[4];
 
         include( "kernel/ezcalendar/user/monthview.php" );
     }
@@ -47,9 +81,9 @@ switch ( $url_array[2] )
 
     case "dayview" :
     {
-        $Year = $url_array[3];
-        $Month = $url_array[4];
-        $Day = $url_array[5];
+        $year = $url_array[3];
+        $month = $url_array[4];
+        $day = $url_array[5];
 
         include( "kernel/ezcalendar/user/dayview.php" );
     }
@@ -61,49 +95,49 @@ switch ( $url_array[2] )
         {
             case "new" :
             {
-                $Action = "New";
-                $Year = $url_array[4];
-                $Month = $url_array[5];
-                $Day = $url_array[6];
-                $StartTime = $url_array[7];
+                $action = "New";
+                $year = $url_array[4];
+                $month = $url_array[5];
+                $day = $url_array[6];
+                $startTime = $url_array[7];
             }
             break;
 
             case "edit" :
             {
-                $Action = "Edit";
-                $AppointmentID = $url_array[4];
+                $action = "Edit";
+                $appointmentID = $url_array[4];
             }
             break;
 
             case "update" :
             {
-                $Action = "Update";
-                $AppointmentID = $url_array[4];
+                $action = "Update";
+                $appointmentID = $url_array[4];
             }
             break;
 
             case "insert" :
             {
-                $Action = "Insert";
-                $AppointmentID = 0;
+                $action = "Insert";
+                $appointmentID = 0;
             }
             break;
 
             default :
             {
-                $Action = $url_array[3];
+                $action = $url_array[3];
             }
         }
-        if ( isset( $ChangeView ) )
-            $Action = "New";
+        if ( isset( $changeView ) )
+            $action = "New";
         include( "kernel/ezcalendar/user/appointmentedit.php" );
     }
     break;
 
     case "appointmentview" :
     {
-        $AppointmentID = $url_array[3];
+        $appointmentID = $url_array[3];
         include( "kernel/ezcalendar/user/appointmentview.php" );
     }
     break;
@@ -114,7 +148,7 @@ switch ( $url_array[2] )
         {
             case "edit":
             {
-                $Action = "edit";
+                $action = "edit";
                 include( "kernel/ezcalendar/user/trustees.php" );
                 break;
             }

@@ -26,6 +26,15 @@
 $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "eZPollMain", "DefaultSection" );
 
+$allowDoubleVotes = eZHTTPTool::getVar( 'AllowDoubleVotes' );
+$choiceID         = eZHTTPTool::getVar( 'ChoiceID' );
+$forumID          = eZHTTPTool::getVar( 'ForumID' );
+$pollID           = eZHTTPTool::getVar( 'PollID' );
+$redirectURL      = eZHTTPTool::getVar( 'RedirectURL' );
+$show             = eZHTTPTool::getVar( 'Show' );
+$voteID           = eZHTTPTool::getVar( 'VoteID' );
+$voted            = eZHTTPTool::getVar( 'Voted' );
+
 switch ( $url_array[2] )
 {
     case "polls" :
@@ -36,28 +45,28 @@ switch ( $url_array[2] )
 
     case "vote" :
     {
-        $PollID = $url_array[3];
+        $pollID = $url_array[3];
         if ( isset( $url_array[4] ) )
-             $ChoiceID = $url_array[4];
+             $choiceID = $url_array[4];
         include( "kernel/ezpoll/user/vote.php" );
     }
     break;
 
     case "result" :
     {
-        $PollID = $url_array[3];
+        $pollID = $url_array[3];
         if ( isset( $url_array[4] ) )
         {
-             $Show = $url_array[4];
+             $show = $url_array[4];
         }
         include( "kernel/ezpoll/user/result.php" );
 
-        $poll = new eZPoll( $PollID );
-        if ( $poll->get( $PollID ) )
+        $poll = new eZPoll( $pollID );
+        if ( $poll->get( $pollID ) )
         {
             $forum = $poll->forum();
-            $ForumID = $forum->id();
-            $RedirectURL = $_SERVER['REQUEST_URI'];
+            $forumID = $forum->id();
+            $redirectURL = $_SERVER['REQUEST_URI'];
             include( "kernel/ezforum/user/messagesimplelist.php" );
         }
     }
@@ -65,20 +74,20 @@ switch ( $url_array[2] )
 
     case "votebox" :
     {
-        $PollID = $url_array[3];
+        $pollID = $url_array[3];
         include( "kernel/ezpoll/user/votebox.php" );
     }
     break;
     case "votepage" :
     {
-        $PollID = $url_array[3];
+        $pollID = $url_array[3];
         include( "kernel/ezpoll/user/votepage.php" );
     }
     break;
 
     case "userlogin" :
     {
-        $VoteID = $url_array[4];
+        $voteID = $url_array[4];
         include( "kernel/ezpoll/user/userlogin.php" );
     }    
     break;

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: imagemap.php 7845 2001-10-15 11:04:57Z jhe $
+// $id: imagemap.php 7845 2001-10-15 11:04:57Z jhe $
 //
 // Created on: <12-Jun-2001 14:47:19 jhe>
 //
@@ -29,29 +29,29 @@
 // include_once( "ezarticle/classes/ezimagemap.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
-$map = new eZImageMap( $ImageID );
+$map = new eZImageMap( $imageID );
 
-switch ( $Action )
+switch ( $action )
 {
     case "Edit" :
     {
         $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                             "kernel/ezarticle/admin/intl/", $Language, "imagemap.php" );
+                             "kernel/ezarticle/admin/intl/", $language, "imagemap.php" );
         
         $t->setAllStrings();
         
         $t->set_file( "image_map_tpl", "imagemap.tpl" );
         $t->set_block( "image_map_tpl", "element_tpl", "element" );
         
-        $article = new eZArticle( $ArticleID );
-        $image = new eZImage( $ImageID );
+        $article = new eZArticle( $articleID );
+        $image = new eZImage( $imageID );
         
         $t->set_var( "article_name", $article->name() );
         
-        $t->set_var( "image_id", $ImageID );
-        $t->set_var( "article_id", $ArticleID );
+        $t->set_var( "image_id", $imageID );
+        $t->set_var( "article_id", $articleID );
         $t->set_var( "image", $image->filePath( true ) );
         
         $elements = $map->elements();
@@ -70,8 +70,8 @@ switch ( $Action )
     
     case "Store" :
     {
-        $map->store( $Values );
-        eZHTTPTool::header( "Location: /article/articleedit/imagelist/" . $ArticleID );
+        $map->store( $values );
+        eZHTTPTool::header( "Location: /article/articleedit/imagelist/" . $articleID );
     }
 	break;
 }

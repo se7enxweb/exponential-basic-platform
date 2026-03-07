@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: search.php 7268 2001-09-16 18:37:39Z bf $
+// $id: search.php 7268 2001-09-16 18:37:39Z bf $
 //
 // Created on: <28-Oct-2000 15:56:58 bf>
 //
@@ -33,13 +33,13 @@
 // include_once( "classes/ezlist.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$Limit = $ini->variable( "eZArticleMain", "AdminListLimit" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$limit = $ini->variable( "eZArticleMain", "AdminListLimit" );
 
 
-if( isset( $Delete ) && count( $ArticleArrayID ) > 0 )
+if( isset( $delete ) && count( $articleArrayID ) > 0 )
 {
-    foreach( $ArticleArrayID as $articleID )
+    foreach( $articleArrayID as $articleID )
     {
         if( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' ) )
         {
@@ -50,7 +50,7 @@ if( isset( $Delete ) && count( $ArticleArrayID ) > 0 )
 }
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "search.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "search.php" );
 
 $t->setAllStrings();
 
@@ -58,21 +58,21 @@ $t->set_file( array(
     "article_list_page_tpl" => "search.tpl"
     ) );
 
-if ( !isset ( $Offset ) )
-    $Offset = 0;
-if ( !isset ( $StartMonth ) or $StartMonth == '' )
-    $StartMonth = 0;
-if ( !isset ( $StartDay ) or $StartDay == ''  )
-    $StartDay = 0;
-if ( !isset ( $StartYear ) or $StartYear == ''  )
-    $StartYear = 0;
+if ( !isset ( $offset ) )
+    $offset = 0;
+if ( !isset ( $startMonth ) or $startMonth == '' )
+    $startMonth = 0;
+if ( !isset ( $startDay ) or $startDay == ''  )
+    $startDay = 0;
+if ( !isset ( $startYear ) or $startYear == ''  )
+    $startYear = 0;
 
-if ( !isset ( $StopMonth ) or $StopMonth == '' )
-    $StopMonth = 0;
-if ( !isset ( $StopDay ) or $StopDay == ''  )
-    $StopDay = 0;
-if ( !isset ( $StopYear ) or $StopYear == ''  )
-    $StopYear = 0;
+if ( !isset ( $stopMonth ) or $stopMonth == '' )
+    $stopMonth = 0;
+if ( !isset ( $stopDay ) or $stopDay == ''  )
+    $stopDay = 0;
+if ( !isset ( $stopYear ) or $stopYear == ''  )
+    $stopYear = 0;
 
 // article
 $t->set_block( "article_list_page_tpl", "article_list_tpl", "article_list" );
@@ -88,53 +88,53 @@ $t->set_var( "url_category_array", urlencode( "+" ) );
 $t->set_var( "url_contentswriter_id", urlencode( "+" ) );
 $t->set_var( "url_photographer_id", urlencode( "+" ) );
 
-if ( checkdate ( $StartMonth, $StartDay, $StartYear ) )
+if ( checkdate ( $startMonth, $startDay, $startYear ) )
 {
-    $startDate = new eZDateTime( $StartYear,  $StartMonth, $StartDay, $StartHour, $StartMinute, 0 );
-    $StartStamp = $startDate->timeStamp();
+    $startDate = new eZDateTime( $startYear,  $startMonth, $startDay, $startHour, $startMinute, 0 );
+    $startStamp = $startDate->timeStamp();
 }
-if ( checkdate ( $StopMonth, $StopDay, $StopYear ) )
+if ( checkdate ( $stopMonth, $stopDay, $stopYear ) )
 {
-    $stopDate = new eZDateTime( $StopYear, $StopMonth, $StopDay, $StopHour, $StopMinute, 0 );
-    $StopStamp = $stopDate->timeStamp();
+    $stopDate = new eZDateTime( $stopYear, $stopMonth, $stopDay, $stopHour, $stopMinute, 0 );
+    $stopStamp = $stopDate->timeStamp();
 }
 
 
 // BUILDING THE SEARCH
 // If url parameters are present when loading page, they are decoded in the datasupplier
 $paramsArray = array();
-if ( $SearchText )
+if ( $searchText )
 {
-    if ( isset( $StartStamp ) )
+    if ( isset( $startStamp ) )
     {
-        $paramsArray["FromDate"] = $StartStamp;
-        $t->set_var( "url_start_stamp", urlencode( $StartStamp ) );
+        $paramsArray["FromDate"] = $startStamp;
+        $t->set_var( "url_start_stamp", urlencode( $startStamp ) );
     }
         
-    if ( isset( $StopStamp ) )
+    if ( isset( $stopStamp ) )
     {
-        $paramsArray["ToDate"] = $StopStamp;
-        $t->set_var( "url_stop_stamp", urlencode( $StopStamp ) );
+        $paramsArray["ToDate"] = $stopStamp;
+        $t->set_var( "url_stop_stamp", urlencode( $stopStamp ) );
     }
 
-    if( isset( $ContentsWriterID ) && $ContentsWriterID != 0 )
+    if( isset( $contentsWriterID ) && $contentsWriterID != 0 )
     {
-        $paramsArray["AuthorID"] = $ContentsWriterID;
-        $t->set_var( "url_contentswriter_id", urlencode( $ContentsWriterID ) );
+        $paramsArray["AuthorID"] = $contentsWriterID;
+        $t->set_var( "url_contentswriter_id", urlencode( $contentsWriterID ) );
     }
 
-    if( isset( $PhotographerID ) && $PhotographerID != 0 )
+    if( isset( $photographerID ) && $photographerID != 0 )
     {
-        $paramsArray["PhotographerID"] = $PhotographerID;
-        $t->set_var( "url_photographer_id", urlencode( $PhotographerID ) );
+        $paramsArray["PhotographerID"] = $photographerID;
+        $t->set_var( "url_photographer_id", urlencode( $photographerID ) );
     }
 
-    if( isset( $CategoryArray ) && is_array( $CategoryArray ) && count( $CategoryArray ) > 0 && !in_array( 0, $CategoryArray ) )
+    if( isset( $categoryArray ) && is_array( $categoryArray ) && count( $categoryArray ) > 0 && !in_array( 0, $categoryArray ) )
     {
-        $paramsArray["Categories"] = $CategoryArray;
+        $paramsArray["Categories"] = $categoryArray;
 
         // fix output string for URL
-        $t->set_var( "url_category_array", urlencode( implode( "-", $CategoryArray ) ) );
+        $t->set_var( "url_category_array", urlencode( implode( "-", $categoryArray ) ) );
     }
 
  //   $paramsArray["SearchExcludedArticles"] = "true";
@@ -142,15 +142,15 @@ if ( $SearchText )
     
     $article = new eZArticle();
     $totalCount = false;
-    $articleList = $article->search( $SearchText, "time", true, $Offset, $Limit, $paramsArray, $totalCount );
+    $articleList = $article->search( $searchText, "time", true, $offset, $limit, $paramsArray, $totalCount );
 
-    $t->set_var( "search_text", $SearchText );
-    $t->set_var( "url_text", urlencode ( $SearchText ) );
+    $t->set_var( "search_text", $searchText );
+    $t->set_var( "url_text", urlencode ( $searchText ) );
 }
 
 if ( isset( $articleList ) && count ( $articleList ) > 0 )
 {
-    $locale = new eZLocale( $Language );
+    $locale = new eZLocale( $language );
     $i=0;
     $t->set_var( "article_list", "" );
     foreach ( $articleList as $article )
@@ -188,12 +188,12 @@ if ( isset( $articleList ) && count ( $articleList ) > 0 )
 //print_r ( $t );
 
 //echo "totalCount:".$totalCount."<br>";
-//echo "Limit:".$Limit."<br>";
-//echo "Offset:".$Offset."<br>";
+//echo "Limit:".$limit."<br>";
+//echo "Offset:".$offset."<br>";
 //echo "</pre>";
 //exit();
 
-eZList::drawNavigator( $t, $totalCount, $Limit, $Offset, "article_list_page_tpl" );
+eZList::drawNavigator( $t, $totalCount, $limit, $offset, "article_list_page_tpl" );
 
 if ( isset( $articleList ) && count( $articleList ) > 0 )
 {
@@ -206,8 +206,8 @@ else
     $t->set_var( "article_delete", "" );
 }
 
-$t->set_var( "article_start", $Offset + 1 );
-$t->set_var( "article_end", min( $Offset + $Limit, $totalCount ) );
+$t->set_var( "article_start", $offset + 1 );
+$t->set_var( "article_end", min( $offset + $limit, $totalCount ) );
 $t->set_var( "article_total", $totalCount );
 
 $t->pparse( "output", "article_list_page_tpl" );

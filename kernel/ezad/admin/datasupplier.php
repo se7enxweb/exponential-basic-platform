@@ -24,11 +24,38 @@
 //
 
 
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$action           = eZHTTPTool::getVar( 'Action' );
+$adArrayID        = eZHTTPTool::getVar( 'AdArrayID' ) ?? [];
+$adDescription    = eZHTTPTool::getVar( 'AdDescription' );
+$adID             = eZHTTPTool::getVar( 'AdID' );
+$adTitle          = eZHTTPTool::getVar( 'AdTitle' );
+$adURL            = eZHTTPTool::getVar( 'AdURL' );
+$addImages        = eZHTTPTool::getVar( 'AddImages' );
+$browse           = eZHTTPTool::getVar( 'Browse' );
+$cancel           = eZHTTPTool::getVar( 'Cancel' );
+$caption          = eZHTTPTool::getVar( 'Caption' );
+$categoryArrayID  = eZHTTPTool::getVar( 'CategoryArrayID' ) ?? [];
+$categoryID       = eZHTTPTool::getVar( 'CategoryID' );
+$clickPrice       = eZHTTPTool::getVar( 'ClickPrice' );
+$deleteAds        = eZHTTPTool::getVar( 'DeleteAds' );
+$deleteCategories = eZHTTPTool::getVar( 'DeleteCategories' );
+$description      = eZHTTPTool::getVar( 'Description' );
+$htmlBanner       = eZHTTPTool::getVar( 'HTMLBanner' );
+$id               = eZHTTPTool::getVar( 'ID' );
+$isActive         = eZHTTPTool::getVar( 'IsActive' );
+$name             = eZHTTPTool::getVar( 'Name' );
+$parentID         = eZHTTPTool::getVar( 'ParentID' );
+$preview          = eZHTTPTool::getVar( 'Preview' );
+$useHTML          = eZHTTPTool::getVar( 'UseHTML' );
+$viewPrice        = eZHTTPTool::getVar( 'ViewPrice' );
+// URL-routing variables are set below inside the switch and override the above POST defaults.
+
 switch ( $url_array[2] )
 {
     case "archive" :
     {
-        $CategoryID = $url_array[3];
+        $categoryID = $url_array[3];
 
         include( "kernel/ezad/admin/adlist.php" );
     }
@@ -36,7 +63,7 @@ switch ( $url_array[2] )
 
     case "statistics" :
     {
-        $AdID = $url_array[3];
+        $adID = $url_array[3];
         
         include( "kernel/ezad/admin/adstatistics.php" );        
     }
@@ -46,32 +73,32 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "new" )
         {
-            $Action = "New";
+            $action = "New";
         }
 
         if ( $url_array[3] == "insert" )
         {
-            $Action = "Insert";
+            $action = "Insert";
         }
 
         if ( $url_array[3] == "edit" )
         {
-            $Action = "Edit";
+            $action = "Edit";
         }
 
         if ( $url_array[3] == "update" )
         {
-            $Action = "Update";
+            $action = "Update";
         }
 
         if ( $url_array[3] == "delete" )
         {
-            $Action = "Delete";
+            $action = "Delete";
         }
         
-        if( empty( $AdID ) )
+        if( empty( $adID ) )
         {
-            $AdID = $url_array[4];
+            $adID = $url_array[4];
         }
         include( "kernel/ezad/admin/adedit.php" );
     }
@@ -81,32 +108,32 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "new" )
         {
-            $Action = "New";
+            $action = "New";
         }
 
         if ( $url_array[3] == "insert" )
         {
-            $Action = "Insert";
+            $action = "Insert";
         }
 
         if ( $url_array[3] == "edit" )
         {
-            $Action = "Edit";
+            $action = "Edit";
         }
 
         if ( $url_array[3] == "update" )
         {
-            $Action = "Update";
-            $CategoryID = $url_array[4];
+            $action = "Update";
+            $categoryID = $url_array[4];
         }
 
         if ( $url_array[3] == "delete" )
         {
-            $Action = "Delete";
+            $action = "Delete";
         }
-        if( empty( $CategoryID ) )
+        if( empty( $categoryID ) )
         {
-            $CategoryID = $url_array[4];
+            $categoryID = $url_array[4];
         }
         include( "kernel/ezad/admin/categoryedit.php" );
     }

@@ -37,13 +37,13 @@ $category = new eZAdCategory( $CategoryID );
 // fetch the user if any
 $user = eZUser::currentUser();
 
-if ( !isset( $Limit ) )
-    $Limit = 1;
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $limit ) )
+    $limit = 1;
+if ( !isset( $offset ) )
+    $offset = 0;
 
 // ads
-$adList = $category->ads( "count", false, $Offset, $Limit );
+$adList = $category->ads( "count", false, $offset, $limit );
 
 foreach ( $adList as $ad )
 {

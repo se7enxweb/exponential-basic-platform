@@ -39,9 +39,9 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Limit = $ini->variable( "eZQuizMain", "ScoreLimit" );
+$limit = $ini->variable( "eZQuizMain", "ScoreLimit" );
 $Language = $ini->variable( "eZQuizMain", "Language" );
-$ScoreCurrent = $ini->variable( "eZQuizMain", "ScoreCurrent" );
+$scoreCurrent = $ini->variable( "eZQuizMain", "ScoreCurrent" );
 
 $t = new eZTemplate( "kernel/ezquiz/user/" . $ini->variable( "eZQuizMain", "TemplateDir" ),
                      "kernel/ezquiz/user/intl/", $Language, "quiz.php" );
@@ -72,9 +72,9 @@ $user = eZUser::currentUser();
 
 if ( is_a( $user, "eZUser" ) )
 {
-    $UserID = $user->id();
+    $userID = $user->id();
 
-    $t->set_var( "user_id", $UserID );
+    $t->set_var( "user_id", $userID );
     $t->set_var( "user_login", $user->login() );
     $t->set_var( "user_first", $user->firstName() );
     $t->set_var( "user_last", $user->lastName() );
@@ -82,14 +82,14 @@ if ( is_a( $user, "eZUser" ) )
     $t->parse( "logged_in_user_item", "logged_in_user_item_tpl" );
 
     $score = new eZQuizScore();
-    $scores = $score->getAllByUser( $user, $Offset, $Limit );
+    $scores = $score->getAllByUser( $user, $offset, $limit );
 
     $count = count( $scores );
     $scoreCount = $score->countAllByUser( $user );
 
     $last = 0;
     $lastColor = "bgdark";
-    $position = $Offset + 1;
+    $position = $offset + 1;
     $locale = new eZLocale( $Language );
     if ( $scoreCount > 0 )
     {
@@ -113,7 +113,7 @@ if ( $printScores == true )
 
         $currentScore = $score->totalScore();
 
-        if ( $currentScore == $last && $position != ( $Offset + 1 ) )
+        if ( $currentScore == $last && $position != ( $offset + 1 ) )
         {
             $t->set_var( "score_position", "&nbsp;" );
 
@@ -160,7 +160,7 @@ if ( $printScores == true )
     $t->parse( "score_list_item", "score_list_item_tpl" );
 }
 
-eZList::drawNavigator( $t, $scoreCount, $Limit, $Offset, "score_page_tpl" );
+eZList::drawNavigator( $t, $scoreCount, $limit, $offset, "score_page_tpl" );
 
 if ( $error )
 {

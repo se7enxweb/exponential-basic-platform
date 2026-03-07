@@ -42,9 +42,9 @@ $session = eZSession::globalSession();
 $user = eZUser::currentUser();
 if ( $user  )
 {
-    if ( isset( $RedirectURL ) && ( $RedirectURL != "" ) )
+    if ( isset( $redirectURL ) && ( $redirectURL != "" ) )
     {
-        eZHTTPTool::header( "Location: $RedirectURL" );
+        eZHTTPTool::header( "Location: $redirectURL" );
         exit();
     }
 
@@ -90,9 +90,9 @@ else
         "customer_login_tpl" => "customerlogin.tpl"
         ) );
 
-    if ( isset( $RedirectURL ) && ( $RedirectURL != "" ) )
+    if ( isset( $redirectURL ) && ( $redirectURL != "" ) )
     {
-	$t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $RedirectURL ) );
+	$t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $redirectURL ) );
     }
     else
     {

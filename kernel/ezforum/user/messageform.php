@@ -27,17 +27,17 @@
 // include_once( "classes/eztexttool.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$AllowHTML = $ini->variable( "eZForumMain", "AllowHTML" );
+$allowHTML = $ini->variable( "eZForumMain", "AllowHTML" );
 $language = $ini->variable( "eZForumMain", "Language" );
-$AllowedTags = $ini->variable( "eZForumMain", "AllowedTags" );
+$allowedTags = $ini->variable( "eZForumMain", "AllowedTags" );
 
 $author = eZUser::currentUser();
 
 $locale = new eZLocale( $language );
 
-if ( isset( $ShowMessageForm ) && $ShowMessageForm )
+if ( isset( $showMessageForm ) && $showMessageForm )
 {
-    if ( isset( $ShowVisibleMessageForm ) && $ShowVisibleMessageForm )
+    if ( isset( $showVisibleMessageForm ) && $showVisibleMessageForm )
     {
         $t->set_file( "form", "messageform.tpl"  );
         $t->set_block( "form", "author_field_tpl", "author_field" );
@@ -50,42 +50,42 @@ if ( isset( $ShowMessageForm ) && $ShowMessageForm )
         $t->set_var( "message_body_info_item", "" );
         $t->set_var( "message_reply_info_item", "" );
         $t->set_var( "message_notice_checkbox", "" );
-	    $t->set_var( "allowed_tags", htmlspecialchars( $AllowedTags ) );  
-        $t->set_var( "headline", $t->Ini->variable( "strings", $Action . "_headline" ) );
+	    $t->set_var( "allowed_tags", htmlspecialchars( $allowedTags ) );  
+        $t->set_var( "headline", $t->Ini->variable( "strings", $action . "_headline" ) );
     }
 
-    if ( isset( $ShowHiddenMessageForm ) && $ShowHiddenMessageForm )
+    if ( isset( $showHiddenMessageForm ) && $showHiddenMessageForm )
     {
         $t->set_file( "hidden_form", "messagehiddenform.tpl" );
     }
 
-    if (( $ShowBodyInfo ) && ( $AllowHTML ))
+    if (( $showBodyInfo ) && ( $allowHTML ))
         $t->parse( "message_body_info", "message_body_info_tpl" );
 
-    if (  isset( $BodyInfo ) && $BodyInfo )
+    if (  isset( $bodyInfo ) && $bodyInfo )
     {
         $t->parse( "message_body_info_item", "message_body_info_tpl" );
     }
 
-    if (  isset( $ShowVisibleMessageForm ) && $ShowVisibleMessageForm && is_a( eZUser::currentUser(), "eZUser" ) )
+    if (  isset( $showVisibleMessageForm ) && $showVisibleMessageForm && is_a( eZUser::currentUser(), "eZUser" ) )
     {
         $t->parse( "message_notice_checkbox", "message_notice_checkbox_tpl" );
     }
 
-    if ( isset( $ReplyInfo ) && $ReplyInfo )
+    if ( isset( $replyInfo ) && $replyInfo )
     {
         $t->parse( "message_reply_info_item", "message_reply_info_tpl" );
     }
 
-    if ( isset( $Error ) && $Error )
+    if ( isset( $error ) && $error )
     {
-        $MessageTopic = $NewMessageTopic;
-        $MessageBody = $NewMessageBody;
+        $messageTopic = $newMessageTopic;
+        $messageBody = $newMessageBody;
 
         $t->set_block( "errors_tpl", "error_missing_body_item_tpl", "error_missing_body_item" );
         $t->set_block( "errors_tpl", "error_missing_topic_item_tpl", "error_missing_topic_item" );
 
-        if ( empty( $NewMessageTopic ) )
+        if ( empty( $newMessageTopic ) )
         {
             $t->parse( "error_missing_topic_item", "error_missing_topic_item_tpl" );
         }
@@ -94,7 +94,7 @@ if ( isset( $ShowMessageForm ) && $ShowMessageForm )
             $t->set_var( "error_missing_topic_item", "" );
         }
 
-        if ( empty( $NewMessageBody ) )
+        if ( empty( $newMessageBody ) )
         {
             $t->parse( "error_missing_body_item", "error_missing_body_item_tpl" );
         }
@@ -106,60 +106,60 @@ if ( isset( $ShowMessageForm ) && $ShowMessageForm )
         $t->parse( "errors_item", "errors_tpl" );
     }
 
-    if ( isset( $ShowEmptyMessageForm ) && $ShowEmptyMessageForm === true )
+    if ( isset( $showEmptyMessageForm ) && $showEmptyMessageForm === true )
     {
         if ( !is_object( $msg ) )
         {
-            $msg = new eZForumMessage( $MessageID );
+            $msg = new eZForumMessage( $messageID );
             $msg->setIsTemporary( true );
         }
 
-        if ( isset( $NewMessageTopic ) )
+        if ( isset( $newMessageTopic ) )
         {
-            $MessageTopic = $NewMessageTopic;
+            $messageTopic = $newMessageTopic;
         }
         else
         {
-            $MessageTopic = $msg->topic();
+            $messageTopic = $msg->topic();
         }
 
-        if ( isset( $NewMessageBody ) )
+        if ( isset( $newMessageBody ) )
         {
-            $MessageBody = $NewMessageBody;
+            $messageBody = $newMessageBody;
         }
         else
         {
-            $MessageBody = $msg->body();
+            $messageBody = $msg->body();
         }
 
-        $MessageNotice = $msg->emailNotice();
-        $ForumID = $msg->forumId();
+        $messageNotice = $msg->emailNotice();
+        $forumID = $msg->forumId();
 
-        if ( !$msg->isTemporary() && $Action != "reply" )
+        if ( !$msg->isTemporary() && $action != "reply" )
         {
-            $MessagePostedAt = $Locale->format( $msg->postingTime() );
+            $messagePostedAt = $locale->format( $msg->postingTime() );
         }
         else
         {
-            $MessagePostedAt = $NewMessagePostedAt;
+            $messagePostedAt = $newMessagePostedAt;
         }
 
-        if ( isset( $NewMessageNotice ) )
+        if ( isset( $newMessageNotice ) )
         {
-            $MessageNotice = $NewMessageNotice;
+            $messageNotice = $newMessageNotice;
         }
     }
     else
     {
-        if ( isset( $NewMessageAuthor ) )
+        if ( isset( $newMessageAuthor ) )
         {
-            $MessageAuthor = $NewMessageAuthor;
+            $messageAuthor = $newMessageAuthor;
         }
         else
         {
-            if ( $msg->userName() != "" && $Action != "reply" )
+            if ( $msg->userName() != "" && $action != "reply" )
             {
-                $MessageAuthor = $msg->userName();
+                $messageAuthor = $msg->userName();
             }
             else if ( !is_object( $author ) )
             {
@@ -168,28 +168,28 @@ if ( isset( $ShowMessageForm ) && $ShowMessageForm )
         }
         if ( $msg->isTemporary() )
         {
-            $MessagePostedAt = $NewMessagePostedAt;
+            $messagePostedAt = $newMessagePostedAt;
         }
         else
         {
-            $MessagePostedAt = $locale->format( $msg->postingTime() );
+            $messagePostedAt = $locale->format( $msg->postingTime() );
         }
     }
 
     if ( is_object( $author ) && $author->id() > 0 )
     {
-        $MessageAuthor = $author->firstName() . " " . $author->lastName();
+        $messageAuthor = $author->firstName() . " " . $author->lastName();
     }
-    else if ( $msg->userName() != "" && $Action != "reply" )
+    else if ( $msg->userName() != "" && $action != "reply" )
     {
-        $MessageAuthor = $msg->userName();
+        $messageAuthor = $msg->userName();
     }
     else
     {
-        $MessageAuthor = $ini->variable( "eZForumMain", "AnonymousPoster" );
+        $messageAuthor = $ini->variable( "eZForumMain", "AnonymousPoster" );
     }
 
-    switch ( $MessageNotice )
+    switch ( $messageNotice )
     {
         case "on":
         case "y":
@@ -197,9 +197,9 @@ if ( isset( $ShowMessageForm ) && $ShowMessageForm )
         case 1:
         case true:
         {
-            $MessageNoticeText = $t->Ini->variable( "strings", "notice_yes" );
-            $MessageNotice = "checked";
-            $NewMessageNotice = "checked";
+            $messageNoticeText = $t->Ini->variable( "strings", "notice_yes" );
+            $messageNotice = "checked";
+            $newMessageNotice = "checked";
         }
         break;
 
@@ -209,50 +209,50 @@ if ( isset( $ShowMessageForm ) && $ShowMessageForm )
         case 0:
         case false:
         {
-            $MessageNoticeText = $t->Ini->variable( "strings", "notice_no" );
-            $MessageNotice = "";
-            $NewMessageNotice = "";
+            $messageNoticeText = $t->Ini->variable( "strings", "notice_no" );
+            $messageNotice = "";
+            $newMessageNotice = "";
         }
         break;
     }
 
     $quote = "/". chr( 34 ) . "/";
 
-    if( !is_null( $MessageTopic ) )
-    $MessageTopic = preg_replace( $quote, "&#034;", $MessageTopic );
+    if( !is_null( $messageTopic ) )
+    $messageTopic = preg_replace( $quote, "&#034;", $messageTopic );
 
-    if( !is_null( $MessageBody ) )
-    $MessageBody = preg_replace( $quote, "&#034;", $MessageBody );
+    if( !is_null( $messageBody ) )
+    $messageBody = preg_replace( $quote, "&#034;", $messageBody );
 
     // include_once( "classes/eztexttool.php" );
 
-    $t->set_var( "message_topic", isset( $MessageTopic ) ? $MessageTopic : false );
-    $t->set_var( "new_message_topic", isset( $NewMessageTopic ) ? $NewMessageTopic : false );
-    $t->set_var( "message_body", isset( $MessageBody ) ? $MessageBody : false );
-    $t->set_var( "new_message_body", isset( $NewMessageBody ) ? $NewMessageBody : false );
-    $t->set_var( "message_posted_at", isset( $MessagePostedAt ) ? $MessagePostedAt : false );
-    $t->set_var( "message_author", isset( $MessageAuthor ) ? $MessageAuthor : false );
-    $t->set_var( "message_id", isset( $MessageID ) ? $MessageID : false );
-    $t->set_var( "message_notice_text", isset( $MessageNoticeText ) ? $MessageNoticeText : false );
-    $t->set_var( "message_notice", isset( $MessageNotice ) ? $MessageNotice : false );
-    $t->set_var( "new_message_notice", isset( $NewMessageNotice ) ? $NewMessageNotice : false );
+    $t->set_var( "message_topic", isset( $messageTopic ) ? $messageTopic : false );
+    $t->set_var( "new_message_topic", isset( $newMessageTopic ) ? $newMessageTopic : false );
+    $t->set_var( "message_body", isset( $messageBody ) ? $messageBody : false );
+    $t->set_var( "new_message_body", isset( $newMessageBody ) ? $newMessageBody : false );
+    $t->set_var( "message_posted_at", isset( $messagePostedAt ) ? $messagePostedAt : false );
+    $t->set_var( "message_author", isset( $messageAuthor ) ? $messageAuthor : false );
+    $t->set_var( "message_id", isset( $messageID ) ? $messageID : false );
+    $t->set_var( "message_notice_text", isset( $messageNoticeText ) ? $messageNoticeText : false );
+    $t->set_var( "message_notice", isset( $messageNotice ) ? $messageNotice : false );
+    $t->set_var( "new_message_notice", isset( $newMessageNotice ) ? $newMessageNotice : false );
 
-    $t->set_var( "reply_to_id", isset( $ReplyToID ) ? $ReplyToID : false );
-    $t->set_var( "preview_id", isset( $PreviewID ) ? $PreviewID : false );
-    $t->set_var( "original_id", isset( $OriginalID ) ? $OriginalID : false );
+    $t->set_var( "reply_to_id", isset( $replyToID ) ? $replyToID : false );
+    $t->set_var( "preview_id", isset( $previewID ) ? $previewID : false );
+    $t->set_var( "original_id", isset( $originalID ) ? $originalID : false );
 
-    $t->set_var( "forum_id", isset( $ForumID ) ? $ForumID : false );
+    $t->set_var( "forum_id", isset( $forumID ) ? $forumID : false );
 
-    $t->set_var( "redirect_url", eZTextTool::htmlspecialchars( isset( $RedirectURL ) ? $RedirectURL : false ) );
-    $t->set_var( "end_action", isset( $EndAction ) ? $EndAction : false );
-    $t->set_var( "start_action", isset( $StartAction ) ? $StartAction : false );
-    $t->set_var( "action_value", isset( $ActionValue ) ? $ActionValue : false );
+    $t->set_var( "redirect_url", eZTextTool::htmlspecialchars( isset( $redirectURL ) ? $redirectURL : false ) );
+    $t->set_var( "end_action", isset( $endAction ) ? $endAction : false );
+    $t->set_var( "start_action", isset( $startAction ) ? $startAction : false );
+    $t->set_var( "action_value", isset( $actionValue ) ? $actionValue : false );
 
 
-    $AllowedTags = $ini->variable( "eZForumMain", "AllowedTags" );
-    $t->set_var( "allowed_tags", htmlspecialchars( $AllowedTags ) );
+    $allowedTags = $ini->variable( "eZForumMain", "AllowedTags" );
+    $t->set_var( "allowed_tags", htmlspecialchars( $allowedTags ) );
 
-    if ( $ShowVisibleMessageForm )
+    if ( $showVisibleMessageForm )
     {
         if ( is_object( $author ) && $author->id() > 0 )
         {
@@ -264,7 +264,7 @@ if ( isset( $ShowMessageForm ) && $ShowMessageForm )
         }
     }
 
-    if ( $ShowHiddenMessageForm )
+    if ( $showHiddenMessageForm )
     {
         if ( isset( $doPrint ) )
         {
@@ -276,7 +276,7 @@ if ( isset( $ShowMessageForm ) && $ShowMessageForm )
         }
     }
 
-    if ( $ShowVisibleMessageForm )
+    if ( $showVisibleMessageForm )
     {
         if ( isset( $doPrint ) )
         {

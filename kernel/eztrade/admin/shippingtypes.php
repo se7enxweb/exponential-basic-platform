@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: shippingtypes.php 6233 2001-07-20 11:42:02Z jakobn $
+// $id: shippingtypes.php 6233 2001-07-20 11:42:02Z jakobn $
 //
 // Created on: <22-Feb-2001 11:38:37 bf>
 //
@@ -30,7 +30,7 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezshippingtype.php" );
 // include_once( "eztrade/classes/ezshippinggroup.php" );
@@ -38,24 +38,24 @@ $Language = $ini->variable( "eZTradeMain", "Language" );
 // include_once( "eztrade/classes/ezvattype.php" );
 
 
-if ( isset( $Action ) && $Action == "Store" )
+if ( isset( $action ) && $action == "Store" )
 {
-    if ( is_numeric( $DefaultTypeID ) )
+    if ( is_numeric( $defaultTypeID ) )
     {
-        $type = new eZShippingType( $DefaultTypeID );
+        $type = new eZShippingType( $defaultTypeID );
         $type->setAsDefault();
     }
 
 
-    if ( is_array( $TypeID ) )
+    if ( is_array( $typeID ) )
     {
         $i = 0;
-        foreach ( $TypeID as $id )
+        foreach ( $typeID as $id )
         {
-            $vatType = new eZVATType( $VATTypeID[$i]  );
+            $vatType = new eZVATType( $vatTypeID[$i]  );
 
             $shippingType = new eZShippingType( $id );
-            $shippingType->setName( $TypeName[$i]  );
+            $shippingType->setName( $typeName[$i]  );
             $shippingType->setVATType( $vatType  );
             $shippingType->store();
             $i++;
@@ -63,39 +63,39 @@ if ( isset( $Action ) && $Action == "Store" )
     }
 
 
-    if ( is_array( $GroupID ) )
+    if ( is_array( $groupID ) )
     {
         $i = 0;
-        foreach ( $GroupID as $id )
+        foreach ( $groupID as $id )
         {
             $shippingGroup = new eZShippingGroup( $id );
-            $shippingGroup->setName( $GroupName[$i]  );
+            $shippingGroup->setName( $groupName[$i]  );
             $shippingGroup->store();
             $i++;
         }
     }
 
-    if ( is_array( $ValueGroupID ) )
+    if ( is_array( $valueGroupID ) )
     {
         $i = 0;
-        foreach ( $ValueGroupID as $groupID )
+        foreach ( $valueGroupID as $groupID )
         {
-            $shippingType = new eZShippingType( $ValueTypeID[$i] );
+            $shippingType = new eZShippingType( $valueTypeID[$i] );
             $shippingGroup = new eZShippingGroup( $groupID );
-            $shippingGroup->setStartAddValue( $shippingType, $StartValue[$i], $AddValue[$i] );
+            $shippingGroup->setStartAddValue( $shippingType, $startValue[$i], $addValue[$i] );
             $i++;
         }
     }
 }
 
-if ( isset( $Action ) && $Action == "AddType" )
+if ( isset( $action ) && $action == "AddType" )
 {
     $shippingType = new eZShippingType();
     $shippingType->setName( "" );
     $shippingType->store();
 }
 
-if ( isset( $Action ) && $Action == "AddGroup" )
+if ( isset( $action ) && $action == "AddGroup" )
 {
     $shippingType = new eZShippingGroup();
     $shippingType->setName( "" );
@@ -103,17 +103,17 @@ if ( isset( $Action ) && $Action == "AddGroup" )
 }
 
 
-if ( isset( $Action ) && $Action == "DeleteSelected" )
+if ( isset( $action ) && $action == "DeleteSelected" )
 {
-    if ( count( $DeleteType ) > 0 )
-    foreach ( $DeleteType as $id )
+    if ( count( $deleteType ) > 0 )
+    foreach ( $deleteType as $id )
     {
         $shippingType = new eZShippingType( $id );
         $shippingType->delete();
     }
 
-    if ( count( $DeleteGroup ) > 0 )
-    foreach ( $DeleteGroup as $id )
+    if ( count( $deleteGroup ) > 0 )
+    foreach ( $deleteGroup as $id )
     {
         $shippingGroup = new eZShippingGroup( $id );
         $shippingGroup->delete();
@@ -122,7 +122,7 @@ if ( isset( $Action ) && $Action == "DeleteSelected" )
 
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "shippingtypes.php" );
+                     "kernel/eztrade/admin/intl/", $language, "shippingtypes.php" );
 
 $t->setAllStrings();
 

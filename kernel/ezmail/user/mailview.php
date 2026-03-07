@@ -33,23 +33,23 @@
 // include_once( "ezsession/classes/ezpreferences.php" );
 
 // Check if this really is your mail we are talking about here..
-if ( !eZMail::isOwner( eZUser::currentUser(), $MailID ) )
+if ( !eZMail::isOwner( eZUser::currentUser(), $mailID ) )
 {
     eZHTTPTool::header( "Location: /error/403/" );
     exit();
 }
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
-    $mail = new eZMail( $MailID );
+    $mail = new eZMail( $mailID );
     $folderID = $mail->folder( false );
     eZHTTPTool::header( "Location: /mail/folder/$folderID" );
     exit();
 }
 
-if ( isset( $Reply ) )
+if ( isset( $reply ) )
 {
-    $mail = new eZMail( $MailID );
+    $mail = new eZMail( $mailID );
     $mail->setStatus( REPLIED, true );
     $reply = $mail->copyMail( "reply" );
     $replyid = $reply->id();
@@ -62,9 +62,9 @@ if ( isset( $Reply ) )
     exit();
 }
 
-if ( isset( $ReplyAll ) )
+if ( isset( $replyAll ) )
 {
-    $mail = new eZMail( $MailID );
+    $mail = new eZMail( $mailID );
     $mail->setStatus( REPLIED, true );
     $reply = $mail->copyMail( "replyall" );
     $replyid = $reply->id();
@@ -77,9 +77,9 @@ if ( isset( $ReplyAll ) )
     exit();
 }
 
-if ( isset( $Forward ) )
+if ( isset( $forward ) )
 {
-    $mail = new eZMail( $MailID );
+    $mail = new eZMail( $mailID );
     $mail->setStatus( FORWARDED, true );
     $reply = $mail->copyMail( "forward" );
     $replyid = $reply->id();
@@ -92,28 +92,28 @@ if ( isset( $Forward ) )
     exit();
 }
 
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    $mail = new eZMail( $MailID );
+    $mail = new eZMail( $mailID );
     $folderID = $mail->folder( false );
 
     $del_var = eZPreferences::variable( "eZMail_OnDel" );
     if( $del_var == "del" )
     {
-        eZMail::delete( $MailID );
+        eZMail::delete( $mailID );
     }
     else // move to trash
     {
         $trash = eZMailFolder::getSpecialFolder( TRASH );
-        $trash->addMail( $MailID );
+        $trash->addMail( $mailID );
     }
     eZHTTPTool::header( "Location: /mail/folder/$folderID" );
     exit();
 }
 
-if ( isset( $Link ) )
+if ( isset( $link ) )
 {
-    eZHTTPTool::header( "Location: /mail/link/$MailID" );
+    eZHTTPTool::header( "Location: /mail/link/$mailID" );
     exit();
 }
 
@@ -134,10 +134,10 @@ $t->set_var( "inserted_attachments", "" );
 $t->set_var( "cc_value", "" );
 $t->set_var( "bcc_value", "" );
 
-$mail = new eZMail( $MailID );
+$mail = new eZMail( $mailID );
 if ( $mail->status() == UNREAD )
     $mail->setStatus( READ, true );
-$t->set_var( "current_mail_id", $MailID );
+$t->set_var( "current_mail_id", $mailID );
 
 $t->set_var( "to", htmlspecialchars( $mail->to() ) );
 $t->set_var( "from", htmlspecialchars( $mail->from() ) );

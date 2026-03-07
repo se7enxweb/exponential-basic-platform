@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: sessioninfo.php 9665 2002-07-09 07:25:42Z bf $
+// $id: sessioninfo.php 9665 2002-07-09 07:25:42Z bf $
 //
 // Created on: <01-Nov-2000 14:34:30 bf>
 //
@@ -36,9 +36,9 @@
 require( "kernel/ezuser/admin/admincheck.php" );
 
 
-if ( isset( $Action ) && (string) $Action == "Delete" && count( $SessionArrayID ) > 0 )
+if ( isset( $action ) && (string) $action == "Delete" && count( $sessionArrayID ) > 0 )
 {
-    foreach( $SessionArrayID as $sessionID )
+    foreach( $sessionArrayID as $sessionID )
     {
         $session = new eZSession( $sessionID );
         $session->delete();
@@ -48,11 +48,11 @@ if ( isset( $Action ) && (string) $Action == "Delete" && count( $SessionArrayID 
 }
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZUserMain", "Language" );
+$language = $ini->variable( "eZUserMain", "Language" );
 
 
 $t = new eZTemplate( "kernel/ezuser/admin/" . $ini->variable( "eZUserMain", "AdminTemplateDir" ),
-                     "kernel/ezuser/admin/" . "/intl", $Language, "sessioninfo.php" );
+                     "kernel/ezuser/admin/" . "/intl", $language, "sessioninfo.php" );
 $t->setAllStrings();
 
 $t->set_file( array(
@@ -69,7 +69,7 @@ $userSessionList = eZUser::currentUsers();
 
 $t->set_var( "user_count", count( $userSessionList ) );
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 
 $i=0;
 foreach( $userSessionList as $userSessionItem )

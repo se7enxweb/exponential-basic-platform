@@ -32,7 +32,7 @@
 
 // include_once( "ezgroupeventcalendar/classes/ezgroupnoshow.php" );
 
-if ( isset( $NoDisplayIDArray ) && isset( $Store ) )
+if ( isset( $noDisplayIDArray ) && isset( $store ) )
 {
 	$nodisplay = new eZGroupNoShow();
 
@@ -40,7 +40,7 @@ if ( isset( $NoDisplayIDArray ) && isset( $Store ) )
 	$nodisplay->dumpTable();
 
 	//second reload the table
-    foreach ( $NoDisplayIDArray as $id )
+    foreach ( $noDisplayIDArray as $id )
     {
 		$group = new eZUserGroup( $id );
         $nodisplay = new eZGroupNoShow();
@@ -48,7 +48,7 @@ if ( isset( $NoDisplayIDArray ) && isset( $Store ) )
         $nodisplay->store();
     }
 }
-elseif( !isset( $NoDisplayIDArray ) && isset( $Store ) )
+elseif( !isset( $noDisplayIDArray ) && isset( $store ) )
 {
 	$nodisplay = new eZGroupNoShow();
 

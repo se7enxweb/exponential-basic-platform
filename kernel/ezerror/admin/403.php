@@ -35,9 +35,9 @@ $t->setAllStrings();
 $t->set_file( array( "error_page" => "403.tpl" ) );
 $t->set_block( "error_page", "additional_information_tpl", "additional_information" );
 
-if( isset( $Info ) )
+if( isset( $info ) )
 {
-    $t->set_var( "additional_info", $Info );
+    $t->set_var( "additional_info", $info );
     $t->parse( "additional_information", "additional_information_tpl", true );
 }
 else

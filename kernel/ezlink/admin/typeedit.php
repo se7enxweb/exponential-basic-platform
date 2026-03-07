@@ -25,7 +25,7 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /link/typelist/" );
     exit();
@@ -42,79 +42,79 @@ $move_item = true;
 // include_once( "ezlink/classes/ezlinktype.php" );
 // include_once( "ezlink/classes/ezlinkattribute.php" );
 
-if (isset( $Action ) && $Action == "Insert" )
+if (isset( $action ) && $action == "Insert" )
 {
     $type = new eZLinkType();
-    $type->setName( $Name );
+    $type->setName( $name );
 
     $type->store();
 
-    $TypeID = $type->id();
-    $Action = "Edit";
+    $typeID = $type->id();
+    $action = "Edit";
 }
 
 
-if ( ( isset( $Action ) && $Action == "Update" ) || ( isset ( $Update ) ) )
+if ( ( isset( $action ) && $action == "Update" ) || ( isset ( $update ) ) )
 {
-    $type = new eZLinkType( $TypeID );
-    $type->setName( $Name );
+    $type = new eZLinkType( $typeID );
+    $type->setName( $name );
 
     $type->store();
 
     // update attributes
     $i =0;
-    if ( count( $AttributeName ) > 0 )
+    if ( count( $attributeName ) > 0 )
     {
 
-        foreach ( $AttributeName as $attribute )
+        foreach ( $attributeName as $attribute )
         {
-            $att = new eZLinkAttribute( $AttributeID[$i] );
+            $att = new eZLinkAttribute( $attributeID[$i] );
             $att->setName( $attribute );
             $att->store();
 
             $i++;
         }
     }
-    $Action = "Edit";
+    $action = "Edit";
 }
 
-if( isset( $Action ) && $Action == "up" )
+if( isset( $action ) && $action == "up" )
 {
-    $attribute = new eZLinkAttribute( $AttributeID );
+    $attribute = new eZLinkAttribute( $attributeID );
     $attribute->moveUp();
-    eZHTTPTool::header( "Location: /link/typeedit/edit/$TypeID" );
+    eZHTTPTool::header( "Location: /link/typeedit/edit/$typeID" );
     exit();
 }
 
-if( isset( $Action ) && $Action == "down" )
+if( isset( $action ) && $action == "down" )
 {
-    $attribute = new eZLinkAttribute( $AttributeID );
+    $attribute = new eZLinkAttribute( $attributeID );
     $attribute->moveDown();
-    eZHTTPTool::header( "Location: /link/typeedit/edit/$TypeID" );
+    eZHTTPTool::header( "Location: /link/typeedit/edit/$typeID" );
     exit();
 }
 
-if( isset( $Ok ) )
+if( isset( $okType ) )
 {
     eZHTTPTool::header( "Location: /link/typelist/" );
     exit();
 }
 
-if ( isset ( $DeleteSelected ) )
+if ( isset ( $deleteSelected ) )
 {
-    if ( count ( $DeleteAttributes ) > 0 )
+    if ( count ( $deleteAttributes ) > 0 )
     {
-        foreach ( $DeleteAttributes as $attID )
+        foreach ( $deleteAttributes as $attID )
         {
             $attribute = new eZLinkAttribute( $attID );
             $attribute->delete();
         }
     }
-    $Action = "Edit";
+    $action = "Edit";
 }
 
 
-if ( isset( $NewAttribute ) )
+if ( isset( $newAttribute ) )
 {
     $attribute = new eZLinkAttribute();
     $attribute->setType( $type );
@@ -123,10 +123,10 @@ if ( isset( $NewAttribute ) )
 }
 
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
     $type = new eZProductType();
-    $type->get( $TypeID );
+    $type->get( $typeID );
 
     $type->delete();
     
@@ -165,10 +165,10 @@ $t->set_var( "type_id", "" );
 $t->set_var( "action_value", "Insert" );
 
 // edit
-if ( isset( $Action ) && $Action == "Edit" )
+if ( isset( $action ) && $action == "Edit" )
 {
     $type = new eZLinkType();
-    $type->get( $TypeID );
+    $type->get( $typeID );
 
     $t->set_var( "name_value", $type->name() );
     $t->set_var( "action_value", "Update" );

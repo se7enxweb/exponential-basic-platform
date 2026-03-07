@@ -49,23 +49,23 @@ $t->set_block( "message_page", "message_item_tpl", "message_item" );
 
 $t->set_var( "site_style", $SiteDesign );
 
-$forum = new eZForum( $ForumID );
+$forum = new eZForum( $forumID );
 $t->set_var( "forum_name", $forum->name() );
 
 $categories = $forum->categories();
 
 if ( count( $categories ) > 0 )
 {
-    $CategoryID = $categories[0]->id();
-    $category = new eZForumCategory( $CategoryID );
+    $categoryID = $categories[0]->id();
+    $category = new eZForumCategory( $categoryID );
 
     $t->set_var( "category_name", $category->name() );
-    $t->set_var( "category_id", $CategoryID );
+    $t->set_var( "category_id", $categoryID );
 }
 
 $locale = new eZLocale( $Language );
 
-$messages = $forum->messageTree( $Offset, $AdminLimit );
+$messages = $forum->messageTree( $offset, $AdminLimit );
 $messageCount = $forum->messageCount();
 
 $languageIni = new eZINI( "kernel/ezforum/admin/" . "intl/" . $Language . "/messagelist.php.ini", false );
@@ -73,7 +73,7 @@ $languageIni = new eZINI( "kernel/ezforum/admin/" . "intl/" . $Language . "/mess
 $true =  $languageIni->variable( "strings", "true" );
 $false =  $languageIni->variable( "strings", "false" );
 
-$AnonymousPoster = $ini->variable( "eZForumMain", "AnonymousPoster" );
+$anonymousPoster = $ini->variable( "eZForumMain", "AnonymousPoster" );
 
 if ( !$messages )
 {
@@ -113,14 +113,14 @@ else
         
         if ( $author->id() == 0 )
         {
-            $MessageAuthor = $anonymous;
+            $messageAuthor = $anonymous;
         }
         else
         {
-            $MessageAuthor = $author->firstName() . " " . $author->lastName();
+            $messageAuthor = $author->firstName() . " " . $author->lastName();
         }
         
-        $t->set_var( "message_user", $MessageAuthor );
+        $t->set_var( "message_user", $messageAuthor );
 
         if ( $message->emailNotice() == "Y" )
             $t->set_var( "emailnotice", $true );
@@ -132,17 +132,17 @@ else
     }
 }
 
-eZList::drawNavigator( $t, $messageCount, $AdminLimit, $Offset, "message_page" );
+eZList::drawNavigator( $t, $messageCount, $AdminLimit, $offset, "message_page" );
 
-$t->set_var( "forum_start", $Offset + 1 );
-$t->set_var( "forum_end", min( $Offset + $AdminLimit, $messageCount ) );
+$t->set_var( "forum_start", $offset + 1 );
+$t->set_var( "forum_end", min( $offset + $AdminLimit, $messageCount ) );
 $t->set_var( "forum_total", $messageCount );
 
 $t->set_var( "link1-url", "");
 $t->set_var( "link2-url", "search.php");
 
 $t->set_var( "back-url", "admin/forum.php" );
-$t->set_var( "forum_id", $ForumID );
+$t->set_var( "forum_id", $forumID );
 
 $t->pparse( "output", "message_page" );
 

@@ -32,6 +32,23 @@ if ( eZPermission::checkPermission( $user, "eZStats", "ModuleEdit" ) == false )
     exit();
 }
 
+$day            = eZHTTPTool::getVar( 'Day' );
+$entryPageLimit = eZHTTPTool::getVar( 'EntryPageLimit' );
+$excludeDomain  = eZHTTPTool::getVar( 'ExcludeDomain' );
+$exitPageLimit  = eZHTTPTool::getVar( 'ExitPageLimit' );
+$itemCount      = eZHTTPTool::getVar( 'ItemCount' );
+$month          = eZHTTPTool::getVar( 'Month' );
+$nextDay        = eZHTTPTool::getVar( 'NextDay' );
+$nextMonth      = eZHTTPTool::getVar( 'NextMonth' );
+$nextYear       = eZHTTPTool::getVar( 'NextYear' );
+$offset         = eZHTTPTool::getVar( 'Offset' );
+$prevDay        = eZHTTPTool::getVar( 'PrevDay' );
+$prevMonth      = eZHTTPTool::getVar( 'PrevMonth' );
+$prevYear       = eZHTTPTool::getVar( 'PrevYear' );
+$viewLimit      = eZHTTPTool::getVar( 'ViewLimit' );
+$viewMode       = eZHTTPTool::getVar( 'ViewMode' );
+$year           = eZHTTPTool::getVar( 'Year' );
+
 switch ( $url_array[2] )
 {
     case "overview" :
@@ -42,9 +59,9 @@ switch ( $url_array[2] )
 
     case "pageviewlist" :
     {
-        $ViewMode = $url_array[3];
-        $ViewLimit = $url_array[4];
-        $Offset = $url_array[5];
+        $viewMode = $url_array[3];
+        $viewLimit = $url_array[4];
+        $offset = $url_array[5];
 
         include( "kernel/ezstats/admin/pageviewlist.php" );
     }
@@ -52,9 +69,9 @@ switch ( $url_array[2] )
 
     case "visitorlist" :
     {
-        $ViewMode = $url_array[3];
-        $ViewLimit = $url_array[4];
-        $Offset = $url_array[5];
+        $viewMode = $url_array[3];
+        $viewLimit = $url_array[4];
+        $offset = $url_array[5];
 
         include( "kernel/ezstats/admin/visitorlist.php" );
     }
@@ -62,11 +79,11 @@ switch ( $url_array[2] )
 
     case "refererlist" :
     {
-        $ViewMode = $url_array[3];
-        $ViewLimit = $url_array[4];
-        $Offset = $url_array[5];
-        if ( !isset( $ExcludeDomain ) )
-            $ExcludeDomain = $url_array[6];
+        $viewMode = $url_array[3];
+        $viewLimit = $url_array[4];
+        $offset = $url_array[5];
+        if ( !isset( $excludeDomain ) )
+            $excludeDomain = $url_array[6];
 
         include( "kernel/ezstats/admin/refererlist.php" );
     }
@@ -74,9 +91,9 @@ switch ( $url_array[2] )
 
     case "browserlist" :
     {
-        $ViewMode = $url_array[3];
-        $ViewLimit = $url_array[4];
-        $Offset = $url_array[5];
+        $viewMode = $url_array[3];
+        $viewLimit = $url_array[4];
+        $offset = $url_array[5];
 
         include( "kernel/ezstats/admin/browserlist.php" );
     }
@@ -84,9 +101,9 @@ switch ( $url_array[2] )
 
     case "requestpagelist" :
     {
-        $ViewMode = $url_array[3];
-        $ViewLimit = $url_array[4];
-        $Offset = $url_array[5];
+        $viewMode = $url_array[3];
+        $viewLimit = $url_array[4];
+        $offset = $url_array[5];
 
         include( "kernel/ezstats/admin/requestpagelist.php" );
     }
@@ -94,7 +111,7 @@ switch ( $url_array[2] )
     
     case "yearreport" :
     {
-        $Year = $url_array[3];
+        $year = $url_array[3];
 
         include( "kernel/ezstats/admin/yearreport.php" );
     }
@@ -102,8 +119,8 @@ switch ( $url_array[2] )
 
     case "monthreport" :
     {
-        $Year = $url_array[3];
-        $Month = $url_array[4];
+        $year = $url_array[3];
+        $month = $url_array[4];
 
         include( "kernel/ezstats/admin/monthreport.php" );
     }
@@ -111,9 +128,9 @@ switch ( $url_array[2] )
 
     case "dayreport" :
     {
-        $Year = $url_array[3];
-        $Month = $url_array[4];
-        $Day = $url_array[5];
+        $year = $url_array[3];
+        $month = $url_array[4];
+        $day = $url_array[5];
 
         include( "kernel/ezstats/admin/dayreport.php" );
     }
@@ -121,8 +138,8 @@ switch ( $url_array[2] )
 
     case "productreport" :
     {
-        $Year = $url_array[3];
-        $Month = $url_array[4];
+        $year = $url_array[3];
+        $month = $url_array[4];
         
         include( "kernel/ezstats/admin/productreport.php" );
     }
@@ -130,8 +147,8 @@ switch ( $url_array[2] )
     
     case "entryexitreport" :
     {
-        $Year = $url_array[3];
-        $Month = $url_array[4];
+        $year = $url_array[3];
+        $month = $url_array[4];
         
         include( "kernel/ezstats/admin/entryexitpages.php" );
     }

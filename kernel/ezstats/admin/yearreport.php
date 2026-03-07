@@ -59,14 +59,14 @@ $t->set_block( "year_tpl", "year_previous_inactive_tpl", "year_previous_inactive
 $t->set_block( "year_tpl", "year_next_tpl", "year_next" );
 $t->set_block( "year_tpl", "year_next_inactive_tpl", "year_next_inactive" );
 
-if ( !is_numeric( $Year ) )
+if ( !is_numeric( $year ) )
 {
     $cur_date = new eZDate();
-    $Year = $cur_date->year();
-    $Month = $cur_date->month();
+    $year = $cur_date->year();
+    $month = $cur_date->month();
 }
 
-$yearReport = eZPageViewQuery::yearStats( $Year );
+$yearReport = eZPageViewQuery::yearStats( $year );
 
 $months = array( 1 => "jan",
                  2 => "feb",
@@ -145,7 +145,7 @@ if ( count( $yearReport ) > 0 )
 
         $t->set_var( "this_month", $i );
 
-        $next_date = new eZDate( $Year, $i, 1 );
+        $next_date = new eZDate( $year, $i, 1 );
         if ( !$cur_date->isGreater( $next_date ) )
         {
             $t->parse( "month_link", "month_link_tpl" );
@@ -165,18 +165,18 @@ else
     $t->set_var( "result_list", "" );
 }
 
-$t->set_var( "this_month", $Month );
-$t->set_var( "this_year", $Year );
+$t->set_var( "this_month", $month );
+$t->set_var( "this_year", $year );
 
-$NextYear = $Year + 1;
-$PrevYear = $Year - 1;
-$t->set_var( "next_year", $NextYear );
-$t->set_var( "previous_year", $PrevYear );
+$nextYear = $year + 1;
+$prevYear = $year - 1;
+$t->set_var( "next_year", $nextYear );
+$t->set_var( "previous_year", $prevYear );
 
-$t->set_var( "next_year", $NextYear );
-$t->set_var( "previous_year", $PrevYear );
-$t->set_var( "next_year", $NextYear );
-$t->set_var( "previous_year", $PrevYear );
+$t->set_var( "next_year", $nextYear );
+$t->set_var( "previous_year", $prevYear );
+$t->set_var( "next_year", $nextYear );
+$t->set_var( "previous_year", $prevYear );
 
 $t->set_var( "year_next_inactive", "" );
 $t->set_var( "year_next", "" );
@@ -184,7 +184,7 @@ $t->set_var( "year_previous", "" );
 $t->set_var( "year_previous_inactive", "" );
 
 $cur_date = new eZDate();
-$next_date = new eZDate( $NextYear, 1, 1 );
+$next_date = new eZDate( $nextYear, 1, 1 );
 
 if ( $cur_date->isGreater( $next_date ) )
     $t->parse( "year_next_inactive", "year_next_inactive_tpl" );

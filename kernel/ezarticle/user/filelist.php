@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: filelist.php 6491 2001-08-20 11:07:08Z ce $
+// $id: filelist.php 6491 2001-08-20 11:07:08Z ce $
 //
 // Created on: <21-Dec-2000 17:43:40 bf>
 //
@@ -30,14 +30,14 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
 // include_once( "ezarticle/classes/ezarticle.php" );
 
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "filelist.php" );
+                     "kernel/ezarticle/user/intl/", $language, "filelist.php" );
 
 $t->setAllStrings();
 
@@ -49,17 +49,17 @@ $t->set_block( "file_list_page_tpl", "no_files_tpl", "no_files" );
 $t->set_block( "file_list_page_tpl", "file_list_tpl", "file_list" );
 $t->set_block( "file_list_tpl", "file_tpl", "file" );
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
 
 $session = eZSession::globalSession();
-$session->setVariable( "FileListReturnTo", $REQUEST_URI );
+$session->setVariable( "FileListReturnTo", $_SERVER['REQUEST_URI'] );
 $session->setVariable( "NameInBrowse", $article->name() );
 
-if ( isset ( $AddFiles ) )
+if ( isset ( $addFiles ) )
 {
-    if ( count ( $FileArrayID ) > 0 )
+    if ( count ( $fileArrayID ) > 0 )
     {
-        foreach( $FileArrayID as $fileID )
+        foreach( $fileArrayID as $fileID )
         {
             $file = new eZVirtualFile( $fileID );
             $article->addFile( $file );
@@ -69,7 +69,7 @@ if ( isset ( $AddFiles ) )
 
 $t->set_var( "article_name", $article->name() );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
 $files = $article->files();
 if ( count( $files ) == 0 )

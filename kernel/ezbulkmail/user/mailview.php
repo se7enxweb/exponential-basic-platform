@@ -47,11 +47,11 @@ $t->set_file( array(
 
 $t->set_var( "site_style", $SiteDesign );
 
-$mail = new eZBulkMail( $MailID );
+$mail = new eZBulkMail( $mailID );
 if( is_object( $mail ) )
 {
     $fromString = $mail->fromName() . " &lt;" . $mail->sender() ."&gt;";
-    $t->set_var( "current_mail_id", $MailID );
+    $t->set_var( "current_mail_id", $mailID );
     $t->set_var( "from", $fromString );
     $t->set_var( "subject", $mail->subject() );
 

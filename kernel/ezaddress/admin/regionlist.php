@@ -25,7 +25,7 @@
 // include_once( "ezaddress/classes/ezregion.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Max = $ini->variable( "eZAddressMain", "MaxRegionList" );
+$max = $ini->variable( "eZAddressMain", "MaxRegionList" );
 
 include( "kernel/ezaddress/admin/typelist_pre.php" );
 
@@ -40,13 +40,13 @@ $variable_array = array( "region_header" => "region_header_tpl",
 $block_array = array( array( "region_tpl", "region_header_tpl", "region_header" ),
                       array( "region_tpl", "region_item_tpl", "region_item" ) );
 
-$item_type_array = eZRegion::getAll( true, $SearchText, $Index, $Max );
+$item_type_array = eZRegion::getAll( true, $searchText, $index, $max );
 
-$total_types = eZRegion::getAllCount( $SearchText );
+$total_types = eZRegion::getAllCount( $searchText );
 $func_call = array( "item_id" => 'id',
                     "item_name" => 'name',
                     "item_abbreviation" => 'Abbreviation' );
-$Searchable = true;
+$searchable = true;
 
 include( "kernel/ezaddress/admin/typelist.php" );
 

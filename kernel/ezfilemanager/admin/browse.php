@@ -36,7 +36,7 @@
 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
-$ImageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
+$imageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
 
 $t = new eZTemplate( "kernel/ezfilemanager/admin/" . $ini->variable( "eZFileManagerMain", "AdminTemplateDir" ),
                      "kernel/ezfilemanager/admin/intl/", $Language, "browse.php" );
@@ -65,12 +65,12 @@ $t->set_var( "read", "" );
 
 $user = eZUser::currentUser();
 
-if( !isset( $FolderID ) )
+if( !isset( $folderID ) )
 {
-    $FolderID = 0;
+    $folderID = 0;
 }
 
-$folder = new eZVirtualFolder( $FolderID );
+$folder = new eZVirtualFolder( $folderID );
 
 $error = true;
 
@@ -88,7 +88,7 @@ if ( eZObjectPermission::hasPermission( $folder->id(), "filemanager_folder", "r"
     $error = false;
 } 
 
-if ( $FolderID == 0 )
+if ( $folderID == 0 )
 {
     $error = false;
 }
@@ -205,8 +205,8 @@ else
     $t->set_var( "file_list", "" );
 }
 
-$t->set_var( "image_dir", $ImageDir );
-$t->set_var( "main_folder_id", $FolderID );
+$t->set_var( "image_dir", $imageDir );
+$t->set_var( "main_folder_id", $folderID );
 
 if ( $error == false )
 {

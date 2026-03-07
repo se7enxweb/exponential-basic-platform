@@ -25,15 +25,15 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /ad/archive/$categoryID/" );
     exit();
 }
 
-if ( isset ( $DeleteCategories ) )
+if ( isset ( $deleteCategories ) )
 {
-    $Action = "DeleteCategories";
+    $action = "DeleteCategories";
 }
 
 // include_once( "classes/INIFile.php" );
@@ -47,17 +47,17 @@ $Language = $ini->variable( "eZAdMain", "Language" );
 
 
 // Direct actions
-if ( isset( $Action ) && $Action == "Insert" )
+if ( isset( $action ) && $action == "Insert" )
 {
 
     $category = new eZAdCategory();
-    $category->setName( $Name );
+    $category->setName( $name );
 
     $parentCategory = new eZAdCategory();
-    if ( $parentCategory->get( $ParentID ) == true )                    
+    if ( $parentCategory->get( $parentID ) == true )                    
         $category->setParent( $parentCategory );
     
-    $category->setDescription( $Description );
+    $category->setDescription( $description );
 
     
     $category->store();
@@ -68,17 +68,17 @@ if ( isset( $Action ) && $Action == "Insert" )
     exit();
 }
 
-if ( isset( $Action ) && $Action == "Update" )
+if ( isset( $action ) && $action == "Update" )
 {
     $category = new eZAdCategory();
-    $category->get( $CategoryID );
-    $category->setName( $Name );
+    $category->get( $categoryID );
+    $category->setName( $name );
 
     $parentCategory = new eZAdCategory();
-    if ( $parentCategory->get( $ParentID ) == true )                    
+    if ( $parentCategory->get( $parentID ) == true )                    
         $category->setParent( $parentCategory );
     
-    $category->setDescription( $Description );
+    $category->setDescription( $description );
 
     $category->store();
 
@@ -88,10 +88,10 @@ if ( isset( $Action ) && $Action == "Update" )
     exit();
 }
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
     $category = new eZAdCategory();
-    $category->get( $CategoryID );
+    $category->get( $categoryID );
 
     $category->delete();
     
@@ -99,13 +99,13 @@ if ( isset( $Action ) && $Action == "Delete" )
     exit();
 }
 
-if ( isset( $Action ) && $Action == "DeleteCategories" )
+if ( isset( $action ) && $action == "DeleteCategories" )
 {
-    if ( count ( $CategoryArrayID ) != 0 )
+    if ( count ( $categoryArrayID ) != 0 )
     {
-        foreach( $CategoryArrayID as $ID )
+        foreach( $categoryArrayID as $id )
         {
-            $category = new eZAdCategory( $ID );
+            $category = new eZAdCategory( $id );
             $category->delete();
         }
     }
@@ -114,7 +114,7 @@ if ( isset( $Action ) && $Action == "DeleteCategories" )
     exit();
 }
 
-if ( isset( $Action ) && $Action == "New" )
+if ( isset( $action ) && $action == "New" )
 {
    $parentID = false;
 }
@@ -140,10 +140,10 @@ $t->set_var( "category_id", "" );
 
 
 // edit
-if ( isset( $Action ) && $Action == "Edit" )
+if ( isset( $action ) && $action == "Edit" )
 {
     $category = new eZAdCategory();
-    $category->get( $CategoryID );
+    $category->get( $categoryID );
 
     $t->set_var( "name_value", $category->name() );
     $t->set_var( "description_value", $category->description() );

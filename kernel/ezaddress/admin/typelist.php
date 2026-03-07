@@ -34,8 +34,8 @@
   $page_path: The base name of the url, for example: /address/consultationtype
   You can also enable item placement by setting the $move_item variable to true, to make sure an
   item can be moved it must implement the moveUp() and moveDown() functions.
-  If the $SortPage variable is set all items will have hyperlinked names linked to the variable content.
-  If $Searchable is set to true a search button is added.
+  If the $sortPage variable is set all items will have hyperlinked names linked to the variable content.
+  If $searchable is set to true a search button is added.
   If $template_array, $variable_array and $block_array is set they are used for extending the
   list with extra information.
 */
@@ -63,13 +63,13 @@ $item_error = true;
 
 if( empty( $HTTP_REFERER ) )
 {
-    if( empty( $BackUrl ) )
+    if( empty( $backUrl ) )
     {
         $back_command = "$page_path/list";
     }
     else
     {
-        $back_command = $BackUrl;
+        $back_command = $backUrl;
     }
 }
 else
@@ -116,12 +116,12 @@ $t->set_var( "line_item", "" );
 $t->set_var( "list_item", "" );    
 $t->set_var( "search_item", "" );    
 
-if( isset( $Action ) && $Action == "list" )
+if( isset( $action ) && $action == "list" )
 {
-    $SearchText = false;
+    $searchText = false;
     $search_encoded = false;
     $total_types = false;
-    $Max = false;
+    $max = false;
 }
 
 $t->set_var( "item_up_command", "$page_path/up" );
@@ -131,19 +131,19 @@ $t->set_var( "item_delete_command", "$page_path/delete" );
 $t->set_var( "item_view_command", "$page_path/view" );
 $t->set_var( "item_list_command", "$page_path/list" );
 $t->set_var( "item_new_command", "$page_path/new" );
-$t->set_var( "item_id", isset( $ItemID ) ? $ItemID : false );
-$t->set_var( "item_name", isset( $ItemName ) ? $ItemName : false );
+$t->set_var( "item_id", isset( $itemID ) ? $itemID : false );
+$t->set_var( "item_name", isset( $itemName ) ? $itemName : false );
 $t->set_var( "back_url", $back_command );
 $t->set_var( "item_back_command", $back_command );
 
-$t->set_var( "action", $Action );
-$t->set_var( "type", $ListType );
+$t->set_var( "action", $action );
+$t->set_var( "type", $listType );
 
-$SearchText = stripslashes( $SearchText );
-$t->set_var( "search_form_text", $SearchText );
+$searchText = stripslashes( $searchText );
+$t->set_var( "search_form_text", $searchText );
 $t->set_var( "search_text", $search_encoded );
 
-if ( isset( $Searchable ) )
+if ( isset( $searchable ) )
     $t->parse( "search_item", "search_item_tpl" );    
 
 $count = count( $item_type_array );
@@ -180,9 +180,9 @@ foreach( $item_type_array as $item )
         $t->set_var( "item_name", $item->name() );
     }
 
-    if ( isset( $SortPage ) )
+    if ( isset( $sortPage ) )
     {
-        $t->set_var( "item_sort_command", $SortPage );
+        $t->set_var( "item_sort_command", $sortPage );
         $t->parse( "item_linked", "item_linked_tpl" );
     }
     else
@@ -231,7 +231,7 @@ else
     $t->parse( "list_item", "list_item_tpl" );
 }
 
-eZList::drawNavigator( $t, $total_types, $Max, $Index, "list_page" );
+eZList::drawNavigator( $t, $total_types, $max, $index, "list_page" );
 
 $t->pparse( "output", "list_page" );
 

@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: consultationlist.php 9529 2002-05-14 11:17:05Z jhe $
+// $id: consultationlist.php 9529 2002-05-14 11:17:05Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -26,7 +26,7 @@
 // include_once( "classes/INIFile.php" );
 // include_once( "classes/ezhttptool.php" );
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZContactMain", "Language" );
+$language = $ini->variable( "eZContactMain", "Language" );
 
 // include_once( "classes/eztemplate.php" );
 
@@ -48,7 +48,7 @@ if ( !eZPermission::checkPermission( $user, "eZContact", "Consultation" ) )
     exit();
 }
 
-if ( isset( $ConsultationList ) )
+if ( isset( $consultationList ) )
 {
     $templatefile = "consultationdetaillist.tpl";
     $languagefile = "consultationdetaillist.php";
@@ -60,7 +60,7 @@ else
 }
 
 $t = new eZTemplate( "kernel/ezcontact/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ),
-                     "kernel/ezcontact/admin/intl", $Language, $languagefile );
+                     "kernel/ezcontact/admin/intl", $language, $languagefile );
 $t->setAllStrings();
 
 // include_once( "ezcontact/classes/ezconsultation.php" );
@@ -68,7 +68,7 @@ $t->setAllStrings();
 
 $t->set_file( "consultation_page", $templatefile );
 
-if ( isset( $ConsultationList ) )
+if ( isset( $consultationList ) )
 {
     $t->set_block( "consultation_page", "no_consultations_item_tpl", "no_consultations_item" );
     $t->set_block( "consultation_page", "consultation_table_item_tpl", "consultation_table_item" );
@@ -110,62 +110,62 @@ if ( !$user )
     exit();
 }
 
-if ( isset( $ConsultationList ) )
+if ( isset( $consultationList ) )
 {
     // List specific consultations
 
-    if ( !isset( $CompanyID ) && !isset( $PersonID ) )
+    if ( !isset( $companyID ) && !isset( $personID ) )
     {
         die( "Neither CompanyID or PersonID is set" );
     }
 
-    if ( empty( $OrderBy ) )
+    if ( empty( $orderBy ) )
     {
-        $OrderBy = "Date";
+        $orderBy = "Date";
     }
 
-    if ( isset( $CompanyID ) )
+    if ( isset( $companyID ) )
     {
         if ( $ini->variable( "eZContactMain", "ShowAllConsultations" ) == "enabled" )
         {
             if ( $ini->variable( "eZContactMain", "ShowRelatedConsultations" ) == "enabled" )
-                $consultations = eZConsultation::findConsultationsByContact( $CompanyID, -1, $OrderBy, false, 0, -1, true );
+                $consultations = eZConsultation::findConsultationsByContact( $companyID, -1, $orderBy, false, 0, -1, true );
             else
-                $consultations = eZConsultation::findConsultationsByContact( $CompanyID, -1, $OrderBy, false );
+                $consultations = eZConsultation::findConsultationsByContact( $companyID, -1, $orderBy, false );
         }
         else
         {
             if ( $ini->variable( "eZContactMain", "ShowRelatedConsultations" ) == "enabled" )
-                $consultations = eZConsultation::findConsultationsByContact( $CompanyID, $user->id(), $OrderBy, false, 0, -1, true );
+                $consultations = eZConsultation::findConsultationsByContact( $companyID, $user->id(), $orderBy, false, 0, -1, true );
             else
-                $consultations = eZConsultation::findConsultationsByContact( $CompanyID, $user->id(), $OrderBy, false );
+                $consultations = eZConsultation::findConsultationsByContact( $companyID, $user->id(), $orderBy, false );
         }
 
         $t->set_var( "consultation_type", "company" );
-        $t->set_var( "company_id", $CompanyID  );
-        $company = new eZCompany( $CompanyID );
+        $t->set_var( "company_id", $companyID  );
+        $company = new eZCompany( $companyID );
         $t->set_var( "contact_name", $company->name() );
     }
-    else if ( isset( $PersonID ) )
+    else if ( isset( $personID ) )
     {
         if ( $ini->variable( "eZContactMain", "ShowAllConsultations" ) == "enabled" )
         {
             if ( $ini->variable( "eZContactMain", "ShowRelatedConsultations" ) == "enabled" )
-                $consultations = eZConsultation::findConsultationsByContact( $PersonID, -1, $OrderBy, true, 0, -1, true );
+                $consultations = eZConsultation::findConsultationsByContact( $personID, -1, $orderBy, true, 0, -1, true );
             else
-                $consultations = eZConsultation::findConsultationsByContact( $PersonID, -1, $OrderBy, true );
+                $consultations = eZConsultation::findConsultationsByContact( $personID, -1, $orderBy, true );
         }
         else
         {
             if ( $ini->variable( "eZContactMain", "ShowRelatedConsultations" ) == "enabled" )
-                $consultations = eZConsultation::findConsultationsByContact( $PersonID, $user->id(), $OrderBy, true, 0, -1, true );
+                $consultations = eZConsultation::findConsultationsByContact( $personID, $user->id(), $orderBy, true, 0, -1, true );
             else
-                $consultations = eZConsultation::findConsultationsByContact( $PersonID, $user->id(), $OrderBy, true );
+                $consultations = eZConsultation::findConsultationsByContact( $personID, $user->id(), $orderBy, true );
         }
 
         $t->set_var( "consultation_type", "person" );
-        $t->set_var( "person_id", $PersonID  );
-        $person = new eZPerson( $PersonID );
+        $t->set_var( "person_id", $personID  );
+        $person = new eZPerson( $personID );
         $t->set_var( "contact_name", $person->name() );
     }
 
@@ -176,7 +176,7 @@ if ( isset( $ConsultationList ) )
         $t->set_block( );
     }
 
-    $locale = new eZLocale( $Language );
+    $locale = new eZLocale( $language );
     $i = 0;
 
     foreach ( $consultations as $consultation )
@@ -200,12 +200,12 @@ if ( isset( $ConsultationList ) )
         $t->parse( "no_consultations_item", "no_consultations_item_tpl", true );
     }
 
-    if ( isset( $CompanyID ) )
+    if ( isset( $companyID ) )
     {
         $t->set_var( "new_person_consultation_item", "" );
         $t->parse( "new_company_consultation_item", "new_company_consultation_item_tpl"  );
     }
-    else if ( isset( $PersonID ) )
+    else if ( isset( $personID ) )
     {
         $t->parse( "new_person_consultation_item", "new_person_consultation_item_tpl"  );
         $t->set_var( "new_company_consultation_item", "" );

@@ -37,77 +37,77 @@ $Language = $ini->variable( "eZForumMain", "Language" );
 
 if ( eZUser::currentUser() )
 {
-    if ( isset( $RedirectURL ) )
+    if ( isset( $redirectURL ) )
     {
-        $AdditionalURLInfo="?RedirectURL=$RedirectURL";
+        $additionalURLInfo="?RedirectURL=$redirectURL";
     } 
     else 
     {
-    	$RedirectURL='';
+    	$redirectURL='';
     }
     
-    if ( $Action == "newsimple" )
+    if ( $action == "newsimple" )
     {
-        eZHTTPTool::header( "Location: /forum/messageedit/new/$ForumID/$AdditionalURLInfo" );
+        eZHTTPTool::header( "Location: /forum/messageedit/new/$forumID/$additionalURLInfo" );
     }
 
-    if ( $Action == "replysimple" )
+    if ( $action == "replysimple" )
     {
-        eZHTTPTool::header( "Location: /forum/messageedit/reply/$ReplyToID/$ForumID/$AdditionalURLInfo" );
+        eZHTTPTool::header( "Location: /forum/messageedit/reply/$replyToID/$forumID/$additionalURLInfo" );
     }
     
-    if ( $Action == "new" )
+    if ( $action == "new" )
     {
-        eZHTTPTool::header( "Location: /forum/messageedit/new/$ForumID/$AdditionalURLInfo" );
+        eZHTTPTool::header( "Location: /forum/messageedit/new/$forumID/$additionalURLInfo" );
     }
 
-    if ( $Action == "edit" )
+    if ( $action == "edit" )
     {
-        eZHTTPTool::header( "Location: /forum/messageedit/edit/$MessageID/$AdditionalURLInfo" );
+        eZHTTPTool::header( "Location: /forum/messageedit/edit/$messageID/$additionalURLInfo" );
     }
 
-    if ( $Action == "delete" )
+    if ( $action == "delete" )
     {
-        eZHTTPTool::header( "Location: /forum/messageedit/delete/$MessageID/$AdditionalURLInfo" );
+        eZHTTPTool::header( "Location: /forum/messageedit/delete/$messageID/$additionalURLInfo" );
     }
 
-    if ( $Action == "reply" )
+    if ( $action == "reply" )
     {
-        eZHTTPTool::header( "Location: /forum/messageedit/reply/$ReplyToID/$AdditionalURLInfo" );
+        eZHTTPTool::header( "Location: /forum/messageedit/reply/$replyToID/$additionalURLInfo" );
     }    
 }
 else
 {
-    $Anonymous = false;
+    $anonymous = false;
     
-    if ( isset( $RedirectURL ) )
+    if ( isset( $redirectURL ) )
     {
-        $AdditionalURLInfo="?RedirectURL=$RedirectURL";
+        $additionalURLInfo="?RedirectURL=$redirectURL";
     } 
     else 
     {
-        $AdditionalURLInfo = "";
-    	$RedirectURL='';
+        $additionalURLInfo = "";
+    	$redirectURL='';
     }
     
-    switch ( $Action )
+    switch ( $action )
     {
         case "new":
         {
             // include_once( "ezforum/classes/ezforum.php" );
             // include_once( "ezforum/classes/ezforummessage.php" );
 
-            $CheckForumID = $ForumID;
-            if( !isset( $AdditionalURLInfo ) )
+            $checkForumID = $forumID;
+            if( !isset( $additionalURLInfo ) )
             {
-                $AdditionalURLInfo = "";
+                $additionalURLInfo = "";
             }
            
             include( "kernel/ezforum/user/messagepermissions.php" );
 
-            if ( $ForumPost == true )
+            if ( $forumPost == true )
             {
-                eZHTTPTool::header( "Location: /forum/messageedit/new/$ForumID/$AdditionalURLInfo" );
+                eZHTTPTool::header( "Location: /forum/messageedit/new/$forumID/$additionalURLInfo" );
             }
         }
         break;
@@ -117,21 +117,21 @@ else
             // include_once( "ezforum/classes/ezforum.php" );
             // include_once( "ezforum/classes/ezforummessage.php" );
             
-            $msg = new eZForumMessage( $ReplyToID );
+            $msg = new eZForumMessage( $replyToID );
             
-            $CheckForumID = $msg->forumID();
+            $checkForumID = $msg->forumID();
 
             include( "kernel/ezforum/user/messagepermissions.php" );
             
-            if ( $ForumPost == true )
+            if ( $forumPost == true )
             {
-                eZHTTPTool::header( "Location: /forum/messageedit/reply/$ReplyToID/$AdditionalURLInfo" );
+                eZHTTPTool::header( "Location: /forum/messageedit/reply/$replyToID/$additionalURLInfo" );
             }
         }
         break;
     }
     
-    if ( $Anonymous == false )
+    if ( $anonymous == false )
     {
         $t = new eZTemplate( "kernel/ezforum/user/" . $ini->variable( "eZForumMain", "TemplateDir" ),
                              "kernel/ezforum/user/intl/", $Language, "userlogin.php" );
@@ -140,34 +140,34 @@ else
 
         $t->set_file( "user_login_tpl", "userlogin.tpl" );
 
-        if ( $Action == "newsimple" )
+        if ( $action == "newsimple" )
         {
-            $t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $RedirectURL ) );
+            $t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $redirectURL ) );
         }
 
-        if ( $Action == "replysimple" )
+        if ( $action == "replysimple" )
         {
-            $t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $RedirectURL ) );
+            $t->set_var( "redirect_url", eZTextTool::htmlspecialchars( $redirectURL ) );
         }
 
-        if ( $Action == "new" )
+        if ( $action == "new" )
         {
-            $t->set_var( "redirect_url", "/forum/messageedit/new/$ForumID/" );
+            $t->set_var( "redirect_url", "/forum/messageedit/new/$forumID/" );
         }
 
-        if ( $Action == "edit" )
+        if ( $action == "edit" )
         {
-            $t->set_var( "redirect_url", "/forum/messageedit/edit/$MessageID/" );
+            $t->set_var( "redirect_url", "/forum/messageedit/edit/$messageID/" );
         }
 
-        if ( $Action == "delete" )
+        if ( $action == "delete" )
         {
-            $t->set_var( "redirect_url", "/forum/messageedit/delete/$MessageID/" );
+            $t->set_var( "redirect_url", "/forum/messageedit/delete/$messageID/" );
         }
 
-        if ( $Action == "reply" )
+        if ( $action == "reply" )
         {
-            $t->set_var( "redirect_url", "/forum/messageedit/reply/$ReplyToID/" );
+            $t->set_var( "redirect_url", "/forum/messageedit/reply/$replyToID/" );
         }
 
         $t->pparse( "output", "user_login_tpl" );

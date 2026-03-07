@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: imagelist.php 6746 2001-08-29 14:31:58Z bf $
+// $id: imagelist.php 6746 2001-08-29 14:31:58Z bf $
 //
 // Created on: <21-Sep-2000 10:32:19 bf>
 //
@@ -29,14 +29,14 @@
 // include_once( "classes/ezcurrency.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
 
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "imagelist.php" );
+                     "kernel/eztrade/admin/intl/", $language, "imagelist.php" );
 
 $t->setAllStrings();
 
@@ -48,12 +48,12 @@ $t->set_block( "image_list_page_tpl", "no_images_tpl", "no_images" );
 $t->set_block( "image_list_page_tpl", "image_list_tpl", "image_list" );
 $t->set_block( "image_list_tpl", "image_tpl", "image" );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
-$product = new eZProduct( $ProductID );
+$product = new eZProduct( $productID );
 
 $session = eZSession::globalSession();
-$session->setVariable( "ImageListReturnTo", $REQUEST_URI );
+$session->setVariable( "ImageListReturnTo", $_SERVER['REQUEST_URI'] );
 $session->setVariable( "SelectImages", "multi" );
 $session->setVariable( "NameInBrowse", $product->name() );
 
@@ -62,11 +62,11 @@ $main = $product->mainImage();
 
 $t->set_var( "product_name", $product->name() );
 
-if ( isset ( $AddImages ) )
+if ( isset ( $addImages ) )
 {
-    if ( count ( $ImageArrayID ) > 0 )
+    if ( count ( $imageArrayID ) > 0 )
     {
-        foreach( $ImageArrayID as $imageID )
+        foreach( $imageArrayID as $imageID )
         {
             $image = new eZImage( $imageID );
             $product->addImage( $image );
@@ -123,7 +123,7 @@ else
 
         $t->set_var( "image_name", $image->caption() );
         $t->set_var( "image_id", $image->id() );
-        $t->set_var( "product_id", $ProductID );
+        $t->set_var( "product_id", $productID );
 
         $variation = $image->requestImageVariation( 150, 150 );
 

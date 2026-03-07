@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: menucategorylist.php 7673 2001-10-05 12:37:22Z bf $
+// $id: menucategorylist.php 7673 2001-10-05 12:37:22Z bf $
 //
 // Created on: <30-Sep-2001 15:53:38 bf>
 //
@@ -37,11 +37,11 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZImageCatalogueMain", "Language" );
-$ImageDir = $ini->variable( "eZImageCatalogueMain", "ImageDir" );
+$language = $ini->variable( "eZImageCatalogueMain", "Language" );
+$imageDir = $ini->variable( "eZImageCatalogueMain", "ImageDir" );
 
 $t = new eZTemplate( "kernel/ezimagecatalogue/user/" . $ini->variable( "eZImageCatalogueMain", "TemplateDir" ),
-                     "kernel/ezimagecatalogue/user/intl/", $Language, "menucategorylist.php" );
+                     "kernel/ezimagecatalogue/user/intl/", $language, "menucategorylist.php" );
 
 $t->set_file( "menu_category_list_tpl", "menucategorylist.tpl" );
 
@@ -50,7 +50,7 @@ $t->setAllStrings();
 $t->set_block( "menu_category_list_tpl", "category_list_tpl", "category_list" );
 $t->set_block( "category_list_tpl", "category_tpl", "category" );
 
-$category = new eZImageCategory( $CategoryID );
+$category = new eZImageCategory( $categoryID );
 
 $user = eZUser::currentUser();
 // Print out all the categories

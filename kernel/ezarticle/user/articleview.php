@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: articleview.php 9879 2003-07-24 08:47:34Z br $
+// $id: articleview.php 9879 2003-07-24 08:47:34Z br $
 //
 // Created on: <18-Oct-2000 16:34:51 bf>
 //
@@ -36,84 +36,84 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$ForceCategoryDefinition = $ini->variable( "eZArticleMain", "ForceCategoryDefinition" );
-$TemplateDir = $ini->variable( "eZArticleMain", "TemplateDir" );
-$CapitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
-$ListImageWidth = $ini->variable( "eZArticleMain", "ListImageWidth" );
-$ListImageHeight = $ini->variable( "eZArticleMain", "ListImageHeight" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$forceCategoryDefinition = $ini->variable( "eZArticleMain", "ForceCategoryDefinition" );
+$templateDir = $ini->variable( "eZArticleMain", "TemplateDir" );
+$capitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
+$listImageWidth = $ini->variable( "eZArticleMain", "ListImageWidth" );
+$listImageHeight = $ini->variable( "eZArticleMain", "ListImageHeight" );
 
-if ( !is_numeric( $ArticleID ) )
+if ( !is_numeric( $articleID ) )
 {
     eZHTTPTool::header( "Location: /error/404" );
     exit();
 }
 
-if ( !is_numeric( $PageNumber) )
-    $PageNumber = "";
+if ( !is_numeric( $pageNumber) )
+    $pageNumber = "";
 
-if ( !is_numeric( $CategoryID ) )
-    $CategoryID = eZArticle::categoryDefinitionStatic( $ArticleID );
+if ( !is_numeric( $categoryID ) )
+    $categoryID = eZArticle::categoryDefinitionStatic( $articleID );
 
-if ( $ForceCategoryDefinition == "enabled" )
+if ( $forceCategoryDefinition == "enabled" )
 {
-    $CategoryID = eZArticle::categoryDefinitionStatic( $ArticleID );
+    $categoryID = eZArticle::categoryDefinitionStatic( $articleID );
 }
 
-$GlobalSectionID = eZArticleCategory::sectionIDStatic( $CategoryID );
+$globalSectionID = eZArticleCategory::sectionIDStatic( $categoryID );
 
 // init the section
-$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $globalSectionID );
 $sectionObject->setOverrideVariables();
 
 $templateDirTmp = $sectionObject->templateStyle();
 if ( $templateDirTmp != null && trim( $templateDirTmp ) != "" )
 {
-    $TemplateDir = preg_replace( "/(.+)\/.+(\/?)/", "/\\1/$templateDirTmp\\2", $TemplateDir );
+    $templateDir = preg_replace( "/(.+)\/.+(\/?)/", "/\\1/$templateDirTmp\\2", $templateDir );
 }
 
-$t = new eZTemplate( "kernel/ezarticle/user/" . $TemplateDir,
-                     "kernel/ezarticle/user/intl/", $Language, "articleview.php" );
+$t = new eZTemplate( "kernel/ezarticle/user/" . $templateDir,
+                     "kernel/ezarticle/user/intl/", $language, "articleview.php" );
 
 $t->setAllStrings();
 
-$StaticPage = false;
+$staticPage = false;
 if ( $url_array[2] == "static" || $url_array[2] == "articlestatic"  )
 {
-    $StaticPage = true;
+    $staticPage = true;
 }
 
 
 // override template for the current category
-$override = "_override_$CategoryID";
+$override = "_override_$categoryID";
 // override template for current section
 // category override will be prefered
-$sectionOverride = "_sectionoverride_$GlobalSectionID";
+$sectionOverride = "_sectionoverride_$globalSectionID";
 
-if ( $StaticPage == true )
+if ( $staticPage == true )
 {
-    if ( file_exists( "kernel/ezarticle/user/$TemplateDir/articlestatic" . $override  . ".tpl" ) )
+    if ( file_exists( "kernel/ezarticle/user/$templateDir/articlestatic" . $override  . ".tpl" ) )
         $t->set_file( "article_view_page_tpl", "articlestatic" . $override  . ".tpl"  );
     else
         $t->set_file( "article_view_page_tpl", "articlestatic.tpl"  );
 }
 else
 {
-    if ( isset( $PrintableVersion ) and $PrintableVersion == "enabled" )
+    if ( isset( $printableVersion ) and $printableVersion == "enabled" )
     {
             $t->set_file( "article_view_page_tpl", "articleprint.tpl"  );
     }
     else
     {
         // category override
-        if ( file_exists( "kernel/ezarticle/user/$TemplateDir/articleview" . $override  . ".tpl" ) )
+        if ( file_exists( "kernel/ezarticle/user/$templateDir/articleview" . $override  . ".tpl" ) )
         {
             $t->set_file( "article_view_page_tpl", "articleview" . $override  . ".tpl"  );
         }
         else
         {
             // section override
-            if ( file_exists( "kernel/ezarticle/user/$TemplateDir/articleview" . $sectionOverride  . ".tpl" ) )
+            if ( file_exists( "kernel/ezarticle/user/$templateDir/articleview" . $sectionOverride  . ".tpl" ) )
             {
                 $t->set_file( "article_view_page_tpl", "articleview" . $sectionOverride  . ".tpl"  );
             }
@@ -158,42 +158,42 @@ $t->set_block( "type_item_tpl", "attribute_item_tpl", "attribute_item" );
 $t->set_block( "section_item_tpl", "link_item_tpl", "link_item" );
 
 // read user override variables for image size
-$ListImageWidth = $ini->variable( "eZArticleMain", "ListImageWidth" );
-$ListImageHeight = $ini->variable( "eZArticleMain", "ListImageHeight" );
+$listImageWidth = $ini->variable( "eZArticleMain", "ListImageWidth" );
+$listImageHeight = $ini->variable( "eZArticleMain", "ListImageHeight" );
 
 // Make the manual keywords available in the articleview template
-$ManualKeywords = $article->manualKeywords();
-$t->set_var( "article_keywords", $ManualKeywords );
+$manualKeywords = $article->manualKeywords();
+$t->set_var( "article_keywords", $manualKeywords );
 
 
 $listImageWidthOverride = $t->get_user_variable( "article_view_page_tpl",  "ListImageWidth" );
 if ( $listImageWidthOverride )
 {
-    $ListImageWidth = $listImageWidthOverride;
+    $listImageWidth = $listImageWidthOverride;
 }
 
 $listImageHeightOverride = $t->get_user_variable( "article_view_page_tpl",  "ListImageHeight" );
 if ( $listImageHeightOverride )
 {
-    $ListImageHeight = $listImageHeightOverride;
+    $listImageHeight = $listImageHeightOverride;
 }
 
 
-$SiteURL = $ini->variable( "site", "UserSiteURL" );
+$siteURL = $ini->variable( "site", "UserSiteURL" );
 
-$t->set_var( "article_url", $SiteURL . $_SERVER['REQUEST_URI'] );
+$t->set_var( "article_url", $siteURL . $_SERVER['REQUEST_URI'] );
 $t->set_var( "article_url_item", "" );
-if ( isset( $PrintableVersion ) and $PrintableVersion == "enabled" )
+if ( isset( $printableVersion ) and $printableVersion == "enabled" )
     $t->parse( "article_url_item", "article_url_item_tpl" );
 
 
 // makes the section ID available in articleview template
-$t->set_var( "section_id", $GlobalSectionID );
+$t->set_var( "section_id", $globalSectionID );
 
 $article = new eZArticle(  );
 
 // check if the article exists
-if ( $article->get( $ArticleID ) )
+if ( $article->get( $articleID ) )
 {
     if ( $article->isPublished() )
     {
@@ -208,13 +208,13 @@ if ( $article->get( $ArticleID ) )
     $categories = $article->categories( false );
 
     // path
-    if ( !in_array( $CategoryID, $categories ) )
+    if ( !in_array( $categoryID, $categories ) )
     {
         $category = $article->categoryDefinition();
     }
     else
     {
-        $category = new eZArticleCategory( $CategoryID );
+        $category = new eZArticleCategory( $categoryID );
     }
 
     // current category image
@@ -252,7 +252,7 @@ if ( $article->get( $ArticleID ) )
     {
         $t->set_var( "category_id", $path[0] );
 
-        if ( $CapitalizeHeadlines == "enabled" )
+        if ( $capitalizeHeadlines == "enabled" )
         {
             // include_once( "classes/eztexttool.php" );
             $t->set_var( "category_name", eZTextTool::capitalize(  $path[1] ) );
@@ -292,7 +292,7 @@ foreach ( $sections as $section )
 
     $renderer = new eZArticleRenderer( $article );
 
-    if ( $CapitalizeHeadlines == "enabled" )
+    if ( $capitalizeHeadlines == "enabled" )
     {
         // include_once( "classes/eztexttool.php" );
         $t->set_var( "article_name", eZTextTool::capitalize(  $article->name() ) );
@@ -335,7 +335,7 @@ foreach ( $sections as $section )
          $authorText[0] == "-"
          )
     {
-        $ShowHeader = "hide";
+        $showHeader = "hide";
     }
 
     $categoryDef = $article->categoryDefinition();
@@ -343,17 +343,17 @@ foreach ( $sections as $section )
     $t->set_var( "category_definition_name", $categoryDef->name() );
 
     $pageCount = $article->pageCount();
-    if ( $PageNumber > $pageCount )
-        $PageNumber = $pageCount;
+    if ( $pageNumber > $pageCount )
+        $pageNumber = $pageCount;
 
-    if ( $PageNumber == -1 )
+    if ( $pageNumber == -1 )
         $articleContents = $renderer->renderPage( -1 );
     else
-        $articleContents = $renderer->renderPage( $PageNumber -1 );
+        $articleContents = $renderer->renderPage( $pageNumber -1 );
 
     $t->set_var( "article_intro", $articleContents[0] );
 
-    if ( ( $PageNumber == 1 ) || (( isset( $PrintableVersion ) and $PrintableVersion == "enabled" )))
+    if ( ( $pageNumber == 1 ) || (( isset( $printableVersion ) and $printableVersion == "enabled" )))
            $t->parse( "article_intro", "article_intro_tpl" );
     else
         $t->set_var( "article_intro", "" );
@@ -373,7 +373,7 @@ foreach ( $sections as $section )
 
     $t->set_var( "article_id", $article->id() );
 
-    $locale = new eZLocale( $Language );
+    $locale = new eZLocale( $language );
     $published = $article->published();
 
     $publishedDateValue = $published->date();
@@ -424,9 +424,9 @@ foreach ( $sections as $section )
 
 
                 $t->set_var( "image_id", $image->id() );
-                $t->set_var( "article_id", $ArticleID );
+                $t->set_var( "article_id", $articleID );
 
-                $variation = $image->requestImageVariation( $ListImageWidth, $ListImageHeight );
+                $variation = $image->requestImageVariation( $listImageWidth, $listImageHeight );
                 if( is_object( $variation ) )
                 {
                     $t->set_var( "image_url", "/" .$variation->imagePath() );
@@ -459,7 +459,7 @@ else
 
 
 
-if ( $StaticRendering == true  || (isset($ShowHeader) && $ShowHeader == "hide" ))
+if ( $staticRendering == true  || (isset($showHeader) && $showHeader == "hide" ))
 {
     $t->set_var( "article_header", "" );
 }
@@ -470,12 +470,12 @@ else
 
 
 // set the variables in the mail_to form
-if ( !isset( $SendTo ) )
-    $SendTo = "";
-$t->set_var( "send_to", $SendTo );
-if ( !isset( $From ) )
-    $From = "";
-$t->set_var( "from", $From );
+if ( !isset( $sendTo ) )
+    $sendTo = "";
+$t->set_var( "send_to", $sendTo );
+if ( !isset( $from ) )
+    $from = "";
+$t->set_var( "from", $from );
 
 $types = $article->types();
 
@@ -558,15 +558,15 @@ else
 $t->set_var( "current_page_link", "" );
 
 // page links
-if ( $pageCount > 1 && $PageNumber != -1 && ( $PrintableVersion != "enabled" ) )
+if ( $pageCount > 1 && $pageNumber != -1 && ( $printableVersion != "enabled" ) )
 {
     for ( $i=0; $i<$pageCount; $i++ )
     {
         $t->set_var( "article_id", $article->id() );
         $t->set_var( "page_number", $i+1 );
-        $t->set_var( "category_id", $CategoryID );
+        $t->set_var( "category_id", $categoryID );
 
-        if ( ( $i + 1 )  == $PageNumber )
+        if ( ( $i + 1 )  == $pageNumber )
         {
             $t->parse( "page_link", "current_page_link_tpl", true );
         }
@@ -583,10 +583,10 @@ else
 }
 
 $t->set_var( "total_pages", $pageCount );
-$t->set_var( "current_page", $PageNumber );
+$t->set_var( "current_page", $pageNumber );
 
 // non-printable version link
-if ( ( $PageNumber == -1 ) && ( $PrintableVersion == "enabled" ) )
+if ( ( $pageNumber == -1 ) && ( $printableVersion == "enabled" ) )
 {
     $t->parse( "numbered_page_link", "numbered_page_link_tpl" );
 }
@@ -596,7 +596,7 @@ else
 }
 
 // printable version link
-if ( ( !isset( $PrintableVersion ) or $PrintableVersion != "enabled" ) && ( !isset( $StaticRendering ) or $StaticRendering != true )  )
+if ( ( !isset( $printableVersion ) or $printableVersion != "enabled" ) && ( !isset( $staticRendering ) or $staticRendering != true )  )
 {
     $t->parse( "print_page_link", "print_page_link_tpl" );
 }
@@ -606,9 +606,9 @@ else
 }
 
 // previous page link
-if ( ( $PageNumber > 1 ) && ( $PrintableVersion != "enabled" ) )
+if ( ( $pageNumber > 1 ) && ( $printableVersion != "enabled" ) )
 {
-    $t->set_var( "prev_page_number", $PageNumber - 1 );
+    $t->set_var( "prev_page_number", $pageNumber - 1 );
     $t->parse( "prev_page_link", "prev_page_link_tpl" );
 }
 else
@@ -617,9 +617,9 @@ else
 }
 
 // next page link
-if ( $PageNumber < $pageCount && $PageNumber != -1 && ( $PrintableVersion != "enabled" ) )
+if ( $pageNumber < $pageCount && $pageNumber != -1 && ( $printableVersion != "enabled" ) )
 {
-    $t->set_var( "next_page_number", $PageNumber + 1 );
+    $t->set_var( "next_page_number", $pageNumber + 1 );
     $t->parse( "next_page_link", "next_page_link_tpl" );
 }
 else
@@ -650,23 +650,23 @@ else
 //End PBo mod
 
 // set variables for meta information
-$SiteTitleAppend = $article->name();
-$SiteDescriptionOverride = str_replace( "\"", "", strip_tags( $articleContents[0] ) );
-$SiteKeywordsOverride = str_replace( "\"", "", strip_tags( $article->keywords() ) );
+$siteTitleAppend = $article->name();
+$siteDescriptionOverride = str_replace( "\"", "", strip_tags( $articleContents[0] ) );
+$siteKeywordsOverride = str_replace( "\"", "", strip_tags( $article->keywords() ) );
 
-$SiteKeywordsOverride  = str_replace( "qdom", "", $SiteKeywordsOverride );
+$siteKeywordsOverride  = str_replace( "qdom", "", $siteKeywordsOverride );
 
-if ( isset( $GenerateStaticPage ) && $GenerateStaticPage == "true" )
+if ( isset( $generateStaticPage ) && $generateStaticPage == "true" )
 {
     $fp = eZPBFile::fopen( $cachedFile, "w+");
 
     // add PHP code in the cache file to store variables
     $output = "<?php\n";
-    $output .= "\$ManualKeywords=\"$ManualKeywords\";\n";
-    $output .= "\$GlobalSectionID=\"$GlobalSectionID\";\n";
-    $output .= "\$SiteTitleAppend=\"$SiteTitleAppend\";\n";
-    $output .= "\$SiteDescriptionOverride=\"$SiteDescriptionOverride\";\n";
-    $output .= "\$SiteKeywordsOverride=\"$SiteKeywordsOverride\";\n";
+    $output .= "\$manualKeywords=\"$manualKeywords\";\n";
+    $output .= "\$globalSectionID=\"$globalSectionID\";\n";
+    $output .= "\$siteTitleAppend=\"$siteTitleAppend\";\n";
+    $output .= "\$siteDescriptionOverride=\"$siteDescriptionOverride\";\n";
+    $output .= "\$siteKeywordsOverride=\"$siteKeywordsOverride\";\n";
     // $output .= "\$eZLanguageOverride=\"$eZLanguageOverride\";\n";
     $output .= "?>\n";
 

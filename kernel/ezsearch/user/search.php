@@ -30,16 +30,16 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZSearchMain", "Language" );
-$SearchModules = $ini->variable( "eZSearchMain", "SearchModules" );
+$searchModules = $ini->variable( "eZSearchMain", "SearchModules" );
 
-$moduleArray = explode( ";", $SearchModules );
+$moduleArray = explode( ";", $searchModules );
 
 // init the section
-if ( isset ($SectionIDOverride) )
+if ( isset ($sectionIDOverride) )
 {
     // include_once( "ezsitemanager/classes/ezsection.php" );
 
-    $sectionObject = eZSection::globalSectionObject( $SectionIDOverride );
+    $sectionObject = eZSection::globalSectionObject( $sectionIDOverride );
     $sectionObject->setOverrideVariables();
 }
 
@@ -55,10 +55,10 @@ $t->set_block( "search_sub_module_tpl", "search_item_tpl", "search_item" );
 
 $t->setAllStrings();
 
-$Limit = 20;
-$Offset = 0;
+$limit = 20;
+$offset = 0;
 
-$tmpSearchText = str_replace( "<", "&lt;", $SearchText );
+$tmpSearchText = str_replace( "<", "&lt;", $searchText );
 $tmpSearchText = str_replace( ">", "&gt;", $tmpSearchText );
 $t->set_var( "search_text", $tmpSearchText );
 $t->set_var( "search_type", '' );
@@ -66,57 +66,57 @@ $t->set_var( "search_type", '' );
 foreach ( $moduleArray as $module )
 {
     $module = strtolower( $module );
-    unset( $SearchResult );
+    unset( $searchResult );
     if ( file_exists( "kernel/$module/user/searchsupplier.php" ) )
     {
         include( "kernel/$module/user/searchsupplier.php" );
 
         $t->set_var( "search_item", "" );
-        $t->set_var( "module_name", $ModuleName );
+        $t->set_var( "module_name", $moduleName );
         $i = 0;
-        if ( isset( $SearchResult[0] ) && !is_array( $SearchResult[0] ) )
+        if ( isset( $searchResult[0] ) && !is_array( $searchResult[0] ) )
         {
-            $SearchResult = array( $SearchResult );
+            $searchResult = array( $searchResult );
         }
 
         $t->set_var( "search_sub_module", "" );
-        foreach ( $SearchResult as $Result )
+        foreach ( $searchResult as $result )
         {
-            if ( !is_null( $Result ) && 
-                 !is_int( $Result ) &&
-                 !is_string( $Result ) && count( $Result ) > 0 &&
-                 ( isset( $Result["Result"] ) && !is_null( $Result["Result"] ) ) && 
-                 !is_int( $Result["Result"] ) && count( $Result["Result"] ) > 0 )
+            if ( !is_null( $result ) && 
+                 !is_int( $result ) &&
+                 !is_string( $result ) && count( $result ) > 0 &&
+                 ( isset( $result["Result"] ) && !is_null( $result["Result"] ) ) && 
+                 !is_int( $result["Result"] ) && count( $result["Result"] ) > 0 )
             {
-                $ResultArrayDetailViewPath = $Result["DetailViewPath"];
-                $ResultArray = $Result["Result"];
+                $resultArrayDetailViewPath = $result["DetailViewPath"];
+                $resultArray = $result["Result"];
 
-                foreach ( $ResultArray as $res )
+                foreach ( $resultArray as $res )
                 {
                     if ( ( $i % 2 ) == 0 )
                         $t->set_var( "td_class", "bglight" );
                     else
                         $t->set_var( "td_class", "bgdark" );
-                    if ( isset( $Result["SuffixVariable"] ) && $Result["SuffixVariable"] )
-	                    $t->set_var( "search_link", $Result["DetailViewPath"] . $res->id() . $Result["SuffixVariable"]);
+                    if ( isset( $result["SuffixVariable"] ) && $result["SuffixVariable"] )
+	                    $t->set_var( "search_link", $result["DetailViewPath"] . $res->id() . $result["SuffixVariable"]);
 					else
-	                    $t->set_var( "search_link", $Result["DetailViewPath"] . $res->id() );
+	                    $t->set_var( "search_link", $result["DetailViewPath"] . $res->id() );
                     $t->set_var( "search_name", $res->name() );
-                    $t->set_var( "icon_src", $Result["IconPath"] );            
+                    $t->set_var( "icon_src", $result["IconPath"] );            
                     $t->parse( "search_item", "search_item_tpl", true );
                     $i++;
                 }
             }
 
-            $t->set_var( "search_more_link", isset( $Result["DetailedSearchPath"] ) ? $Result["DetailedSearchPath"] . "?" .
+            $t->set_var( "search_more_link", isset( $result["DetailedSearchPath"] ) ? $result["DetailedSearchPath"] . "?" .
             
-            $Result["DetailedSearchVariable"] . "=". urlencode( $SearchText ) : false );
+            $result["DetailedSearchVariable"] . "=". urlencode( $searchText ) : false );
 
-            $t->set_var( "search_count", isset( $Result["SearchCount"] ) && $Result["SearchCount"] ? $Result["SearchCount"] : count( is_array( $Result ) && !empty( $Result["Result"] ) ? $Result["Result"] : array() ) );
+            $t->set_var( "search_count", isset( $result["SearchCount"] ) && $result["SearchCount"] ? $result["SearchCount"] : count( is_array( $result ) && !empty( $result["Result"] ) ? $result["Result"] : array() ) );
 
-            if ( isset( $Result["SubModuleName"] ) )
+            if ( isset( $result["SubModuleName"] ) )
             {
-                $t->set_var( "sub_module_name", $Result["SubModuleName"] );
+                $t->set_var( "sub_module_name", $result["SubModuleName"] );
                 $t->parse( "search_sub_module_name", "search_sub_module_name_tpl" );
             }
             else

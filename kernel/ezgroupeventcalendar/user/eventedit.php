@@ -25,20 +25,20 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-$URL = explode( "/", $_SERVER['REQUEST_URI'] );
+$url = explode( "/", $_SERVER['REQUEST_URI'] );
 
-if( isset( $URL[8] ) && is_numeric( $URL[8] ) )
-    $masterGroupID = $URL[8];
+if( isset( $url[8] ) && is_numeric( $url[8] ) )
+    $masterGroupID = $url[8];
 else
     $masterGroupID = 0;
 
 
-if ( isset( $DeleteEvents ) )
+if ( isset( $deleteEvents ) )
 {
-    $Action = "DeleteEvents";
+    $action = "DeleteEvents";
 }
 
-if ( isset( $GoDay ) )
+if ( isset( $goDay ) )
 {
     //include_once( "classes/ezdate.php" );
 
@@ -56,7 +56,7 @@ if ( isset( $GoDay ) )
     eZHTTPTool::header( "Location: /groupeventcalendar/dayview/$year/$month/$day/" );
     exit();
 }
-else if ( isSet( $GoWeek ) )
+else if ( isSet( $goWeek ) )
 {
   //include_once( "classes/ezdate.php" );
 
@@ -74,7 +74,7 @@ else if ( isSet( $GoWeek ) )
   eZHTTPTool::header( "Location: /groupeventcalendar/weekview/$year/$month/$day/" );
   exit();
 }
-else if ( isSet( $GoMonth ) )
+else if ( isSet( $goMonth ) )
 {
     $session = eZSession::globalSession();
     $session->fetch();
@@ -85,7 +85,7 @@ else if ( isSet( $GoMonth ) )
     eZHTTPTool::header( "Location: /groupeventcalendar/monthview/$year/$month/" );
     exit();
 }
-else if ( isSet( $GoYear ) )
+else if ( isSet( $goYear ) )
 {
     $session = eZSession::globalSession();
     $session->fetch();
@@ -95,7 +95,7 @@ else if ( isSet( $GoYear ) )
     eZHTTPTool::header( "Location: /groupeventcalendar/yearview/$year/" );
     exit();
 }
-else if ( isSet( $GoToday ) )
+else if ( isSet( $goToday ) )
 {
     $today = new eZDate();
 
@@ -106,7 +106,7 @@ else if ( isSet( $GoToday ) )
     eZHTTPTool::header( "Location: /groupeventcalendar/dayview/$year/$month/$day/" );
     exit();
 }
-else if ( isSet( $GoNew ) )
+else if ( isSet( $goNew ) )
 {
     $today = new eZDate();
 
@@ -118,9 +118,9 @@ else if ( isSet( $GoNew ) )
     exit();
 }
 
-if ( isSet( $AddFile ) )
+if ( isSet( $addFile ) )
 {
-  //  $Action = "AddFile";
+  //  $action = "AddFile";
   // add files
   eZHTTPTool::header( "Location: /groupeventcalendar/eventedit/filelist/$eventID/" );
   exit();
@@ -150,11 +150,11 @@ $ini = eZINI::instance( 'site.ini' );
 
 $SiteDesign = $ini->variable( "site", "SiteDesign" );
 $Language = $ini->variable( "eZGroupEventCalendarMain", "Language" );
-$StartTimeStr = $ini->variable( "eZGroupEventCalendarMain", "DayStartTime" );
-$StopTimeStr = $ini->variable( "eZGroupEventCalendarMain", "DayStopTime" );
+$startTimeStr = $ini->variable( "eZGroupEventCalendarMain", "DayStartTime" );
+$stopTimeStr = $ini->variable( "eZGroupEventCalendarMain", "DayStopTime" );
 $timeSelect = $ini->variable( "eZGroupEventCalendarMain", "TwelveHourSelect" );
 
-$Locale = new eZLocale( $Language );
+$locale = new eZLocale( $Language );
 
 $user = eZUser::currentUser();
 
@@ -180,12 +180,12 @@ if ( $user == false )
 else
     $userID = $user->id();
 
-if ( isset( $Action ) && $Action == "New"  )
+if ( isset( $action ) && $action == "New"  )
 {
     $event = new eZGroupEvent();
 }
 else
-    $event = new eZGroupEvent( $EventID );
+    $event = new eZGroupEvent( $eventID );
 
 // We don't need to record this
 // $session->setVariable( "ShowOtherCalenderGroups", $groupID );
@@ -243,7 +243,7 @@ $t->set_var( "group_history", "" );
 
 ////////////////////////////////////////////
 
-if ( isset( $Action ) && "Edit" == $Action)
+if ( isset( $action ) && "Edit" == $action)
 {
 	$theDate = $event->dateTime();
 	$curDate = new eZDate();
@@ -332,41 +332,41 @@ if ( $user == true )
 
 	//	die( "editor:" . $editor );
 
-	if( isset( $Action ) && $Action == "New" )
+	if( isset( $action ) && $action == "New" )
 	{
-		$Group = $masterGroupID;
+		$group = $masterGroupID;
 	}
 	else
 	{
-		$Group = $event->groupID();
+		$group = $event->groupID();
 	}
 
 	//Determin if the user has editing permissions
 	if( $editor == true )
 	{
-		$groupID = $Group;
+		$groupID = $group;
 	}
-	elseif( $permission->hasEditPermission( $user->id(), $Group ) == true && $editor == false )
+	elseif( $permission->hasEditPermission( $user->id(), $group ) == true && $editor == false )
 	{
 		$editor = true;
-		$groupID = $Group;
+		$groupID = $group;
 	}
-	elseif( $permission->getByGroup( $Group ) == false && $editor == false )
+	elseif( $permission->getByGroup( $group ) == false && $editor == false )
 	{
 		foreach( $groupsList as $groups )
 		{
 			if( $permission->groupHasEditor( $groups->id() ) == false && $noShowGroup->groupEntry( $groups->id() ) == false )
 			{
-				if( $Group != 0 && $Group )
+				if( $group != 0 && $group )
 				{
 					$editor = true;
-					$groupID = $Group;
+					$groupID = $group;
 					break;
 				}
-				elseif( $Group == 0 )
+				elseif( $group == 0 )
 				{
 					$editor = true;
-					$groupID = $Group;
+					$groupID = $group;
 					break;
 				}
 			}
@@ -379,13 +379,13 @@ else
 }
 
 
-if ( ( isset( $Action ) && $Action == "New" || isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "Update" || isset( $Action ) && $Action == "Edit" ) && $groupsList )
+if ( ( isset( $action ) && $action == "New" || isset( $action ) && $action == "Insert" || isset( $action ) && $action == "Update" || isset( $action ) && $action == "Edit" ) && $groupsList )
 {
 
 	$groupError = true;
 	foreach ( $groupsList as $groups )
 	{
-		if( isset( $Action ) && $Action == "New" )
+		if( isset( $action ) && $action == "New" )
 		{
 			if( ($masterGroupID == $groups->id() || $masterGroupID == 0) && $editor == true  )
 			{
@@ -394,7 +394,7 @@ if ( ( isset( $Action ) && $Action == "New" || isset( $Action ) && $Action == "I
 			}
 		}
 
-		if( isset( $Action ) && $Action == "Edit" )
+		if( isset( $action ) && $action == "Edit" )
 		{
 		  // kracker: add support for event->groupID == 0
 			if( $event->groupID() == 0 && $editor == true || $event->groupID() == $groups->id() && $editor == true  )
@@ -404,9 +404,9 @@ if ( ( isset( $Action ) && $Action == "New" || isset( $Action ) && $Action == "I
 			}
 		}
 
-		if( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "Update")
+		if( isset( $action ) && $action == "Insert" || isset( $action ) && $action == "Update")
 		{
-			if( ($StoreByGroupID == $groups->id() || $StoreByGroupID == 0) && $editor == true )
+			if( ($storeByGroupID == $groups->id() || $storeByGroupID == 0) && $editor == true )
 			{
 				$groupError = false;
 				break;
@@ -417,12 +417,12 @@ if ( ( isset( $Action ) && $Action == "New" || isset( $Action ) && $Action == "I
 
 if ( $event->groupID() )
 	$session->setVariable( "ShowOtherCalenderGroups", $event->groupID() );
-elseif( $masterGroupID != 0 && !isset( $EventID ) )
+elseif( $masterGroupID != 0 && !isset( $eventID ) )
 	$session->setVariable( "ShowOtherCalenderGroups", $masterGroupID );
 
 
 // only the specified group member is allowed to edit or delete an event
-if ( isset( $Action ) && $Action == "Edit" && $groupError == true )
+if ( isset( $action ) && $action == "Edit" && $groupError == true )
 {
 
     $t->set_var( "no_error", "" );
@@ -436,7 +436,7 @@ if ( isset( $Action ) && $Action == "Edit" && $groupError == true )
 }
 
 
-if ( isset( $Action ) && $Action == "DeleteEvents" )
+if ( isset( $action ) && $action == "DeleteEvents" )
 {
 	//initialize the error array
 	$error = array();
@@ -447,10 +447,10 @@ if ( isset( $Action ) && $Action == "DeleteEvents" )
 
     if ( count ( $eventArrayID ) != 0 )
     {
-		foreach( $eventArrayID as $ID )
+		foreach( $eventArrayID as $id )
         {
-			array_push( $error, $ID );
-			$event = new eZGroupEvent( $ID );
+			array_push( $error, $id );
+			$event = new eZGroupEvent( $id );
 			foreach ( $groupsList as $groups )
 			{
 				//If the user has a matching group set their group id to the matching group else there group id will be -1.
@@ -494,18 +494,18 @@ if ( isset( $Action ) && $Action == "DeleteEvents" )
 // 14 14:30 14:0 1430
 // the : can be replaced with any non number character
 
-if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "Update")  && $groupError == false )
+if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action == "Update")  && $groupError == false )
 {
   //die("what?");
   $dateArr = explode("-", $dateCal);
-  $Year = $dateArr[0];
-  $Month = $dateArr[1];
-  $Day = $dateArr[2];
+  $year = $dateArr[0];
+  $month = $dateArr[1];
+  $day = $dateArr[2];
 
-  // die("$Year $Month $Day");
-  if ( isSet( $Cancel ) )
+  // die("$year $month $day");
+  if ( isSet( $cancel ) )
   {
-    $event = new eZGroupEvent( $EventID );
+    $event = new eZGroupEvent( $eventID );
     $dt = $event->dateTime();
     $year = $dt->year();
     $month = $dt->month();
@@ -519,71 +519,71 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
 
   if ( $user )
   {
-	if( isset( $TypeID ) && is_numeric( $TypeID ) )
+	if( isset( $typeID ) && is_numeric( $typeID ) )
 	{
-	  $TypeID = (int)$TypeID;
+	  $typeID = (int)$typeID;
 	}
 	else
 	{
-	  $TypeID = 0;
+	  $typeID = 0;
 	}
     
-	$type = new eZGroupEventType( $TypeID );
+	$type = new eZGroupEventType( $typeID );
     
-    if ( isset( $Action ) && $Action == "Update" )
-      $event = new eZGroupEvent( $EventID );
+    if ( isset( $action ) && $action == "Update" )
+      $event = new eZGroupEvent( $eventID );
     else
       $event = new eZGroupEvent();
     
-    $category = new eZGroupEventCategory( $CategoryID );
+    $category = new eZGroupEventCategory( $categoryID );
     
-    $event->setDescription( $Description );
-    $event->setLocation( $Location );
-    $event->setUrl( $Url );
+    $event->setDescription( $description );
+    $event->setLocation( $location );
+    $event->setUrl( $url );
     
     $event->setType( $type );
     $event->setCategory( $category );
     
-        $event->setPriority( $Priority );
-        $event->setStatus( $Status );
+        $event->setPriority( $priority );
+        $event->setStatus( $status );
 	
 	
-	if ( isset( $IsPrivate ) && $IsPrivate == "on" )
+	if ( isset( $isPrivate ) && $isPrivate == "on" )
 	  $event->setIsPrivate( true );
         else
 	  $event->setIsPrivate( false );
 
-	if ( isset( $IsEventAlarmNotice ) && $IsEventAlarmNotice == "on" )
+	if ( isset( $isEventAlarmNotice ) && $isEventAlarmNotice == "on" )
           $event->setEventAlarmNotice( true );
         else
           $event->setEventAlarmNotice( false );
 
-        if ( $Name != "" )
+        if ( $name != "" )
 	{
-	  $event->setName( $Name );
+	  $event->setName( $name );
 	}
         else
         {
-	  $TitleError = true;
+	  $titleError = true;
         }
 
 	// wanted to reserve 0 for events in all group category
-	//	if ( $StoreByGroupID != 0 )
-	if ( $StoreByGroupID != "" )
+	//	if ( $storeByGroupID != 0 )
+	if ( $storeByGroupID != "" )
         { 
-	    $group = new eZUserGroup( $StoreByGroupID );
+	    $group = new eZUserGroup( $storeByGroupID );
             $event->setGroup( $group );
         }
         else
         {
-            $GroupInsertError = true;
+            $groupInsertError = true;
         }
 
         // start/stop time for the day
         $dayStartTime = new eZTime();
         $dayStopTime = new eZTime();
 	
-        if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $StartTimeStr, $dayStartArray ) )
+        if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $startTimeStr, $dayStartArray ) )
         {
             $hour = $dayStartArray[2];
             $dayStartTime->setHour( $hour );
@@ -594,7 +594,7 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
             $dayStartTime->setSecond( 0 );
         }
 
-        if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $StopTimeStr, $dayStopArray ) )
+        if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $stopTimeStr, $dayStopArray ) )
         {
             $hour = $dayStopArray[2];
             $dayStopTime->setHour( $hour );
@@ -612,7 +612,7 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
         $startTime->setSecond( 0 );
         $stopTime->setSecond( 0 );
 
-        if ( isset( $IsAllDay ) && $IsAllDay == "on" )
+        if ( isset( $isAllDay ) && $isAllDay == "on" )
         {
 			$starthour = $dayStartArray[2];
 			$startmin  = $dayStartArray[3];
@@ -643,7 +643,7 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
 			}
 			else
 			{
-				$StartTimeError = true;
+				$startTimeError = true;
 			}
 
 			if ( $Stop_Hour != '' && $Stop_Minute != '')
@@ -663,11 +663,11 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
 					$stopTime->setMinute( $min );
 				}
 				else
-					$StopTimeError = true;
+					$stopTimeError = true;
 			}
 			else
 			{
-				$StopTimeError = true;
+				$stopTimeError = true;
 			}
 		}
 
@@ -677,10 +677,10 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
         $pStopTimeHour = $stopTime->hour();
         $pStopTimeMinute = addZero( $stopTime->minute() );
 
-		var_dump( $Year, $Month, $Day, $startTime->hour(),
+		var_dump( $year, $month, $day, $startTime->hour(),
 		$startTime->minute(), $startTime->second() );
         
-		$datetime = new eZDateTime( $Year, $Month, $Day,  
+		$datetime = new eZDateTime( $year, $month, $day,  
 		$startTime->hour() , $startTime->minute(),
 		 $startTime->second() );
 
@@ -690,43 +690,43 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
 		//die();
         if ( $stopTime->isGreater( $startTime, true ) )
         {
-            $StopTimeError = true;
+            $stopTimeError = true;
         }
 
 	// setting recurrance variables to be used by the store() function
-	$event->setRecurFreq ($RecurFreq );
-	$event->setIsRecurring ( isset( $IsRecurring ) ? $IsRecurring : 0 );
-	$event->setRecurType ( $RecurType );
+	$event->setRecurFreq ($recurFreq );
+	$event->setIsRecurring ( isset( $isRecurring ) ? $isRecurring : 0 );
+	$event->setRecurType ( $recurType );
 	// we will now check the RecurType to see if it is a weekly recurrance
 	if ($event->RecurType == 'week') 
 	  // it is, so let's set the RecurDay property (checkbox group is named RecurWeekly)
-	  $event->setRecurDay( $RecurWeekly );
+	  $event->setRecurDay( $recurWeekly );
 	else 
 	// if not, we will set it as blank (which is the default of the setRecurDay method)
 	  $event->setRecurDay();
-	  // the $RecurExceptions var is actually the text/calendar field, the select box array is $ExceptSelect
-	  $event->setRecurExceptions( isset( $ExceptSelect ) ? $ExceptSelect : false );
+	  // the $RecurExceptions var is actually the text/calendar field, the select box array is $exceptSelect
+	  $event->setRecurExceptions( isset( $exceptSelect ) ? $exceptSelect : false );
 
 	// now we check to see if the RecurType is month
 	if ($event->RecurType == 'month')
 	    // it is, so let's set RecurMonthlyType
-	    $event->setRecurMonthlyType( $RecurTypeMonth, $datetime );
+	    $event->setRecurMonthlyType( $recurTypeMonth, $datetime );
 	    // if not, we set it to blank
 	else
 	  $event->setRecurMonthlyType();
 
 	////////////////////////////////////////////
 	// die("what-is-t00");
-	// die($RepeatOptions);
+	// die($repeatOptions);
 
 	// feed repeat options to setFinishTime
-	if ( isset( $RepeatOptions ) && $RepeatOptions=='numTimes') {
-	  $event->setFinishDateNot($NumberOfTimes, $RecurFreq, $RecurType, $datetime);
+	if ( isset( $repeatOptions ) && $repeatOptions=='numTimes') {
+	  $event->setFinishDateNot($numberOfTimes, $recurFreq, $recurType, $datetime);
 	  // die("what-is-t1");
-	} elseif ( isset( $RepeatOptions ) && $RepeatOptions=='untilDate') {
-	  //die("what-is: $UntilDate");
-	  $event->setFinishDateUntil($UntilDate);
-	  //die("what-is: $UntilDate");
+	} elseif ( isset( $repeatOptions ) && $repeatOptions=='untilDate') {
+	  //die("what-is: $untilDate");
+	  $event->setFinishDateUntil($untilDate);
+	  //die("what-is: $untilDate");
 	   //die("what-is-42");
 	} else {// must be forever
 	  //die("what-is-t12");
@@ -766,7 +766,7 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
 
     // die("here!");
 
-        if ( !isset( $TitleError) || isset( $TitleError	) && $TitleError == false && $GroupInsertError == false && $StartTimeError == false && $StopTimeError == false )
+        if ( !isset( $titleError) || isset( $titleError	) && $titleError == false && $groupInsertError == false && $startTimeError == false && $stopTimeError == false )
         {
             $resultz = $event->store();
             //exec("secure_clearcache.sh");
@@ -775,14 +775,14 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
               $month = addZero( $datetime->month() );
               $day = addZero( $datetime->day() );
 	    */
-			deleteCache( "default", $Language, $Year, $Month, $Day, $groupID );
+			deleteCache( "default", $Language, $year, $month, $day, $groupID );
 
 	    	// redirect switch
-            if ( $FileUploadFlag ){
+            if ( $fileUploadFlag ){
               	eZHTTPTool::header( "Location: /groupeventcalendar/eventedit/filelist/$event->ID/" );
             } else {
 	       		// eZHTTPTool::header( "Location: /groupeventcalendar/eventedit/edit/$event->ID/" );
-	            eZHTTPTool::header( "Location: /groupeventcalendar/dayview/$Year/$Month/$Day/" );;
+	            eZHTTPTool::header( "Location: /groupeventcalendar/dayview/$year/$month/$day/" );;
             }
         }
         else
@@ -823,46 +823,46 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
     $t->set_var( "repeat_until", "");
     $t->set_var( "repeat_times", "");
     $t->set_var( "repeat_forever", "");
-	 if (isset($IsRecurring))
+	 if (isset($isRecurring))
 	 {
 	 $t->set_var( "is_recurring", 'checked');
-	 $t->set_var( "recur_freq", $RecurFreq);
+	 $t->set_var( "recur_freq", $recurFreq);
 	 // recur type stuff...
-	 if ('day' == $RecurType) 
+	 if ('day' == $recurType) 
 	  $t->set_var( "rtselect_day", "selected" ); 
-	 elseif ('week' == $RecurType) 
+	 elseif ('week' == $recurType) 
 	  $t->set_var( "rtselect_week", "selected" );
-	 elseif ('month' == $RecurType)
+	 elseif ('month' == $recurType)
 	  $t->set_var( "rtselect_month", "selected" );
 	 else 
 	  $t->set_var( "rtselect_year", "" );
-	 if ('daily' == $RecurTypeMonth)
+	 if ('daily' == $recurTypeMonth)
 	  $t->set_var( "start_daily", "checked" );
-	 elseif ('strdayname' == $RecurTypeMonth)
+	 elseif ('strdayname' == $recurTypeMonth)
 	  $t->set_var( "start_strdayname", "checked" );
 	 else
 	  $t->set_var( "start_numdayname", "checked" );
-	 if (is_array($RecurWeekly)) 
+	 if (is_array($recurWeekly)) 
 	 {
-	  foreach ($RecurWeekly as $rwd)
+	  foreach ($recurWeekly as $rwd)
 	  {
 	   $t->set_var( "recur_weekly_".$rwd , "checked");
 	  }
 	 }
 	
-	if (isset($UntilDate))
-	 $t->set_var( "until_date", $UntilDate );
-	if (isset($NumberOfTimes))
-         $t->set_var( "num_times", $NumberOfTimes );
-	if ('forever' == $RepeatOptions)
+	if (isset($untilDate))
+	 $t->set_var( "until_date", $untilDate );
+	if (isset($numberOfTimes))
+         $t->set_var( "num_times", $numberOfTimes );
+	if ('forever' == $repeatOptions)
 	 $t->set_var( "repeat_forever", "checked");
-	elseif ('untilDate' == $RepeatOptions)
+	elseif ('untilDate' == $repeatOptions)
 	 $t->set_var( "repeat_until", 'checked');
 	else
 	 $t->set_var( "repeat_times", 'checked');
        
-       if (is_array($ExceptSelect))
-       foreach ($ExceptSelect as $ex) 
+       if (is_array($exceptSelect))
+       foreach ($exceptSelect as $ex) 
        {
 			echo 'adding<br>';
 			$t->set_var('recur_exception', "<option>$ex</option>");
@@ -895,7 +895,7 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
 				    $t->set_var( "group_member_name", "All Groups" );
 				    $t->set_var( "group_member_id", 0 );
 
-				    // if ( $groups->id() == $StoreByGroupID )
+				    // if ( $groups->id() == $storeByGroupID )
 				    if ( $event->groupID() == 0 )
 				      $t->set_var( "group_is_selected", "selected" );
 				    else
@@ -909,7 +909,7 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
 						$t->set_var( "group_member_name", $groups->name() );
 						$t->set_var( "group_member_id", $groups->id() );
 
-						if ( $groups->id() == $StoreByGroupID )
+						if ( $groups->id() == $storeByGroupID )
 							$t->set_var( "group_is_selected", "selected" );
 						else
 							$t->set_var( "group_is_selected", "" );
@@ -943,13 +943,13 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
 			$stopHour		= ( addZero( $eventStopTime->hour() ) );
 			$stopMinute		= ( addZero( $eventStopTime->minute() ) );
 
-			if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $StartTimeStr, $dayStartArray ) )
+			if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $startTimeStr, $dayStartArray ) )
 			{
 				$dayStarthour = $dayStartArray[2];
 				$dayStartMin  = $dayStartArray[3];
 			}
 
-			if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $StopTimeStr, $dayStopArray ) )
+			if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $stopTimeStr, $dayStopArray ) )
 			{
 				$dayStopHour = $dayStopArray[2];
 				$dayStopMin  = $dayStopArray[3];
@@ -1034,7 +1034,7 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
 
 $t->set_var( "user_error", "" );
 
-if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action == "Update")  && $groupError == true )
+if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action == "Update")  && $groupError == true )
 {
     $t->set_var( "no_error", "" );
     $t->set_var( "no_user_error", "" );
@@ -1045,44 +1045,44 @@ if ( ( isset( $Action ) && $Action == "Insert" || isset( $Action ) && $Action ==
     
 }
 
-if ( isset( $Action ) && $Action == "Update" && $groupError == false )
+if ( isset( $action ) && $action == "Update" && $groupError == false )
 {
-    $t->set_var( "name_value", stripslashes($Name) );
-    $t->set_var( "description_value", stripslashes($Description) );
+    $t->set_var( "name_value", stripslashes($name) );
+    $t->set_var( "description_value", stripslashes($description) );
     
-    $t->set_var( "location_value", $Location );
-    $t->set_var( "url_value", $Url );
+    $t->set_var( "location_value", $location );
+    $t->set_var( "url_value", $url );
 
-    $t->set_var( "start_value", $Start );
-    $t->set_var( "stop_value", $Stop );
+    $t->set_var( "start_value", $start );
+    $t->set_var( "stop_value", $stop );
 
-    $typeID = $TypeID;
-    $categoryID = $CategoryID;
+    $typeID = $typeID;
+    $categoryID = $categoryID;
 
     $t->set_var( "0_selected", "" );
     $t->set_var( "1_selected", "" );
     $t->set_var( "2_selected", "" );
 
-	if ( isset( $Priority ) && is_numeric( $Priority ) )
+	if ( isset( $priority ) && is_numeric( $priority ) )
 	{
-		if ( $Priority == 0 )
+		if ( $priority == 0 )
         	$t->set_var( "0_selected", "selected" );
-		else if ( $Priority == 1 )
+		else if ( $priority == 1 )
 			$t->set_var( "1_selected", "selected" );
-		else if ( $Priority == 2 )
+		else if ( $priority == 2 )
 			$t->set_var( "2_selected", "selected" );
-		else if ( $Priority == 3 )
+		else if ( $priority == 3 )
 			$t->set_var( "3_selected", "selected" );
-		else if ( $Priority == 4 )
+		else if ( $priority == 4 )
 			$t->set_var( "4_selected", "selected" );
-		else if ( $Priority == 5 )
+		else if ( $priority == 5 )
 			$t->set_var( "5_selected", "selected" );
-		else if ( $Priority == 6 )
+		else if ( $priority == 6 )
 			$t->set_var( "6_selected", "selected" );
 	}
 	else
 	{
-		$Priority = 0;
+		$priority = 0;
 	}
 
 
@@ -1090,47 +1090,47 @@ if ( isset( $Action ) && $Action == "Update" && $groupError == false )
     $t->set_var( "1_status_selected", "" );
     $t->set_var( "2_status_selected", "" );
 
-    if ( $Status == 0 )
+    if ( $status == 0 )
       $t->set_var( "0_status_selected", "selected" );
-    else if ( $Status == 1 )
+    else if ( $status == 1 )
       $t->set_var( "1_status_selected", "selected" );
-    else if ( $Status == 2 )
+    else if ( $status == 2 )
       $t->set_var( "2_status_selected", "selected" );
     else
       $t->set_var( "1_status_selected", "selected" );
 
-    if ( $IsPrivate == "on" )
+    if ( $isPrivate == "on" )
         $t->set_var( "is_private", "checked" );
     else
         $t->set_var( "is_private", "" );
 
-    if ( $EventAlarmNotice == "on" )
+    if ( $eventAlarmNotice == "on" )
       $t->set_var( "is_event_alarm_notice", "checked" );
     else
       $t->set_var( "is_event_alarm_notice", "" );
 
-    $t->set_var( "action_value", $Action );
-    $t->set_var( "appointment_id", $EventID );
+    $t->set_var( "action_value", $action );
+    $t->set_var( "appointment_id", $eventID );
 }
 
 
 $today = new eZDate();
 if( !isset( $year ) || !isset( $month ) || !isset( $day ) )
 {
-	$Year = $today->year();
-	$Month = $today->month();
-	$Day = $today->day();
+	$year = $today->year();
+	$month = $today->month();
+	$day = $today->day();
 }
-$tmpdate = new eZDate( $Year, $Month, $Day );
+$tmpdate = new eZDate( $year, $month, $day );
 
 $t->set_var( "edit", "" );
 
-if ( isset( $Action ) && $Action == "Edit" && $groupError == false )
+if ( isset( $action ) && $action == "Edit" && $groupError == false )
 {
 
     $t->parse( "add_file_list", "add_file_list_tpl" );
 
-    $event = new eZGroupEvent( $EventID );
+    $event = new eZGroupEvent( $eventID );
     $t->set_var( "name_value", stripslashes($event->name()) );
     
     $t->set_var( "url_value", $event->url() );
@@ -1227,7 +1227,7 @@ if ( isset( $Action ) && $Action == "Edit" && $groupError == false )
 	$t->set_var( "group_member_name", "All Groups" );
 	$t->set_var( "group_member_id", 0 );
 
-	// if ( $groups->id() == $StoreByGroupID )
+	// if ( $groups->id() == $storeByGroupID )
 	if ( $event->groupID() == 0 )
 	  $t->set_var( "group_is_selected", "selected" );
 	else
@@ -1290,13 +1290,13 @@ if ( isset( $Action ) && $Action == "Edit" && $groupError == false )
 
 
 
-	if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $StartTimeStr, $dayStartArray ) )
+	if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $startTimeStr, $dayStartArray ) )
     {
 		$dayStarthour = $dayStartArray[2];
 		$dayStartMin  = $dayStartArray[3];
     }
 
-    if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $StopTimeStr, $dayStopArray ) )
+    if ( preg_match( "#(^([0-9]{1,2})[^0-9]{0,1}([0-9]{0,2})$)#", $stopTimeStr, $dayStopArray ) )
     {
 		$dayStopHour = $dayStopArray[2];
 		$dayStopMin  = $dayStopArray[3];
@@ -1495,7 +1495,7 @@ var_dump($startMinute, $stopMinute);
 }
 
 // print out error messages
-if ( isset( $TitleError ) && $TitleError == true )
+if ( isset( $titleError ) && $titleError == true )
 {
     $t->parse( "title_error", "title_error_tpl" );
     $t->set_var( "action_value", "insert" );
@@ -1503,7 +1503,7 @@ if ( isset( $TitleError ) && $TitleError == true )
 else
     $t->set_var( "title_error", "" );
 
-if ( isset( $GroupInsertError ) && $GroupInsertError == true )
+if ( isset( $groupInsertError ) && $groupInsertError == true )
 {
     $t->parse( "group_error", "group_error_tpl" );
     $t->set_var( "action_value", "insert" );
@@ -1511,7 +1511,7 @@ if ( isset( $GroupInsertError ) && $GroupInsertError == true )
 else
     $t->set_var( "group_error", "" );
 
-if ( isset( $StartTimeError ) && $StartTimeError == true )
+if ( isset( $startTimeError ) && $startTimeError == true )
 {
     $t->parse( "start_time_error", "start_time_error_tpl" );
     $t->set_var( "action_value", "insert" );
@@ -1519,7 +1519,7 @@ if ( isset( $StartTimeError ) && $StartTimeError == true )
 else
     $t->set_var( "start_time_error", "" );
 
-if ( isset( $StopTimeError ) && $StopTimeError == true )
+if ( isset( $stopTimeError ) && $stopTimeError == true )
 {
     $t->parse( "stop_time_error", "stop_time_error_tpl" );
     $t->set_var( "action_value", "insert" );
@@ -1530,7 +1530,7 @@ else
 
 
 
-if ( isset( $Action ) && $Action == "New" && $groupError == false )
+if ( isset( $action ) && $action == "New" && $groupError == false )
 {
 	$user = eZUser::currentUser();
 
@@ -1549,7 +1549,7 @@ if ( isset( $Action ) && $Action == "New" && $groupError == false )
 		$t->set_var( "group_member_name", "All Groups" );
 		$t->set_var( "group_member_id", 0 );
 
-		// if ( $groups->id() == $StoreByGroupID )
+		// if ( $groups->id() == $storeByGroupID )
 		if ( $event->groupID() == 0 )
 		  $t->set_var( "group_is_selected", "selected" );
 		else
@@ -1660,18 +1660,18 @@ if ( isset( $Action ) && $Action == "New" && $groupError == false )
     else if ( $status == 2 )
       $t->set_var( "2_status_selected", "selected" );
     
-    if ( $Year != 0 )
-        $year = $Year;
+    if ( $year != 0 )
+        $year = $year;
     else
         $year = $today->year();
 
-    if ( $Month != 0 )
-        $month = $Month;
+    if ( $month != 0 )
+        $month = $month;
     else
         $month = $today->month();
 
-    if ( $Day != 0 )
-        $day = $Day;
+    if ( $day != 0 )
+        $day = $day;
     else
         $day = $today->day();
 
@@ -1688,10 +1688,10 @@ $t->set_var( "date_calendar", "$year-$month-$day" );
 		array_push ($minute_array, "$i");
 	}
 
-	if ( $StartTime != 0 )
+	if ( $startTime != 0 )
 	{
-		$startHour   = substr( $StartTime, 0, 2);
-		$startMinute = substr( $StartTime, 2, 3);
+		$startHour   = substr( $startTime, 0, 2);
+		$startMinute = substr( $startTime, 2, 3);
 	}
 	else
 	{
@@ -1744,7 +1744,7 @@ $t->set_var( "date_calendar", "$year-$month-$day" );
 
 	foreach( $hour_array as $hour )
 	{
-		if ( $StartTime != 0 )
+		if ( $startTime != 0 )
 			$t->set_var( "is_start_hour_selected", $hour == $startHour ? "selected" : "" );
 		$t->set_var( "start_hour", $hour );
 		$t->parse( "start_hour_item", "start_hour_item_tpl", true );
@@ -1755,7 +1755,7 @@ $t->set_var( "date_calendar", "$year-$month-$day" );
 
 	foreach( $minute_array as $minute )
 	{
-		if ( $StartTime != 0 )
+		if ( $startTime != 0 )
 			$t->set_var( "is_start_minute_selected", $minute == $startMinute ? "selected" : "" );
 		$t->set_var( "start_minute", $minute );
 		$t->parse( "start_minute_item", "start_minute_item_tpl", true );
@@ -1764,7 +1764,7 @@ $t->set_var( "date_calendar", "$year-$month-$day" );
 		$t->parse( "stop_minute_item", "stop_minute_item_tpl", true );
 	}
 }
-elseif(isset( $Action ) && $Action == "New" && $groupError == true && $errorPrint == false )
+elseif(isset( $action ) && $action == "New" && $groupError == true && $errorPrint == false )
 {
     $t->set_var( "no_error", "" );
     $t->set_var( "no_user_error", "" );
@@ -1855,7 +1855,7 @@ for ( $i=1; $i<=31; $i++ )
     else
         $t->set_var( "selected", "" );
 
-    if ( $Action == "Edit" && $groupError == false )
+    if ( $action == "Edit" && $groupError == false )
     {
         if ( $dt->day() == $i )
         {
@@ -1886,7 +1886,7 @@ for ( $i=1; $i<13; $i++ )
     else
         $t->set_var( "selected", "" );
 
-    if ( $Action == "Edit" && $groupError == false )
+    if ( $action == "Edit" && $groupError == false )
     {
         if ( $dt->month() == $i )
         {
@@ -1900,12 +1900,12 @@ for ( $i=1; $i<13; $i++ )
 
     $tmpdate->setMonth( $i );
     $t->set_var( "month_id", $i );
-    $t->set_var( "month_name", $Locale->monthName( $tmpdate->monthName() ) );
+    $t->set_var( "month_name", $locale->monthName( $tmpdate->monthName() ) );
 
     $t->parse( "month", "month_tpl", true );
 }
 */
-if ( isset( $Action ) && $Action != "Edit" )
+if ( isset( $action ) && $action != "Edit" )
 {
     $t->set_var( "year_value", $tmpdate->year() );
 	$t->set_var( "is_year_selected", "selected" );

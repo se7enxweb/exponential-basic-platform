@@ -33,15 +33,52 @@ if( eZPermission::checkPermission( $user, "eZNews", "ModuleEdit" ) == false )
     exit();
 }
 
+$action                 = eZHTTPTool::getVar( 'Action' );
+$cancel                 = eZHTTPTool::getVar( 'Cancel' );
+$categoryArrayID        = eZHTTPTool::getVar( 'CategoryArrayID' ) ?? [];
+$categoryDescription    = eZHTTPTool::getVar( 'CategoryDescription' );
+$categoryID             = eZHTTPTool::getVar( 'CategoryID' );
+$categoryName           = eZHTTPTool::getVar( 'CategoryName' );
+$decoderChoice          = eZHTTPTool::getVar( 'DecoderChoice' );
+$delete                 = eZHTTPTool::getVar( 'Delete' );
+$deleteArray            = eZHTTPTool::getVar( 'DeleteArray' ) ?? [];
+$deleteCat              = eZHTTPTool::getVar( 'DeleteCat' );
+$deleteCategories       = eZHTTPTool::getVar( 'DeleteCategories' );
+$deleteNews             = eZHTTPTool::getVar( 'DeleteNews' );
+$isPublished            = eZHTTPTool::getVar( 'IsPublished' );
+$limit                  = eZHTTPTool::getVar( 'Limit' );
+$newsArrayID            = eZHTTPTool::getVar( 'NewsArrayID' ) ?? [];
+$newsDeleteIDArray      = eZHTTPTool::getVar( 'NewsDeleteIDArray' ) ?? [];
+$newsID                 = eZHTTPTool::getVar( 'NewsID' );
+$newsIntro              = eZHTTPTool::getVar( 'NewsIntro' );
+$newsKeywords           = eZHTTPTool::getVar( 'NewsKeywords' );
+$newsPublishIDArray     = eZHTTPTool::getVar( 'NewsPublishIDArray' ) ?? [];
+$newsSource             = eZHTTPTool::getVar( 'NewsSource' );
+$newsTitle              = eZHTTPTool::getVar( 'NewsTitle' );
+$newsURL                = eZHTTPTool::getVar( 'NewsURL' );
+$offset                 = eZHTTPTool::getVar( 'Offset' );
+$oldCategoryID          = eZHTTPTool::getVar( 'OldCategoryID' );
+$publish                = eZHTTPTool::getVar( 'Publish' );
+$searchText             = eZHTTPTool::getVar( 'SearchText' );
+$showUnPublished        = eZHTTPTool::getVar( 'ShowUnPublished' );
+$sourceSiteAutoPublish  = eZHTTPTool::getVar( 'SourceSiteAutoPublish' );
+$sourceSiteID           = eZHTTPTool::getVar( 'SourceSiteID' );
+$sourceSiteIsActive     = eZHTTPTool::getVar( 'SourceSiteIsActive' );
+$sourceSiteLogin        = eZHTTPTool::getVar( 'SourceSiteLogin' );
+$sourceSiteName         = eZHTTPTool::getVar( 'SourceSiteName' );
+$sourceSitePassword     = eZHTTPTool::getVar( 'SourceSitePassword' );
+$sourceSiteURL          = eZHTTPTool::getVar( 'SourceSiteURL' );
+$urlQueryString         = eZHTTPTool::getVar( 'URLQueryString' );
+
 switch ( $url_array[2] )
 {
     case "archive":
     {
-        $CategoryID = $url_array[3];
-        if  ( !isset( $CategoryID ) || ( $CategoryID == "" ) )
-            $CategoryID = 0;
+        $categoryID = $url_array[3];
+        if  ( !isset( $categoryID ) || ( $categoryID == "" ) )
+            $categoryID = 0;
 
-        $ShowUnPublished = "no";
+        $showUnPublished = "no";
         
         include( "kernel/eznewsfeed/admin/newsarchive.php" );
     }
@@ -49,17 +86,17 @@ switch ( $url_array[2] )
 
     case "unpublished":
     {
-        $CategoryID = $url_array[3];
-        if  ( !isset( $CategoryID ) || ( $CategoryID == "" ) )
-            $CategoryID = 0;
+        $categoryID = $url_array[3];
+        if  ( !isset( $categoryID ) || ( $categoryID == "" ) )
+            $categoryID = 0;
 
         if ( $url_array[4] == "delete" )
         {
-            $Action = "Delete";
-            $NewsDeleteIDArray = array( $url_array[5] );
+            $action = "Delete";
+            $newsDeleteIDArray = array( $url_array[5] );
         }
 
-        $ShowUnPublished = "only";
+        $showUnPublished = "only";
         include( "kernel/eznewsfeed/admin/unpublished.php" );
     }
     break;
@@ -68,27 +105,27 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3]  == "edit" )
         {
-            $Action = "Edit";
+            $action = "Edit";
         }
         if ( $url_array[3]  == "insert" )
         {
-            $Action = "Insert";
+            $action = "Insert";
         }
 
         if ( $url_array[3]  == "update" )
         {
-            $Action = "Update";
+            $action = "Update";
         }
         if ( $url_array[3]  == "new" )
         {
-            $Action = "New";
+            $action = "New";
         }
         if ( $url_array[3]  == "delete" )
         {
-            $Action = "Delete";
+            $action = "Delete";
         }
 
-        $SourceSiteID = $url_array[4];
+        $sourceSiteID = $url_array[4];
         include( "kernel/eznewsfeed/admin/sourcesiteedit.php" );
     }
     break;
@@ -97,7 +134,7 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3]  == "new" )
         {
-            $Action = "New";
+            $action = "New";
         }
         else if ( $url_array[3]  == "edit" )
         {
@@ -106,8 +143,8 @@ switch ( $url_array[2] )
             setType( $arg, "integer" );
             if ( $arg != 0 )
             {
-                $Action = "Edit";
-                $NewsID = $arg;
+                $action = "Edit";
+                $newsID = $arg;
             }
         }
         else if ( $url_array[3]  == "delete" )
@@ -117,8 +154,8 @@ switch ( $url_array[2] )
             setType( $arg, "integer" );
             if ( $arg != 0 )
             {
-                $Action = "Delete";
-                $NewsID = $arg;
+                $action = "Delete";
+                $newsID = $arg;
             }
         }
 
@@ -132,19 +169,19 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3]  == "new" )
         {
-            $Action = "New";
+            $action = "New";
         }
 
         if ( $url_array[3]  == "edit" )
         {
-            $CategoryID = $url_array[4];
-            $Action = "Edit";
+            $categoryID = $url_array[4];
+            $action = "Edit";
         }        
 
         if ( $url_array[3]  == "delete" )
         {
-            $CategoryID = $url_array[4];
-            $Action = "Delete";
+            $categoryID = $url_array[4];
+            $action = "Delete";
         }        
         
         include( "kernel/eznewsfeed/admin/categoryedit.php" );
@@ -153,12 +190,12 @@ switch ( $url_array[2] )
 
     case "importnews":
     {
-        $Action = "ImportNews";
+        $action = "ImportNews";
 
         if ( $url_array[3]  == "fetch" )
         {
-            $Action = "Fetch";
-            $SourceSiteID = $url_array[4]; 
+            $action = "Fetch";
+            $sourceSiteID = $url_array[4]; 
         }
         
         include( "kernel/eznewsfeed/admin/importnews.php" );

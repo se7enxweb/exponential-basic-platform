@@ -132,7 +132,7 @@ foreach ( $items as $item )
         
         if ( $thumbnail )
         {
-            if ( !isset( $HotDealsPage ) )
+            if ( !isset( $hotDealsPage ) )
             {
                 $t->set_var( "product_image_path", "/" . $thumbnail->imagePath() );
                 $t->set_var( "product_image_width", $thumbnail->width() );
@@ -190,7 +190,7 @@ foreach ( $items as $item )
         $t->set_var( "cart_item_count", $item->count() );
 
         $optionValues = $item->optionValues();
-        $Quantity = $product->totalQuantity();
+        $quantity = $product->totalQuantity();
 
         $min_quantity = false;
         if ( !$product->hasPrice() )

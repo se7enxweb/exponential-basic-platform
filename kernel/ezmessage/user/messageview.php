@@ -44,7 +44,7 @@ $t->setAllStrings();
 
 $message = new eZMessage( );
 
-if ( $message->get( $MessageID ) )
+if ( $message->get( $messageID ) )
 {
     $toUser = $message->toUser();
     $fromUser = $message->fromUser();

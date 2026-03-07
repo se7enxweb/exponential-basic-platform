@@ -65,6 +65,8 @@
 
 class eZOrderConfirmation
 {
+    public $checkups;
+
     function __construct( $id = "" )
     {
         if ( $id )
@@ -367,6 +369,19 @@ class eZOrderConfirmation
 
         $separateBy = 2;
 
+        $len_product_total_ex_tax = 0;
+        $len_product_total_inc_tax = 0;
+        $len_product_total_sub_tax = 0;
+        $len_option_name = 0;
+        $len_option_value = 0;
+        $len_option_price = 0;
+        $len_option_id = 0;
+        $len_product_number = 0;
+        $len_product_price = 0;
+        $len_product_count = 0;
+        $len_product_savings = 0;
+        $len_product_id = 0;
+
         $order->orderTotals( $tax, $total );
         $mailTemplate->set_var( "empty_cart", "" );
 
@@ -521,7 +536,7 @@ class eZOrderConfirmation
 
             $mailTemplate->set_var( "cart_item_option", "" );
 
-            if( is_array( $productOptions[$i][$productID] ) )
+            if( isset($productOptions[$i][$productID]) && is_array( $productOptions[$i][$productID] ) )
             {
                 foreach( $productOptions[$i][$productID] as $option )
                 {
@@ -611,7 +626,7 @@ if($total["shiptax"] == 0){
                 $subTax = trim( preg_replace( $search, $replace, $locale->format( $currency ) ) );
                 $taxLen = strlen( $subTax ) > $taxLen ? strlen(  $subTax ) : $taxLen;
 
-                $taxPercentageLen = strlen( trim( $taxGroup["sub_tax_percentage"] ) ) > $taxPercentageLen ? strlen(  trim( $taxGroup["sub_tax_percentage"] ) ) : $taxPercentageLen;
+                $taxPercentageLen = strlen( trim( $taxGroup["percentage"] ) ) > $taxPercentageLen ? strlen(  trim( $taxGroup["percentage"] ) ) : $taxPercentageLen;
             }
 
             $taxPercentageLen += $separateBy;
@@ -989,7 +1004,7 @@ $mailTemplate->set_var( "shipping_type",$service_name);
         }
         $files = eZCacheFile::files( "kernel/eztrade/cache/",
                                      array( "productlist",
-                                            array_merge( $CategoryID, $CategoryArray ) ),
+                                            array_merge( (array)$CategoryID, (array)$CategoryArray ) ),
                                      "cache", "," );
         foreach ( $files as $file )
         {

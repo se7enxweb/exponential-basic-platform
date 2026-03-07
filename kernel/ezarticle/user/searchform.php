@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: searchform.php 9489 2002-04-30 09:01:53Z br $
+// $id: searchform.php 9489 2002-04-30 09:01:53Z br $
 //
 // Created on: <08-Sep-2001 10:32:19 fh>
 //
@@ -33,19 +33,19 @@
 // include_once( "ezuser/classes/ezauthor.php" );
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 // init the section
-if ( isset ($SectionIDOverride) )
+if ( isset ($sectionIDOverride) )
 {
     // include_once( "ezsitemanager/classes/ezsection.php" );
     
-    $sectionObject = eZSection::globalSectionObject( $SectionIDOverride );
+    $sectionObject = eZSection::globalSectionObject( $sectionIDOverride );
     $sectionObject->setOverrideVariables();
 }
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "searchform.php" );
+                     "kernel/ezarticle/user/intl/", $language, "searchform.php" );
 
 $t->setAllStrings();
 
@@ -93,7 +93,7 @@ foreach ( $treeArray as $catItem )
     }
 }
 
-if ( isset ($SectionIDOverride) ) $t->set_var( "section_id", $SectionIDOverride );
+if ( isset ($sectionIDOverride) ) $t->set_var( "section_id", $sectionIDOverride );
 
 $t->pparse( "output", "search_form_tpl" );
 

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: export_yahoo.php,v 1.3 2005/03/08 16:18:42 ghb Exp $
+// $id: export_yahoo.php,v 1.3 2005/03/08 16:18:42 ghb Exp $
 //
 // Created on: <22-Jun-2001 13:16:55 br>
 //
@@ -29,8 +29,8 @@
 ob_end_clean();
 
 // include_once( "classes/template.inc" );
-include_once( "eztrade/classes/ezproduct.php" );
-include_once( "classes/INIFile.php" );
+// include_once( "eztrade/classes/ezproduct.php" );  // auto-loaded by kernel
+// include_once( "classes/INIFile.php" );  // auto-loaded by kernel
 
 //
 //////////////////////////////////////////////////////
@@ -45,41 +45,41 @@ ini_set('upload_max_filesize', 5242880); // 5MB
 
 $ini = eZINI::instance( 'site.ini' );
 
-$SiteURL = $ini->variable( "site", "UserSiteURL" );
+$siteURL = $ini->variable( "site", "UserSiteURL" );
 $wwwDir = $ini->variable( "site", "UserSiteURL" );
-$PricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enabled" ? true : false;
-$MainImageWidth = $ini->variable( "eZTradeMain", "MainImageWidth" );
-$MainImageHeight = $ini->variable( "eZTradeMain", "MainImageHeight" );
-$SitePath = $ini->variable( "site", "SitePath" );
+$pricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enabled" ? true : false;
+$mainImageWidth = $ini->variable( "eZTradeMain", "MainImageWidth" );
+$mainImageHeight = $ini->variable( "eZTradeMain", "MainImageHeight" );
+$sitePath = $ini->variable( "site", "SitePath" );
 
 
 //////////////////////////////////////////////////////
 // FTP: Server, User, Password
 
 // use file location + name
-//$YahooServer = $ini->variable( "site", "ServerYahoo" );
-//$YahooUser = $ini->variable( "site", "UserYahoo" );
+//$yahooServer = $ini->variable( "site", "ServerYahoo" );
+//$yahooUser = $ini->variable( "site", "UserYahoo" );
 //$froogle_pass = $ini->variable( "site", "PasswordYahoo" );
 
-$YahooServer="hedwig.google.com";
-$YahooUser="fullthrottle";
-$YahooKey="key";
+$yahooServer="hedwig.google.com";
+$yahooUser="fullthrottle";
+$yahooKey="key";
 
-$YahooServer="fullthrottle.com";
-$YahooServerPort="21";
-$YahooUser="full";
-$YahooKey="key";
+$yahooServer="fullthrottle.com";
+$yahooServerPort="21";
+$yahooUser="full";
+$yahooKey="key";
 
-if( $Action == "export" ){
+if( $action == "export" ){
   $exportCSVFile = true;
-} elseif( $Action == "export-cron" ) {
+} elseif( $action == "export-cron" ) {
   // export : csv file to user agent
   $exportCSVFile = false;
 } else {
   $exportCSVFile = false;
 }
 
-// if( $Action == "export-cron" ) {
+// if( $action == "export-cron" ) {
 //  export : csv file to user agent
 //  $exportCSVFile = false;
 // }
@@ -170,7 +170,7 @@ $search = array ("'<script[^>]*?>.*?</script>'si",  // Strip out javascript
 		 "'&(cent|#162);'i",
 		 "'&(pound|#163);'i",
 		 "'&(copy|#169);'i",
-		 "'&#(\d+);'e");                    // evaluate as php
+		 "'&#(\d+);'");                    // numeric entities handled via preg_replace_callback
 
 $replace = array ("",
 		  "",
@@ -186,7 +186,7 @@ $replace = array ("",
 		  chr(162),
 		  chr(163),
 		  chr(169),
-		  "chr(\\1)");
+		  "");  // numeric entities handled via preg_replace_callback
 
 // prepare each product information
 foreach ($productList as $product) 
@@ -204,14 +204,15 @@ foreach ($productList as $product)
 
   // this line causes "" in product name, so we are removing it
   $line['name'] = preg_replace($search, $replace, $line['name']);
+  $line['name'] = preg_replace_callback("'&#(\d+);'", function($m) { return chr((int)$m[1]); }, $line['name']);
   // $line['name'] = $line['name'];
 
   // not sure why this is commented out? no tax in price?
-  // $line['price'] = str_replace( "$&nbsp;", "", $product->localePrice( $PricesIncludeVAT ) );
+  // $line['price'] = str_replace( "$&nbsp;", "", $product->localePrice( $pricesIncludeVAT ) );
   $line['price'] = $product->price();
 
  $category = $product->categoryDefinition();
-  $pathArray = $category->path();
+  $pathArray = $category ? $category->path() : [];
   $line['category'] = "";
   $i = 1;
 
@@ -231,8 +232,8 @@ foreach ($productList as $product)
   $mainImage = $product->mainImage();
   if ( $mainImage )
   {
-    $variation = $mainImage->requestImageVariation( $MainImageWidth, $MainImageHeight );
-    $line['image_url'] = "http://" . $SiteURL . "/" . $variation->imagePath();
+    $variation = $mainImage->requestImageVariation( $mainImageWidth, $mainImageHeight );
+    $line['image_url'] = "http://" . $siteURL . "/" . $variation->imagePath();
   }
   else
     $line['image_url'] = "";
@@ -362,8 +363,8 @@ else {
    // $fileName = $file->tmpName();
    // $fileSize = filesize( $fileName );
    
-   //$fileName = $SitePath . '/export_froogle/attQ98AJz';
-   $fileName = $SitePath . '/export_yahoo/attQ98AJz';
+   //$fileName = $sitePath . '/export_froogle/attQ98AJz';
+   $fileName = $sitePath . '/export_yahoo/attQ98AJz';
 
    $fileSize = filesize( $fileName );
    //chmod( $fileName, 0777 );
@@ -423,8 +424,8 @@ if( $exportCSVFile ){
    //   {
        // save the buffer contents
    
-       // echo "Run: $SitePath/bin/cron/yahoo_upload.sh $SitePath/export_yahoo/attQ98AJz   \n";
-       echo "Run: $SitePath/bin/cron/yahoo_upload.sh $fileName \n";
+       // echo "Run: $sitePath/bin/cron/yahoo_upload.sh $sitePath/export_yahoo/attQ98AJz   \n";
+       echo "Run: $sitePath/bin/cron/yahoo_upload.sh $fileName \n";
 
        /*
        $buffer = ob_get_contents();
@@ -434,10 +435,10 @@ if( $exportCSVFile ){
        ob_start();
        */
 
-       // $SitePath 
-       // system( "$SitePath/bin/cron/yahoo_upload.sh $SitePath/export_yahoo/attQ98AJz" );
+       // $sitePath 
+       // system( "$sitePath/bin/cron/yahoo_upload.sh $sitePath/export_yahoo/attQ98AJz" );
 
-       system( "$SitePath/bin/cron/yahoo_upload.sh $fileName" );
+       system( "$sitePath/bin/cron/yahoo_upload.sh $fileName" );
 
 
 /*

@@ -125,7 +125,7 @@ if( $user )
 $t->set_var( "group_event_print", "" );
 
 // find the event and determin the permissions
-$event = new eZGroupEvent($EventID);
+$event = new eZGroupEvent($eventID);
 
 if( $event )
 {
@@ -192,7 +192,7 @@ if ( $showEvent == false )
 }
 else
 {
-    $event = new eZGroupEvent( $EventID );
+    $event = new eZGroupEvent( $eventID );
     $eventType = $event->type();
     $eventCategory = $event->category();
 

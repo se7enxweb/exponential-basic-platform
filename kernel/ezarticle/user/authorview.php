@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: authorview.php 6484 2001-08-17 13:36:01Z jhe $
+// $id: authorview.php 6484 2001-08-17 13:36:01Z jhe $
 //
 // Created on: <16-Feb-2001 15:36:13 amos>
 //
@@ -34,12 +34,12 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$Limit = $ini->variable( "eZArticleMain", "AuthorArticleLimit" );
-$locale = new eZLocale( $Language );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$limit = $ini->variable( "eZArticleMain", "AuthorArticleLimit" );
+$locale = new eZLocale( $language );
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "authorview.php" );
+                     "kernel/ezarticle/user/intl/", $language, "authorview.php" );
 
 $t->setAllStrings();
 
@@ -47,27 +47,27 @@ $t->set_file( "author_view_tpl", "authorview.tpl" );
 
 $t->set_block( "author_view_tpl", "article_item_tpl", "article_item" );
 
-if ( !isset( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
-if ( !isset( $Limit ) or !is_numeric( $Limit ) )
-    $Limit = 10;
-if ( !isset( $SortOrder ) )
-    $SortOrder = "published";
+if ( !isset( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
+if ( !isset( $limit ) or !is_numeric( $limit ) )
+    $limit = 10;
+if ( !isset( $sortOrder ) )
+    $sortOrder = "published";
 
-$article_count = eZArticle::authorArticleCount( $AuthorID );
+$article_count = eZArticle::authorArticleCount( $authorID );
 
 $t->set_var( "article_count", $article_count );
-$t->set_var( "article_start", $Offset + 1 );
-$t->set_var( "article_end", min( $Offset + $Limit, $article_count ) );
+$t->set_var( "article_start", $offset + 1 );
+$t->set_var( "article_end", min( $offset + $limit, $article_count ) );
 
-$articles = eZArticle::authorArticleList( $AuthorID, $Offset, $Limit, $SortOrder );
+$articles = eZArticle::authorArticleList( $authorID, $offset, $limit, $sortOrder );
 
-$t->set_var( "author_id", $AuthorID );
-$author = new eZAuthor( $AuthorID );
+$t->set_var( "author_id", $authorID );
+$author = new eZAuthor( $authorID );
 $t->set_var( "author_name", $author->name() );
 $t->set_var( "author_mail", $author->email() );
 
-$t->set_var( "sort", $SortOrder );
+$t->set_var( "sort", $sortOrder );
 
 $t->set_var( "article_item", "" );
 
@@ -88,7 +88,7 @@ foreach( $articles as $article )
     $i++;
 }
 
-eZList::drawNavigator( $t, $article_count, $Limit, $Offset, "author_view_tpl" );
+eZList::drawNavigator( $t, $article_count, $limit, $offset, "author_view_tpl" );
 
 $t->pparse( "output", "author_view_tpl" );
 

@@ -39,19 +39,19 @@ $ImageDir = $ini->variable( "eZNewsFeedMain", "ImageDir" );
 
 // include_once( "eznewsfeed/classes/eznewscategory.php" );
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $sourcesite = new eZSourceSite();
     
-    $sourcesite->setName( $SourceSiteName );
-    $sourcesite->setURL( $SourceSiteURL );
-    $sourcesite->setLogin( $SourceSiteLogin );
-    $sourcesite->setPassword( $SourceSitePassword );
-    $category = new eZNewsCategory( $CategoryID );
+    $sourcesite->setName( $sourceSiteName );
+    $sourcesite->setURL( $sourceSiteURL );
+    $sourcesite->setLogin( $sourceSiteLogin );
+    $sourcesite->setPassword( $sourceSitePassword );
+    $category = new eZNewsCategory( $categoryID );
     $sourcesite->setCategory( $category );
-    $sourcesite->setDecoder( $DecoderChoice );
+    $sourcesite->setDecoder( $decoderChoice );
 
-    if ( $SourceSiteIsActive == "on" )
+    if ( $sourceSiteIsActive == "on" )
     {
         $sourcesite->setIsActive( true );
     }
@@ -61,7 +61,7 @@ if ( $Action == "Insert" )
     }
 
 
-    if ( $SourceSiteAutoPublish == "on" )
+    if ( $sourceSiteAutoPublish == "on" )
     {
         $sourcesite->setAutoPublish( true );
     }
@@ -76,20 +76,20 @@ if ( $Action == "Insert" )
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
-    $sourcesite = new eZSourceSite( $SourceSiteID );
+    $sourcesite = new eZSourceSite( $sourceSiteID );
     
-    $sourcesite->setName( $SourceSiteName );
-    $sourcesite->setURL( $SourceSiteURL );
-    $sourcesite->setLogin( $SourceSiteLogin );
-    $sourcesite->setPassword( $SourceSitePassword );
-    $category = new eZNewsCategory( $CategoryID );
+    $sourcesite->setName( $sourceSiteName );
+    $sourcesite->setURL( $sourceSiteURL );
+    $sourcesite->setLogin( $sourceSiteLogin );
+    $sourcesite->setPassword( $sourceSitePassword );
+    $category = new eZNewsCategory( $categoryID );
     $sourcesite->setCategory( $category );
-    $sourcesite->setDecoder( $DecoderChoice );
+    $sourcesite->setDecoder( $decoderChoice );
 
 
-    if ( $SourceSiteIsActive == "on" )
+    if ( $sourceSiteIsActive == "on" )
     {
         $sourcesite->setIsActive( true );
     }
@@ -98,7 +98,7 @@ if ( $Action == "Update" )
         $sourcesite->setIsActive( false );
     }
 
-    if ( $SourceSiteAutoPublish == "on" )
+    if ( $sourceSiteAutoPublish == "on" )
     {
         $sourcesite->setAutoPublish( true );
     }
@@ -126,7 +126,7 @@ $t->set_file( array(
 $t->set_block( "news_edit_page_tpl", "value_tpl", "value" );
 $t->set_block( "news_edit_page_tpl", "decoder_tpl", "decoder" );
 
-if ( $Action == "New" )
+if ( $action == "New" )
 {
     $t->set_var( "source_site_name_value", "" );
     $t->set_var( "source_site_id_value", "" );
@@ -138,9 +138,9 @@ if ( $Action == "New" )
 
 
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $sourcesite = new eZSourceSite( $SourceSiteID );
+    $sourcesite = new eZSourceSite( $sourceSiteID );
 
     $t->set_var( "source_site_name_value", $sourcesite->name() );
     $t->set_var( "source_site_url_value", $sourcesite->url() );
@@ -198,7 +198,7 @@ $categoryArray = $category->getAll( );
 
 foreach ( $categoryArray as $catItem )
 {
-    if ( $Action == "Edit" )
+    if ( $action == "Edit" )
     {
         if ( $categoryID == $catItem->id() )
         {

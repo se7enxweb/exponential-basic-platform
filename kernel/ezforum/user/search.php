@@ -36,8 +36,8 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZForumMain", "Language" );
-$NewMessageLimit = $ini->variable( "eZForumMain", "NewMessageLimit" );
-$Limit = $ini->variable( "eZForumMain", "SearchUserLimit" );
+$newMessageLimit = $ini->variable( "eZForumMain", "NewMessageLimit" );
+$limit = $ini->variable( "eZForumMain", "SearchUserLimit" );
 
 $t = new eZTemplate( "kernel/ezforum/user/" . $ini->variable( "eZForumMain", "TemplateDir" ),
                      "kernel/ezforum/user/intl", $Language, "search.php" );
@@ -54,20 +54,20 @@ $t->set_block( "message_tpl", "new_icon_tpl", "new_icon" );
 $t->set_block( "message_tpl", "old_icon_tpl", "old_icon" );
 
 
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
 $t->set_var( "url_text", "" );
 $t->set_var( "search_result", "" );
 
 $db = eZDB::globalDatabase();
 
-if ( isset( $SearchText ) and !isset( $QueryString ) )
-    $QueryString = $SearchText;
+if ( isset( $searchText ) and !isset( $queryString ) )
+    $queryString = $searchText;
 
-if ( $QueryString != "" )
+if ( $queryString != "" )
 {
-    $tmpQueryString = str_replace( "<", "&lt;", $QueryString );
+    $tmpQueryString = str_replace( "<", "&lt;", $queryString );
     $tmpQueryString = str_replace( ">", "&gt;", $tmpQueryString );
 
     $t->set_var( "url_text", $tmpQueryString );
@@ -75,7 +75,7 @@ if ( $QueryString != "" )
     $forum = new eZForum();
     
     // do a search in all forums
-    $messages = $forum->search( $QueryString, $Offset, $Limit, $total_count );
+    $messages = $forum->search( $queryString, $offset, $limit, $total_count );
 
     $locale = new eZLocale( $Language );
 
@@ -96,7 +96,7 @@ if ( $QueryString != "" )
             $t->set_var( "message_id", $message->id() );
             
             $messageAge = round( $message->age() / ( 60 * 60 * 24 ) );
-            if ( $messageAge <= $NewMessageLimit )
+            if ( $messageAge <= $newMessageLimit )
             {
                 $t->parse( "new_icon", "new_icon_tpl" );
                 $t->set_var( "old_icon", "" );
@@ -138,13 +138,13 @@ else
     $t->parse( "empty_result", "empty_result_tpl" );
 }
 
-eZList::drawNavigator( $t, $total_count, $Limit, $Offset, "search_tpl" );
+eZList::drawNavigator( $t, $total_count, $limit, $offset, "search_tpl" );
 
-$t->set_var( "forum_start", $Offset + 1 );
-$t->set_var( "forum_end", min( $Offset + $Limit, $total_count ) );
+$t->set_var( "forum_start", $offset + 1 );
+$t->set_var( "forum_end", min( $offset + $limit, $total_count ) );
 $t->set_var( "forum_total", $total_count );
 
-$t->set_var( "url_query_string", urlencode( $QueryString ) );
+$t->set_var( "url_query_string", urlencode( $queryString ) );
 
 $t->pparse("output","search_tpl");
 

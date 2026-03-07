@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: imagelist.php 7089 2001-09-07 17:33:55Z fh $
+// $id: imagelist.php 7089 2001-09-07 17:33:55Z fh $
 //
 // Created on: <21-Sep-2000 10:32:19 bf>
 //
@@ -29,14 +29,14 @@
 // include_once( "classes/ezcurrency.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
 // include_once( "ezarticle/classes/ezarticle.php" );
 
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "imagelist.php" );
+                     "kernel/ezarticle/user/intl/", $language, "imagelist.php" );
 
 $t->setAllStrings();
 
@@ -46,10 +46,10 @@ $t->set_block( "image_list_page_tpl", "no_images_tpl", "no_images" );
 $t->set_block( "image_list_page_tpl", "image_list_tpl", "image_list" );
 $t->set_block( "image_list_tpl", "image_tpl", "image" );
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
 
 $session = eZSession::globalSession();
-$session->setVariable( "ImageListReturnTo", $REQUEST_URI );
+$session->setVariable( "ImageListReturnTo", $_SERVER['REQUEST_URI'] );
 $session->setVariable( "SelectImages", "multi" );
 $session->setVariable( "NameInBrowse", $article->name() );
 
@@ -57,13 +57,13 @@ $thumbnail = $article->thumbnailImage();
 
 $t->set_var( "article_name", $article->name() );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
-if ( isset( $AddImages ) )
+if ( isset( $addImages ) )
 {
-    if ( count( $ImageArrayID ) > 0 )
+    if ( count( $imageArrayID ) > 0 )
     {
-        foreach ( $ImageArrayID as $imageID )
+        foreach ( $imageArrayID as $imageID )
         {
             $image = new eZImage( $imageID );
             $article->addImage( $image );
@@ -113,7 +113,7 @@ else
         else
             $t->set_var( "image_name", $image->caption() );
         $t->set_var( "image_id", $image->id() );
-        $t->set_var( "article_id", $ArticleID );
+        $t->set_var( "article_id", $articleID );
 
         $variation = $image->requestImageVariation( 150, 150 );
 

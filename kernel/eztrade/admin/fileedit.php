@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: fileedit.php,v 1.7 2001/08/30 07:55:56 bf Exp $
+// $id: fileedit.php,v 1.7 2001/08/30 07:55:56 bf Exp $
 //
 // Created on: <21-Dec-2000 18:01:48 bf>
 //
@@ -33,25 +33,25 @@ include_once( "ezfilemanager/classes/ezvirtualfile.php" );
 include_once( "ezuser/classes/ezobjectpermission.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 include_once( "eztrade/classes/ezproductcategory.php" );
 include_once( "eztrade/classes/ezproduct.php" );
 
-if ( isset( $DeleteSelected ) )
-    $Action = "Delete";
+if ( isset( $deleteSelected ) )
+    $action = "Delete";
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $file = new eZFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     { 
-        $product = new eZProduct( $ProductID );
+        $product = new eZProduct( $productID );
 
         $uploadedFile = new eZVirtualFile();
-        $uploadedFile->setName( $Name );
-        $uploadedFile->setDescription( $Description );
+        $uploadedFile->setName( $name );
+        $uploadedFile->setDescription( $description );
 
         $uploadedFile->setFile( $file );
         
@@ -65,7 +65,7 @@ if ( $Action == "Insert" )
 		
         $product->addFile( $uploadedFile );
 
-        eZPBLog::writeNotice( "File added to product $ProductID  from IP: $REMOTE_ADDR" );
+        eZPBLog::writeNotice( "File added to product $productID  from IP: $REMOTE_ADDR" );
     }
     else
     {
@@ -73,24 +73,24 @@ if ( $Action == "Insert" )
     }
 
     include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /trade/productedit/filelist/" . $ProductID . "/" );
+    eZHTTPTool::header( "Location: /trade/productedit/filelist/" . $productID . "/" );
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
     $file = new eZFile();
 
     if ( $file->getUploadedFile( "userfile" ) )
     {
-        $product = new eZTrade( $ProductID );
+        $product = new eZTrade( $productID );
 
-        $oldFile = new eZFile( $FileID );
+        $oldFile = new eZFile( $fileID );
         $product->deleteFile( $oldFile );
 
         $uploadedFile = new eZVirtualFile();
-        $uploadedFile->setName( $Name );
-        $uploadedFile->setDescription( $Description );
+        $uploadedFile->setName( $name );
+        $uploadedFile->setDescription( $description );
 
         $uploadedFile->setFile( $file );
 
@@ -100,38 +100,38 @@ if ( $Action == "Update" )
     }
     else
     {
-        $uploadedFile = new eZVirtualFile( $FileID );
-        $uploadedFile->setName( $Name );
-        $uploadedFile->setDescription( $Description );
+        $uploadedFile = new eZVirtualFile( $fileID );
+        $uploadedFile->setName( $name );
+        $uploadedFile->setDescription( $description );
         $uploadedFile->store();
     }
 
     include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /trade/productedit/filelist/" . $ProductID . "/" );
+    eZHTTPTool::header( "Location: /trade/productedit/filelist/" . $productID . "/" );
     exit();
 }
 
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    $product = new eZProduct( $ProductID );
+    $product = new eZProduct( $productID );
 
-    if ( count ( $FileArrayID ) != 0 )
+    if ( count ( $fileArrayID ) != 0 )
     {
-        foreach( $FileArrayID as $FileID )
+        foreach( $fileArrayID as $fileID )
         {
-            $file = new eZVirtualFile( $FileID );
+            $file = new eZVirtualFile( $fileID );
             $product->deleteFile( $file );
         }
     }
 
     include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: /trade/productedit/filelist/" . $ProductID . "/" );
+    eZHTTPTool::header( "Location: /trade/productedit/filelist/" . $productID . "/" );
     exit();    
 }
 
 $t = new eZTemplate( "eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "eztrade/admin/intl/", $Language, "fileedit.php" );
+                     "eztrade/admin/intl/", $language, "fileedit.php" );
 
 $t->setAllStrings();
 
@@ -145,10 +145,10 @@ $t->set_var( "action_value", "Insert" );
 $t->set_var( "option_id", "" );
 $t->set_var( "file", "" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $product = new eZProduct( $ProductID );
-    $file = new eZVirtualFile( $FileID );
+    $product = new eZProduct( $productID );
+    $file = new eZVirtualFile( $fileID );
 
     $t->set_var( "product_name", $product->name() );
 
@@ -158,7 +158,7 @@ if ( $Action == "Edit" )
     $t->set_var( "action_value", "Update" );
 }
 
-$product = new eZProduct( $ProductID );
+$product = new eZProduct( $productID );
     
 $t->set_var( "product_name", $product->name() );
 $t->set_var( "product_id", $product->id() );

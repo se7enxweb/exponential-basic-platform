@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: filedownload.php 7514 2001-09-27 11:48:27Z br $
+// $id: filedownload.php 7514 2001-09-27 11:48:27Z br $
 //
 // Created on: <10-Dec-2000 16:39:10 bf>
 //
@@ -23,39 +23,36 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-// clear what might be in the output buffer
-ob_end_clean();
-
-// include_once( "ezimagecatalogue/classes/ezimage.php" );
-// include_once( "ezuser/classes/ezobjectpermission.php" );
-// include_once( "ezuser/classes/ezuser.php" );
-
-$file = new eZImage( $ImageID );
-$fileName = $file->name();
-//$fileName = $file->fileName();
+$file = new eZImage( $imageID );
 $originalFileName = $file->originalFileName();
-$filePath = $file->filePath( true );
+$relFilePath = $file->filePath( true );
+
+$siteRoot = '/var/www/vhosts/latest.basic.demo.ezpublish.one/public_html/';
+$absFilePath = $siteRoot . $relFilePath;
 
 $user = eZUser::currentUser();
-$image = new eZImage( $ImageID );
-if ( eZObjectPermission::hasPermission( $image->id(), "imagecatalogue_image", "r", $user ) == false )
+if ( eZObjectPermission::hasPermission( $file->id(), "imagecatalogue_image", "r", $user ) == false )
 {
     eZHTTPTool::header( "Location: /error/403/" );
     exit();
 }
 
-//  print( $filePath );
+if ( !file_exists( $absFilePath ) || !is_file( $absFilePath ) )
+{
+    eZHTTPTool::header( "Location: /error/404" );
+    exit();
+}
 
-//  # the file may be a local file with full path. 
-$fileSize = eZPBFile::filesize( $filePath );
-$fp = eZPBFile::fopen( $filePath, "r" );
-$content = fread( $fp, $fileSize );
+// Redirect to the user-facing download handler which sends the file directly
+// without the admin kernel template wrapper interfering with binary output.
+$siteINI = eZINI::instance( 'site.ini' );
+$userSiteURL = $siteINI->variable( 'site', 'UserSiteURL' );
+$safeFilename = rawurlencode( basename( $originalFileName ) );
+header( "Location: https://" . $userSiteURL . "/imagecatalogue/download/" . (int)$imageID . "/" . $safeFilename . "/" );
 
-Header("Content-type: application/oct-stream"); 
-Header("Content-length: $fileSize"); 
-Header("Content-disposition: attachment; filename=\"$originalFileName\"");
+// Prevent the kernel's fatal-error shutdown handler from appending HTML output.
+eZExecution::setCleanExit();
 
-echo($content);
 exit();
 
 ?> 

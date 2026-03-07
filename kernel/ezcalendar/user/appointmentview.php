@@ -64,14 +64,14 @@ if ( $user == false )
 else
     $userID = $user->id();
 
-if ( isset( $GetByUserID ) && $GetByUserID == false )
+if ( isset( $getByUserID ) && $getByUserID == false )
 {
-    $GetByUserID = $userID;
+    $getByUserID = $userID;
 }
 
-if ( ( $session->variable( "ShowOtherCalendarUsers" ) == false ) || ( isset( $GetByUser ) ) )
+if ( ( $session->variable( "ShowOtherCalendarUsers" ) == false ) || ( isset( $getByUser ) ) )
 {
-    $session->setVariable( "ShowOtherCalendarUsers", $GetByUserID );
+    $session->setVariable( "ShowOtherCalendarUsers", $getByUserID );
 }
 
 $tmpUser = new eZUser( $session->variable( "ShowOtherCalendarUsers" ) );
@@ -85,7 +85,7 @@ else
     $showPrivate = false;
 }
 
-$appointment = new eZAppointment( $AppointmentID );
+$appointment = new eZAppointment( $appointmentID );
 $foundAppointment = false;
 
 if ( $appointment->id() > 0 )
@@ -102,7 +102,7 @@ if ( $foundAppointment == false )
 }
 else
 {
-    $appointment = new eZAppointment( $AppointmentID );
+    $appointment = new eZAppointment( $appointmentID );
     $appointmentType = $appointment->type();
     $datetime = $appointment->dateTime();
 

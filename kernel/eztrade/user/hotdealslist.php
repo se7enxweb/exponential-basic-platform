@@ -48,18 +48,18 @@ $user = eZUser::currentUser();
 $RequireUser = $ini->variable( "eZTradeMain", "RequireUserLogin" ) == "enabled" ? true : false;
 $ShowPrice = $RequireUser ? is_a( $user, "eZUser" ) : true;
 
-$PriceGroup = 0;
+$priceGroup = 0;
 if ( is_a( $user, "eZUser" ) )
 {
-    $PriceGroup = eZPriceGroup::correctPriceGroup( $user->groups( false ) );
+    $priceGroup = eZPriceGroup::correctPriceGroup( $user->groups( false ) );
 }
 if ( !$ShowPrice )
-    $PriceGroup = -1;
+    $priceGroup = -1;
 
 $t = new eZTemplate( "kernel/eztrade/user/" . $ini->variable( "eZTradeMain", "TemplateDir" ),
                      "kernel/eztrade/user/intl/", $Language, "hotdealslist.php" );
 
-if ( isset( $HotDealsPage ) )
+if ( isset( $hotDealsPage ) )
 {
     $t->set_file( "hdl_product_list_page_tpl", "hotdealspage.tpl" );
 }
@@ -78,14 +78,14 @@ $t->set_block( "hdl_product_tpl", "hdl_price_tpl", "hdl_price" );
 
 $t->set_block( "product_gallary_page_tpl", "add_to_cart_tpl", "add_to_cart" );
 
-if ( !isset( $ModuleName ) )
-    $ModuleName = "trade";
+if ( !isset( $moduleName ) )
+    $moduleName = "trade";
 if ( !isset( $ModuleView ) )
     $ModuleView = "productview";
 
 $ModuleList = "productgallary";
 
-$t->set_var( "module", $ModuleName );
+$t->set_var( "module", $moduleName );
 $t->set_var( "module_view", $ModuleView );
 $t->set_var( "module_list", $ModuleList );
 
@@ -94,12 +94,12 @@ $t->setAllStrings();
 
 $product = new eZProduct(  );
 
-$HotDealColumns = 2;
+$hotDealColumns = 2;
 
 if ( !isset( $MaxHotDeals ) )
     $MaxHotDeals = false;
-if ( isset( $HotDealColumns ) )
-    $hotDealListColumns = $HotDealColumns;
+if ( isset( $hotDealColumns ) )
+    $hotDealListColumns = $hotDealColumns;
 
 $t->set_var( "hotdeal_columns", $hotDealListColumns );
 
@@ -159,7 +159,7 @@ foreach ( $productList as $product )
 
         if ( $thumbnail )
         {
-            if ( !isset( $HotDealsPage ) )
+            if ( !isset( $hotDealsPage ) )
             {
                 $t->set_var( "product_image_path", "/" . $thumbnail->imagePath() );
                 $t->set_var( "product_image_width", $thumbnail->width() );
@@ -230,16 +230,16 @@ else
 
 
 
-if ( $GenerateStaticPage == "true" )
+if ( $generateStaticPage == "true" )
 {
     // include_once( "classes/ezcachefile.php" );
-    $CacheFile = new eZCacheFile( "kernel/eztrade/cache/",
-                                  array( "hotdealslist", $PriceGroup ),
+    $cacheFile = new eZCacheFile( "kernel/eztrade/cache/",
+                                  array( "hotdealslist", $priceGroup ),
                                   "cache", "," );
     $output = $t->parse( "output", "product_list_page_tpl" );
     // print the output the first time while printing the cache file.
     print( $output );
-    $CacheFile->store( $output );
+    $cacheFile->store( $output );
 }
 else
 {

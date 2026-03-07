@@ -41,24 +41,12 @@ $t->set_file( "variation_admin_tpl", "imagevariationadmin.tpl" );
 $t->set_block( "variation_admin_tpl", "variation_results_tpl", "variation_results" ); 
 
 $t->set_var( "variation_results", "" );
-if ( isset( $ClearVariations ) )
+if ( isset( $clearVariations ) )
 {    
-    // save the buffer contents
-    $buffer = ob_get_contents();
-    ob_end_clean();
-
-    // fetch the system printout
-    ob_start();
-    if ( trim( $GLOBALS["WINDIR"] ) != "" )
-        system( $siteDir . "./bin/shell/clearvariations.bat" );
+    if ( !empty( $GLOBALS["WINDIR"] ) )
+        $ret = shell_exec( $siteDir . "./bin/shell/clearvariations.bat 2>&1" );
     else
-        system( $siteDir . "./bin/shell/clearvariations.sh" );
-    $ret = ob_get_contents();
-    ob_end_clean();
-
-    // fill the buffer with the old values
-    ob_start();
-    print( $buffer );
+        $ret = shell_exec( $siteDir . "./bin/shell/clearvariations.sh 2>&1" );
 
     $t->set_var( "variation_return", $ret );
 

@@ -23,7 +23,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-if ( isset( $ShowPath ) && $ShowPath == true )
+if ( isset( $showPath ) && $showPath == true )
 {
     $t->set_file( "message_path", "messagepath.tpl"  );
     $t->set_block( "message_path", "article_message_tpl", "article_message_item" );
@@ -38,55 +38,55 @@ if ( isset( $ShowPath ) && $ShowPath == true )
 
     if ( !is_object( $msg ) )
     {
-        $msg = new eZForumMessage( $MessageID );
+        $msg = new eZForumMessage( $messageID );
     }
     
-    $MessageTopic = $msg->topic();
-    $ForumID = $msg->forumId();
-    $forum = new eZForum( $ForumID );
-    $ForumName = $forum->name();
+    $messageTopic = $msg->topic();
+    $forumID = $msg->forumId();
+    $forum = new eZForum( $forumID );
+    $forumName = $forum->name();
     $categories = $forum->categories();
 
     if ( isset( $categories[0] ) && is_object( $categories[0] ) )
     {
-        $ForumCategory = new eZForumCategory( $categories[0]->id() );
-        $ForumCategoryID = $ForumCategory->id();
-        if ( empty( $ForumCategoryName ) || $MessagePathOverride == true )
+        $forumCategory = new eZForumCategory( $categories[0]->id() );
+        $forumCategoryID = $forumCategory->id();
+        if ( empty( $forumCategoryName ) || $messagePathOverride == true )
         {
-            $ForumCategoryName = $ForumCategory->name();
+            $forumCategoryName = $forumCategory->name();
         }
-        // $ArticleID = false;
-        // $ArticleName = false;
+        // $articleID = false;
+        // $articleName = false;
         // $isArticle = false;
         // $doPrint = false;
-        // $ReplyToID = false;
-        // $PreviewID = false;
-        // $OriginalID = false;
-        $RedirectURL = '/forum/messagelist/' . $ForumID;
+        // $replyToID = false;
+        // $previewID = false;
+        // $originalID = false;
+        $redirectURL = '/forum/messagelist/' . $forumID;
     }
     else
     {
         // include_once( "ezarticle/classes/ezarticle.php" );
 
-        $ArticleID = eZArticle::articleIDFromForum( $ForumID );
+        $articleID = eZArticle::articleIDFromForum( $forumID );
 
-        $article = new eZArticle( $ArticleID );
-        $ArticleID = $article->id();
-        $ArticleName = $article->name();
+        $article = new eZArticle( $articleID );
+        $articleID = $article->id();
+        $articleName = $article->name();
         $isArticle = true;
     }
     
-    $t->set_var( "message_topic", isset( $MessageTopic ) ? $MessageTopic : false );
-    $t->set_var( "message_id", isset( $MessageID ) ? $MessageID : false );
+    $t->set_var( "message_topic", isset( $messageTopic ) ? $messageTopic : false );
+    $t->set_var( "message_id", isset( $messageID ) ? $messageID : false );
 
-    $t->set_var( "category_name", isset( $ForumCategoryName ) ? $ForumCategoryName : false );
-    $t->set_var( "category_id", isset( $ForumCategoryID ) ? $ForumCategoryID : false );
+    $t->set_var( "category_name", isset( $forumCategoryName ) ? $forumCategoryName : false );
+    $t->set_var( "category_id", isset( $forumCategoryID ) ? $forumCategoryID : false );
 
-    $t->set_var( "forum_id", isset( $ForumID ) ? $ForumID : false );
-    $t->set_var( "forum_name", isset( $ForumName ) ? $ForumName : false );
+    $t->set_var( "forum_id", isset( $forumID ) ? $forumID : false );
+    $t->set_var( "forum_name", isset( $forumName ) ? $forumName : false );
 
-    $t->set_var( "article_id", isset( $ArticleID ) ? $ArticleID : false );
-    $t->set_var( "article_name", isset( $ArticleName ) ? $ArticleName : false );
+    $t->set_var( "article_id", isset( $articleID ) ? $articleID : false );
+    $t->set_var( "article_name", isset( $articleName ) ? $articleName : false );
 
     $t->set_var( "article_message_item", "" );
     $t->set_var( "article_topic_item", "" );

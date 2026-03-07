@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: admincheck.php 6484 2001-08-17 13:36:01Z jhe $
+// $id: admincheck.php 6484 2001-08-17 13:36:01Z jhe $
 //
 // Created on: <26-Oct-2000 15:11:17 ce>
 //

@@ -65,7 +65,7 @@ $t->set_block( "bug_edit_tpl", "version_number_tpl", "version_number" );
 $t->set_var( "version_number", "" );
 
 $locale = new eZLocale( $Language );
-$bug = new eZBug( $BugID );
+$bug = new eZBug( $bugID );
 
 // path
 $module = $bug->module();
@@ -185,8 +185,8 @@ if( count( $images ) > 0 )
         $t->set_var( "image_id", $image->id() );
 
         $tmp = $image->caption();
-        $t->set_var( "image_name", "<a href=\"".$GlobalSiteIni->WWWDir.$GlobalSiteIni->Index."/imagecatalogue/imageview/" . $image->id()
-                     . "?RefererURL=/bug/bugview/$BugID" . "\">" . $tmp . "</a>" );
+        $t->set_var( "image_name", "<a href=\"".$globalSiteIni->WWWDir.$globalSiteIni->Index."/imagecatalogue/imageview/" . $image->id()
+                     . "?RefererURL=/bug/bugview/$bugID" . "\">" . $tmp . "</a>" );
         $t->parse( "screenshot_item", "screenshot_item_tpl", true );
     
         $i++;
@@ -218,7 +218,7 @@ if( count( $files ) > 0 )
         $t->set_var( "file_number", $i + 1 );
 //        $t->set_var( "file_id", $file->id() );
         $tmp = $file->name();
-        $t->set_var( "file_name", "<a href=\"".$GlobalSiteIni->WWWDir.$GlobalSiteIni->Index."/filemanager/download/" . $file->id() . "/" . $file->originalFileName() . "\">" .  $tmp . "</a>" );
+        $t->set_var( "file_name", "<a href=\"".$globalSiteIni->WWWDir.$globalSiteIni->Index."/filemanager/download/" . $file->id() . "/" . $file->originalFileName() . "\">" .  $tmp . "</a>" );
     
         $t->parse( "patch_item", "patch_item_tpl", true );
     

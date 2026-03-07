@@ -26,15 +26,15 @@
 // include_once( "classes/ezhttptool.php" );
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /tip/archive/0/" );
     exit();
 }
 
-if ( isset ( $DeleteCategories ) )
+if ( isset ( $deleteCategories ) )
 {
-    $Action = "DeleteCategories";
+    $action = "DeleteCategories";
 }
 
 // include_once( "classes/INIFile.php" );
@@ -46,30 +46,30 @@ $Language = $ini->variable( "eZTipMain", "Language" );
 // include_once( "eztip/classes/eztip.php" );
 // include_once( "eztip/classes/eztipcategory.php" );
 
-if ( !isset( $ParentID ) )
+if ( !isset( $parentID ) )
 {
-    $ParentID = 0;
+    $parentID = 0;
 }
 
 // Direct actions
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
 
     $category = new eZTipCategory();
-    $category->setName( $Name );
+    $category->setName( $name );
 
     $parentCategory = new eZTipCategory();
 
-	    if ( $parentCategory->get( $ParentID ) == true )                    
+	    if ( $parentCategory->get( $parentID ) == true )                    
         $category->setParent( $parentCategory );
 
-    $category->setParent( $ParentID );
+    $category->setParent( $parentID );
     
-    $category->setDescription( $Description );
-    $category->setIsPublished( $IsPublished );
-    $category->setSectionArray( $SectionArray );
+    $category->setDescription( $description );
+    $category->setIsPublished( $isPublished );
+    $category->setSectionArray( $sectionArray );
 
-    $category->setLocationID( $LocationID );
+    $category->setLocationID( $locationID );
     
     $category->store();
 
@@ -79,20 +79,20 @@ if ( $Action == "Insert" )
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
     $category = new eZTipCategory();
-    $category->get( $CategoryID );
-    $category->setName( $Name );
+    $category->get( $categoryID );
+    $category->setName( $name );
 
     $parentCategory = new eZTipCategory();
-    $category->setParent( $ParentID );
+    $category->setParent( $parentID );
     
-    $category->setDescription( $Description );
-    $category->setIsPublished( $IsPublished );
-    $category->setSectionArray( $SectionArray );
+    $category->setDescription( $description );
+    $category->setIsPublished( $isPublished );
+    $category->setSectionArray( $sectionArray );
 
-    $category->setLocationID( $LocationID );
+    $category->setLocationID( $locationID );
 
     $category->store();
 
@@ -102,10 +102,10 @@ if ( $Action == "Update" )
     exit();
 }
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
     $category = new eZTipCategory();
-    $category->get( $CategoryID );
+    $category->get( $categoryID );
 
     $category->delete();
     
@@ -113,13 +113,13 @@ if ( $Action == "Delete" )
     exit();
 }
 
-if ( $Action == "DeleteCategories" )
+if ( $action == "DeleteCategories" )
 {
-    if ( count ( $CategoryArrayID ) != 0 )
+    if ( count ( $categoryArrayID ) != 0 )
     {
-        foreach( $CategoryArrayID as $ID )
+        foreach( $categoryArrayID as $id )
         {
-            $category = new eZTipCategory( $ID );
+            $category = new eZTipCategory( $id );
             $category->delete();
         }
     }
@@ -142,13 +142,13 @@ $category = new eZTipCategory();
 
 $categoryArray = $category->getAll( );
 
-$t->set_var( "category_id", isset( $CategoryID ) ? $CategoryID : 0 );
+$t->set_var( "category_id", isset( $categoryID ) ? $categoryID : 0 );
 
 // edit
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
     $category = new eZTipCategory();
-    $category->get( $CategoryID );
+    $category->get( $categoryID );
 
     $t->set_var( "name_value", $category->name() );
     $t->set_var( "description_value", $category->description() );
@@ -172,7 +172,7 @@ if ( $Action == "Edit" )
 
 }
 
-if ( $Action == "Edit" || $Action == "New")
+if ( $action == "Edit" || $action == "New")
 {
 
     $t->set_var( "description_value", "" );
@@ -187,7 +187,7 @@ if ( $Action == "Edit" || $Action == "New")
 
     //	foreach( $tree as $item )
     //	{
-    //		if ($item[0]->id() != $CategoryID) {
+    //		if ($item[0]->id() != $categoryID) {
     //		    $t->set_var( "option_value", $item[0]->id() );
     //		    $t->set_var( "option_name", $item[0]->name() );
             
@@ -214,7 +214,7 @@ if ( $Action == "Edit" || $Action == "New")
 	$section = new eZSection();
 	$sectionList = $section->getAll();
 	$category = new eZTipCategory();
-	$category->get( $CategoryID );
+	$category->get( $categoryID );
 	$sectionArrayList = $category->getSectionArray();
 	
 	$t->set_block( "category_edit_tpl", "section_item_tpl", "section_item" );
@@ -237,18 +237,18 @@ if ( $Action == "Edit" || $Action == "New")
 	}
 
 	// Location selector
-	$TipLocations = $ini->variable( "eZTipMain", "TipLocations" );
-	//$LocationList = array();
-	$LocationList = explode(";" , $TipLocations);
+	$tipLocations = $ini->variable( "eZTipMain", "TipLocations" );
+	//$locationList = array();
+	$locationList = explode(";" , $tipLocations);
 	$category = new eZTipCategory();
-	$category->get( $CategoryID );
+	$category->get( $categoryID );
 	
 	$t->set_block( "category_edit_tpl", "location_item_tpl", "location_item" );
 	$t->set_var( "selected", "" );
 	$locID = 0;
-	foreach ( $LocationList as $LocationItem )
+	foreach ( $locationList as $locationItem )
 	{
-	    $t->set_var( "location_name", $LocationList[$locID] );
+	    $t->set_var( "location_name", $locationList[$locID] );
 	    $t->set_var( "location_id", $locID );
 	    if ( $category->locationID() == $locID)
 	        $t->set_var( "selected", "selected" );

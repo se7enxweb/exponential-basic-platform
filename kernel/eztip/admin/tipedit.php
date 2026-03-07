@@ -35,28 +35,28 @@
 // include_once( "eztip/classes/eztip.php" );
 // include_once( "eztip/classes/eztipcategory.php" );
 
-if ( isset ( $DeleteTips ) )
+if ( isset ( $deleteTips ) )
 {
-    $Action = "DeleteTips";
+    $action = "DeleteTips";
 }
 
-if ( isSet ( $Preview ) )
+if ( isSet ( $preview ) )
 {
-    if ( is_numeric ( $TipID ) && ( $TipID != 0 ) )
+    if ( is_numeric ( $tipID ) && ( $tipID != 0 ) )
     {
-        $Action = "Update";
+        $action = "Update";
     }
     else
     {
-        $Action = "Insert";
+        $action = "Insert";
     }
 }
 
-if( isset( $TipURL ) )
+if( isset( $tipURL ) )
 {
     // If TipURL is set, we trim it to remove any leading or trailing spaces.
     // This is to ensure that the URL is clean and does not contain unnecessary whitespace.}
-    $tipUrl = trim( $TipURL );
+    $tipUrl = trim( $tipURL );
 }
 else
 {
@@ -64,26 +64,26 @@ else
 }
 
 // Get images from the image browse function.
-if ( ( isSet ( $AddImages ) ) and ( is_numeric( $TipID ) ) and ( is_numeric ( $TipID ) ) )
+if ( ( isSet ( $addImages ) ) and ( is_numeric( $tipID ) ) and ( is_numeric ( $tipID ) ) )
 {
     $image = new eZImage( $ImageID );
-    $tip = new eZTip( $TipID );
+    $tip = new eZTip( $tipID );
     $tip->setImage( $image );
     $tip->store();
-    $Action = "Edit";
+    $action = "Edit";
 }
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
 
-    $category = new eZTipCategory( $CategoryID );
+    $category = new eZTipCategory( $categoryID );
     
     $tip = new eZTip( );
 
-    $tip->setName( $TipTitle );
-    $tip->setDescription( $TipDescription );
+    $tip->setName( $tipTitle );
+    $tip->setDescription( $tipDescription );
     
-    if ( $IsActive == "on" )
+    if ( $isActive == "on" )
     {
         $tip->setIsActive( true );
     }
@@ -92,7 +92,7 @@ if ( $Action == "Insert" )
         $tip->setIsActive( false );
     }
     
-    if ( $UseHTML == "1" )
+    if ( $useHTML == "1" )
     {
         $tip->setUseHTML( true );
     }
@@ -101,7 +101,7 @@ if ( $Action == "Insert" )
         $tip->setUseHTML( false );
     }
 
-    $tip->setHTMLBanner( $HTMLBanner );    
+    $tip->setHTMLBanner( $htmlBanner );    
     
     $real_url = $tipUrl;
     
@@ -112,8 +112,8 @@ if ( $Action == "Insert" )
     if ( $file->getUploadedFile( "TipImage" ) )
     { 
         $image = new eZImage();
-        $image->setName( $Name );
-        $image->setCaption( $Caption );
+        $image->setName( $name );
+        $image->setCaption( $caption );
 
         $image->setImage( $file );
         
@@ -121,20 +121,20 @@ if ( $Action == "Insert" )
         
         $tip->setImage( $image );
 
-        eZPBLog::writeNotice( "Picture added to ad: $TipID  from IP: $REMOTE_ADDR" );
+        eZPBLog::writeNotice( "Picture added to ad: $tipID  from IP: $REMOTE_ADDR" );
     }
 
 //      $dateTime = new eZDateTime( 2000, 11, 13, 14, 0, 15 );
 //      $tip->setOriginalPublishingDate( $dateTime );
 
 	//Webscope edit
-	//if ( !isSet ( $Cancel ) )
+	//if ( !isSet ( $cancel ) )
 	//{
     $tip->store();
     $category->addTip( $tip );
 	//}
 	
-    if ( isSet ( $Browse ) )
+    if ( isSet ( $browse ) )
     {
         $tipID = $tip->id();
         
@@ -145,31 +145,31 @@ if ( $Action == "Insert" )
         eZHTTPTool::header( "Location: /imagecatalogue/browse/" );
         exit();
     }
-    if ( isset( $Preview ) )
+    if ( isset( $preview ) )
     {
-        $Action = "Edit";
-        $TipID = $tip->id();
+        $action = "Edit";
+        $tipID = $tip->id();
     }
     else
     {        
-        eZHTTPTool::header( "Location: /tip/archive/$CategoryID/" );
+        eZHTTPTool::header( "Location: /tip/archive/$categoryID/" );
         exit();
     }
     
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
-    $category = new eZTipCategory( $CategoryID );
+    $category = new eZTipCategory( $categoryID );
     
-    $tip = new eZTip( $TipID );
+    $tip = new eZTip( $tipID );
 
-    $tip->setName( $TipTitle );
-    $tip->setDescription( $TipDescription );
+    $tip->setName( $tipTitle );
+    $tip->setDescription( $tipDescription );
 
 
   
-    if ( $IsActive == "on" )
+    if ( $isActive == "on" )
     {
         $tip->setIsActive( true );
     }
@@ -178,7 +178,7 @@ if ( $Action == "Update" )
         $tip->setIsActive( false );
     }
 
-    if ( $UseHTML == "1" )
+    if ( $useHTML == "1" )
     {
         $tip->setUseHTML( true );
     }
@@ -187,7 +187,7 @@ if ( $Action == "Update" )
         $tip->setUseHTML( false );
     }
 
-    $tip->setHTMLBanner( $HTMLBanner );    
+    $tip->setHTMLBanner( $htmlBanner );    
     
 //    if ( !preg_match( "/^([a-z]+:\/\/)/", $tipUrl ) )
 //    {
@@ -213,8 +213,8 @@ if ( $Action == "Update" )
     if ( $file->getUploadedFile( "TipImage" ) )
     { 
         $image = new eZImage();
-        $image->setName( $Name );
-        $image->setCaption( $Caption );
+        $image->setName( $name );
+        $image->setCaption( $caption );
 
         $image->setImage( $file );
 
@@ -222,9 +222,9 @@ if ( $Action == "Update" )
 
         $tip->setImage( $image );
 
-        eZPBLog::writeNotice( "Picture added to ad: $TipID  from IP: $REMOTE_ADDR" );
+        eZPBLog::writeNotice( "Picture added to ad: $tipID  from IP: $REMOTE_ADDR" );
     }
-	if (!isSet($Cancel))
+	if (!isSet($cancel))
 	{
     $tip->store();
 	}
@@ -232,7 +232,7 @@ if ( $Action == "Update" )
     $tip->removeFromCategories();
     $category->addTip( $tip );
 
-    if ( isSet ( $Browse ) )
+    if ( isSet ( $browse ) )
     {
         $tipID = $tip->id();
         
@@ -243,40 +243,40 @@ if ( $Action == "Update" )
         eZHTTPTool::header( "Location: /imagecatalogue/browse/" );
         exit();
     }
-    if ( isset( $Preview ) )
+    if ( isset( $preview ) )
     {
-        $Action = "Edit";        
+        $action = "Edit";        
     }
     else
     {        
-        eZHTTPTool::header( "Location: /tip/archive/$CategoryID/" );
+        eZHTTPTool::header( "Location: /tip/archive/$categoryID/" );
         exit();
     }
 }
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    $tip = new eZTip( $TipID );
+    $tip = new eZTip( $tipID );
     $tip->delete();
 
-    eZHTTPTool::header( "Location: /tip/archive/$CategoryID/" );
+    eZHTTPTool::header( "Location: /tip/archive/$categoryID/" );
     exit();    
 }
 
-if ( $Action == "DeleteTips" )
+if ( $action == "DeleteTips" )
 {
-    if ( count ( $TipArrayID ) != 0 )
+    if ( count ( $tipArrayID ) != 0 )
     {
-        foreach( $TipArrayID as $TipID )
+        foreach( $tipArrayID as $tipID )
         {
-            $tip = new eZTip( $TipID );
+            $tip = new eZTip( $tipID );
             $cat = $tip->categories();
-            $CategoryID = $cat[0]->id();
+            $categoryID = $cat[0]->id();
             $tip->delete();
         }
     }
 
-    eZHTTPTool::header( "Location: /tip/archive/$CategoryID/" );
+    eZHTTPTool::header( "Location: /tip/archive/$categoryID/" );
     exit();
 }
 
@@ -311,9 +311,9 @@ $t->set_var( "image", "" );
 $t->set_var( "html_banner", "" );
 $t->set_var( "use_html", "" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $tip = new eZTip( $TipID );
+    $tip = new eZTip( $tipID );
 
     $t->set_var( "tip_title_value", $tip->name() );
     $t->set_var( "tip_description_value", $tip->description() );
@@ -376,7 +376,7 @@ $categoryArray = $category->getTree();
 
 foreach ( $categoryArray as $catItem )
 {
-    if ( $Action == "Edit" )
+    if ( $action == "Edit" )
     {
         if ( $defCat->id() == $catItem[0]->id() )
         {

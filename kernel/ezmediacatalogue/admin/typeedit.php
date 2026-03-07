@@ -25,7 +25,7 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /mediacatalogue/typelist/" );
     exit();
@@ -42,79 +42,79 @@ $move_item = true;
 // include_once( "ezmediacatalogue/classes/ezmediatype.php" );
 // include_once( "ezmediacatalogue/classes/ezmediaattribute.php" );
 
-if ( isset( $Action ) && $Action == "Insert" )
+if ( isset( $action ) && $action == "Insert" )
 {
     $type = new eZMediaType();
-    $type->setName( $Name );
+    $type->setName( $name );
 
     $type->store();
 
-    $TypeID = $type->id();
-    $Action = "Edit";
+    $typeID = $type->id();
+    $action = "Edit";
 }
 
 
-if ( ( isset( $Action ) && $Action == "Update" ) || ( isset ( $Update ) ) )
+if ( ( isset( $action ) && $action == "Update" ) || ( isset ( $update ) ) )
 {
-    $type = new eZMediaType( $TypeID );
-    $type->setName( $Name );
+    $type = new eZMediaType( $typeID );
+    $type->setName( $name );
 
     $type->store();
 
     // update attributes
     $i =0;
-    if ( isset( $AttributeName ) && count( $AttributeName ) > 0 )
+    if ( isset( $attributeName ) && count( $attributeName ) > 0 )
     {
-        foreach ( $AttributeName as $attribute )
+        foreach ( $attributeName as $attribute )
         {
-            $att = new eZMediaAttribute( $AttributeID[$i] );
+            $att = new eZMediaAttribute( $attributeID[$i] );
             $att->setName( $attribute );
-            $att->setDefaultValue( $AttributeDefault[$i] );
+            $att->setDefaultValue( $attributeDefault[$i] );
             $att->store();
 
             $i++;
         }
     }
-    $Action = "Edit";
+    $action = "Edit";
 }
 
-if( isset( $Action ) && $Action == "up" )
+if( isset( $action ) && $action == "up" )
 {
-    $attribute = new eZMediaAttribute( $AttributeID );
+    $attribute = new eZMediaAttribute( $attributeID );
     $attribute->moveUp();
-    eZHTTPTool::header( "Location: /mediacatalogue/typeedit/edit/$TypeID" );
+    eZHTTPTool::header( "Location: /mediacatalogue/typeedit/edit/$typeID" );
     exit();
 }
 
-if( isset( $Action ) && $Action == "down" )
+if( isset( $action ) && $action == "down" )
 {
-    $attribute = new eZMediaAttribute( $AttributeID );
+    $attribute = new eZMediaAttribute( $attributeID );
     $attribute->moveDown();
-    eZHTTPTool::header( "Location: /mediacatalogue/typeedit/edit/$TypeID" );
+    eZHTTPTool::header( "Location: /mediacatalogue/typeedit/edit/$typeID" );
     exit();
 }
 
-if( isset( $Ok ) )
+if( isset( $ok ) )
 {
     eZHTTPTool::header( "Location: /mediacatalogue/typelist/" );
     exit();
 }
 
-if ( isset ( $DeleteSelected ) )
+if ( isset ( $deleteSelected ) )
 {
-    if ( isset( $DeleteAttributes ) && count ( $DeleteAttributes ) > 0 )
+    if ( isset( $deleteAttributes ) && count ( $deleteAttributes ) > 0 )
     {
-        foreach ( $DeleteAttributes as $attID )
+        foreach ( $deleteAttributes as $attID )
         {
             $attribute = new eZMediaAttribute( $attID );
             $attribute->delete();
         }
     }
-    $Action = "Edit";
+    $action = "Edit";
 }
 
 
-if ( isset( $NewAttribute ) )
+if ( isset( $newAttribute ) )
 {
     $attribute = new eZMediaAttribute();
     $attribute->setType( $type );
@@ -123,10 +123,10 @@ if ( isset( $NewAttribute ) )
 }
 
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
     $type = new eZProductType();
-    $type->get( $TypeID );
+    $type->get( $typeID );
 
     $type->delete();
     
@@ -162,10 +162,10 @@ $t->set_var( "type_id", "" );
 $t->set_var( "action_value", "Insert" );
 
 // edit
-if ( isset( $Action ) && $Action == "Edit" )
+if ( isset( $action ) && $action == "Edit" )
 {
     $type = new eZMediaType();
-    $type->get( $TypeID );
+    $type->get( $typeID );
 
     $t->set_var( "name_value", $type->name() );
     $t->set_var( "action_value", "Update" );

@@ -31,7 +31,7 @@ $ini = eZINI::instance( 'site.ini' );
 
 $user = eZUser::currentUser();
 
-$file = new eZVirtualFile( $FileID );
+$file = new eZVirtualFile( $fileID );
 
 if ( eZObjectPermission::hasPermission( $file->id(), "filemanager_file", "r", $user ) == false )
 {
@@ -50,7 +50,7 @@ $filePath = $file->filePath( true );
 // echo "<hr>"; svar_dump( $filePath ); echo "<hr>";
 $userID = $user->ID;
 
-$file_debug = true;
+$file_debug = false;
 $download_style_inline = true;
 
 //###################################################
@@ -102,9 +102,9 @@ $file->addPageView( $GlobalPageView );
 
 $filePath = preg_replace( "#.*/(.*)#", "\\1", $filePath );
 
-if($file_debug){
+if( $file_debug )
+{
   print( $filePath );
-
   print( "Location: /filemanager/filedownload/$filePath/$editedFileName"  );
   exit();
 }
@@ -168,11 +168,7 @@ $suffix = $nameParts[count( $nameParts ) - 1];
 
 $suffix = strtolower( $suffix );
 
- if($file_debug) {
-  print("your file is: " . $suffix ."<br />");
-  print("your file is: " . $editedFileName ."<br />");
-  die("your file is: " . $originalFileName );
- }
+
 
 //----------------------------------------- 
 // clear what might be in the output buffer and stop the buffer.
@@ -224,11 +220,6 @@ switch ( $suffix )
         break;
 }
 
-// xxx
-if($file_debug){
-  die("PDF: " . $suffix);
-}
-
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Pragma: public");
@@ -252,9 +243,9 @@ if(!$download_style_inline){
 // include the file's contents to browser ... 
 $fh = eZPBFile::fopen( "var/site/storage/ezfilemanager/$filePath", "rb" );
 fpassthru( $fh );
-exit();
 
-// original exit method
-// break();
+// Prevent the kernel's fatal-error shutdown handler from appending HTML output.
+eZExecution::setCleanExit();
+exit();
 
 ?>

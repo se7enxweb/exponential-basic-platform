@@ -56,14 +56,14 @@ $t->set_block( "order_item_tpl", "order_status_tpl", "order_status" );
 
 $t->set_var( "site_style", $SiteDesign );
 
-$t->set_var( "query_string", isset( $QueryText ) ? $QueryText : '' );
+$t->set_var( "query_string", isset( $queryText ) ? $queryText : '' );
 
-if ( !isset( $OrderBy ) )
-    $OrderBy = "Date";
-if ( !isset( $Limit ) )
-    $Limit = 20;
+if ( !isset( $orderBy ) )
+    $orderBy = "Date";
+if ( !isset( $limit ) )
+    $limit = 20;
 
-$t->set_var( "current_offset", $Offset );
+$t->set_var( "current_offset", $offset );
 
 $order = new eZOrder();
 
@@ -75,7 +75,7 @@ if ( !$user )
     exit();
 }
 
-$orderArray = $order->getByUser( $Offset, $Limit, $OrderBy, $user );
+$orderArray = $order->getByUser( $offset, $limit, $orderBy, $user );
 $total_count = $order->getCountByUser( $user );
 if ( !$orderArray )
     $t->set_var( "order_item", "" );
@@ -139,7 +139,7 @@ foreach ( $orderArray as $order )
     $i++;
 }
 
-eZList::drawNavigator( $t, $total_count, $Limit, $Offset, "order_list_tpl" );
+eZList::drawNavigator( $t, $total_count, $limit, $offset, "order_list_tpl" );
 
 
 $t->parse( "order_item_list", "order_item_list_tpl" );

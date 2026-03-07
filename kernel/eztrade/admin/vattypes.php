@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: vattypes.php 6233 2001-07-20 11:42:02Z jakobn $
+// $id: vattypes.php 6233 2001-07-20 11:42:02Z jakobn $
 //
 // Created on: <19-Feb-2001 13:34:10 bf>
 //
@@ -30,25 +30,25 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezvattype.php" );
 
 
-if ( isset( $Action ) && $Action == "Store" )
+if ( isset( $action ) && $action == "Store" )
 {
     $i =0;
-    foreach ( $VatID as $id )
+    foreach ( $vatID as $id )
     {
-        $type = new eZVATType( $VatID[$i] );
-        $type->setName( $VatName[$i] );
-        $type->setValue( $VatValue[$i] );
+        $type = new eZVATType( $vatID[$i] );
+        $type->setName( $vatName[$i] );
+        $type->setValue( $vatValue[$i] );
         $type->store();
         $i++;
     }    
 }
 
-if ( isset( $Action ) && $Action == "Add" )
+if ( isset( $action ) && $action == "Add" )
 {
     $type = new eZVATType();
     $type->setName( "" );
@@ -56,9 +56,9 @@ if ( isset( $Action ) && $Action == "Add" )
     $type->store();
 }
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
-    foreach ( $VatArrayID as $id )
+    foreach ( $vatArrayID as $id )
     {
         $type = new eZVATType( $id );
         $type->delete();
@@ -66,7 +66,7 @@ if ( isset( $Action ) && $Action == "Delete" )
 }
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "vattypes.php" );
+                     "kernel/eztrade/admin/intl/", $language, "vattypes.php" );
 
 $t->setAllStrings();
 

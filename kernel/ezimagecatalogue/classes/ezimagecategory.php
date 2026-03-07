@@ -399,7 +399,7 @@ class eZImageCategory
         {
             array_push( $tree, array( $return_array[] = new eZImageCategory( $category->id() ), $level ) );
 
-            if ( $category != 0 )
+            if ( $category->id() != 0 )
             {
                 $tree = array_merge( $tree, $this->getTree( $category->id(), $level ) );
             }

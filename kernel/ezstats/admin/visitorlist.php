@@ -46,18 +46,18 @@ $t->set_block( "visitor_page_tpl", "visitor_list_tpl", "visitor_list" );
 $t->set_block( "visitor_list_tpl", "visitor_tpl", "visitor" );
 
 
-if ( !isset( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
-if ( !isset( $ViewLimit ) or !is_numeric( $ViewLimit ) )
-    $ViewLimit = 25;
+if ( !isset( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
+if ( !isset( $viewLimit ) or !is_numeric( $viewLimit ) )
+    $viewLimit = 25;
 
-$latest = eZPageViewQuery::topVisitors( $ViewLimit, $Offset );
-$ItemCount = eZPageViewQuery::topVisitorsCount();
+$latest = eZPageViewQuery::topVisitors( $viewLimit, $offset );
+$itemCount = eZPageViewQuery::topVisitorsCount();
 
-$t->set_var( "item_start", $Offset + 1 );
-$t->set_var( "item_end", $Offset + $ViewLimit );
-$t->set_var( "item_count", $ItemCount );
-$t->set_var( "item_limit", $ViewLimit );
+$t->set_var( "item_start", $offset + 1 );
+$t->set_var( "item_end", $offset + $viewLimit );
+$t->set_var( "item_count", $itemCount );
+$t->set_var( "item_limit", $viewLimit );
 
 if ( count( $latest ) > 0 )
 {
@@ -76,7 +76,7 @@ if ( count( $latest ) > 0 )
     $t->parse( "visitor", "visitor_tpl", true );
     $i++;
   }
-  eZList::drawNavigator( $t, $ItemCount, $ViewLimit, $Offset, "visitor_list_tpl" );
+  eZList::drawNavigator( $t, $itemCount, $viewLimit, $offset, "visitor_list_tpl" );
   
   $t->parse( "visitor_list", "visitor_list_tpl" );
 }

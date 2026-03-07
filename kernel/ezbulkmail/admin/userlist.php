@@ -62,15 +62,15 @@ $t->set_block( "user_list_page_tpl", "no_subscribers_tpl", "no_subscribers" );
 $t->set_var( "no_subscribers", "" );
 
 // some logic to set the CategoryID right. (we can get it both from url and from the list)
-if( isset( $ListID ) && is_numeric( $ListID ) )
-    $CategoryID = $ListID;
+if( isset( $listID ) && is_numeric( $listID ) )
+    $categoryID = $listID;
 
 $categories = eZBulkMailCategory::getAll();
 foreach( $categories as $category )
 {
     $t->set_var( "category_id", $category->id() );
     $t->set_var( "category_name", $category->name() );
-    if( $CategoryID == $category->id() )
+    if( $categoryID == $category->id() )
         $t->set_var( "category_selected", "selected" );
     else
         $t->set_var( "category_selected", "" );
@@ -78,11 +78,11 @@ foreach( $categories as $category )
     $t->parse( "category_item", "category_item_tpl", true );
 }
 
-if( $CategoryID != 0 )
+if( $categoryID != 0 )
 {
     // list normal subscribers..
     $i = 0;
-    $addresses = eZBulkMailCategory::subscribers( true, $CategoryID );
+    $addresses = eZBulkMailCategory::subscribers( true, $categoryID );
     $normal = 0;
     $normalUser = 0;
     if( count( $addresses ) > 0 )
@@ -96,7 +96,7 @@ if( $CategoryID != 0 )
         }
     }
     // list eZUser subscribers.
-    $addresses = eZBulkMailCategory::subscribedUsers( $CategoryID );
+    $addresses = eZBulkMailCategory::subscribedUsers( $categoryID );
     if( count( $addresses ) > 0 )
     {
         foreach( $addresses as $address )
@@ -109,7 +109,7 @@ if( $CategoryID != 0 )
     }
 
     // list users forced by group addition
-    $groups = eZBulkMailCategory::groupSubscriptions( true, $CategoryID );
+    $groups = eZBulkMailCategory::groupSubscriptions( true, $categoryID );
     foreach( $groups as $group )
         $subscribers = array_merge( $subscribers, $group->users() );
 

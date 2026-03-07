@@ -39,27 +39,27 @@
 
 $user = eZUser::currentUser();
 
-if ( isset( $NewFolder ) )
+if ( isset( $newFolder ) )
 {
-    $Description = false;
-    $Name = false;
+    $description = false;
+    $name = false;
     $readGroupArrayID = array();
     $writeGroupArrayID = array();
     $uploadGroupArrayID = array();
     $sectionID = false;
 }
 // check if user has rights to edit the current folder.
-if ( isset( $FolderID ) && $FolderID != 0 &&
-     !eZObjectPermission::hasPermission( $FolderID, "filemanager_folder", 'w' ) &&
-     !eZVirtualFolder::isOwner( $user, $FolderID ) ) 
+if ( isset( $folderID ) && $folderID != 0 &&
+     !eZObjectPermission::hasPermission( $folderID, "filemanager_folder", 'w' ) &&
+     !eZVirtualFolder::isOwner( $user, $folderID ) ) 
 {
     eZHTTPTool::header( "Location: /error/403/" );
     exit();
 }
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
-    $folder = new eZVirtualFolder( $FolderID );
+    $folder = new eZVirtualFolder( $folderID );
 
     $parent = $folder->parent();
 
@@ -93,8 +93,8 @@ $t->set_block( "folder_edit_tpl", "upload_group_item_tpl", "upload_group_item" )
 $t->set_block( "folder_edit_tpl", "section_item_tpl", "section_item" );
 
 $t->set_var( "errors", "" );
-$t->set_var( "name_value", $Name );
-$t->set_var( "description_value", $Description );
+$t->set_var( "name_value", $name );
+$t->set_var( "description_value", $description );
 
 $error = false;
 $permissionCheck = true;
@@ -123,12 +123,12 @@ $t->set_block( "errors_tpl", "error_write_everybody_permission_tpl", "error_writ
 $t->set_var( "error_write_everybody_permission", "&nbsp;" );
 
 
-if ( $Action == "Insert" || $Action == "Update" )
+if ( $action == "Insert" || $action == "Update" )
 {
     if ( $permissionCheck )
     {
 
-        if ( $ParentID == 0 )
+        if ( $parentID == 0 )
         {
             if ( eZPermission::checkPermission( $user, "eZFileManager", "WriteToRoot" ) == false )
             {
@@ -138,19 +138,19 @@ if ( $Action == "Insert" || $Action == "Update" )
         }
         else
         {
-            $parentFolder = new eZVirtualFolder( $ParentID );
+            $parentFolder = new eZVirtualFolder( $parentID );
             // no write to parent.
-            if ( $FolderID == 0 &&
-              eZObjectPermission::hasPermission( $ParentID, "filemanager_folder", 'w' ) == false &&
-              eZObjectPermission::hasPermission( $ParentID, "filemanager_folder", 'u') == false )
+            if ( $folderID == 0 &&
+              eZObjectPermission::hasPermission( $parentID, "filemanager_folder", 'w' ) == false &&
+              eZObjectPermission::hasPermission( $parentID, "filemanager_folder", 'u') == false )
             {
                 $t->parse( "error_write", "error_write_permission" );
                 $error = true;
             }
             // update and not write or owner
-            if ( ! $error && $Action == "Update" && 
-                eZObjectPermission::hasPermission( $FolderID, "filemanager_folder", 'w' ) == false &&
-                eZVirtualFolder::isOwner( $user, $FolderID ) == false )
+            if ( ! $error && $action == "Update" && 
+                eZObjectPermission::hasPermission( $folderID, "filemanager_folder", 'w' ) == false &&
+                eZVirtualFolder::isOwner( $user, $folderID ) == false )
             {
                 $t->parse( "error_upload", "error_upload_permission" );
                 $error = true;
@@ -160,7 +160,7 @@ if ( $Action == "Insert" || $Action == "Update" )
 
     if ( $nameCheck )
     {
-        if ( empty( $Name ) )
+        if ( empty( $name ) )
         {
             $t->parse( "error_name", "error_name_tpl" );
             $error = true;
@@ -170,16 +170,16 @@ if ( $Action == "Insert" || $Action == "Update" )
     if ( $descriptionCheck )
     {
         
-        if ( empty( $Description ) )
+        if ( empty( $description ) )
         {
             $t->parse( "error_description", "error_description_tpl" );
             $error = true;
         }
     }
 
-    if ( $Action == "Update" )
+    if ( $action == "Update" )
     {
-        if ( $ParentID == $FolderID )
+        if ( $parentID == $folderID )
         {
             $t->parse( "error_parent_check", "error_parent_check_tpl" );
             $error = true;
@@ -193,49 +193,49 @@ if ( $Action == "Insert" || $Action == "Update" )
 }
 
 // Insert or update a folder.
-if ( ( $Action == "Insert" || $Action == "Update" ) && $error == false )
+if ( ( $action == "Insert" || $action == "Update" ) && $error == false )
 {
-    if ( $Action == "Insert" )
+    if ( $action == "Insert" )
     {
         $folder = new eZVirtualFolder();
         $folder->setUser( $user );
     }
     else
     {
-        $folder = new eZVirtualFolder( $FolderID );
+        $folder = new eZVirtualFolder( $folderID );
     }
-    $folder->setName( $Name );
-    if ( isset( $Description ) )
-        $folder->setDescription( $Description );
+    $folder->setName( $name );
+    if ( isset( $description ) )
+        $folder->setDescription( $description );
 
-    $folder->setSectionID( $SectionID );
-    $parent = new eZVirtualFolder( $ParentID );
+    $folder->setSectionID( $sectionID );
+    $parent = new eZVirtualFolder( $parentID );
     $folder->setParent( $parent );
 
     $folder->store();
-    $FolderID = $folder->id();
+    $folderID = $folder->id();
 
-    changePermissions( $FolderID, $ReadGroupArrayID, 'r' );
-    changePermissions( $FolderID, $WriteGroupArrayID, 'w' );
-    changePermissions( $FolderID, $UploadGroupArrayID, 'u');
+    changePermissions( $folderID, $readGroupArrayID, 'r' );
+    changePermissions( $folderID, $writeGroupArrayID, 'w' );
+    changePermissions( $folderID, $uploadGroupArrayID, 'u');
 
     // check if user uploaded a dir and had upload permission only and is not owner.
     // TODO: No move, insert takes permissions of parent.
-    if ( $Action == "Insert" &&
-         eZObjectPermission::hasPermission( $ParentID, "filemanager_folder", 'w' ) == false &&
+    if ( $action == "Insert" &&
+         eZObjectPermission::hasPermission( $parentID, "filemanager_folder", 'w' ) == false &&
          $parent->user( false ) != $user->id() )
     {
-        changePermissions( $FolderID, eZObjectPermission::getGroups( $ParentID, "filemanager_folder", 'r', false ), 'r' );
-        changePermissions( $FolderID, eZObjectPermission::getGroups( $ParentID, "filemanager_folder", 'w', false ), 'w' );
-        changePermissions( $FolderID, eZObjectPermission::getGroups( $ParentID, "filemanager_folder", 'u', false ), 'u' );
+        changePermissions( $folderID, eZObjectPermission::getGroups( $parentID, "filemanager_folder", 'r', false ), 'r' );
+        changePermissions( $folderID, eZObjectPermission::getGroups( $parentID, "filemanager_folder", 'w', false ), 'w' );
+        changePermissions( $folderID, eZObjectPermission::getGroups( $parentID, "filemanager_folder", 'u', false ), 'u' );
         $folder->setUser( $parent->user() );
         $folder->store();
     }
     // if update and moving into a folder that has upload permission and not owner of that folder
     // update into a upload dir is NOT allowed unless you have write permission or you are the owner.
 /*
-    if ( $Action == "Update" &&
-         eZObjectPermission::hasPermission( $ParentID, "filemanager_folder", 'w' ) == false &&
+    if ( $action == "Update" &&
+         eZObjectPermission::hasPermission( $parentID, "filemanager_folder", 'w' ) == false &&
          $parent->user( false ) != $user->id() )
     {
         exit();
@@ -267,17 +267,17 @@ if ( ( $Action == "Insert" || $Action == "Update" ) && $error == false )
     }
 */
 
-    eZHTTPTool::header( "Location: /filemanager/list/" . $ParentID );
+    eZHTTPTool::header( "Location: /filemanager/list/" . $parentID );
     exit();
 }
 
-if ( $Action == "Delete" && $error == false )
+if ( $action == "Delete" && $error == false )
 {
-    if ( count( $FolderArrayID ) > 0 )
+    if ( count( $folderArrayID ) > 0 )
     {
-        foreach ( $FolderArrayID as $FolderID )
+        foreach ( $folderArrayID as $folderID )
         {
-            $folder = new eZVirtualFolder( $FolderID );
+            $folder = new eZVirtualFolder( $folderID );
             $folder->delete();
         }
     }
@@ -286,9 +286,9 @@ if ( $Action == "Delete" && $error == false )
 $t->set_var( "write_everybody", "" );
 $t->set_var( "read_everybody", "" );
 $t->set_var( "upload_everybody", "" );
-if ( $Action == "New" || $error )
+if ( $action == "New" || $error )
 {
-    if ( $Action == "New" )
+    if ( $action == "New" )
     {
         $t->set_var( "action_value", "insert" );
         $t->set_var( "folder_id", "" );
@@ -296,16 +296,16 @@ if ( $Action == "New" || $error )
     else
     {
         $t->set_var( "action_value", "update" );
-        $t->set_var( "folder_id", $FolderID );
+        $t->set_var( "folder_id", $folderID );
     }
     $t->set_var( "write_everybody", "selected" );
     $t->set_var( "read_everybody", "selected" );
     $t->set_var( "upload_everybody", "selected" );
 }
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $folder = new eZVirtualFolder( $FolderID );
+    $folder = new eZVirtualFolder( $folderID );
 
     $t->set_var( "name_value", $folder->name() );
     $t->set_var( "folder_id", $folder->id() );
@@ -428,9 +428,9 @@ foreach ( $folderList as $folderItem )
 
         $t->set_var( "selected", "" );
     
-        if ( $folder && !$FolderID )
+        if ( $folder && !$folderID )
         {
-            $FolderID = $folder->id();
+            $folderID = $folder->id();
         }
 
         $selectFolderID = $folderItem[0]->id();

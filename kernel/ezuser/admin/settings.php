@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: settings.php 6484 2001-08-17 13:36:01Z jhe $
+// $id: settings.php 6484 2001-08-17 13:36:01Z jhe $
 //
 // Created on: <11-Apr-2001 16:53:40 amos>
 //
@@ -28,7 +28,7 @@
 // include_once( "classes/ezhttptool.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZUserMain", "Language" );
+$language = $ini->variable( "eZUserMain", "Language" );
 // $DOC_ROOT = $ini->variable( "eZUserMain", "DocumentRoot" );
 
 // include_once( "ezsession/classes/ezpreferences.php" );
@@ -53,7 +53,7 @@ if ( $url == "/user/settings" )
 if( $url == '' )
     $url == '/';
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: $url" );
     exit();
@@ -61,7 +61,7 @@ if ( isset( $Cancel ) )
 
 // Template
 $t = new eZTemplate( "kernel/ezuser/admin/" . $ini->variable( "eZUserMain", "AdminTemplateDir" ),
-                     "kernel/ezuser/admin/" . "/intl", $Language, "settings.php" );
+                     "kernel/ezuser/admin/" . "/intl", $language, "settings.php" );
 $t->setAllStrings();
 
 $t->set_file( "settings", "settings.tpl" );
@@ -77,10 +77,10 @@ if ( !$user )
     exit();
 }
 
-if ( isset( $Action ) && $Action == "update" )
+if ( isset( $action ) && $action == "update" )
 {
-    $preferences->setVariable( "SingleModule", $SingleModule != "" ? "enabled" : "disabled" );
-    $preferences->setVariable( "ModuleTab", $ModuleTabBar != "" ? "enabled" : "disabled" );
+    $preferences->setVariable( "SingleModule", $singleModule != "" ? "enabled" : "disabled" );
+    $preferences->setVariable( "ModuleTab", $moduleTabBar != "" ? "enabled" : "disabled" );
 
     eZHTTPTool::header( "Location: $url" );
     exit();

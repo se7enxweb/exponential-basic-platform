@@ -39,9 +39,9 @@
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
 
-if ( $CategoryID != 0 )
+if ( $categoryID != 0 )
 {
-    $GlobalSectionID = eZProductCategory::sectionIDStatic( $CategoryID );
+    $GlobalSectionID = eZProductCategory::sectionIDStatic( $categoryID );
 }
 
 // init the section
@@ -52,12 +52,12 @@ $sectionObject->setOverrideVariables();
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZTradeMain", "Language" );
-$Limit = $ini->variable( "eZTradeMain", "ProductGalleryLimit" );
+$limit = $ini->variable( "eZTradeMain", "ProductGalleryLimit" );
 $ShowPriceGroups = $ini->variable( "eZTradeMain", "PriceGroupsEnabled" ) == "true";
 $RequireUserLogin = $ini->variable( "eZTradeMain", "RequireUserLogin" ) == "true";
 $PricesIncludeVAT = $ini->variable( "eZTradeMain", "PricesIncludeVAT" ) == "enabled" ? true : false;
 
-$CapitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
+$capitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
 
 $ThumbnailImageWidth = $ini->variable( "eZTradeMain", "ThumbnailImageWidth" );
 $ThumbnailImageHeight = $ini->variable( "eZTradeMain", "ThumbnailImageHeight" );
@@ -86,24 +86,28 @@ $t->set_block( "product_tpl", "product_group_end_tpl", "product_group_end" );
 $t->set_block( "product_gallery_page_tpl", "category_list_tpl", "category_list" );
 $t->set_block( "category_list_tpl", "category_tpl", "category" );
 
-if ( !isSet( $ModuleName ) )
-    $ModuleName = "trade";
+if ( !isSet( $moduleName ) )
+    $moduleName = "trade";
 if ( !isSet( $ModuleList ) )
     $ModuleList = "productgallery";
 if ( !isSet( $ModuleView ) )
     $ModuleView = "productview";
 
+$SiteTitleAppend = '';
+$SiteDescriptionOverride = '';
+$generateStaticPage = true;
+
 // makes the section ID available in articleview template
 $t->set_var( "section_id", $GlobalSectionID );
 
-$t->set_var( "module", $ModuleName );
+$t->set_var( "module", $moduleName );
 $t->set_var( "module_list", $ModuleList );
 $t->set_var( "module_view", $ModuleView );
 
 $t->setAllStrings();
 
 $category = new eZProductCategory();
-$category->get( $CategoryID );
+$category->get( $categoryID );
 
 // path
 $pathArray = $category->path();
@@ -163,17 +167,17 @@ else
     $t->parse( "category_list", "category_list_tpl" );
 }
 
-if ( !isSet( $Limit ) or !is_numeric( $Limit ) )
-    $Limit = 10;
-if ( !isSet( $Offset ) or !is_numeric( $Offset ) )
-    $Offset = 0;
+if ( !isSet( $limit ) or !is_numeric( $limit ) )
+    $limit = 10;
+if ( !isSet( $offset ) or !is_numeric( $offset ) )
+    $offset = 0;
 
 // products
 //$category->setSortMode(2);
 $category->setSortMode(5);
 $TotalTypes = $category->productCount( $category->sortMode(), false );
-//$productgallery = $category->activeProducts( $category->sortMode(), $Offset, $Limit );
-$productgallery = $category->activeProducts( "alphanumeric_asc", $Offset, $Limit, $category->id() );
+//$productgallery = $category->activeProducts( $category->sortMode(), $offset, $limit );
+$productgallery = $category->activeProducts( "alphanumeric_asc", $offset, $limit, $category->id() );
 
 $locale = new eZLocale( $Language );
 $i = 0;
@@ -335,14 +339,14 @@ else
     $t->set_var( "product_gallery", "<div>No Products</div>" );
 }
 
-eZList::drawNavigator( $t, $TotalTypes, $Limit, $Offset, "product_gallery_page_tpl" );
+eZList::drawNavigator( $t, $TotalTypes, $limit, $offset, "product_gallery_page_tpl" );
 
 
-if ( $GenerateStaticPage == true )
+if ( $generateStaticPage == true )
 {
     if ( $user )
-        $CategoryArray = $user->groups( false );
-    $cache = new eZCacheFile( "kernel/eztrade/cache/", array( "productgallery", $CategoryArray, $Offset, $PriceGroup ),
+        $categoryArray = $user->groups( false );
+    $cache = new eZCacheFile( "kernel/eztrade/cache/", array( "productgallery", $categoryArray, $offset, $priceGroup ),
                               "cache", "," );
 
     // add PHP code in the cache file to store variables
@@ -354,7 +358,7 @@ if ( $GenerateStaticPage == true )
     
     $output = $t->parse( "output", "product_gallery_page_tpl" );
     print( $output );
-    $CacheFile->store( $output );
+    $cache->store( $output );
 }
 else
 {

@@ -33,9 +33,9 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZQuizMain", "Language" );
-$ListLimit = $ini->variable( "eZQuizMain", "ListLimit" );
+$listLimit = $ini->variable( "eZQuizMain", "ListLimit" );
 
-$Limit = $ListLimit;
+$limit = $listLimit;
 
 $t = new eZTemplate( "kernel/ezquiz/user/" . $ini->variable( "eZQuizMain", "TemplateDir" ),
                      "kernel/ezquiz/user/intl/", $Language, "quiz.php" );
@@ -51,7 +51,7 @@ $t->set_block( "game_list_item_tpl", "game_item_tpl", "game_item" );
 $t->set_block( "quiz_list_page_tpl", "no_game_list_item_tpl", "no_game_list_item" );
 
 $game = new eZQuizGame();
-$games = $game->openGames( $Offset, $Limit );
+$games = $game->openGames( $offset, $limit );
 $count = count( $games );
 $locale = new eZLocale( $Language );
 
@@ -103,7 +103,7 @@ else
     $t->parse( "no_game_list_item", "no_game_list_item_tpl" );
 }
 
-eZList::drawNavigator( $t, $gameCount, $Limit, $Offset, "quiz_list_page_tpl" );
+eZList::drawNavigator( $t, $gameCount, $limit, $offset, "quiz_list_page_tpl" );
 
 $t->pparse( "output", "quiz_list_page_tpl" );
 

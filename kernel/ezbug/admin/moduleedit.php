@@ -38,22 +38,22 @@ $Language = $ini->variable( "eZBugMain", "Language" );
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezbug/classes/ezbugmodule.php" );
 
-if( !isset( $ModuleID ) )
-    $ModuleID = 0;
+if( !isset( $moduleID ) )
+    $moduleID = 0;
 
-if ( isset( $Action ) && $Action == "insert" )
+if ( isset( $action ) && $action == "insert" )
 {
     $module = new eZBugModule();
-    $module->setName( $Name );
-    $parent = new eZBugModule( $ParentID );
+    $module->setName( $name );
+    $parent = new eZBugModule( $parentID );
     $module->setParent( $parent );
-    $module->setOwnerGroup( $WriteGroupArrayID );
+    $module->setOwnerGroup( $writeGroupArrayID );
     $module->store();
-    $ModuleID = $module->id();
-    eZObjectPermission::removePermissions( $ModuleID, "bug_module", "w" );
-    foreach ( $WriteGroupArrayID as $moduleOwner )
+    $moduleID = $module->id();
+    eZObjectPermission::removePermissions( $moduleID, "bug_module", "w" );
+    foreach ( $writeGroupArrayID as $moduleOwner )
     {
-        eZObjectPermission::setPermission( $moduleOwner, $ModuleID, "bug_module", 'w' );
+        eZObjectPermission::setPermission( $moduleOwner, $moduleID, "bug_module", 'w' );
     }
 
     // include_once( "classes/ezhttptool.php" );
@@ -62,36 +62,36 @@ if ( isset( $Action ) && $Action == "insert" )
 }
 
 // Updates a module.
-if ( isset( $Action ) &&  $Action == "update" )
+if ( isset( $action ) &&  $action == "update" )
 {
-    $module = new eZBugModule( $ModuleID );
-    $parent = new eZBugModule( $ParentID );
-    if ( $module->isChild( $ParentID, true ) != true )
+    $module = new eZBugModule( $moduleID );
+    $parent = new eZBugModule( $parentID );
+    if ( $module->isChild( $parentID, true ) != true )
     {
-        $module->setName( $Name );
+        $module->setName( $name );
         $module->setParent( $parent );
 
-        eZObjectPermission::removePermissions( $ModuleID, "bug_module", "w" );
-        foreach ( $WriteGroupArrayID as $moduleOwner )
+        eZObjectPermission::removePermissions( $moduleID, "bug_module", "w" );
+        foreach ( $writeGroupArrayID as $moduleOwner )
         {
-            eZObjectPermission::setPermission( $moduleOwner, $ModuleID, "bug_module", 'w' );
+            eZObjectPermission::setPermission( $moduleOwner, $moduleID, "bug_module", 'w' );
         }
 
-        if ( isset( $Recursive ) )
+        if ( isset( $recursive ) )
         {
             $recursiveList = $module->getByParent( $module, "name", array() );
 
             foreach ( $recursiveList as $itemID )
             {
                 eZObjectPermission::removePermissions( $itemID, "bug_module", "w" );
-                if ( count ( $WriteGroupArrayID ) > 0 )
+                if ( count ( $writeGroupArrayID ) > 0 )
                 {
-                    foreach ( $WriteGroupArrayID as $Write )
+                    foreach ( $writeGroupArrayID as $write )
                     {
-                        if ( $Write == -1 )
+                        if ( $write == -1 )
                             $group = -1;
                         else
-                            $group = new eZUserGroup( $Write );
+                            $group = new eZUserGroup( $write );
 
                         eZObjectPermission::setPermission( $group, $itemID, "bug_module", "w" );
                     }
@@ -108,9 +108,9 @@ if ( isset( $Action ) &&  $Action == "update" )
 }
 
 // Delete a module.
-if ( isset( $Action ) && $Action == "delete" )
+if ( isset( $action ) && $action == "delete" )
 {
-    $module = new eZBugModule( $ModuleID );
+    $module = new eZBugModule( $moduleID );
     $module->delete();
 
     // include_once( "classes/ezhttptool.php" );
@@ -131,18 +131,18 @@ $t->set_block( "moduleedit", "module_owner_tpl", "module_owner" );
 
 $t->set_block( "moduleedit", "write_group_item_tpl", "write_group_item" );
 
-if ( isset( $Action ) && $Action == "new" )
+if ( isset( $action ) && $action == "new" )
 {
-    $parent = new eZBugModule( $ParentID );
+    $parent = new eZBugModule( $parentID );
     $t->set_var( "module_name", "" );
     $t->set_var("module_id", 0);
     $t->set_var( "action_value", "insert" );
 }
 
 // Edit a module.
-if ( isset( $Action ) && $Action == "edit" )
+if ( isset( $action ) && $action == "edit" )
 {
-    $module = new eZBugModule( $ModuleID );
+    $module = new eZBugModule( $moduleID );
 
     $parent = $module->parent();
     $t->set_var( "module_name", $module->name() );
@@ -161,7 +161,7 @@ $moduleList = $module->getAll();
 
 foreach ( $moduleList as $moduleItem )
 {
-    if ( $ModuleID != $moduleItem->id() )
+    if ( $moduleID != $moduleItem->id() )
     {
         $t->set_var( "module_parent_name", $moduleItem->name() );
         $t->set_var( "module_parent_id", $moduleItem->id() );

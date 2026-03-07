@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: datasupplier.php 9891 2003-09-04 16:13:04Z br $
+// $id: datasupplier.php 9891 2003-09-04 16:13:04Z br $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -29,23 +29,60 @@
 // include_once( "ezuser/classes/ezobjectpermission.php" );
 // include_once( "ezuser/classes/ezuser.php" );
 
-$PageCaching = $ini->variable( "eZArticleMain", "PageCaching" );
-$UserComments = $ini->variable( "eZArticleMain", "UserComments" );
+$pageCaching = $ini->variable( "eZArticleMain", "PageCaching" );
+$userComments = $ini->variable( "eZArticleMain", "UserComments" );
 
-$GlobalSectionID = $ini->variable( "eZArticleMain", "DefaultSection" );
+$globalSectionID = $ini->variable( "eZArticleMain", "DefaultSection" );
+
+// --- Explicit POST/GET extraction (replaces register_globals hack for this module) ---
+// Variables from HTML form submissions (POST) or query string (GET)
+$action              = eZHTTPTool::getVar( 'Action' );
+$cancel              = eZHTTPTool::getVar( 'Cancel' );
+$deleteSelected      = eZHTTPTool::getVar( 'DeleteSelected' );
+$printableVersion    = eZHTTPTool::getVar( 'PrintableVersion' );
+$category            = eZHTTPTool::getVar( 'Category' );
+$searchText          = eZHTTPTool::getVar( 'SearchText' );
+$name                = eZHTTPTool::getVar( 'Name' );
+$postedContents      = eZHTTPTool::getVar( 'Contents' );
+$authorText          = eZHTTPTool::getVar( 'AuthorText' );
+$linkText            = eZHTTPTool::getVar( 'LinkText' );
+$categoryIDSelect    = eZHTTPTool::getVar( 'CategoryIDSelect' );
+$addItem             = eZHTTPTool::getVar( 'AddItem' );
+$itemToAdd           = eZHTTPTool::getVar( 'ItemToAdd' );
+$sectionIDOverride   = eZHTTPTool::getVar( 'SectionIDOverride' );
+$sendTo              = eZHTTPTool::getVar( 'SendTo' );
+$from                = eZHTTPTool::getVar( 'From' );
+$sender              = eZHTTPTool::getVar( 'Sender' );
+$realName            = eZHTTPTool::getVar( 'RealName' );
+$anonymous           = eZHTTPTool::getVar( 'Anonymous' );
+$submit              = eZHTTPTool::getVar( 'Submit' );
+$caption             = eZHTTPTool::getVar( 'Caption' );
+$imageArrayID        = eZHTTPTool::getVar( 'ImageArrayID' );
+$fileArrayID         = eZHTTPTool::getVar( 'FileArrayID' );
+$addImages           = eZHTTPTool::getVar( 'AddImages' );
+$addFiles            = eZHTTPTool::getVar( 'AddFiles' );
+$newImage            = eZHTTPTool::getVar( 'NewImage' );
+$newPhotographerName = eZHTTPTool::getVar( 'NewPhotographerName' );
+$newPhotographerEmail= eZHTTPTool::getVar( 'NewPhotographerEmail' );
+$photoID             = eZHTTPTool::getVar( 'PhotoID' );
+$description         = eZHTTPTool::getVar( 'Description' );
+$textarea            = eZHTTPTool::getVar( 'Textarea' );
+$addMedia            = eZHTTPTool::getVar( 'AddMedia' );
+// URL-routing vars are set explicitly in the switch below and override extracted values
+// -----------------------------------------------------------------------------------
 
 switch ( $url_array[2] )
 {
     case "mailtofriend":
     {
-        $ArticleID = $url_array[3];
+        $articleID = $url_array[3];
         include( "kernel/ezarticle/user/mailtofriend.php" );
     }
     break;
 
     case "topiclist":
     {
-        $TopicID = $url_array[3];
+        $topicID = $url_array[3];
         include( "kernel/ezarticle/user/topiclist.php" );
     }
     break;
@@ -53,9 +90,9 @@ switch ( $url_array[2] )
     case "sitemap":
     {
         if ( isset( $url_array[3] ) && $url_array[3] != '' )
-            $CategoryID = $url_array[3];
+            $categoryID = $url_array[3];
         else
-            $CategoryID = 0;
+            $categoryID = 0;
         include( "kernel/ezarticle/user/sitemap.php" );
     }
     break;
@@ -64,14 +101,14 @@ switch ( $url_array[2] )
     {
         if ( isset( $url_array[3] ) ) 
         {
-            $GlobalSectionID = $url_array[3];
-            $CategoryID = $url_array[3];
+            $globalSectionID = $url_array[3];
+            $categoryID = $url_array[3];
 
         }
         elseif ( !isset( $url_array[3] ) )
         {
-            $GlobalSectionID = 1;
-            $CategoryID = 1;
+            $globalSectionID = 1;
+            $categoryID = 1;
         }
 
         // if file exists... evrything is ok..
@@ -102,10 +139,10 @@ switch ( $url_array[2] )
 
         //$userID = ( $user && is_object( $user ) ) ? $user->id() : null;
 
-        if ( $PageCaching == "enabled" )
+        if ( $pageCaching == "enabled" )
         {
             //include_once( "classes/ezcachefile.php" );
-            $file = new eZCacheFile( "kernel/ezarticle/cache/", array( "articlefrontpage", $GlobalSectionID, $groupstr ),
+            $file = new eZCacheFile( "kernel/ezarticle/cache/", array( "articlefrontpage", $globalSectionID, $groupstr ),
                                      "cache", "," );
 
             $cachedFile = $file->filename( true );
@@ -116,13 +153,13 @@ switch ( $url_array[2] )
             }
             else
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
                 include( "kernel/ezarticle/user/frontpage.php" );
             }
         }
         else
         {
-            $GenerateStaticPage = false;
+            $generateStaticPage = false;
             include( "kernel/ezarticle/user/frontpage.php" );
         }
 
@@ -132,7 +169,7 @@ switch ( $url_array[2] )
     case "homepage":
     {
         if ( isset( $url_array[3] ) )
-            $GlobalSectionID = $url_array[3];
+            $globalSectionID = $url_array[3];
 
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
@@ -152,28 +189,28 @@ switch ( $url_array[2] )
         else
             $user = 0;
 
-        if ( $PageCaching == "enabled" )
+        if ( $pageCaching == "enabled" )
         {
             // include_once( "classes/ezcachefile.php" );
-            $file = new eZCacheFile( "kernel/ezarticle/cache/", array( "articlefrontpage", $GlobalSectionID, $groupstr ),
+            $file = new eZCacheFile( "kernel/ezarticle/cache/", array( "articlefrontpage", $globalSectionID, $groupstr ),
                                      "cache", "," );
 
             $cachedFile = $file->filename( true );
 
             if ( $file->exists() )
             {
-                $GenerateStaticPage = "false";
+                $generateStaticPage = "false";
                 include( $cachedFile );
             }
             else
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
                 include( "kernel/ezarticle/user/homepage.php" );
             }
         }
         else
         {
-            $GenerateStaticPage = "false";
+            $generateStaticPage = "false";
             include( "kernel/ezarticle/user/homepage.php" );
         }
 
@@ -183,9 +220,9 @@ switch ( $url_array[2] )
     case "newsgroup":
     {
         if ( isset( $url_array[3] ) )
-            $CategoryID = $url_array[3];
+            $categoryID = $url_array[3];
         else
-            $CategoryID = "";
+            $categoryID = "";
 
         include( "kernel/ezarticle/user/newsgroup.php" );
     }
@@ -193,23 +230,23 @@ switch ( $url_array[2] )
 
     case "author":
     {
-        $Action = $url_array[3];
-        switch ( $Action )
+        $action = $url_array[3];
+        switch ( $action )
         {
             case "list":
             {
                 if ( isset( $url_array[4] ) )
-                    $SortOrder = $url_array[4];
+                    $sortOrder = $url_array[4];
                 else
-                    $SortOrder = "Name";
+                    $sortOrder = "Name";
                 include( "kernel/ezarticle/user/authorlist.php" );
                 break;
             }
             case "view":
             {
-                $AuthorID = $url_array[4];
-                $SortOrder = $url_array[5];
-                $Offset = $url_array[6];
+                $authorID = $url_array[4];
+                $sortOrder = $url_array[5];
+                $offset = $url_array[6];
                 include( "kernel/ezarticle/user/authorview.php" );
                 break;
             }
@@ -219,17 +256,17 @@ switch ( $url_array[2] )
 
     case "archive":
     {
-        $CategoryID = $url_array[3];
-        if ( !isset( $CategoryID ) || ( $CategoryID == "" ) )
-            $CategoryID = 0;
+        $categoryID = $url_array[3];
+        if ( !isset( $categoryID ) || ( $categoryID == "" ) )
+            $categoryID = 0;
 
 	if ( isset( $url_array[4] ) )
-          $Offset = $url_array[4];
+          $offset = $url_array[4];
 	else
-	  $Offset = 0;
+	  $offset = 0;
 	  
-        if ( !is_numeric( $Offset ) )
-            $Offset = 0;
+        if ( !is_numeric( $offset ) )
+            $offset = 0;
 
 
         // if file exists... evrything is ok..
@@ -243,30 +280,30 @@ switch ( $url_array[2] )
         else
             $user = 0;
 
-//        print( "Checking category: $CategoryID <br>" );
+//        print( "Checking category: $categoryID <br>" );
 
-        if ( $PageCaching == "enabled" )
+        if ( $pageCaching == "enabled" )
         {
-            //$CategoryID = $url_array[3];
+            //$categoryID = $url_array[3];
 
             // include_once( "classes/ezcachefile.php" );
-            $file = new eZCacheFile( "kernel/ezarticle/cache/", array( "articlelist", $CategoryID, $Offset, $groupstr ),
+            $file = new eZCacheFile( "kernel/ezarticle/cache/", array( "articlelist", $categoryID, $offset, $groupstr ),
                                      "cache", "," );
 
             $cachedFile = $file->filename( true );
 //            print( "Cache file name: $cachedFile" );
 
-            $articleCategoryTest = new eZArticleCategory( $CategoryID );
-            $isOwner = $articleCategoryTest->isOwner( $user, $CategoryID);
+            $articleCategoryTest = new eZArticleCategory( $categoryID );
+            $isOwner = $articleCategoryTest->isOwner( $user, $categoryID);
 
             if ( $file->exists() )
             {
                 include( $cachedFile );
             }
-            else if ( $CategoryID == 0 || eZObjectPermission::hasPermission( $CategoryID, "article_category", 'r' ) ||
+            else if ( $categoryID == 0 || eZObjectPermission::hasPermission( $categoryID, "article_category", 'r' ) ||
                 $isOwner )// check if user really has permissions to browse this category
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
 
                 include( "kernel/ezarticle/user/articlelist.php" );
             }
@@ -277,8 +314,8 @@ switch ( $url_array[2] )
 
             }
         }
-        else if ( $CategoryID == 0 || eZObjectPermission::hasPermission( $CategoryID, "article_category", 'r' )
-        || eZArticleCategory::isOwner( $user, $CategoryID ) )
+        else if ( $categoryID == 0 || eZObjectPermission::hasPermission( $categoryID, "article_category", 'r' )
+        || eZArticleCategory::isOwner( $user, $categoryID ) )
         {
             include( "kernel/ezarticle/user/articlelist.php" );
         }
@@ -299,21 +336,21 @@ switch ( $url_array[2] )
         }
         else
         {
-            $Offset = 0;
+            $offset = 0;
             if ( $url_array[3] == "parent" )
             {
-                $SearchText = urldecode( $url_array[4] );
+                $searchText = urldecode( $url_array[4] );
                 if ( $url_array[5] != urlencode( "+" ) )
-                    $StartStamp = urldecode( $url_array[5] );
+                    $startStamp = urldecode( $url_array[5] );
                 if ( $url_array[6] != urlencode( "+" ) )
-                    $StopStamp = urldecode( $url_array[6] );
+                    $stopStamp = urldecode( $url_array[6] );
                 if ( $url_array[7] != urlencode( "+" ) )
-                    $CategoryArray = explode( "-", urldecode( $url_array[7] ) );
+                    $categoryArray = explode( "-", urldecode( $url_array[7] ) );
                 if ( $url_array[8] != urlencode( "+" ) )
-                    $ContentsWriterID = urldecode( $url_array[8] );
+                    $contentsWriterID = urldecode( $url_array[8] );
                 if ( $url_array[9] != urlencode( "+" ) )
-                    $PhotographerID = urldecode( $url_array[9] );
-                $Offset = $url_array[10];
+                    $photographerID = urldecode( $url_array[9] );
+                $offset = $url_array[10];
             }
 
             /*
@@ -330,7 +367,7 @@ switch ( $url_array[2] )
 
     case "index":
     {
-        $CurrentIndex = urldecode( isset($url_array[3])?$url_array[3]:'' );
+        $currentIndex = urldecode( isset($url_array[3])?$url_array[3]:'' );
 
         $user = eZUser::currentUser();
         $groupstr = "";
@@ -346,7 +383,7 @@ switch ( $url_array[2] )
             }
         }
         // include_once( "classes/ezcachefile.php" );
-        $file = new eZCacheFile( "kernel/ezarticle/cache/", array( "articleindex", $groupstr, $CurrentIndex ),
+        $file = new eZCacheFile( "kernel/ezarticle/cache/", array( "articleindex", $groupstr, $currentIndex ),
                                  "cache", "," );
 
         $cachedFile = $file->filename( true );
@@ -356,7 +393,7 @@ switch ( $url_array[2] )
         }
         else
         {
-            $GenerateStaticPage = "true";
+            $generateStaticPage = "true";
             include( "kernel/ezarticle/user/index.php" );
         }
     }
@@ -364,27 +401,27 @@ switch ( $url_array[2] )
 
     case "extendedsearch":
     {
-        if ( !isset( $Category ) and count( $url_array ) > 5 )
+        if ( !isset( $category ) and count( $url_array ) > 5 )
         {
-            $Category = trim( urldecode( $url_array[4] ) );
+            $category = trim( urldecode( $url_array[4] ) );
         }
-        if ( !isset( $SearchText ) and count( $url_array ) > 5 )
+        if ( !isset( $searchText ) and count( $url_array ) > 5 )
         {
-            $SearchText = trim( urldecode( $url_array[3] ) );
+            $searchText = trim( urldecode( $url_array[3] ) );
         }
         if ( count( $url_array ) > 5 )
-            $Offset = $url_array[5];
+            $offset = $url_array[5];
         if ( count( $url_array ) > 5 )
-            $Search = true;
+            $search = true;
         include( "kernel/ezarticle/user/extendedsearch.php" );
     }
     break;
 
     case "articleheaderlist":
     {
-        $CategoryID = $url_array[3];
-        if ( !isset( $CategoryID ) || ( $CategoryID == "" ) )
-            $CategoryID = 0;
+        $categoryID = $url_array[3];
+        if ( !isset( $categoryID ) || ( $categoryID == "" ) )
+            $categoryID = 0;
 
         include( "kernel/ezarticle/user/articleheaderlist.php" );
     }
@@ -393,13 +430,13 @@ switch ( $url_array[2] )
     case "view":
     case "articleview":
     {
-        $StaticRendering = false;
-        $ArticleID = $url_array[3];
-        $PageNumber= $url_array[4];
-        $CategoryID = isset($url_array[5])?$url_array[5]:-1;
-        if ( $PageNumber != -1 )
-            if ( !isset( $PageNumber ) || ( $PageNumber == "" ) || ( $PageNumber < 1 ) )
-                $PageNumber= 1;
+        $staticRendering = false;
+        $articleID = $url_array[3];
+        $pageNumber= $url_array[4];
+        $categoryID = isset($url_array[5])?$url_array[5]:-1;
+        if ( $pageNumber != -1 )
+            if ( !isset( $pageNumber ) || ( $pageNumber == "" ) || ( $pageNumber < 1 ) )
+                $pageNumber= 1;
 
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
@@ -419,22 +456,22 @@ switch ( $url_array[2] )
         else
             $user = 0;
 
-        $article = new eZArticle( $ArticleID );
+        $article = new eZArticle( $articleID );
         $definition = $article->categoryDefinition( false );
 
         $showComments = false;
-        if ( $PageCaching == "enabled" )
+        if ( $pageCaching == "enabled" )
         {
-            $cachedFile = "kernel/ezarticle/cache/articleview," . $ArticleID . ",". $PageNumber . "," . $CategoryID . "," . ( isset( $PrintableVersion ) && $PrintableVersion == "enabled" )  . "," . $groupstr  .".cache";
+            $cachedFile = "kernel/ezarticle/cache/articleview," . $articleID . ",". $pageNumber . "," . $categoryID . "," . ( isset( $printableVersion ) && $printableVersion == "enabled" )  . "," . $groupstr  .".cache";
             if ( file_exists( $cachedFile ) )
             {
                 include( $cachedFile );
                 $showComments = true;
             }
-            else if ( eZObjectPermission::hasPermissionWithDefinition( $ArticleID, "article_article", 'r', false, $definition )
-                      || eZArticle::isAuthor( $user, $ArticleID ) )
+            else if ( eZObjectPermission::hasPermissionWithDefinition( $articleID, "article_article", 'r', false, $definition )
+                      || eZArticle::isAuthor( $user, $articleID ) )
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
 
                 include( "kernel/ezarticle/user/articleview.php" );
                 $showComments = true;
@@ -443,8 +480,8 @@ switch ( $url_array[2] )
             {
             }
         }
-        else if ( eZObjectPermission::hasPermissionWithDefinition( $ArticleID, "article_article", 'r', false, $definition )
-                  || eZArticle::isAuthor( $user, $ArticleID ) )
+        else if ( eZObjectPermission::hasPermissionWithDefinition( $articleID, "article_article", 'r', false, $definition )
+                  || eZArticle::isAuthor( $user, $articleID ) )
         {
             include( "kernel/ezarticle/user/articleview.php" );
             $showComments = true;
@@ -453,10 +490,10 @@ switch ( $url_array[2] )
         /* Should there be permissions here? */
         if ( $showComments == true )
         {
-            if  ( ( !isset($PrintableVersion) || $PrintableVersion != "enabled" ) && ( $UserComments == "enabled" ) )
+            if  ( ( !isset($printableVersion) || $printableVersion != "enabled" ) && ( $userComments == "enabled" ) )
             {
-                $RedirectURL = "/article/view/$ArticleID/$PageNumber/";
-                $article = new eZArticle( $ArticleID );
+                $redirectURL = "/article/view/$articleID/$pageNumber/";
+                $article = new eZArticle( $articleID );
                 if ( ( $article->id() >= 1 ) && $article->discuss() )
                 {
                     for ( $i = 0; $i < count( $url_array ); $i++ )
@@ -464,12 +501,17 @@ switch ( $url_array[2] )
                         if ( ( $url_array[$i] ) == "parent" )
                         {
                             $next = $i + 1;
-                            $Offset = $url_array[$next];
+                            $offset = $url_array[$next];
                         }
                     }
                     $forum = $article->forum();
-                    $ForumID = $forum->id();
-					$MessageCount = $forum->messageCount( false, true );
+                    $forumID = $forum->id();
+					$messageCount = $forum->messageCount( false, true );
+                    // Compatibility aliases for ezforum/messagesimplelist.php (not yet refactored)
+                    $ForumID = $forumID;
+                    $MessageCount = $messageCount;
+                    $Offset = $offset ?? 0;
+                    $RedirectURL = $redirectURL;
                     include( "kernel/ezforum/user/messagesimplelist.php" );
                 }
             }
@@ -479,23 +521,23 @@ switch ( $url_array[2] )
 
     case "articleuncached":
     {
-        $ViewMode = "static";
+        $viewMode = "static";
 
-        $StaticRendering = true;
-        $ArticleID = $url_array[3];
-        $PageNumber= $url_array[4];
-        $CategoryID = $url_array[5];
+        $staticRendering = true;
+        $articleID = $url_array[3];
+        $pageNumber= $url_array[4];
+        $categoryID = $url_array[5];
 
         $user = eZUser::currentUser();
 
-        $article = new eZArticle( $ArticleID );
+        $article = new eZArticle( $articleID );
         $definition = $article->categoryDefinition( false );
 
-        if ( eZObjectPermission::hasPermissionWithDefinition( $ArticleID, "article_article", 'r', false, $definition )
-                  || eZArticle::isAuthor( $user, $ArticleID ) )
+        if ( eZObjectPermission::hasPermissionWithDefinition( $articleID, "article_article", 'r', false, $definition )
+                  || eZArticle::isAuthor( $user, $articleID ) )
         {
-            if ( !isset( $PageNumber ) || ( $PageNumber == "" ) || ( $PageNumber < 1 ) )
-                $PageNumber= 1;
+            if ( !isset( $pageNumber ) || ( $pageNumber == "" ) || ( $pageNumber < 1 ) )
+                $pageNumber= 1;
 
             include( "kernel/ezarticle/user/articleview.php" );
         }
@@ -505,12 +547,12 @@ switch ( $url_array[2] )
     case "print":
     case "articleprint":
     {
-        $PrintableVersion = "enabled";
+        $printableVersion = "enabled";
 
-        $StaticRendering = false;
-        $ArticleID = $url_array[3];
-        $PageNumber= $url_array[4];
-        $CategoryID = $url_array[5];
+        $staticRendering = false;
+        $articleID = $url_array[3];
+        $pageNumber= $url_array[4];
+        $categoryID = $url_array[5];
 
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
@@ -530,35 +572,35 @@ switch ( $url_array[2] )
         else
             $user = 0;
 
-        if ( $PageNumber != -1 )
+        if ( $pageNumber != -1 )
         {
-            if ( !isset( $PageNumber ) || ( $PageNumber == "" ) )
-                $PageNumber = -1;
-            else if ( $PageNumber < 1 )
-                $PageNumber = 1;
+            if ( !isset( $pageNumber ) || ( $pageNumber == "" ) )
+                $pageNumber = -1;
+            else if ( $pageNumber < 1 )
+                $pageNumber = 1;
         }
 
-        $article = new eZArticle( $ArticleID );
+        $article = new eZArticle( $articleID );
         $definition = $article->categoryDefinition( true );
         $definition = $definition->id();
 
-        if ( $PageCaching == "enabled" )
+        if ( $pageCaching == "enabled" )
         {
-             $cachedFile = "kernel/ezarticle/cache/articleprint," . $ArticleID . ",". $PageNumber . "," . $CategoryID . "," . $groupstr  .".cache";
+             $cachedFile = "kernel/ezarticle/cache/articleprint," . $articleID . ",". $pageNumber . "," . $categoryID . "," . $groupstr  .".cache";
             if ( file_exists( $cachedFile ) )
             {
                 include( $cachedFile );
             }
-            else if ( eZObjectPermission::hasPermissionWithDefinition( $ArticleID, "article_article", 'r', false, $definition )
-                      || eZArticle::isAuthor( $user, $ArticleID ) )
+            else if ( eZObjectPermission::hasPermissionWithDefinition( $articleID, "article_article", 'r', false, $definition )
+                      || eZArticle::isAuthor( $user, $articleID ) )
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
 
                 include( "kernel/ezarticle/user/articleview.php" );
             }
         }
-        else if ( eZObjectPermission::hasPermissionWithDefinition( $ArticleID, "article_article", 'r', false, $definition )
-                  || eZArticle::isAuthor( $user, $ArticleID ) )
+        else if ( eZObjectPermission::hasPermissionWithDefinition( $articleID, "article_article", 'r', false, $definition )
+                  || eZArticle::isAuthor( $user, $articleID ) )
         {
             include( "kernel/ezarticle/user/articleview.php" );
         }
@@ -568,14 +610,14 @@ switch ( $url_array[2] )
     case "static":
     case "articlestatic":
     {
-        $ViewMode = "static";
+        $viewMode = "static";
 
-        $StaticRendering = true;
-        $ArticleID = $url_array[3];
+        $staticRendering = true;
+        $articleID = $url_array[3];
 		if ( isset( $url_array[4] ) )
-	        $PageNumber = $url_array[4];
+	        $pageNumber = $url_array[4];
 		else
-			$PageNumber = "";
+			$pageNumber = "";
 
         // if file exists... evrything is ok..
         // if not.. check permission, then run page if ok
@@ -595,35 +637,35 @@ switch ( $url_array[2] )
         else
             $user = 0;
 
-        if ( !isset( $CategoryID ) )
-            $CategoryID = eZArticle::categoryDefinitionStatic( $ArticleID );
+        if ( !isset( $categoryID ) )
+            $categoryID = eZArticle::categoryDefinitionStatic( $articleID );
 
-        $GlobalSectionID = eZArticleCategory::sectionIDStatic( $CategoryID );
+        $globalSectionID = eZArticleCategory::sectionIDStatic( $categoryID );
 
-        if ( !isset( $PageNumber ) || ( $PageNumber == "" ) || ( $PageNumber < 1 ) )
-            $PageNumber= 1;
+        if ( !isset( $pageNumber ) || ( $pageNumber == "" ) || ( $pageNumber < 1 ) )
+            $pageNumber= 1;
 
-        $article = new eZArticle( $ArticleID );
+        $article = new eZArticle( $articleID );
         $definition = $article->categoryDefinition( true );
         $definition = $definition->id();
 
-        if ( $PageCaching == "enabled" )
+        if ( $pageCaching == "enabled" )
         {
-            $cachedFile = "kernel/ezarticle/cache/articleview," . $ArticleID . ",". $PageNumber . "," . $CategoryID . "," . $groupstr  .".cache";
+            $cachedFile = "kernel/ezarticle/cache/articleview," . $articleID . ",". $pageNumber . "," . $categoryID . "," . $groupstr  .".cache";
             if ( file_exists( $cachedFile ) )
             {
                 include( $cachedFile );
             }
-            else if ( eZObjectPermission::hasPermissionWithDefinition( $ArticleID, "article_article", 'r', false, $definition )
-                      || eZArticle::isAuthor( $user, $ArticleID ) )
+            else if ( eZObjectPermission::hasPermissionWithDefinition( $articleID, "article_article", 'r', false, $definition )
+                      || eZArticle::isAuthor( $user, $articleID ) )
             {
-                $GenerateStaticPage = "true";
+                $generateStaticPage = "true";
 
                 include( "kernel/ezarticle/user/articleview.php" );
             }
         }
-        else if ( eZObjectPermission::hasPermissionWithDefinition( $ArticleID, "article_article", 'r', false, $definition )
-                  || eZArticle::isAuthor( $user, $ArticleID ) )
+        else if ( eZObjectPermission::hasPermissionWithDefinition( $articleID, "article_article", 'r', false, $definition )
+                  || eZArticle::isAuthor( $user, $articleID ) )
         {
 
             include( "kernel/ezarticle/user/articleview.php" );
@@ -647,53 +689,53 @@ switch ( $url_array[2] )
             {
                 case "new":
                 {
-                    $Action = "New";
+                    $action = "New";
                     include( "kernel/ezarticle/user/articleedit.php" );
                     break;
                 }
                 case "edit":
                 {
-                    $Action = "Edit";
+                    $action = "Edit";
                     //PBo added this
-                    $ArticleID = $url_array[4];
+                    $articleID = $url_array[4];
                     //end pbo mods
                     include( "ezarticle/user/articleedit.php" );
                     break;
                 }
                 case "insert":
                 {
-                    $Action = "Insert";
-                    $ArticleID = $url_array[4];
+                    $action = "Insert";
+                    $articleID = $url_array[4];
                     include( "kernel/ezarticle/user/articleedit.php" );
                     break;
                 }
                 case "update":
                 {
-                    $Action = "Update";
-                    $ArticleID = $url_array[4];
+                    $action = "Update";
+                    $articleID = $url_array[4];
                     include( "kernel/ezarticle/user/articleedit.php" );
                     break;
                 }
                 case "cancel":
                 {
-                    $Action = "Cancel";
-                    $ArticleID = $url_array[4];
+                    $action = "Cancel";
+                    $articleID = $url_array[4];
                     include( "kernel/ezarticle/user/articleedit.php" );
                     break;
                 }
                 case "imagelist" :
                 {
-                    $ArticleID = $url_array[4];
-                    if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' )
-                         || eZArticle::isAuthor( $user, $ArticleID ) )
+                    $articleID = $url_array[4];
+                    if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' )
+                         || eZArticle::isAuthor( $user, $articleID ) )
                         include( "kernel/ezarticle/user/imagelist.php" );
                     break;
                 }
                 case "filelist" :
                 {
-                    $ArticleID = $url_array[4];
-                    if ( eZObjectPermission::hasPermission(  $ArticleID, "article_article", 'w' )
-                         || eZArticle::isAuthor( $user, $ArticleID ) )
+                    $articleID = $url_array[4];
+                    if ( eZObjectPermission::hasPermission(  $articleID, "article_article", 'w' )
+                         || eZArticle::isAuthor( $user, $articleID ) )
                         include( "kernel/ezarticle/user/filelist.php" );
                     break;
                 }
@@ -703,41 +745,41 @@ switch ( $url_array[2] )
                     {
                         case "new" :
                         {
-                            $Action = "New";
-                            $ArticleID = $url_array[5];
-                            if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' )
-                                 || eZArticle::isAuthor( $user, $ArticleID ) )
+                            $action = "New";
+                            $articleID = $url_array[5];
+                            if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' )
+                                 || eZArticle::isAuthor( $user, $articleID ) )
                                 include( "kernel/ezarticle/user/imageedit.php" );
                         }
                         break;
 
                         case "edit" :
                         {
-                            $Action = "Edit";
-                            $ArticleID = $url_array[6];
-                            $ImageID = $url_array[5];
-                            if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' )
-                                 || eZArticle::isAuthor( $user, $ArticleID ) )
+                            $action = "Edit";
+                            $articleID = $url_array[6];
+                            $imageID = $url_array[5];
+                            if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' )
+                                 || eZArticle::isAuthor( $user, $articleID ) )
                                 include( "kernel/ezarticle/user/imageedit.php" );
                         }
                         break;
 
                         case "storedef" :
                         {
-                            $Action = "StoreDef";
-                            if ( isset( $DeleteSelected ) )
-                                $Action = "Delete";
-                            $ArticleID = $url_array[5];
-                            if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' )
-                                 || eZArticle::isAuthor( $user, $ArticleID ) )
+                            $action = "StoreDef";
+                            if ( isset( $deleteSelected ) )
+                                $action = "Delete";
+                            $articleID = $url_array[5];
+                            if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' )
+                                 || eZArticle::isAuthor( $user, $articleID ) )
                                 include( "kernel/ezarticle/user/imageedit.php" );
                         }
                         break;
 
                         default :
                         {
-                            if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' )
-                                 || eZArticle::isAuthor( $user, $ArticleID ) )
+                            if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' )
+                                 || eZArticle::isAuthor( $user, $articleID ) )
                                 include( "kernel/ezarticle/user/imageedit.php" );
                         }
                     }
@@ -750,29 +792,29 @@ switch ( $url_array[2] )
                     {
                         case "new" :
                         {
-                            $Action = "New";
-                            $ArticleID = $url_array[5];
-                            if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' )
-                                 || eZArticle::isAuthor( $user, $ArticleID ) )
+                            $action = "New";
+                            $articleID = $url_array[5];
+                            if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' )
+                                 || eZArticle::isAuthor( $user, $articleID ) )
                                 include( "kernel/ezarticle/user/fileedit.php" );
                         }
                         break;
 
                         case "delete" :
                         {
-                            $Action = "Delete";
-                            $ArticleID = $url_array[6];
-                            $FileID = $url_array[5];
-                            if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' )
-                                 || eZArticle::isAuthor( $user, $ArticleID ) )
+                            $action = "Delete";
+                            $articleID = $url_array[6];
+                            $fileID = $url_array[5];
+                            if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' )
+                                 || eZArticle::isAuthor( $user, $articleID ) )
                                 include( "kernel/ezarticle/user/fileedit.php" );
                         }
                         break;
 
                         default :
                         {
-                            if ( eZObjectPermission::hasPermission( $ArticleID, "article_article", 'w' )
-                                 || eZArticle::isAuthor( $user, $ArticleID ) )
+                            if ( eZObjectPermission::hasPermission( $articleID, "article_article", 'w' )
+                                 || eZArticle::isAuthor( $user, $articleID ) )
                                 include( "kernel/ezarticle/user/fileedit.php" );
                         }
                     }
@@ -795,5 +837,8 @@ switch ( $url_array[2] )
     }
     break;
 }
+
+// Expose lowerCamelCase var as kernel interface variable (kernel reads $GlobalSectionID after include)
+$GlobalSectionID = $globalSectionID;
 
 ?>

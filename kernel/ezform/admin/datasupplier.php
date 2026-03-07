@@ -25,16 +25,41 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-$Operation = $url_array[2];
-$Action = $url_array[3];
+// Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
+$action        = eZHTTPTool::getVar( 'Action' );
+$actionValue   = eZHTTPTool::getVar( 'ActionValue' );
+$addValue      = eZHTTPTool::getVar( 'AddValue' );
+$cancel        = eZHTTPTool::getVar( 'Cancel' );
+$deleteSelected = eZHTTPTool::getVar( 'DeleteSelected' );
+$elementBreak  = eZHTTPTool::getVar( 'ElementBreak' );
+$elementID     = eZHTTPTool::getVar( 'ElementID' );
+$formID        = eZHTTPTool::getVar( 'FormID' );
+$fromID        = eZHTTPTool::getVar( 'FromID' );
+$id            = eZHTTPTool::getVar( 'ID' );
+$newElement    = eZHTTPTool::getVar( 'NewElement' );
+$ok            = eZHTTPTool::getVar( 'OK' );
+$offset        = eZHTTPTool::getVar( 'Offset' );
+$operation     = eZHTTPTool::getVar( 'Operation' );
+$preview       = eZHTTPTool::getVar( 'Preview' );
+$size          = eZHTTPTool::getVar( 'Size' );
+$store         = eZHTTPTool::getVar( 'Store' );
+$test          = eZHTTPTool::getVar( 'Test' );
+$update        = eZHTTPTool::getVar( 'Update' );
+$value         = eZHTTPTool::getVar( 'Value' );
+$valueDeleteID = eZHTTPTool::getVar( 'ValueDeleteID' );
+$valueID       = eZHTTPTool::getVar( 'ValueID' );
+// URL-routing variables are set below inside the switch and override the above POST defaults.
 
-switch ( $Operation )
+$operation = $url_array[2];
+$action = $url_array[3];
+
+switch ( $operation )
 {
     case "form":
     {
-        $FormID = $url_array[4];
+        $formID = $url_array[4];
         
-        switch ( $Action )
+        switch ( $action )
         {
             case "edit":
             case "insert":
@@ -50,7 +75,7 @@ switch ( $Operation )
             
             case "list":
             {
-                $Offset = $url_array[5];
+                $offset = $url_array[5];
                 include( "kernel/ezform/admin/formlist.php" );
             }
             break;
@@ -70,8 +95,8 @@ switch ( $Operation )
 
             case "fixedvalues":
             {
-                $FromID = $url_array[4];
-                $ElementID = $url_array[5];
+                $fromID = $url_array[4];
+                $elementID = $url_array[5];
                 include( "kernel/ezform/admin/fixedvalues.php" );
             }
             break;

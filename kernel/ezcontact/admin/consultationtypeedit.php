@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: consultationtypeedit.php 6927 2001-09-04 12:06:17Z jhe $
+// $id: consultationtypeedit.php 6927 2001-09-04 12:06:17Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -44,7 +44,7 @@ if ( !eZPermission::checkPermission( $user, "eZContact", "TypeAdmin" ) )
 }
 
 $language_file = "consultationtype.php";
-$item_type = new eZConsultationType( $ConsultationTypeID );
+$item_type = new eZConsultationType( $consultationTypeID );
 $page_path = "/contact/consultationtype";
 include( "kernel/ezcontact/admin/typeedit.php" );
 

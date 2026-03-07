@@ -9,7 +9,17 @@
     $GlobalSectionID = $ini->variable( "eZSurveyMain", "DefaultSection" );
     $currentSiteDesign = (new eZSection())->siteDesign( $GlobalSectionID );
     $hasPermission = ( eZPermission::checkPermission( $user, "eZSurvey", "ModuleAnswer" ) );
-    
+
+    $finish       = eZHTTPTool::getVar( 'Finish' );
+    $nextPage     = eZHTTPTool::getVar( 'NextPage' );
+    $page         = eZHTTPTool::getVar( 'Page' );
+    $previousPage = eZHTTPTool::getVar( 'PreviousPage' );
+    $questionID   = eZHTTPTool::getVar( 'QuestionID' );
+    $rank         = eZHTTPTool::getVar( 'Rank' );
+    $responseID   = eZHTTPTool::getVar( 'ResponseID' );
+    $surveyID     = eZHTTPTool::getVar( 'SurveyID' );
+    $value        = eZHTTPTool::getVar( 'Value' );
+
     switch ( $url_array[2] )
     {
         case "surveylist":

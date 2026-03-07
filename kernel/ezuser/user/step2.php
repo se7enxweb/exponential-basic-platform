@@ -1,12 +1,6 @@
 <?php
 
-require( "ezuser/user/usercheck.php" );
-
-include_once( "classes/INIFile.php" );
-include_once( "classes/eztemplate.php" );
-include_once( "classes/ezhttptool.php" );
-include_once( "ezsession/classes/ezsession.php" );
-include_once( "classes/eztexttool.php" );
+require( "kernel/ezuser/user/usercheck.php" );
 
 $ini = eZINI::instance( 'site.ini' );
 $Language = $ini->variable( "eZUserMain", "Language" );
@@ -14,18 +8,25 @@ $SelectCountry = $ini->variable( "eZUserMain", "SelectCountry" );
 $SelectRegion = $ini->variable( "eZUserMain", "SelectRegion" );
 $AnonymousUserGroup = $ini->variable( "eZUserMain", "AnonymousUserGroup" );
 
-$AutoCookieLogin = eZHTTPTool::getVar( "AutoCookieLogin" );
+$AutoCookieLogin    = eZHTTPTool::getVar( "AutoCookieLogin" );
+$next               = eZHTTPTool::getVar( "next" );
+$bill_address1      = eZHTTPTool::getVar( "bill_address1" );
+$bill_address2      = eZHTTPTool::getVar( "bill_address2" );
+$bill_city          = eZHTTPTool::getVar( "bill_city" );
+$bill_zip           = eZHTTPTool::getVar( "bill_zip" );
+$bill_state         = eZHTTPTool::getVar( "bill_state" );
+$bill_country       = eZHTTPTool::getVar( "bill_country" );
+$bill_phone         = eZHTTPTool::getVar( "bill_phone" );
+$ship_address1      = eZHTTPTool::getVar( "ship_address1" );
+$ship_address2      = eZHTTPTool::getVar( "ship_address2" );
+$ship_city          = eZHTTPTool::getVar( "ship_city" );
+$ship_zip           = eZHTTPTool::getVar( "ship_zip" );
+$ship_state         = eZHTTPTool::getVar( "ship_state" );
+$ship_country       = eZHTTPTool::getVar( "ship_country" );
+$ship_phone         = eZHTTPTool::getVar( "ship_phone" );
+$sameaddress        = eZHTTPTool::getVar( "sameaddress" );
 
 $session = eZSession::globalSession();
-
-include_once( "ezuser/classes/ezuser.php" );
-include_once( "ezuser/classes/ezusergroup.php" );
-include_once( "ezaddress/classes/ezaddress.php" );
-include_once( "ezaddress/classes/ezcountry.php" );
-include_once( "ezaddress/classes/ezregion.php" );
-include_once( "ezmail/classes/ezmail.php" );
-
-
 
 $user = eZUser::currentUser();
 $mainAddress = eZAddress::mainAddress( $user );    
@@ -58,8 +59,15 @@ $sameaddress_checked = 'checked';
 
 $default_ship_country = $default_country;
 $default_bill_country = $default_country;
+$default_bill_state = null;
+$default_ship_state = null;
 
-if($next){
+$error = [
+  'bill_address1' => '', 'bill_city' => '', 'bill_zip' => '', 'bill_phone' => '',
+  'ship_address1' => '', 'ship_city' => '', 'ship_zip' => '', 'ship_phone' => '',
+];
+
+if( $next ){
 
   // Report blank errors
   $error['bill_address1'] = error_check($bill_address1);
@@ -131,7 +139,8 @@ if($next){
 	$user->addAddress($ship_address);
       }
     }
-    header("Location: /index.php/user/confirmation/");
+    header("Location: /user/confirmation/");
+    exit();
   }
 
 }else{
@@ -200,7 +209,7 @@ fields are required.
 </p>
 
 <p>
-<input type="button" value="Skip This Step >" onClick="window.location='/index.php/user/confirmation/';">
+<input type="button" value="Skip This Step >" onClick="window.location='/user/confirmation/';">
 </p>
 
 <br><br>

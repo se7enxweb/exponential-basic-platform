@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: companytypelist.php 9529 2002-05-14 11:17:05Z jhe $
+// $id: companytypelist.php 9529 2002-05-14 11:17:05Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -30,9 +30,9 @@
 // include_once( "classes/INIFile.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZContactMain", "Language" );
-$MaxCompanyList = $ini->variable( "eZContactMain", "MaxCompanyList" );
-$CompanyOrder = $ini->variable( "eZContactMain", "CompanyOrder" );
+$language = $ini->variable( "eZContactMain", "Language" );
+$maxCompanyList = $ini->variable( "eZContactMain", "MaxCompanyList" );
+$companyOrder = $ini->variable( "eZContactMain", "CompanyOrder" );
 
 // include_once( "classes/eztemplate.php" );
 // include_once( "classes/ezlist.php" );
@@ -42,13 +42,13 @@ $CompanyOrder = $ini->variable( "eZContactMain", "CompanyOrder" );
 // include_once( "ezuser/classes/ezusergroup.php" );
 // include_once( "ezuser/classes/ezpermission.php" );
 
-if ( empty( $TypeID ) )
+if ( empty( $typeID ) )
 {
-    $TypeID = 0;
+    $typeID = 0;
 }
 
 $type = new eZCompanyType();
-$type->get( $TypeID );
+$type->get( $typeID );
 
 $company = new eZCompany();
 
@@ -67,7 +67,7 @@ if ( !eZPermission::checkPermission( $user, "eZContact", "CompanyList" ) )
     exit();
 }
 
-if ( !$type->id() && $TypeID != 0 )
+if ( !$type->id() && $typeID != 0 )
 {
     header( "HTTP/1.0 404 Not Found" );
     // include_once( "classes/ezhttptool.php" );
@@ -77,7 +77,7 @@ if ( !$type->id() && $TypeID != 0 )
 else
 {
     $t = new eZTemplate( "kernel/ezcontact/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ),
-                         "kernel/ezcontact/admin/intl/", $Language, "companytype.php" );
+                         "kernel/ezcontact/admin/intl/", $language, "companytype.php" );
     $t->setAllStrings();
 
     $t->set_file( "type_page", "companytypelist.tpl" );
@@ -123,61 +123,61 @@ else
 
     $args = false;
 
-    if ( empty( $OrderBy ) )
+    if ( empty( $orderBy ) )
     {
-        $OrderBy = "Name";
+        $orderBy = "Name";
     }
 
-    if ( !empty( $LimitBy ) || !empty( $LimitStart ) )
+    if ( !empty( $limitBy ) || !empty( $limitStart ) )
     {
-        $type_array = $type->getByParentID( $TypeID, $OrderBy, $LimitBy, $LimitStart );
+        $type_array = $type->getByParentID( $typeID, $orderBy, $limitBy, $limitStart );
 
-        if ( empty( $LimitStart ) )
+        if ( empty( $limitStart ) )
         {
-            $LimitStart = $LimitBy;
+            $limitStart = $limitBy;
         }
         else
         {
-            $LimitStart += $LimitStart;
+            $limitStart += $limitStart;
         }
     }
     else
     {
-        $type_array = $type->getByParentID( $TypeID, $OrderBy );
+        $type_array = $type->getByParentID( $typeID, $orderBy );
     }
 
-    if ( !empty( $OrderBy ) )
+    if ( !empty( $orderBy ) )
     {
         if ( !empty( $args ) )
         {
             $args = $args . "&";
         }
-        $args = $args . "OrderBy=$OrderBy";
+        $args = $args . "OrderBy=$orderBy";
     }
 
-    if ( !empty( $LimitStart ) )
+    if ( !empty( $limitStart ) )
     {
         if ( !empty( $args ) )
         {
             $args = $args . "&";
         }
-        $args = $args . "LimitStart=$LimitStart";
+        $args = $args . "LimitStart=$limitStart";
     }
 
-    if ( !empty( $LimitBy ) )
+    if ( !empty( $limitBy ) )
     {
         if ( !empty( $args ) )
         {
             $args = $args . "&";
         }
-        $args = $args . "LimitBy=$LimitBy";
+        $args = $args . "LimitBy=$limitBy";
     }
 
     $type_count = count( $type_array );
 
     $t->set_var( "page_args", $args );
 
-    $pathArray = $type->path( $TypeID );
+    $pathArray = $type->path( $typeID );
 
     $t->set_var( "path_item", "" );
     foreach ( $pathArray as $path )
@@ -197,14 +197,14 @@ else
     $t->set_var( "current_name", $name );
     $t->set_var( "current_description", $desc );
 
-    $ImageID = $type->imageID();
+    $imageID = $type->imageID();
 
-    if ( is_numeric( $ImageID ) && $ImageID != 0 )
+    if ( is_numeric( $imageID ) && $imageID != 0 )
     {
         $imageWidth = $ini->variable( "eZContactMain", "CategoryImageWidth" );
         $imageHeight = $ini->variable( "eZContactMain", "CategoryImageHeight" );
 
-        $image = new eZImage( $ImageID );
+        $image = new eZImage( $imageID );
 
         $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
@@ -221,7 +221,7 @@ else
     }
 
     $t->parse( "current_type", "current_type_tpl" );
-    if ( $TypeID != 0 && $Action == "view" )
+    if ( $typeID != 0 && $action == "view" )
     {
         $t->parse( "not_root", "not_root_tpl" );
     }
@@ -229,12 +229,12 @@ else
     {
         $t->set_var( "not_root", "" );
     }
-    if ( $Action == "view" )
+    if ( $action == "view" )
     {
         $t->parse( "view", "view_tpl" );
         $t->set_var( "list", "" );
     }
-    if ( $Action == "list" )
+    if ( $action == "list" )
     {
         $t->set_var( "view", "" );
         $t->parse( "list", "list_tpl" );
@@ -289,14 +289,14 @@ else
     if ( eZPermission::checkPermission( $user, "eZContact", "CategoryAdd" ) )
         $t->parse( "type_new_button", "type_new_button_tpl" );
 
-    if ( !is_numeric( $Offset ) )
-        $Offset = 0;
-    if ( !is_numeric( $MaxCompanyList ) )
-        $MaxCompanyList = 10;
+    if ( !is_numeric( $offset ) )
+        $offset = 0;
+    if ( !is_numeric( $maxCompanyList ) )
+        $maxCompanyList = 10;
 
     // List all the companies.
-    $companyList = $company->getByCategory( $TypeID, $Offset, $MaxCompanyList, $CompanyOrder );
-    $total_companies = $company->countByCategory( $TypeID );
+    $companyList = $company->getByCategory( $typeID, $offset, $maxCompanyList, $companyOrder );
+    $total_companies = $company->countByCategory( $typeID );
 
     $t->set_var( "company_consultation_button", "" );
     $t->set_var( "company_buy_button", "" );
@@ -332,7 +332,7 @@ else
     }
     else
     {
-        $can_view_stats = eZPermission::checkPermission( $user, "eZContact", "CompanyStats" ) && $ShowStats;
+        $can_view_stats = eZPermission::checkPermission( $user, "eZContact", "CompanyStats" ) && $showStats;
         $t->set_var( "company_stats_header", "" );
         if ( $can_view_stats )
             $t->parse( "company_stats_header", "company_stats_header_tpl" );
@@ -405,7 +405,7 @@ else
         $t->parse( "no_category_item", "no_category_item_tpl" );
     }
 
-    eZList::drawNavigator( $t, $total_companies, $MaxCompanyList, $Offset, "type_page",
+    eZList::drawNavigator( $t, $total_companies, $maxCompanyList, $offset, "type_page",
                            array( "type_list" => "company_list",
                                   "next" => "",
                                   "previous" => "",

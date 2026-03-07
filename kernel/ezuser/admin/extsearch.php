@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: extsearch.php 9460 2002-04-24 07:23:43Z bf $
+// $id: extsearch.php 9460 2002-04-24 07:23:43Z bf $
 //
 // Created on: <24-Apr-2002 09:02:33 bf>
 //
@@ -27,12 +27,12 @@
 // include_once( "classes/eztemplate.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZUserMain", "Language" );
+$language = $ini->variable( "eZUserMain", "Language" );
 
 require( "kernel/ezuser/admin/admincheck.php" );
 
 $t = new eZTemplate( "kernel/ezuser/admin/" . $ini->variable( "eZUserMain", "AdminTemplateDir" ),
-                     "kernel/ezuser/admin/" . "/intl", $Language, "extsearch.php" );
+                     "kernel/ezuser/admin/" . "/intl", $language, "extsearch.php" );
 $t->setAllStrings();
 
 $t->set_file( "extended_search", "extsearch.tpl" );

@@ -49,7 +49,7 @@ $t->set_block( "news_archive_page_tpl", "news_list_tpl", "news_list" );
 $t->set_block( "news_list_tpl", "news_item_tpl", "news_item" );
 $t->set_block( "news_list_tpl", "short_news_item_tpl", "short_news_item" );
 
-$category = new eZNewsCategory( $CategoryID );
+$category = new eZNewsCategory( $categoryID );
 
 
 // news
@@ -136,7 +136,7 @@ if ( count( $newsList ) > 0 )
 else
     $t->set_var( "news_list", "" );
 
-if ( $GenerateStaticPage == "true" )
+if ( $generateStaticPage == "true" )
 {
     $fp = eZPBFile::fopen( $cachedFile, "w+");
 

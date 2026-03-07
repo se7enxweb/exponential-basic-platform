@@ -34,10 +34,10 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZQuizMain", "Language" );
-$ListLimit = $ini->variable( "eZQuizMain", "ListLimit" );
+$listLimit = $ini->variable( "eZQuizMain", "ListLimit" );
 
 $intl = new eZINI( "kernel/ezquiz/user/intl/". $Language . "/quiz.php.ini" );
-$Limit = $ListLimit;
+$limit = $listLimit;
 
 $t = new eZTemplate( "kernel/ezquiz/user/" . $ini->variable( "eZQuizMain", "TemplateDir" ),
                      "kernel/ezquiz/user/intl/", $Language, "quiz.php" );
@@ -59,11 +59,11 @@ $t->set_var( "error_item", "" );
 $game = new eZQuizGame();
 $score = new eZQuizScore();
 
-switch ( $Action )
+switch ( $action )
 {
     case "list":
     {
-        $games = $game->getAll( $Offset, $Limit );
+        $games = $game->getAll( $offset, $limit );
         $gameCount = $game->count();
         $isGame = true;
         $t->set_var( "header_of_page", "header_game_list" );
@@ -71,7 +71,7 @@ switch ( $Action )
     break;
     case "future":
     {
-        $games = $game->opensNext( $Offset, $Limit );
+        $games = $game->opensNext( $offset, $limit );
         $gameCount = $game->numberOfOpenGames();
         $isGame = true;
         $t->set_var( "header_of_page", "header_future_game_list" );
@@ -79,7 +79,7 @@ switch ( $Action )
     break;
     case "past":
     {
-        $games = $game->closedGames( $Offset, $Limit );
+        $games = $game->closedGames( $offset, $limit );
         $gameCount = $game->numberOfClosedGames();
         $isGame = true;
         $t->set_var( "header_of_page", "header_past_game_list" );
@@ -87,7 +87,7 @@ switch ( $Action )
     break;
     case "open":
     {
-        $scores = $score->getAllSavedByUser( $user, $Offset, $Limit );
+        $scores = $score->getAllSavedByUser( $user, $offset, $limit );
         $gameCount = $score->countAllSavedByUser( $user );
         $isScore = true;
         $t->set_var( "header_of_page", "header_open_game_list" );
@@ -95,7 +95,7 @@ switch ( $Action )
     break;
     case "closed":
     {
-        $scores = $score->getAllByUser( $user, $Offset, $Limit );
+        $scores = $score->getAllByUser( $user, $offset, $limit );
         $gameCount = $score->countAllByUser( $user );
         $isScore = true;
         $t->set_var( "header_of_page", "header_closed_game_list" );
@@ -217,7 +217,7 @@ elseif ( $count > 0 && $isScore )
 }
 else
 {
-    switch ( $Action )
+    switch ( $action )
     {
         case "list":
         {
@@ -254,7 +254,7 @@ else
 
 if ( $error )
 {
-    $GenerateStaticPage = false;
+    $generateStaticPage = false;
     switch ( $error )
     {
         case "list_empty":
@@ -298,7 +298,7 @@ if ( $error )
 
 $t->setAllStrings();
 
-eZList::drawNavigator( $t, $gameCount, $Limit, $Offset, "quiz_list_page_tpl" );
+eZList::drawNavigator( $t, $gameCount, $limit, $offset, "quiz_list_page_tpl" );
 
 $t->pparse( "output", "quiz_list_page_tpl" );
 

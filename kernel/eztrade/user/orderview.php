@@ -23,7 +23,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     eZHTTPTool::header( "Location: /trade/orderlist/" );
     exit();
@@ -83,7 +83,7 @@ $t->set_block( "order_item_list_tpl", "order_status_history_tpl", "order_status_
 
 $t->set_block( "order_item_tpl", "order_item_option_tpl", "order_item_option" );
 
-$order = new eZOrder( $OrderID );
+$order = new eZOrder( $orderID );
 
 $user = eZUser::currentUser();
 
@@ -190,7 +190,7 @@ if ( $localUser )
     $t->set_var( "billing_zip", $billingAddress->zip() );
     $t->set_var( "billing_place", $billingAddress->place() );
 
-    $PriceGroup = eZPriceGroup::correctPriceGroup( $localUser->groups( false ), true );
+    $priceGroup = eZPriceGroup::correctPriceGroup( $localUser->groups( false ), true );
 
     $region = $billingAddress->region();
     if ( is_object( $region ) )

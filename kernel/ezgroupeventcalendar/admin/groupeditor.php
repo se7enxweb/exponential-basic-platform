@@ -35,12 +35,12 @@
 // include_once( "ezgroupeventcalendar/classes/ezgroupnoshow.php" );
 
 
-if ( isset( $DeleteEditor ) )
+if ( isset( $deleteEditor ) )
 {
     $editor = new eZGroupEditor();
-	if( $RemoveMemberIdArray )
+	if( $removeMemberIdArray )
 	{
-		foreach ( $RemoveMemberIdArray as $id )
+		foreach ( $removeMemberIdArray as $id )
 		{
 			$editor = new eZGroupEditor( $id );
 			$editor->delete();
@@ -49,28 +49,28 @@ if ( isset( $DeleteEditor ) )
 }
 	
 
-if ( isset( $NewEditor ) and isset( $id ))
+if ( isset( $newEditor ) and isset( $id ))
 {
     
     $editor = new eZGroupEditor( $id );
 
-	$group = new eZUserGroup( $GroupID);
+	$group = new eZUserGroup( $groupID);
     $editor->setGroup( $group );
 
 	$editor->store();
 }
 
-if ( isset( $Store ) )
+if ( isset( $store ) )
 {
     $i=0;
-    foreach ( $IDArray as $id )
+    foreach ( $idArray as $id )
     {
         $editor = new eZGroupEditor( $id );
 
 		$user = new eZUser( $MemberID[$i]);
         $editor->setUser( $user );
 
-		$group = new eZUserGroup( $GroupID);
+		$group = new eZUserGroup( $groupID);
 		$editor->setGroup( $group );
 
         $editor->store();
@@ -105,7 +105,7 @@ $t->set_block( "editor_name_item_tpl", "editor_name_tpl", "editor_name" );
 
 
 
-if( isset( $Action ) && $Action == "Display" )
+if( isset( $action ) && $action == "Display" )
 {
 	$t->set_var( "group_edit", "" );
 
@@ -188,16 +188,16 @@ if( isset( $Action ) && $Action == "Display" )
 	}
 }
 
-if( isset( $Action ) && $Action == "Edit" )
+if( isset( $action ) && $action == "Edit" )
 {
 	$t->set_var( "group_list", "" );
 	$t->set_var( "editor_name_list", "" );
 	$t->set_var( "none_selected", "" );
 
 	$editors     = new eZGroupEditor();
-	$editorsList = $editors->getByGroup( $GroupID );
+	$editorsList = $editors->getByGroup( $groupID );
 
-	$group = new eZUserGroup($GroupID);
+	$group = new eZUserGroup($groupID);
 	$t->set_var( "group_name", $group->name() );
 	$t->set_var( "group_id", $group->id() );
 

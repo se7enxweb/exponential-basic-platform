@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: articleheaderlist.php 9788 2003-03-24 08:52:52Z br $
+// $id: articleheaderlist.php 9788 2003-03-24 08:52:52Z br $
 //
 // Created on: <26-Oct-2000 21:15:58 bf>
 //
@@ -34,22 +34,22 @@
 // include_once( "ezsitemanager/classes/ezsection.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$ImageDir = $ini->variable( "eZArticleMain", "ImageDir" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$imageDir = $ini->variable( "eZArticleMain", "ImageDir" );
 
-if ( !is_numeric( $CategoryID ) )
+if ( !is_numeric( $categoryID ) )
 {
     eZHTTPTool::header( "Location: /error/404" );
     exit();
 }
 
-$GlobalSectionID = eZArticleCategory::sectionIDStatic( $CategoryID );
+$globalSectionID = eZArticleCategory::sectionIDStatic( $categoryID );
 
-$sectionObject = eZSection::globalSectionObject( $GlobalSectionID );
+$sectionObject = eZSection::globalSectionObject( $globalSectionID );
 $sectionObject->setOverrideVariables();
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "articleheaderlist.php" );
+                     "kernel/ezarticle/user/intl/", $language, "articleheaderlist.php" );
 
 $t->setAllStrings();
 
@@ -70,9 +70,9 @@ $t->set_block( "article_list_tpl", "article_item_tpl", "article_item" );
 
 
 // image dir
-$t->set_var( "image_dir", $ImageDir );
+$t->set_var( "image_dir", $imageDir );
 
-$category = new eZArticleCategory( $CategoryID );
+$category = new eZArticleCategory( $categoryID );
 
 $t->set_var( "current_category_name", $category->name() );
 $t->set_var( "current_category_description", $category->description() );
@@ -131,20 +131,20 @@ else
     $t->set_var( "category_list", "" );
 
 
-if ( !isset( $SortMode ) )
-	$SortMode = "";
+if ( !isset( $sortMode ) )
+	$sortMode = "";
 
-if ( $CategoryID == 0 )
+if ( $categoryID == 0 )
 {
     $article = new eZArticle();
-    $articleList = $article->articles( $SortMode, false );
+    $articleList = $article->articles( $sortMode, false );
 }
 else
 {
-    $articleList = $category->articles( $SortMode, false, true );
+    $articleList = $category->articles( $sortMode, false, true );
 }
 
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 $i=0;
 $t->set_var( "article_list", "" );
 foreach ( $articleList as $article )
@@ -194,7 +194,7 @@ if (  $i > 0 )
 else
     $t->set_var( "article_list", "" );
 
-$t->set_var( "section_id", $GlobalSectionID );
+$t->set_var( "section_id", $globalSectionID );
 
 $t->pparse( "output", "article_list_page_tpl" );
 

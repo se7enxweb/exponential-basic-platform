@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: error.php 6970 2001-09-05 11:57:07Z jhe $
+// $id: error.php 6970 2001-09-05 11:57:07Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -23,11 +23,11 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-$ini =& $GlobalSiteIni;
-$Language = $ini->variable( "eZContactMain", "Language" );
+$ini =& $globalSiteIni;
+$language = $ini->variable( "eZContactMain", "Language" );
 $DOC_ROOT = 'ezcontact';
 
-$t = new eZTemplate( $DOC_ROOT . "/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ), $DOC_ROOT . "/admin/intl", $Language, "error.php" );
+$t = new eZTemplate( $DOC_ROOT . "/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ), $DOC_ROOT . "/admin/intl", $language, "error.php" );
 $t->setAllStrings();
 
 $page_path = "/contact/error";
@@ -40,20 +40,20 @@ $t->set_block( "error_page", "uri_item_tpl", "uri_item" );
 
 $t->set_var( "uri_item", "" );
 
-if ( empty( $BackUrl ) )
+if ( empty( $backUrl ) )
 {
     $back_command = "/";
 }
 else
 {
-    $back_command = $BackUrl;
+    $back_command = $backUrl;
 }
 
-// header( "Error $Type: " );
+// header( "Error $type: " );
 
-if ( !empty( $Uri ) )
+if ( !empty( $uri ) )
 {
-    $t->set_var( "uri_data", "http://" . $_SERVER["HTTP_HOST"] . $Uri );
+    $t->set_var( "uri_data", "http://" . $_SERVER["HTTP_HOST"] . $uri );
     $t->parse( "uri_item","uri_item_tpl" );
 }
 

@@ -15,17 +15,17 @@ $t->set_block( "message_page_tpl", "message_list_tpl", "message_list" );
 $t->set_block( "message_list_tpl", "message_item_tpl", "message_item" );
 $t->set_block( "message_item_tpl", "message_user_tpl", "message_user" );
 
-$Max = eZHTTPTool::getVar( "Max" );
-$Index = eZHTTPTool::getVar( "Index" );
-$OrderBy = eZHTTPTool::getVar( "OrderBy" );
-$OrderBy = ( $OrderBy == "login" ) ? "login" : "first_name";
+$max = eZHTTPTool::getVar( "Max" );
+$index = eZHTTPTool::getVar( "Index" );
+$orderBy = eZHTTPTool::getVar( "OrderBy" );
+$orderBy = ( $orderBy == "login" ) ? "login" : "first_name";
 
-if ( !is_numeric( $Max ) )
-    $Max = 10;
-if ( !is_numeric( $Index ) )
-    $Index = 0;
+if ( !is_numeric( $max ) )
+    $max = 10;
+if ( !is_numeric( $index ) )
+    $index = 0;
 
-$userList = $user->getAll( $OrderBy, true, false, $Max, $Index );
+$userList = $user->getAll( $orderBy, true, false, $max, $index );
 
 foreach( $userList as $userItem )
 {

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: menuarticleview.php 7204 2001-09-14 08:29:00Z ce $
+// $id: menuarticleview.php 7204 2001-09-14 08:29:00Z ce $
 //
 // Created on: <18-Oct-2000 16:34:51 bf>
 //
@@ -33,55 +33,55 @@
 // include_once( "ezarticle/classes/ezarticlerenderer.php" );
 // include_once( "ezmail/classes/ezmail.php" );
 
-if ( !isset( $CategoryID ) )
-    $CategoryID = eZArticle::categoryDefinitionStatic( $ArticleID );
+if ( !isset( $categoryID ) )
+    $categoryID = eZArticle::categoryDefinitionStatic( $articleID );
 
-$GlobalSectionID = eZArticleCategory::sectionIDStatic( $CategoryID );
+$globalSectionID = eZArticleCategory::sectionIDStatic( $categoryID );
 
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$ForceCategoryDefinition = $ini->variable( "eZArticleMain", "ForceCategoryDefinition" );
-$CapitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
-$TemplateDir = $ini->variable( "eZArticleMain", "TemplateDir" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$forceCategoryDefinition = $ini->variable( "eZArticleMain", "ForceCategoryDefinition" );
+$capitalizeHeadlines = $ini->variable( "eZArticleMain", "CapitalizeHeadlines" );
+$templateDir = $ini->variable( "eZArticleMain", "TemplateDir" );
 
-if ( $ForceCategoryDefinition == "enabled" )
+if ( $forceCategoryDefinition == "enabled" )
 {
-    $CategoryID = eZArticle::categoryDefinitionStatic( $ArticleID );
+    $categoryID = eZArticle::categoryDefinitionStatic( $articleID );
 }
 
-$t = new eZTemplate( "kernel/ezarticle/user/" . $TemplateDir,
-                     "kernel/ezarticle/user/intl/", $Language, "articleview.php" );
+$t = new eZTemplate( "kernel/ezarticle/user/" . $templateDir,
+                     "kernel/ezarticle/user/intl/", $language, "articleview.php" );
 
 $t->setAllStrings();
 
-$StaticPage = false;
+$staticPage = false;
 if ( $url_array[2] == "static" || $url_array[2] == "articlestatic"  )
 {
-    $StaticPage = true;
+    $staticPage = true;
 }
 
 
 // override template for the current category
-$override = "_override_$CategoryID";
+$override = "_override_$categoryID";
 
-if ( $StaticPage == true )
+if ( $staticPage == true )
 {
-    if ( file_exists( "kernel/ezarticle/user/$TemplateDir/articlestatic" . $override  . ".tpl" ) )
+    if ( file_exists( "kernel/ezarticle/user/$templateDir/articlestatic" . $override  . ".tpl" ) )
         $t->set_file( "article_view_page_tpl", "articlestatic" . $override  . ".tpl"  );
     else
         $t->set_file( "article_view_page_tpl", "articlestatic.tpl"  );
 }
 else
 {
-    if ( isset( $PrintableVersion ) and $PrintableVersion == "enabled" )
+    if ( isset( $printableVersion ) and $printableVersion == "enabled" )
     {
             $t->set_file( "article_view_page_tpl", "articleprint.tpl"  );        
     }
     else
     {
-        if ( file_exists( "kernel/ezarticle/user/$TemplateDir/articleview" . $override  . ".tpl" ) )
+        if ( file_exists( "kernel/ezarticle/user/$templateDir/articleview" . $override  . ".tpl" ) )
             $t->set_file( "article_view_page_tpl", "articleview" . $override  . ".tpl"  );
         else
             $t->set_file( "article_view_page_tpl", "menuarticleview.tpl"  );
@@ -115,7 +115,7 @@ $t->set_block( "attribute_list_tpl", "type_item_tpl", "type_item" );
 $t->set_block( "type_item_tpl", "attribute_item_tpl", "attribute_item" );
 
 
-if ( $StaticRendering == true )
+if ( $staticRendering == true )
 {
     $t->set_var( "article_header", "" );
 }
@@ -124,18 +124,18 @@ else
     $t->parse( "article_header", "article_header_tpl" );
 }
 
-$SiteURL = $ini->variable( "site", "UserSiteURL" );
+$siteURL = $ini->variable( "site", "UserSiteURL" );
 
-$t->set_var( "article_url", $SiteURL . $REQUEST_URI );
+$t->set_var( "article_url", $siteURL . $_SERVER['REQUEST_URI'] );
 $t->set_var( "article_url_item", "" );
-if ( isset( $PrintableVersion ) and $PrintableVersion == "enabled" )
+if ( isset( $printableVersion ) and $printableVersion == "enabled" )
     $t->parse( "article_url_item", "article_url_item_tpl" );
 
 
 $article = new eZArticle(  );
 
 // check if the article exists
-if ( $article->get( $ArticleID ) )
+if ( $article->get( $articleID ) )
 {
     if ( $article->isPublished() )
     {
@@ -150,13 +150,13 @@ if ( $article->get( $ArticleID ) )
     $categories = $article->categories( false );
 
     // path
-    if ( !in_array( $CategoryID, $categories ) )
+    if ( !in_array( $categoryID, $categories ) )
     {
         $category = $article->categoryDefinition();
     }
     else
     {    
-        $category = new eZArticleCategory( $CategoryID );
+        $category = new eZArticleCategory( $categoryID );
     }
 
     $pathArray = $category->path();
@@ -166,7 +166,7 @@ if ( $article->get( $ArticleID ) )
     {
         $t->set_var( "category_id", $path[0] );
         
-        if ( $CapitalizeHeadlines == "enabled" )
+        if ( $capitalizeHeadlines == "enabled" )
         {
             // include_once( "classes/eztexttool.php" );
             $t->set_var( "category_name", eZTextTool::capitalize(  $path[1] ) );
@@ -184,7 +184,7 @@ if ( $article->get( $ArticleID ) )
     $template = "menu";
     $renderer = new eZArticleRenderer( $article, $template );
 
-    if ( $CapitalizeHeadlines == "enabled" )
+    if ( $capitalizeHeadlines == "enabled" )
     {
         // include_once( "classes/eztexttool.php" );
         $t->set_var( "article_name", eZTextTool::capitalize(  $article->name() ) );
@@ -213,17 +213,17 @@ if ( $article->get( $ArticleID ) )
     $t->set_var( "category_definition_name", $categoryDef->name() );
 
     $pageCount = $article->pageCount();
-    if ( $PageNumber > $pageCount )
-        $PageNumber = $pageCount;
+    if ( $pageNumber > $pageCount )
+        $pageNumber = $pageCount;
 
-    if ( $PageNumber == -1 )
+    if ( $pageNumber == -1 )
         $articleContents = $renderer->renderPage( -1 );
     else
-        $articleContents = $renderer->renderPage( $PageNumber -1 );
+        $articleContents = $renderer->renderPage( $pageNumber -1 );
     
     $t->set_var( "article_intro", $articleContents[0] );
 
-    if ( $PageNumber == 1 )
+    if ( $pageNumber == 1 )
            $t->parse( "article_intro", "article_intro_tpl" );
     else
         $t->set_var( "article_intro", "" );
@@ -269,7 +269,7 @@ if ( $article->get( $ArticleID ) )
 
             
                 $t->set_var( "image_id", $image->id() );
-                $t->set_var( "article_id", $ArticleID );
+                $t->set_var( "article_id", $articleID );
 
                 $variation = $image->requestImageVariation( 150, 150 );
 
@@ -293,12 +293,12 @@ if ( $article->get( $ArticleID ) )
 }
 
 // set the variables in the mail_to form
-if ( !isset( $SendTo ) )
-    $SendTo = "";
-$t->set_var( "send_to", $SendTo );
-if ( !isset( $From ) )
-    $From = "";
-$t->set_var( "from", $From );
+if ( !isset( $sendTo ) )
+    $sendTo = "";
+$t->set_var( "send_to", $sendTo );
+if ( !isset( $from ) )
+    $from = "";
+$t->set_var( "from", $from );
 
 $types = $article->types();
 
@@ -380,15 +380,15 @@ else
 $t->set_var( "current_page_link", "" );
 
 // page links
-if ( $pageCount > 1 && $PageNumber != -1 && ( $PrintableVersion != "enabled" ) )
+if ( $pageCount > 1 && $pageNumber != -1 && ( $printableVersion != "enabled" ) )
 {
     for ( $i=0; $i<$pageCount; $i++ )
     {
         $t->set_var( "article_id", $article->id() );
         $t->set_var( "page_number", $i+1 );
-        $t->set_var( "category_id", $CategoryID );
+        $t->set_var( "category_id", $categoryID );
 
-        if ( ( $i + 1 )  == $PageNumber )
+        if ( ( $i + 1 )  == $pageNumber )
         {
             $t->parse( "page_link", "current_page_link_tpl", true );
         }
@@ -406,7 +406,7 @@ else
 
 
 // non-printable version link
-if ( ( $PageNumber == -1 ) && ( $PrintableVersion == "enabled" ) )
+if ( ( $pageNumber == -1 ) && ( $printableVersion == "enabled" ) )
 {
     $t->parse( "numbered_page_link", "numbered_page_link_tpl" );
 }
@@ -416,7 +416,7 @@ else
 }
 
 // printable version link
-if ( ( $PrintableVersion != "enabled" ) && ( $StaticRendering != true )  )
+if ( ( $printableVersion != "enabled" ) && ( $staticRendering != true )  )
 {
     $t->parse( "print_page_link", "print_page_link_tpl" );
 }
@@ -426,9 +426,9 @@ else
 }
 
 // previous page link
-if ( ( $PageNumber > 1 ) && ( $PrintableVersion != "enabled" ) )
+if ( ( $pageNumber > 1 ) && ( $printableVersion != "enabled" ) )
 {
-    $t->set_var( "prev_page_number", $PageNumber - 1 );    
+    $t->set_var( "prev_page_number", $pageNumber - 1 );    
     $t->parse( "prev_page_link", "prev_page_link_tpl" );
 }
 else
@@ -437,9 +437,9 @@ else
 }
 
 // next page link
-if ( $PageNumber < $pageCount && $PageNumber != -1 && ( $PrintableVersion != "enabled" ) )
+if ( $pageNumber < $pageCount && $pageNumber != -1 && ( $printableVersion != "enabled" ) )
 {
-    $t->set_var( "next_page_number", $PageNumber + 1 );    
+    $t->set_var( "next_page_number", $pageNumber + 1 );    
     $t->parse( "next_page_link", "next_page_link_tpl" );
 }
 else
@@ -449,18 +449,18 @@ else
 
 
 // set variables for meta information
-$SiteTitleAppend = $article->name();
-$SiteDescriptionOverride = str_replace( "\"", "", strip_tags( $articleContents[0] ) );
+$siteTitleAppend = $article->name();
+$siteDescriptionOverride = str_replace( "\"", "", strip_tags( $articleContents[0] ) );
 
-if ( isset( $GenerateStaticPage ) && $GenerateStaticPage == "true" )
+if ( isset( $generateStaticPage ) && $generateStaticPage == "true" )
 {
     $fp = eZPBFile::fopen( $cachedFile, "w+");
 
     // add PHP code in the cache file to store variables
     $output = "<?php\n";
-    $output .= "\$GlobalSectionID=\"$GlobalSectionID\";\n";
-    $output .= "\$SiteTitleAppend=\"$SiteTitleAppend\";\n";
-    $output .= "\$SiteDescriptionOverride=\"$SiteDescriptionOverride\";\n";    
+    $output .= "\$globalSectionID=\"$globalSectionID\";\n";
+    $output .= "\$siteTitleAppend=\"$siteTitleAppend\";\n";
+    $output .= "\$siteDescriptionOverride=\"$siteDescriptionOverride\";\n";    
     $output .= "?>\n";
 
     $output .= $t->parse( "output", "article_view_page_tpl" );

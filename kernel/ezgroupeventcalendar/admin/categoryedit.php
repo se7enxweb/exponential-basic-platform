@@ -24,7 +24,7 @@
 //
 
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
     Header( "Location: /groupeventcalendar/categorylist/" );
     exit();
@@ -43,15 +43,15 @@ $LanguageIni = new eZINI( "kernel/ezgroupeventcalendar/admin/intl/" . $Language 
 // include_once( "kernel/ezgroupeventcalendar/classes/ezgroupeventcategory.php" );
 
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
     $category = new eZGroupEventCategory();
-    $category->setName( $Name );
-    $category->setDescription( $Description );
+    $category->setName( $name );
+    $category->setDescription( $description );
 
-    if ( $ParentID != 0 && $ParentID != $category->id() )
+    if ( $parentID != 0 && $parentID != $category->id() )
     {
-        $category->setParent( new eZGroupEventCategory( $ParentID ) );
+        $category->setParent( new eZGroupEventCategory( $parentID ) );
     }
 
     $category->store();
@@ -60,15 +60,15 @@ if ( $Action == "Insert" )
     exit();
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
-    $category = new eZGroupEventCategory( $CategoryID );
-    $category->setName( $Name );
-    $category->setDescription( $Description );
+    $category = new eZGroupEventCategory( $categoryID );
+    $category->setName( $name );
+    $category->setDescription( $description );
 
-    if ( $ParentID != 0 && $ParentID != $category->id() )
+    if ( $parentID != 0 && $parentID != $category->id() )
     {
-        $category->setParent( new eZGroupEventCategory( $ParentID ) );
+        $category->setParent( new eZGroupEventCategory( $parentID ) );
     }
 
     $category->store();
@@ -77,13 +77,13 @@ if ( $Action == "Update" )
     exit();
 }
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    if ( count ( $CategoryArrayID ) != 0 )
+    if ( count ( $categoryArrayID ) != 0 )
     {
-        foreach( $CategoryArrayID as $CategoryID )
+        foreach( $categoryArrayID as $categoryID )
         {
-            $category = new eZGroupEventCategory( $CategoryID );
+            $category = new eZGroupEventCategory( $categoryID );
             $categoryName = $category->name();
 
             $category->delete();
@@ -108,9 +108,9 @@ $t->set_block( "category_edit_tpl", "parent_item_tpl", "parent_item" );
 
 $t->set_var( "parent_is_selected", "selected" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $category = new eZGroupEventCategory( $CategoryID );
+    $category = new eZGroupEventCategory( $categoryID );
     if ( $category->parentID() != 0 )
         $t->set_var( "parent_is_selected", "" );
 }
@@ -138,7 +138,7 @@ foreach ( $categoryList as $categorySubList )
     $t->set_var( "parent_id", $categoryItem->id() );
     $t->set_var( "parent_is_selected", "" );
 
-    if ( $Action == "Edit" && $category->parentID() == $categoryItem->id() )
+    if ( $action == "Edit" && $category->parentID() == $categoryItem->id() )
         $t->set_var( "parent_is_selected", "selected" );
 
     if ( $category->id() != $categoryItem->id() )
@@ -146,7 +146,7 @@ foreach ( $categoryList as $categorySubList )
 }
 
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
     $t->set_var( "header", $LanguageIni->variable( "strings", "edit_appointment_category" ) );
     $t->set_var( "name_value", $category->name() );

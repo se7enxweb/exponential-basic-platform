@@ -96,6 +96,17 @@ class eZVATType
     */
     function get( $id=-1 )
     {
+        // Static cache: all products on a listing page typically share the same VAT type.
+        // vatType() is called 3-5 times per product, so without this every render fires N*5 SELECTs.
+        static $cache = [];
+        if ( isset( $cache[$id] ) )
+        {
+            $this->ID       = $cache[$id]['ID'];
+            $this->Name     = $cache[$id]['Name'];
+            $this->VATValue = $cache[$id]['VATValue'];
+            return;
+        }
+
         $db = eZDB::globalDatabase();
         
         if ( $id != -1  )
@@ -108,9 +119,10 @@ class eZVATType
             }
             else if( count( $vat_array ) == 1 )
             {
-                $this->ID =& $vat_array[0][$db->fieldName("ID")];
-                $this->Name =& $vat_array[0][$db->fieldName("Name")];
+                $this->ID       =& $vat_array[0][$db->fieldName("ID")];
+                $this->Name     =& $vat_array[0][$db->fieldName("Name")];
                 $this->VATValue =& $vat_array[0][$db->fieldName("VATValue")];
+                $cache[$id] = [ 'ID' => $this->ID, 'Name' => $this->Name, 'VATValue' => $this->VATValue ];
             }
         }
     }

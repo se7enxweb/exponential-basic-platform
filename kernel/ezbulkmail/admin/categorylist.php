@@ -34,33 +34,33 @@
 
 $mailCount = false;
 
-if ( isset( $Ok ) || isset( $New ) )
+if ( isset( $ok ) || isset( $new ) )
 {
     (new eZBulkMailCategory())->setSingleList( false );
-    if ( isset( $SingleListID ) && $SingleListID != -1 )
+    if ( isset( $singleListID ) && $singleListID != -1 )
     {
-        (new eZBulkMailCategory())->setSingleList( $SingleListID );
+        (new eZBulkMailCategory())->setSingleList( $singleListID );
     }
 }
 
-if ( isset( $New ) )
+if ( isset( $new ) )
 {
     eZHTTPTool::header( "Location: /bulkmail/categoryedit/0" );
     exit();
 }
 
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    if ( count( $CategoryArrayID ) > 0 )
+    if ( count( $categoryArrayID ) > 0 )
     {
-        foreach ( $CategoryArrayID as $categoryID )
+        foreach ( $categoryArrayID as $categoryID )
         {
             eZBulkMailCategory::delete( $categoryID );
         }
     }
-    if ( count( $BulkMailArrayID ) > 0 )
+    if ( count( $bulkMailArrayID ) > 0 )
     {
-        foreach ( $BulkMailArrayID as $bulkmailID )
+        foreach ( $bulkMailArrayID as $bulkmailID )
         {
             eZBulkMail::delete( $bulkmailID );
         }
@@ -129,12 +129,12 @@ foreach ( $categories as $categoryitem )
 if ( $i > 0 )
     $t->parse( "category", "category_tpl" );
 
-if ( is_numeric( $CategoryID ) && $CategoryID > 0 )
+if ( is_numeric( $categoryID ) && $categoryID > 0 )
 {
-    $category = new eZBulkMailCategory( $CategoryID );
+    $category = new eZBulkMailCategory( $categoryID );
     $t->set_var( "current_category_name", $category->name() );
     $t->set_var( "current_category_id", $category->id() );
-    $mail = $category->mail( $Offset, 20 );
+    $mail = $category->mail( $offset, 20 );
     $mailCount = $category->mailCount();
     $i = 0;
     foreach ( $mail as $mailItem )
@@ -160,7 +160,7 @@ if ( is_numeric( $CategoryID ) && $CategoryID > 0 )
         $t->parse( "bulkmail", "bulkmail_tpl" );
 }
 
-eZList::drawNavigator( $t, $mailCount, 20, $Offset, "category_list_tpl" );
+eZList::drawNavigator( $t, $mailCount, 20, $offset, "category_list_tpl" );
 $t->pparse( "output", "category_list_tpl" );
 
 ?>

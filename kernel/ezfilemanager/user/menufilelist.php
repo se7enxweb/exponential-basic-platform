@@ -38,7 +38,7 @@
 $ini = eZINI::instance( 'site.ini' );
 
 $Language = $ini->variable( "eZFileManagerMain", "Language" );
-$ImageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
+$imageDir = $ini->variable( "eZFileManagerMain", "ImageDir" );
 
 $t = new eZTemplate( "kernel/ezfilemanager/user/" . $ini->variable( "eZFileManagerMain", "TemplateDir" ),
                      "kernel/ezfilemanager/user/intl/", $Language, "menufilelist.php" );
@@ -50,7 +50,7 @@ $t->setAllStrings();
 $t->set_block( "file_list_page_tpl", "file_list_tpl", "file_list" );
 $t->set_block( "file_list_tpl", "file_tpl", "file" );
 
-$folder = new eZVirtualFolder( $FolderID );
+$folder = new eZVirtualFolder( $folderID );
 $fileList = $folder->files();
 
 $user = eZUser::currentUser();

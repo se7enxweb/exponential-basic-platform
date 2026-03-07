@@ -29,7 +29,7 @@ include( "kernel/ezaddress/admin/typelist_pre.php" );
 $language_file = "phonetype.php";
 $page_path = "/address/phonetype";
 
-$item_type_array = eZPhoneType::getAll( true, $Index, $Max );
+$item_type_array = eZPhoneType::getAll( true, $index, $max );
 $total_types = eZPhoneType::getAllCount();
 $func_call = array( "item_id" => 'id',
                     "item_name" => 'name' );

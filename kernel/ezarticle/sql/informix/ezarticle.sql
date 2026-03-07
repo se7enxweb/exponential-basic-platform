@@ -153,6 +153,20 @@ CREATE TABLE eZArticle_CategoryReaderLink (
   PRIMARY KEY (ID)
 );
 
+CREATE TABLE eZArticle_ArticleSectionDict (
+  ID int NOT NULL,
+  ArticleID int NOT NULL default 0,
+  SectionID int NOT NULL default 0,
+  Placement int NOT NULL default 0,
+  PRIMARY KEY (ID)
+);
+
+CREATE TABLE eZArticle_LinkSection (
+  ID int NOT NULL,
+  Name varchar(30) default NULL,
+  PRIMARY KEY (ID)
+);
+
 CREATE TABLE eZArticle_Log (
   ID int NOT NULL,
   ArticleID int NOT NULL,

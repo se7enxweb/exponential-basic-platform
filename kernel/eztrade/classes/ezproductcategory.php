@@ -209,14 +209,32 @@ class eZProductCategory
     /*!
       Fetches the object information from the database.
     */
+    /** Caches get() rows by category ID to avoid duplicate SELECTs within one request. */
+    static $getCache = [];
+
     function get( $id=-1 )
     {
-        $db = eZDB::globalDatabase();
-        $category_array = array();
-        $ret = false;
-
         if ( $id != "" && $id != -1 )
         {
+            if ( isset( self::$getCache[$id] ) )
+            {
+                $row = self::$getCache[$id];
+                $db  = eZDB::globalDatabase();
+                $this->ID          = $row[$db->fieldName( "ID" )];
+                $this->Name        = $row[$db->fieldName( "Name" )];
+                $this->Description = $row[$db->fieldName( "Description" )];
+                if ( $row[$db->fieldName( "Parent" )] != NULL )
+                    $this->Parent  = $row[$db->fieldName( "Parent" )];
+                $this->SortMode    = $row[$db->fieldName( "SortMode" )];
+                $this->RemoteID    = $row[$db->fieldName( "RemoteID" )];
+                $this->ImageID     = $row[$db->fieldName( "ImageID" )];
+                $this->SectionID   = $row[$db->fieldName( "SectionID" )];
+                return true;
+            }
+
+            $db = eZDB::globalDatabase();
+            $category_array = array();
+
             $query = "SELECT * FROM eZTrade_Category WHERE ID='$id'";
             $db->array_query( $category_array, $query );
 
@@ -226,19 +244,20 @@ class eZProductCategory
             }
             else if ( count( $category_array ) == 1 )
             {
-                $this->ID =& $category_array[0][$db->fieldName( "ID" )];
-                $this->Name =& $category_array[0][$db->fieldName( "Name" )];
+                self::$getCache[$id] = $category_array[0]; // cache the raw row
+                $this->ID          =& $category_array[0][$db->fieldName( "ID" )];
+                $this->Name        =& $category_array[0][$db->fieldName( "Name" )];
                 $this->Description =& $category_array[0][$db->fieldName( "Description" )];
 		        if( $category_array[0][$db->fieldName( "Parent" )] != NULL )
-                $this->Parent =& $category_array[0][$db->fieldName( "Parent" )];
-                $this->SortMode =& $category_array[0][$db->fieldName( "SortMode" )];
-                $this->RemoteID =& $category_array[0][$db->fieldName( "RemoteID" )];
-                $this->ImageID =& $category_array[0][$db->fieldName( "ImageID" )];
-                $this->SectionID =& $category_array[0][$db->fieldName( "SectionID" )];
-                $ret = true;
+                    $this->Parent  =& $category_array[0][$db->fieldName( "Parent" )];
+                $this->SortMode    =& $category_array[0][$db->fieldName( "SortMode" )];
+                $this->RemoteID    =& $category_array[0][$db->fieldName( "RemoteID" )];
+                $this->ImageID     =& $category_array[0][$db->fieldName( "ImageID" )];
+                $this->SectionID   =& $category_array[0][$db->fieldName( "SectionID" )];
+                return true;
             }
         }
-        return $ret;
+        return false;
     }
 
     /*!
@@ -273,17 +292,28 @@ class eZProductCategory
         if ( is_a( $parent, "eZProductCategory" ) )
         {
             $db = eZDB::globalDatabase();
+            $parentID = $parent->id();
+
+            // SELECT * so we can hydrate objects directly and avoid N individual get() calls
+            $category_array = array();
+            $db->array_query( $category_array, "SELECT * FROM eZTrade_Category WHERE Parent='$parentID'" );
 
             $return_array = array();
-            $category_array = array();
-
-            $parentID = $parent->id();
-            $query = "SELECT ID, Name FROM eZTrade_Category WHERE Parent='$parentID';";
-            $db->array_query( $category_array, $query );
-
             for ( $i = 0; $i < count( $category_array ); $i++ )
             {
-                $return_array[$i] = new eZProductCategory( $category_array[$i][$db->fieldName( "ID" )], 0 );
+                $row = $category_array[$i];
+                $obj = new eZProductCategory(); // no ID arg → no get() call
+                $obj->ID          = $row[$db->fieldName( "ID" )];
+                $obj->Name        = $row[$db->fieldName( "Name" )];
+                $obj->Description = $row[$db->fieldName( "Description" )];
+                $obj->Parent      = $row[$db->fieldName( "Parent" )];
+                $obj->SortMode    = $row[$db->fieldName( "SortMode" )];
+                $obj->RemoteID    = $row[$db->fieldName( "RemoteID" )];
+                $obj->ImageID     = $row[$db->fieldName( "ImageID" )];
+                $obj->SectionID   = $row[$db->fieldName( "SectionID" )];
+                // Also populate the row cache so any subsequent get($id) call is a cache hit
+                self::$getCache[$obj->ID] = $row;
+                $return_array[$i] = $obj;
             }
 
             return $return_array;
@@ -342,7 +372,7 @@ class eZProductCategory
         foreach ( $categoryList as $category )
         {
             array_push( $tree, array( $return_array[] = new eZProductCategory( $category->id() ), $level ) );
-            if ( $category != 0 )
+            if ( $category->id() != 0 )
             {
                 $tree = array_merge( $tree, eZProductCategory::getTree( $category->id(), $level ) );
             }
@@ -392,6 +422,15 @@ class eZProductCategory
     */
     static public function sectionIDStatic( $categoryID )
     {
+        // Use the row cache from get() to avoid a duplicate SELECT when the
+        // category was already fetched a moment before by $category->get($categoryID).
+        if ( isset( self::$getCache[$categoryID] ) )
+        {
+            $db = eZDB::globalDatabase();
+            $sectionID = self::$getCache[$categoryID][$db->fieldName( 'SectionID' )] ?? 0;
+            return $sectionID > 0 ? $sectionID : false;
+        }
+
         $db = eZDB::globalDatabase();
         $db->query_single( $res, "SELECT SectionID from eZTrade_Category WHERE ID='$categoryID'");
 

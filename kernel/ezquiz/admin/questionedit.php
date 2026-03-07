@@ -30,23 +30,23 @@
 // include_once( "ezquiz/classes/ezquizquestion.php" );
 
 $errorMessages = array();
-if ( isset( $NewAlternative ) )
+if ( isset( $newAlternative ) )
 {
-    $question = new eZQuizQuestion( $QuestionID );
+    $question = new eZQuizQuestion( $questionID );
     $alternative = new eZQuizAlternative();
     $alternative->setQuestion( $question );
     $alternative->store();
-    $Action = "Update";
+    $action = "Update";
 }
 else
 {
-    $question = new eZQuizQuestion( $QuestionID );
+    $question = new eZQuizQuestion( $questionID );
 }
 
 
-if ( isset( $OK ) )
+if ( isset( $ok ) )
 {
-    $question = new eZQuizQuestion( $QuestionID );
+    $question = new eZQuizQuestion( $questionID );
 
     if ( $question->countAlternatives() == false )
     {
@@ -55,30 +55,30 @@ if ( isset( $OK ) )
 
     if ( count( $errorMessages ) > 0 )
     {
-        unset( $OK );
+        unset( $ok );
     }
-    $Action = "Update";
+    $action = "Update";
 }
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
-    $question = new eZQuizQuestion( $QuestionID);
+    $question = new eZQuizQuestion( $questionID);
     $game = $question->game();
     $gameID = $game->id();
     eZHTTPTool::header( "Location: /quiz/game/edit/$gameID/" );
     exit();
 }
 
-if ( isset( $Delete ) )
+if ( isset( $delete ) )
 {
-    if ( count( $AlternativeDeleteArray ) > 0 )
+    if ( count( $alternativeDeleteArray ) > 0 )
     {
-        foreach ( $AlternativeDeleteArray as $AltID )
+        foreach ( $alternativeDeleteArray as $altID )
         {
-            eZQuizAlternative::delete( $AltID );
+            eZQuizAlternative::delete( $altID );
         }
     }
-    $Action = "";
+    $action = "";
 }
 
 $ini = eZINI::instance( 'site.ini' );
@@ -97,47 +97,47 @@ $t->set_block( "alternative_list_tpl", "alternative_item_tpl", "alternative_item
 $t->set_block( "question_edit_page", "error_list_tpl", "error_list" );
 $t->set_block( "error_list_tpl", "error_item_tpl", "error_item" );
 
-$t->set_var( "question_name", isset( $Name ) ? $Name : false );
-$t->set_var( "question_description", isset( $Description ) ? $Description : false );
+$t->set_var( "question_name", isset( $name ) ? $name : false );
+$t->set_var( "question_description", isset( $description ) ? $description : false );
 
-if ( isset( $Action ) && $Action == "Update" )
+if ( isset( $action ) && $action == "Update" )
 {
-    if ( is_numeric( $QuestionID ) )
-        $question = new eZQuizQuestion( $QuestionID );
+    if ( is_numeric( $questionID ) )
+        $question = new eZQuizQuestion( $questionID );
     else
         $question = new eZQuizQuestion();
 
-    if ( empty( $Name ) )
+    if ( empty( $name ) )
     {
         $errorMessages[] = "error_missing_question_name";
-        unset( $OK );
+        unset( $ok );
     }
     else
     {
-        $question->setName( $Name );
+        $question->setName( $name );
     }
     $question->store();
     $alternativeNameError = false;
-    if ( isset( $AlternativeArrayID ) && count( $AlternativeArrayID ) > 0 )
+    if ( isset( $alternativeArrayID ) && count( $alternativeArrayID ) > 0 )
     {
-        for ( $i = 0; $i < count( $AlternativeArrayID ); $i++ )
+        for ( $i = 0; $i < count( $alternativeArrayID ); $i++ )
         {
-            $alternative = new eZQuizAlternative( $AlternativeArrayID[$i] );
-            if ( empty( $AlternativeArrayName[$i] ) )
+            $alternative = new eZQuizAlternative( $alternativeArrayID[$i] );
+            if ( empty( $alternativeArrayName[$i] ) )
             {
                 if ( $alternativeNameError == false )
                 {
                     $errorMessages[] = "error_missing_answer_name";
-                    unset( $OK );
+                    unset( $ok );
                     $alternativeNameError = true;
                 }
             }
             else
             {
-                $alternative->setName( $AlternativeArrayName[$i] );
+                $alternative->setName( $alternativeArrayName[$i] );
             }
 
-            if ( isset( $IsCorrect ) && $IsCorrect == $AlternativeArrayID[$i] )
+            if ( isset( $isCorrect ) && $isCorrect == $alternativeArrayID[$i] )
                 $alternative->setIsCorrect( true );
             else
                 $alternative->setIsCorrect( false );
@@ -146,14 +146,14 @@ if ( isset( $Action ) && $Action == "Update" )
         unset( $alternative );
     }
 
-    if ( $question->countCorrectAlternatives() == false && !isset( $NewAlternative ) )
+    if ( $question->countCorrectAlternatives() == false && !isset( $newAlternative ) )
     {
         $errorMessages[] = "error_no_correct_alternative";
-        unset( $OK );
+        unset( $ok );
     }
 
 
-    if ( isset( $OK ) )
+    if ( isset( $ok ) )
     {
         $game = $question->game();
         $gameID = $game->id();
@@ -162,24 +162,24 @@ if ( isset( $Action ) && $Action == "Update" )
     }
 }
 
-if ( isset( $Action ) && $Action == "Delete" )
+if ( isset( $action ) && $action == "Delete" )
 {
-    if ( count( $AlternativeArrayID ) > 0 )
+    if ( count( $alternativeArrayID ) > 0 )
     {
-        foreach ( $AlternativeArrayID as $AlternativeID )
+        foreach ( $alternativeArrayID as $alternativeID )
         {
-            $alternative = new eZQuizAlternative( $AlternativeID );
+            $alternative = new eZQuizAlternative( $alternativeID );
             $alternative->delete();
         }
     }
-    eZHTTPTool::header( "Location: /quiz/game/question/edit/$GameID" );
+    eZHTTPTool::header( "Location: /quiz/game/question/edit/$gameID" );
     exit();
 }
 
-if ( is_numeric( $QuestionID ) )
+if ( is_numeric( $questionID ) )
 {
     if ( !is_a( $question, "eZQuizQuestion" ) )
-        $question = new eZQuizQuestion( $QuestionID );
+        $question = new eZQuizQuestion( $questionID );
     $t->set_var( "question_id", $question->id() );
     $t->set_var( "question_name", $question->name() );
 
@@ -216,8 +216,8 @@ if ( count( $errorMessages ) > 0 )
         $t->parse( "error_item", "error_item_tpl", true );
     }
 
-    $t->set_var( "question_name", $Name );
-    $t->set_var( "question_id", $QuestionID );
+    $t->set_var( "question_name", $name );
+    $t->set_var( "question_id", $questionID );
 
     $t->parse( "error_list", "error_list_tpl" );
 }

@@ -25,11 +25,25 @@
 
 // include_once( "classes/ezhttptool.php" );
 
+$delMessage  = eZHTTPTool::getVar( 'DelMessage' );
+$delete      = eZHTTPTool::getVar( 'Delete' );
+$description = eZHTTPTool::getVar( 'Description' );
+$edit        = eZHTTPTool::getVar( 'Edit' );
+$message     = eZHTTPTool::getVar( 'Message' );
+$messageID   = eZHTTPTool::getVar( 'MessageID' );
+$messageSent = eZHTTPTool::getVar( 'MessageSent' );
+$preview     = eZHTTPTool::getVar( 'Preview' );
+$receiver    = eZHTTPTool::getVar( 'Receiver' );
+$reply       = eZHTTPTool::getVar( 'Reply' );
+$sendMessage = eZHTTPTool::getVar( 'SendMessage' );
+$subject     = eZHTTPTool::getVar( 'Subject' );
+$userName    = eZHTTPTool::getVar( 'UserName' );
+
 switch( $url_array[2] )
 {
     case "view" :
     {
-        $MessageID = $url_array[3];
+        $messageID = $url_array[3];
         include( "kernel/ezmessage/user/messageview.php" );
     }
     break;    

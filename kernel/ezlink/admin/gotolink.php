@@ -30,17 +30,20 @@ $ini = eZINI::instance( 'site.ini' );
 // include_once( "ezlink/classes/ezlink.php" );
 // include_once( "ezlink/classes/ezhit.php" );
 
-if ( $Action == "addhit" )
+if ( $action == "addhit" )
 {
     $hit = new eZHit();
-    $hit->setLink( $LinkID );
+    $hit->setLink( $linkID );
     $hit->setRemoteIP( $REMOTE_ADDR );
     $hit->store();
 }
 
-if ( !preg_match( "%^([a-z]+://)%", $Url ) )
-    $Url = "http://" . $Url;
+if ( !preg_match( "%^([a-z]+://)%", $url ) )
+    $url = "http://" . $url;
 
-Header( "Location: " . $Url );
+Header( "Location: " . $url );
+
+eZExecution::setCleanExit();
+exit();
 
 ?>

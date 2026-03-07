@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: attributeedit.php 6233 2001-07-20 11:42:02Z jakobn $
+// $id: attributeedit.php 6233 2001-07-20 11:42:02Z jakobn $
 //
 // Created on: <20-Dec-2000 18:45:08 bf>
 //
@@ -25,9 +25,9 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
-    eZHTTPTool::header( "Location: /trade/productedit/edit/$ProductID/" );
+    eZHTTPTool::header( "Location: /trade/productedit/edit/$productID/" );
     exit();
 }
 
@@ -37,7 +37,7 @@ if ( isset( $Cancel ) )
 // include_once( "classes/ezcurrency.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZTradeMain", "Language" );
+$language = $ini->variable( "eZTradeMain", "Language" );
 
 // include_once( "eztrade/classes/ezproductcategory.php" );
 // include_once( "eztrade/classes/ezproduct.php" );
@@ -46,28 +46,28 @@ $Language = $ini->variable( "eZTradeMain", "Language" );
 // include_once( "eztrade/classes/ezproductattribute.php" );
 
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
-    $product = new eZProduct( $ProductID );
+    $product = new eZProduct( $productID );
     
 //      print( "update<br>" );
     
-//      print( $TypeID );
+//      print( $typeID );
 
-    if ( $TypeID == -1 )
+    if ( $typeID == -1 )
     {
         $product->removeType();
     }
     else
     {
-        $product->setType( new eZProductType( $TypeID ) );
+        $product->setType( new eZProductType( $typeID ) );
 
         $i =0;
-        if ( count( $AttributeValue ) > 0 )
+        if ( count( $attributeValue ) > 0 )
         {
-            foreach ( $AttributeValue as $attribute )
+            foreach ( $attributeValue as $attribute )
             {
-                $att = new eZProductAttribute( $AttributeID[$i] );
+                $att = new eZProductAttribute( $attributeID[$i] );
                 
                 $att->setValue( $product, $attribute );
 
@@ -76,17 +76,17 @@ if ( $Action == "Update" )
         }
     }
     
-    if ( isset( $OK ) )
+    if ( isset( $ok ) )
     {
-        eZHTTPTool::header( "Location: /trade/productedit/edit/$ProductID/" );
+        eZHTTPTool::header( "Location: /trade/productedit/edit/$productID/" );
         exit();
     }
 }
 
-$product = new eZProduct( $ProductID );
+$product = new eZProduct( $productID );
 
 $t = new eZTemplate( "kernel/eztrade/admin/" . $ini->variable( "eZTradeMain", "AdminTemplateDir" ),
-                     "kernel/eztrade/admin/intl/", $Language, "attributeedit.php" );
+                     "kernel/eztrade/admin/intl/", $language, "attributeedit.php" );
 
 $t->setAllStrings();
 
@@ -102,7 +102,7 @@ $t->set_block( "attribute_edit_page", "type_tpl", "type" );
 
 //default values
     
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {    
     
 }
@@ -162,7 +162,7 @@ else
 }
 
 $t->set_var( "product_name", $product->name( ) );
-$t->set_var( "product_id", $ProductID );
+$t->set_var( "product_id", $productID );
 
 $t->pparse( "output", "attribute_edit_page" );
 

@@ -23,7 +23,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, US
 //
 
-if ( $ShowSearch == true )
+if ( $showSearch == true )
 {
     $t->set_file( "message_path", "messagepath.tpl"  );
     $t->set_block( "message_path", "article_message_tpl", "article_message_item" );
@@ -38,48 +38,48 @@ if ( $ShowSearch == true )
 
     if ( !is_object( $msg ) )
     {
-        $msg = new eZForumMessage( $MessageID );
-        $MessageTopic = $msg->topic();
-        $ForumID = $msg->forumId();
+        $msg = new eZForumMessage( $messageID );
+        $messageTopic = $msg->topic();
+        $forumID = $msg->forumId();
     }
     
-    $forum = new eZForum( $ForumID );
-    $ForumName = $forum->name();
+    $forum = new eZForum( $forumID );
+    $forumName = $forum->name();
     $categories = $forum->categories();
     
     if ( is_object( $categories[0] ) )
     {
-        $ForumCategory = new eZForumCategory( $categories[0]->id() );
-        $ForumCategoryID = $ForumCategory->id();
-        if ( empty( $ForumCategoryName ) || $MessagePathOverride == true )
+        $forumCategory = new eZForumCategory( $categories[0]->id() );
+        $forumCategoryID = $forumCategory->id();
+        if ( empty( $forumCategoryName ) || $messagePathOverride == true )
         {
-            $ForumCategoryName = $ForumCategory->name();
+            $forumCategoryName = $forumCategory->name();
         }
     }
     else
     {
         // include_once( "ezarticle/classes/ezarticle.php" );
 
-        $ArticleID = eZArticle::articleIDFromForum( $ForumID );
+        $articleID = eZArticle::articleIDFromForum( $forumID );
 
-        $article = new eZArticle( $ArticleID );
-        $ArticleID = $article->id();
-        $ArticleName = $article->name();
+        $article = new eZArticle( $articleID );
+        $articleID = $article->id();
+        $articleName = $article->name();
 
         $isArticle = true;
     }
 
-    $t->set_var( "message_topic", $MessageTopic );
-    $t->set_var( "message_id", $MessageID );
+    $t->set_var( "message_topic", $messageTopic );
+    $t->set_var( "message_id", $messageID );
 
-    $t->set_var( "category_name", $ForumCategoryName );
-    $t->set_var( "category_id", $ForumCategoryID );
+    $t->set_var( "category_name", $forumCategoryName );
+    $t->set_var( "category_id", $forumCategoryID );
 
-    $t->set_var( "forum_id", $ForumID );
-    $t->set_var( "forum_name", $ForumName );
+    $t->set_var( "forum_id", $forumID );
+    $t->set_var( "forum_name", $forumName );
 
-    $t->set_var( "article_id", $ArticleID );
-    $t->set_var( "article_name", $ArticleName );
+    $t->set_var( "article_id", $articleID );
+    $t->set_var( "article_name", $articleName );
 
     $t->set_var( "article_message_item", "" );
     $t->set_var( "article_topic_item", "" );

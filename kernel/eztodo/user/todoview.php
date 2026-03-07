@@ -71,7 +71,7 @@ $t->set_var( "log_item", "&nbsp;" );
 $t->set_var( "list_logs", "&nbsp;" );
 
 $todo = new eZTodo();
-$todo->get( $TodoID );
+$todo->get( $todoID );
 
 if ( $todo->IsPublic() )
 {

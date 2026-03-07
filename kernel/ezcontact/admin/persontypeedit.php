@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: persontypeedit.php 9529 2002-05-14 11:17:05Z jhe $
+// $id: persontypeedit.php 9529 2002-05-14 11:17:05Z jhe $
 //
 // Created on: <23-Oct-2000 17:53:46 bf>
 //
@@ -31,7 +31,7 @@
 // include_once( "classes/ezhttptool.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZContactMain", "Language" );
+$language = $ini->variable( "eZContactMain", "Language" );
 $DOC_ROOT = $ini->variable( "eZContactMain", "DocumentRoot" );
 
 // include_once( "classes/eztemplate.php" );
@@ -48,13 +48,13 @@ $DOC_ROOT = $ini->variable( "eZContactMain", "DocumentRoot" );
 require( "kernel/ezuser/admin/admincheck.php" );
 
 // Legge til
-if ( isset( $Action ) && $Action == "insert" )
+if ( isset( $action ) && $action == "insert" )
 {
     if ( eZPermission::checkPermission( $user, "eZContact", "AdminAdd" ) )
     {
         $type = new eZPersonType();
-        $type->setName( $PersonTypeName );
-        $type->setDescription( $PersonTypeDescription );
+        $type->setName( $personTypeName );
+        $type->setDescription( $personTypeDescription );
         $type->store();
 
         eZHTTPTool::header( "Location: /contact/persontypelist/" );
@@ -66,16 +66,16 @@ if ( isset( $Action ) && $Action == "insert" )
 }
 
 // Oppdatere
-if ( isset( $Action ) && $Action == "update" )
+if ( isset( $action ) && $action == "update" )
 {
     if ( eZPermission::checkPermission( $user, "eZContact", "AdminModify" ) )
     {
         $type = new eZPersonType();
-        $type->get( $PID );
-        print ( "$PID ..." );
+        $type->get( $pID );
+        print ( "$pID ..." );
 
-        $type->setName( $PersonTypeName );
-        $type->setDescription( $PersonTypeDescription );
+        $type->setName( $personTypeName );
+        $type->setDescription( $personTypeDescription );
         $type->update();
 
         eZHTTPTool::header( "Location: /contact/persontypelist/" );
@@ -87,12 +87,12 @@ if ( isset( $Action ) && $Action == "update" )
 }
 
 // Slette
-if ( isset( $Action ) && $Action == "delete" )
+if ( isset( $action ) && $action == "delete" )
 {
     if ( eZPermission::checkPermission( $user, "eZContact", "AdminDelete" ) )
     {
         $type = new eZPersonType();
-        $type->get( $PID );
+        $type->get( $pID );
         $type->delete( );
         eZHTTPTool::header( "Location: /contact/persontypelist/" );
     }
@@ -102,7 +102,7 @@ if ( isset( $Action ) && $Action == "delete" )
     }
 }
 
-$t = new eZTemplate( $DOC_ROOT . "/" . $ini->variable( "eZContactMain", "TemplateDir" ), $DOC_ROOT . "/intl", $Language, "persontypeedit.php" );
+$t = new eZTemplate( $DOC_ROOT . "/" . $ini->variable( "eZContactMain", "TemplateDir" ), $DOC_ROOT . "/intl", $language, "persontypeedit.php" );
 $t->setAllStrings();
 
 $t->set_file( array(
@@ -115,25 +115,25 @@ $t->set_var( "persontype_id", "" );
 $t->set_var( "head_line", "Legg til ny persontype" );
 
 // Editere
-if ( isset( $Action ) && $Action == "edit" )
+if ( isset( $action ) && $action == "edit" )
 {
     $type = new eZPersonType();
-    $type->get( $PID );
+    $type->get( $pID );
   
-    $PersonTypeName = $type->name();
-    $PersonTypeDescription = $type->description();
+    $personTypeName = $type->name();
+    $personTypeDescription = $type->description();
 
     $t->set_var( "submit_text", "Lagre endringer" );
     $t->set_var( "action_value", "update" );
-    $t->set_var( "persontype_id", $PID );
+    $t->set_var( "persontype_id", $pID );
     $t->set_var( "head_line", "Rediger persontype" );
 
 }
 
 // Sette tempalte variabler
 $t->set_var( "document_root", $DOC_ROOT );
-$t->set_var( "persontype_name", $PersonTypeName );
-$t->set_var( "description", $PersonTypeDescription );
+$t->set_var( "persontype_name", $personTypeName );
+$t->set_var( "description", $personTypeDescription );
 
 $t->pparse( "output", "persontype_edit_page" );
 

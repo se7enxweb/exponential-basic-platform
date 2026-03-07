@@ -48,19 +48,66 @@ function writeAtAll()
 
 $user = eZUser::currentUser();
 
+$action             = eZHTTPTool::getVar( 'Action' );
+$attributeDefault   = eZHTTPTool::getVar( 'AttributeDefault' );
+$attributeID        = eZHTTPTool::getVar( 'AttributeID' );
+$attributeName      = eZHTTPTool::getVar( 'AttributeName' );
+$attributeValue     = eZHTTPTool::getVar( 'AttributeValue' );
+$cancel             = eZHTTPTool::getVar( 'Cancel' );
+$caption            = eZHTTPTool::getVar( 'Caption' );
+$categoryArray      = eZHTTPTool::getVar( 'CategoryArray' ) ?? [];
+$categoryArrayID    = eZHTTPTool::getVar( 'CategoryArrayID' ) ?? [];
+$categoryID         = eZHTTPTool::getVar( 'CategoryID' );
+$currentCategoryID  = eZHTTPTool::getVar( 'CurrentCategoryID' );
+$delete             = eZHTTPTool::getVar( 'Delete' );
+$deleteArrayID      = eZHTTPTool::getVar( 'DeleteArrayID' ) ?? [];
+$deleteAttributes   = eZHTTPTool::getVar( 'DeleteAttributes' );
+$deleteCategories   = eZHTTPTool::getVar( 'DeleteCategories' );
+$deleteMedia        = eZHTTPTool::getVar( 'DeleteMedia' );
+$deleteSelected     = eZHTTPTool::getVar( 'DeleteSelected' );
+$description        = eZHTTPTool::getVar( 'Description' );
+$imageDir           = eZHTTPTool::getVar( 'ImageDir' );
+$mediaArrayID       = eZHTTPTool::getVar( 'MediaArrayID' ) ?? [];
+$mediaDir           = eZHTTPTool::getVar( 'MediaDir' );
+$mediaID            = eZHTTPTool::getVar( 'MediaID' );
+$mediaUpload        = eZHTTPTool::getVar( 'MediaUpload' );
+$name               = eZHTTPTool::getVar( 'Name' );
+$newAttribute       = eZHTTPTool::getVar( 'NewAttribute' );
+$newCategory        = eZHTTPTool::getVar( 'NewCategory' );
+$newCreatorEmail    = eZHTTPTool::getVar( 'NewCreatorEmail' );
+$newCreatorName     = eZHTTPTool::getVar( 'NewCreatorName' );
+$ok                 = eZHTTPTool::getVar( 'OK' ) ?? eZHTTPTool::getVar( 'Ok' );
+$offset             = eZHTTPTool::getVar( 'Offset' );
+$parentID           = eZHTTPTool::getVar( 'ParentID' );
+$photoID            = eZHTTPTool::getVar( 'PhotoID' );
+$photographerID     = eZHTTPTool::getVar( 'PhotographerID' );
+$position           = eZHTTPTool::getVar( 'Position' );
+$read               = eZHTTPTool::getVar( 'Read' );
+$readGroupArrayID   = eZHTTPTool::getVar( 'ReadGroupArrayID' ) ?? [];
+$refererURL         = eZHTTPTool::getVar( 'RefererURL' );
+$refreshTimer       = eZHTTPTool::getVar( 'RefreshTimer' );
+$sectionID          = eZHTTPTool::getVar( 'SectionID' );
+$syncDir            = eZHTTPTool::getVar( 'SyncDir' );
+$syncMediaDir       = eZHTTPTool::getVar( 'SyncMediaDir' );
+$typeID             = eZHTTPTool::getVar( 'TypeID' );
+$update             = eZHTTPTool::getVar( 'Update' );
+$variationID        = eZHTTPTool::getVar( 'VariationID' );
+$write              = eZHTTPTool::getVar( 'Write' );
+$writeGroupArrayID  = eZHTTPTool::getVar( 'WriteGroupArrayID' ) ?? [];
+
 switch ( $url_array[2] )
 {
     case "browse":
     {
-        $CategoryID = $url_array[3];
+        $categoryID = $url_array[3];
         include( "kernel/ezmediacatalogue/admin/browse.php" );
     }
     break;
 
     case "mediaview" :
     {
-        $MediaID = $url_array[3];
-        $VariationID = $url_array[4];
+        $mediaID = $url_array[3];
+        $variationID = $url_array[4];
         include( "kernel/ezmediacatalogue/admin/mediaview.php" );
     }
     break;
@@ -71,12 +118,12 @@ switch ( $url_array[2] )
         {
             case "list" :
             {
-                $CategoryID = $url_array[4];
-                if ( !is_numeric($CategoryID ) )
-                    $CategoryID = 0;
+                $categoryID = $url_array[4];
+                if ( !is_numeric($categoryID ) )
+                    $categoryID = 0;
 
                 if ( $url_array[5] == "parent" )
-                    $Offset = $url_array[6];
+                    $offset = $url_array[6];
 
                 include( "kernel/ezmediacatalogue/admin/medialist.php" );
             }
@@ -85,7 +132,7 @@ switch ( $url_array[2] )
             case "new" :
             {
                 writeAtAll();
-                $Action = "New";
+                $action = "New";
                 include( "kernel/ezmediacatalogue/admin/mediaedit.php" );
             }
             break;
@@ -93,17 +140,17 @@ switch ( $url_array[2] )
             case "Insert" :
             {
                 writeAtAll();
-                $Action = "Insert";
+                $action = "Insert";
                 include( "kernel/ezmediacatalogue/admin/mediaedit.php" );
             }
             break;
 
             case "edit" :
             {
-                $MediaID = $url_array[4];
-                $Action = "Edit";
-                if( ( eZMedia::isOwner( $user, $MediaID ) ||
-                     eZObjectPermission::hasPermission( $MediaID, "mediacatalogue_media", 'w' ) )
+                $mediaID = $url_array[4];
+                $action = "Edit";
+                if( ( eZMedia::isOwner( $user, $mediaID ) ||
+                     eZObjectPermission::hasPermission( $mediaID, "mediacatalogue_media", 'w' ) )
                     && writeAtAll() )
                 {
                     include( "kernel/ezmediacatalogue/admin/mediaedit.php" );
@@ -118,10 +165,10 @@ switch ( $url_array[2] )
 
             case "update" :
             {
-                $MediaID = $url_array[4];
-                $Action = "Update";
-                if( ( eZMedia::isOwner( $user, $MediaID ) ||
-                     eZObjectPermission::hasPermission( $MediaID, "mediacatalogue_media", 'w' ) )
+                $mediaID = $url_array[4];
+                $action = "Update";
+                if( ( eZMedia::isOwner( $user, $mediaID ) ||
+                     eZObjectPermission::hasPermission( $mediaID, "mediacatalogue_media", 'w' ) )
                     && writeAtAll() )
                     include( "kernel/ezmediacatalogue/admin/mediaedit.php" );
                 else
@@ -142,11 +189,11 @@ switch ( $url_array[2] )
 
     case "download" :
     {
-        $MediaID = $url_array[3];
-        if ( !is_numeric( $MediaID ) )
-            $MediaID = 0;
-        if ( ( eZMedia::isOwner( $user, $MediaID ) ||
-              eZObjectPermission::hasPermission( $MediaID, "mediacatalogue_media", 'r' ) ) )
+        $mediaID = $url_array[3];
+        if ( !is_numeric( $mediaID ) )
+            $mediaID = 0;
+        if ( ( eZMedia::isOwner( $user, $mediaID ) ||
+              eZObjectPermission::hasPermission( $mediaID, "mediacatalogue_media", 'r' ) ) )
             include( "kernel/ezmediacatalogue/admin/filedownload.php" );
         else
         {
@@ -158,13 +205,13 @@ switch ( $url_array[2] )
 
     case "slideshow" :
     {
-        $CategoryID = $url_array[3];
-        if ( !is_numeric( $CategoryID ) )
-            $CategoryID = 0;
-        $Position = $url_array[4];
-        if ( !is_numeric( $Position ) )
-            $Position = 0;
-        $RefreshTimer = $url_array[5];
+        $categoryID = $url_array[3];
+        if ( !is_numeric( $categoryID ) )
+            $categoryID = 0;
+        $position = $url_array[4];
+        if ( !is_numeric( $position ) )
+            $position = 0;
+        $refreshTimer = $url_array[5];
         include( "kernel/ezmediacatalogue/admin/slideshow.php" );
     }
     break;
@@ -179,25 +226,25 @@ switch ( $url_array[2] )
     {
         if ( $url_array[3] == "edit" )
         {
-            $TypeID = $url_array[4];
-            $Action = "Edit";
+            $typeID = $url_array[4];
+            $action = "Edit";
         }
         if ( $url_array[3] == "delete" )
         {
-            $TypeID = $url_array[4];
-            $Action = "Delete";
+            $typeID = $url_array[4];
+            $action = "Delete";
         }
         if ( $url_array[3] == "up" )
         {
-            $TypeID = $url_array[4];
-            $AttributeID = $url_array[5];
-            $Action = "up";
+            $typeID = $url_array[4];
+            $attributeID = $url_array[5];
+            $action = "up";
         }
         if ( $url_array[3] == "down" )
         {
-            $TypeID = $url_array[4];
-            $AttributeID = $url_array[5];
-            $Action = "down";
+            $typeID = $url_array[4];
+            $attributeID = $url_array[5];
+            $action = "down";
         }
  
         include( "kernel/ezmediacatalogue/admin/typeedit.php" );
@@ -211,12 +258,12 @@ switch ( $url_array[2] )
         {
             case "list" :
             {
-                $CategoryID = $url_array[4];
-                if ( !is_numeric($CategoryID ) )
-                    $CategoryID = 0;
-                $Offset = $url_array[5];
-                if ( $Offset == "" )
-                    $Offset = 0;
+                $categoryID = $url_array[4];
+                if ( !is_numeric($categoryID ) )
+                    $categoryID = 0;
+                $offset = $url_array[5];
+                if ( $offset == "" )
+                    $offset = 0;
                 include( "kernel/ezmediacatalogue/admin/medialist.php" );
             }
             break;
@@ -224,8 +271,8 @@ switch ( $url_array[2] )
             case "new" :
             {
                 writeAtAll();
-                $CurrentCategoryID = $url_array[4];
-                $Action = "New";
+                $currentCategoryID = $url_array[4];
+                $action = "New";
                 include( "kernel/ezmediacatalogue/admin/categoryedit.php" );
             }
             break;
@@ -233,18 +280,18 @@ switch ( $url_array[2] )
             case "insert" :
             {
                 writeAtAll();
-                $Action = "Insert";
-                $CategoryID = $url_array[4];
+                $action = "Insert";
+                $categoryID = $url_array[4];
                 include( "kernel/ezmediacatalogue/admin/categoryedit.php" );
             }
             break;
 
             case "edit" :
             {
-                $Action = "Edit";
-                $CategoryID = $url_array[4];
-                if( ( eZObjectPermission::hasPermission( $CategoryID, "mediacatalogue_category", 'w' ) ||
-                      eZMediaCategory::isOwner( $user, $CategoryID ) )
+                $action = "Edit";
+                $categoryID = $url_array[4];
+                if( ( eZObjectPermission::hasPermission( $categoryID, "mediacatalogue_category", 'w' ) ||
+                      eZMediaCategory::isOwner( $user, $categoryID ) )
                     && writeAtAll() )
                 {
                     include( "kernel/ezmediacatalogue/admin/categoryedit.php" );
@@ -259,10 +306,10 @@ switch ( $url_array[2] )
 
             case "update" :
             {
-                $Action = "Update";
-                $CategoryID = $url_array[4];
-                if( ( eZObjectPermission::hasPermission( $CategoryID, "mediacatalogue_category", 'w' ) ||
-                     eZMediaCategory::isOwner( $user, $CategoryID ) )
+                $action = "Update";
+                $categoryID = $url_array[4];
+                if( ( eZObjectPermission::hasPermission( $categoryID, "mediacatalogue_category", 'w' ) ||
+                     eZMediaCategory::isOwner( $user, $categoryID ) )
                     && writeAtAll() )
                 {
                     include( "kernel/ezmediacatalogue/admin/categoryedit.php" );

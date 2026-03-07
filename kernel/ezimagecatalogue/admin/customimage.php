@@ -1,6 +1,6 @@
 <?php
 //
-// $Id: customimage.php 7514 2001-09-27 11:48:27Z br $
+// $id: customimage.php 7514 2001-09-27 11:48:27Z br $
 //
 // Created on: <19-Sep-2001 18:47:17 bf>
 //
@@ -30,11 +30,11 @@
 
 $image = new eZImage();
 
-if ( $image->get( $ImageID ) )
+if ( $image->get( $imageID ) )
 {
-    if ( is_numeric( $ImageWidth ) and  is_numeric( $ImageHeight ) )
+    if ( is_numeric( $imageWidth ) and  is_numeric( $imageHeight ) )
     {
-        $variation = $image->requestImageVariation( $ImageWidth, $ImageHeight );
+        $variation = $image->requestImageVariation( $imageWidth, $imageHeight );
 
         $fp = fopen( $variation->imagePath(), "r");
 

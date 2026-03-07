@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: attributelist.php 9758 2003-01-14 16:20:19Z br $
+// $id: attributelist.php 9758 2003-01-14 16:20:19Z br $
 //
 // Created on: <05-Jun-2001 13:07:24 pkej>
 //
@@ -32,23 +32,23 @@
 // include_once( "ezarticle/classes/ezarticletype.php" );
 // include_once( "ezarticle/classes/ezarticletool.php" );
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
 $category = $article->categoryDefinition( );
-$CategoryID = $category->id();
+$categoryID = $category->id();
 
-if( isset( $DeleteSelected ) )
+if( isset( $deleteSelected ) )
 {
-    $count = count( $TypeArrayID );
+    $count = count( $typeArrayID );
 
     for( $i = 0; $i < $count; $i++ )
     {
-        $type = new eZArticleType( $TypeArrayID[$i] );
+        $type = new eZArticleType( $typeArrayID[$i] );
         $article->deleteAttributesByType( $type );
     }
-    eZArticleTool::deleteCache( $ArticleID, $CategoryID, $CategoryArray );
+    eZArticleTool::deleteCache( $articleID, $categoryID, $categoryArray );
 }
 
-if( isset( $NewType ) )
+if( isset( $newType ) )
 {
 
      $types = $article->types();
@@ -56,7 +56,7 @@ if( isset( $NewType ) )
 
      foreach ( $types as $type )
      {
-         if( $type->id() == $TypeID )
+         if( $type->id() == $typeID )
          {
              $typeExists = true;
          }
@@ -64,7 +64,7 @@ if( isset( $NewType ) )
 
      if( !$typeExists )
      {
-         $type = new eZArticleType( $TypeID );
+         $type = new eZArticleType( $typeID );
          $attributes = $type->attributes();
 
          foreach( $attributes as $attribute )
@@ -76,10 +76,10 @@ if( isset( $NewType ) )
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "attribute.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "attribute.php" );
 
 $t->setAllStrings();
 
@@ -160,7 +160,7 @@ $typeCount = count( $types );
 $t->set_var( "article_name", $article->name() );
 $t->set_var( "article_id", $article->id() );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
 $t->pparse( "output", "arttribute_list_page_tpl" );
 

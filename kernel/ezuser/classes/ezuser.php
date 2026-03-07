@@ -879,6 +879,14 @@ class eZUser
         {
             $session->setVariable( "AuthenticatedUser", "" );
         }
+
+        // Expire the session cookie so the browser does not re-send it
+        $cookieName = 'eZSessionCookie';
+        if ( isset( $_COOKIE[$cookieName] ) )
+        {
+            setcookie( $cookieName, '', time() - 3600, '/' );
+            unset( $_COOKIE[$cookieName] );
+        }
     }
 
 
@@ -1019,6 +1027,12 @@ class eZUser
     */
     function groups( $as_object = true )
     {
+        // Cache per user+mode to avoid repeated identical queries within one request
+        // (hasPermission, generatePermissionSQL, and priceGroups all call this for the same user)
+        static $cache = [];
+        $key = $this->ID . '|' . ( $as_object ? 'obj' : 'id' );
+        if ( isset( $cache[$key] ) ) return $cache[$key];
+
         $ret = array();
         $db = eZDB::globalDatabase();
 
@@ -1030,6 +1044,7 @@ class eZUser
             !$as_object ? $ret[] = $group[$db->fieldName( "GroupID" )] : $ret[] = new eZUserGroup( $group[$db->fieldName( "GroupID" )] );
         }
 
+        $cache[$key] = $ret;
         return $ret;
     }
 

@@ -36,13 +36,13 @@ $Language = $ini->variable( "eZBulkMailMain", "Language" );
 $languageIni = new eZINI( "kernel/ezbulkmail/user/intl/" . $Language . "/subscriptionlogin.php.ini", false );
 $category = eZBulkMailCategory::singleList();
 
-if( isset( $Hash ) && is_object( $category ) )
+if( isset( $hash ) && is_object( $category ) )
 {
     $change = new eZBulkMailForgot();
-    if( $change->check( $Hash ) != false )
+    if( $change->check( $hash ) != false )
     {
-        $change->get( $change->check( $Hash ) );
-        if( eZBulkMailSubscriptionAddress::addressExists( $change->mail() ) && isset( $UnSubscribe ) )
+        $change->get( $change->check( $hash ) );
+        if( eZBulkMailSubscriptionAddress::addressExists( $change->mail() ) && isset( $unSubscribe ) )
         {
             $subscriptionaddress = eZBulkMailSubscriptionAddress::getByEmail( $change->mail() );
             if( $subscriptionaddress != false )
@@ -53,7 +53,7 @@ if( isset( $Hash ) && is_object( $category ) )
                 include( "kernel/ezbulkmail/user/usermessages.php" );
             }
         }
-        else if( isset( $Subscribe ) )
+        else if( isset( $subscribe ) )
         {
             $subscriptionaddress = eZBulkMailSubscriptionAddress::getByEmail( $change->mail() );
             $subscriptionaddress->store();
@@ -74,25 +74,25 @@ if( isset( $Hash ) && is_object( $category ) )
         include( "kernel/ezbulkmail/user/usermessages.php" );
     }
 }
-else if( isset( $Hash ) && !is_object( $category ) )
+else if( isset( $hash ) && !is_object( $category ) )
 {
     echo "Your administrator has specified an email list that is not available.";
 }
 
-if( isset( $SubscribeButton ) )
+if( isset( $subscribeButton ) )
 {
         $subscriptionaddress = new eZBulkMailSubscriptionAddress();
-        if( $subscriptionaddress->setEMail( $Email ) && !$subscriptionaddress->addressExists( $Email ) )
+        if( $subscriptionaddress->setEMail( $email ) && !$subscriptionaddress->addressExists( $email ) )
         {
             $headersInfo = getallheaders();
             $subjectText = ( $languageIni->variable( "strings", "subject_text" ) . " " . $headersInfo["Host"] );
             $bodyText = $languageIni->variable( "strings", "body_text" );
 
-            $forgot = eZBulkMailForgot::getByEmail( $Email );
+            $forgot = eZBulkMailForgot::getByEmail( $email );
             $forgot->store();
 
             $mailconfirmation = new eZMail();
-            $mailconfirmation->setTo( $Email );
+            $mailconfirmation->setTo( $email );
             $mailconfirmation->setSubject( $subjectText );
             $mailconfirmation->setFrom( $ini->variable( "eZBulkMailMain", "BulkmailSenderAddress" ) );
             $mailconfirmation->setFromName( $ini->variable( "eZBulkMailMain", "BulkMailSenderName" ) );
@@ -113,22 +113,22 @@ if( isset( $SubscribeButton ) )
         }
 }
 
-if( isset( $UnSubscribeButton ) )
+if( isset( $unSubscribeButton ) )
 {
     $subscriptionaddress = new eZBulkMailSubscriptionAddress();
-    if( $subscriptionaddress->addressExists( $Email ) )
+    if( $subscriptionaddress->addressExists( $email ) )
     {
         $headersInfo = getallheaders();
         $subjectText = ( $languageIni->variable( "strings", "subject_text_unsubscribe" ) . " " . $headersInfo["Host"] );
         $bodyText = $languageIni->variable( "strings", "body_text_unsubscribe" );
 
         $forgot = new eZBulkMailForgot();
-        $forgot->get( $Email );
-        $forgot->setMail( $Email );
+        $forgot->get( $email );
+        $forgot->setMail( $email );
         $forgot->store();
 
         $mailconfirmation = new eZMail();
-        $mailconfirmation->setTo( $Email );
+        $mailconfirmation->setTo( $email );
         $mailconfirmation->setSubject( $subjectText );
         $mailconfirmation->setFrom( $ini->variable( "eZBulkMailMain", "BulkmailSenderAddress" ) );
         $mailconfirmation->setFromName( $ini->variable( "eZBulkMailMain", "BulkMailSenderName" ) );

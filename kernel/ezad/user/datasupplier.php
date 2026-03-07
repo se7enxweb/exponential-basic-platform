@@ -26,11 +26,15 @@
 $ini = eZINI::instance( 'site.ini' );
 $GlobalSectionID = $ini->variable( "site", "DefaultSection" );
 
+// HTTP input variables (replaces register_globals extraction)
+$limit  = eZHTTPTool::getVar( 'Limit' );
+$offset = eZHTTPTool::getVar( 'Offset' );
+
 switch ( $url_array[2] )
 {
     case "goto" :
     {
-        $AdID = $url_array[3];
+        $adID = $url_array[3];
 
         include( "kernel/ezad/user/gotoad.php" );
     }

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: imageview.php 7670 2001-10-05 09:50:30Z br $
+// $id: imageview.php 7670 2001-10-05 09:50:30Z br $
 //
 // Created on: <26-Oct-2000 19:40:18 bf>
 //
@@ -35,13 +35,13 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZImageCatalogueMain", "Language" );
+$language = $ini->variable( "eZImageCatalogueMain", "Language" );
 
-$ShowOriginal = $ini->variable( "eZImageCatalogueMain", "ShowOriginal" );
+$showOriginal = $ini->variable( "eZImageCatalogueMain", "ShowOriginal" );
 
 
 $t = new eZTemplate( "kernel/ezimagecatalogue/admin/" . $ini->variable( "eZImageCatalogueMain", "AdminTemplateDir" ),
-                     "kernel/ezimagecatalogue/admin/intl/", $Language, "imageview.php" );
+                     "kernel/ezimagecatalogue/admin/intl/", $language, "imageview.php" );
 
 $t->set_file( "image_view_tpl", "imageview.tpl" );
 $t->set_block( "image_view_tpl", "path_tpl", "path" );
@@ -50,7 +50,7 @@ $t->setAllStrings();
 
 $user = eZUser::currentUser();
 
-$image = new eZImage( $ImageID );
+$image = new eZImage( $imageID );
      
 $parent_category = $image->categories();
 
@@ -60,15 +60,15 @@ $parent_category = $image->categories();
 //    exit();
 //}
 
-if ( $ShowOriginal != "enabled" && !isset( $VariationID ) )
+if ( $showOriginal != "enabled" && !isset( $variationID ) )
 {
     $variation = $image->requestImageVariation( $ini->variable( "eZImageCatalogueMain", "ImageViewWidth" ),
     $ini->variable( "eZImageCatalogueMain", "ImageViewHeight" ) );
 }
-else if ( isset( $VariationID ) )
+else if ( isset( $variationID ) )
 {
-    $variation = new eZImageVariation( $VariationID );
-    if ( $variation->imageID() != $ImageID )
+    $variation = new eZImageVariation( $variationID );
+    if ( $variation->imageID() != $imageID )
     {
         
         $variation = $image->requestImageVariation( $ini->variable( "eZImageCatalogueMain", "ImageViewWidth" ),
@@ -96,7 +96,7 @@ $t->set_var( "image_caption", $image->caption() );
 $t->set_var( "image_name", $image->name() );
 $t->set_var( "image_description", $image->description() );
 
-$t->set_var( "referer_url", $RefererURL );
+$t->set_var( "referer_url", $refererURL );
 
 $t->pparse( "output", "image_view_tpl" );
 

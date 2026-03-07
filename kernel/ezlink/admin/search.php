@@ -57,8 +57,8 @@ $t->set_block( "search_list", "search_item_tpl", "search_item" );
 $t->set_block( "search_list", "empty_result_tpl", "empty_result" );
 $t->set_block( "search_list", "search_result_tpl", "search_result" );
 
-if ( !isset( $Offset ) )
-    $Offset = 0;
+if ( !isset( $offset ) )
+    $offset = 0;
 
 $link = new eZLink();
 
@@ -66,12 +66,12 @@ $t->set_var( "search_result", "" );
 
 $t->set_var( "query_string", "" );
 
-if ( $QueryString != "" )
+if ( $queryString != "" )
 {
-    $t->set_var( "query_string", urlencode( $QueryString ) );
+    $t->set_var( "query_string", urlencode( $queryString ) );
 
-    $link_array = $link->getQuery( $QueryString, $AdminLimit, $Offset );    
-    $total_count = $link->getQueryCount( $QueryString );
+    $link_array = $link->getQuery( $queryString, $AdminLimit, $offset );    
+    $total_count = $link->getQueryCount( $queryString );
 
     $t->set_var( "empty_result", "" );
     $i=0;
@@ -122,16 +122,16 @@ else
     $t->set_var( "search_item", "" );
     $t->parse( "empty_result", "empty_result_tpl" );
 }
-eZList::drawNavigator( $t, $total_count, $AdminLimit, $Offset, "search_list" );
+eZList::drawNavigator( $t, $total_count, $AdminLimit, $offset, "search_list" );
 
-$t->set_var( "link_start", $Offset + 1 );
-$t->set_var( "link_end", min( $Offset + $AdminLimit, $total_count ) );
+$t->set_var( "link_start", $offset + 1 );
+$t->set_var( "link_end", min( $offset + $AdminLimit, $total_count ) );
 $t->set_var( "link_total", $total_count );
 
 
 $t->set_var( "hit_count", $total_count );
 
-$t->set_var( "linkcategory_id", isset( $LGID ) ? $LGID : 0 );
+$t->set_var( "linkcategory_id", isset( $lgid ) ? $lgid : 0 );
 
 $t->pparse( "output", "search_list" );
 

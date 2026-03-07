@@ -32,17 +32,17 @@
 // include_once( "ezuser/classes/ezuser.php" );
 // include_once( "ezsession/classes/ezpreferences.php" );
 
-if ( isset( $MailID ) && $MailID != 0 && !eZMail::isOwner( eZUser::currentUser(), $MailID ) )
+if ( isset( $mailID ) && $mailID != 0 && !eZMail::isOwner( eZUser::currentUser(), $mailID ) )
 {
     eZHTTPTool::header( "Location: /error/403/" );
     exit();
 }
 
-if ( isset( $Cancel ) )
+if ( isset( $cancel ) )
 {
-    if ( $MailID != 0 )
+    if ( $mailID != 0 )
     {
-        $mail = new eZMail( $MailID );
+        $mail = new eZMail( $mailID );
         $folderID = $mail->folder( false );
     }
     else
@@ -54,68 +54,68 @@ if ( isset( $Cancel ) )
     exit();
 }
 
-if ( isset( $ToButton ) )
+if ( isset( $toButton ) )
 {
     eZHTTPTool::header( "Location: /contact/person/list" );
     exit();
 }
 
-if ( isset( $AddAttachment ) )
+if ( isset( $addAttachment ) )
 {
-    $MailID = save_mail();
-    eZHTTPTool::header( "Location: /mail/fileedit/$MailID" );
+    $mailID = save_mail();
+    eZHTTPTool::header( "Location: /mail/fileedit/$mailID" );
     exit();
 }
 
-if ( isset( $DeleteAttachments ) && count( $AttachmentArrayID ) > 0 )
+if ( isset( $deleteAttachments ) && count( $attachmentArrayID ) > 0 )
 {
-    foreach ( $AttachmentArrayID as $attachmentID )
+    foreach ( $attachmentArrayID as $attachmentID )
     {
-        $mail = new eZMail( $MailID );
+        $mail = new eZMail( $mailID );
         $file = new eZVirtualFile( $attachmentID );
         $mail->deleteFile( $file );
     }
 }
 
-if ( isset( $Save ) )
+if ( isset( $save ) )
 {
-    $MailID = save_mail();
+    $mailID = save_mail();
     if ( isset( $IDList ) )
     {
         $id_array = preg_split( "/;/", $IDList );
         foreach ( $id_array as $idItem )
         {
-            eZMail::addContact( $MailID, $idItem, $CompanyList );
+            eZMail::addContact( $mailID, $idItem, $companyList );
         }
     }
-    $mail = new eZMail( $MailID );
+    $mail = new eZMail( $mailID );
     $mail->setStatus( 'READ', true );
 
     $drafts = eZMailFolder::getSpecialFolder( DRAFTS );
     $drafts->addMail( $mail );
 }
 
-if ( isset( $Preview ) )
+if ( isset( $preview ) )
 {
-    $MailID = save_mail();
-    eZHTTPTool::header( "Location: /mail/view/$MailID" );
+    $mailID = save_mail();
+    eZHTTPTool::header( "Location: /mail/view/$mailID" );
     exit();
 }
 
-if ( isset( $Send ) )
+if ( isset( $send ) )
 {
-    $MailID = save_mail();
+    $mailID = save_mail();
     if ( isset( $IDList ) )
     {
         $id_array = preg_split( "/;/", $IDList );
         foreach ( $id_array as $idItem )
         {
             if ( is_numeric( $idItem ) )
-                eZMail::addContact( $MailID, $idItem, $CompanyList );
+                eZMail::addContact( $mailID, $idItem, $companyList );
         }
     }
     // give error message if no valid users where supplied...
-    $mail = new eZMail( $MailID );
+    $mail = new eZMail( $mailID );
     if ( $mail->to() == "" && $mail->bcc() == "" && $mail->cc() == "" )
     {
         $error = "no_address";
@@ -134,9 +134,9 @@ if ( isset( $Send ) )
     }
 }
 
-if ( isset( $CcButton ) )
+if ( isset( $ccButton ) )
     $showcc = true;
-if ( isset( $BccButton ) )
+if ( isset( $bccButton ) )
     $showbcc = true;
 
 $ini = eZINI::instance( 'site.ini' );
@@ -195,7 +195,7 @@ $t->set_var( "cc_single", "" );
 $t->set_var( "bcc_single", "" );
 
 // New mail, lets insert some default values 
-if ( isset( $MailID ) && $MailID == 0 )
+if ( isset( $mailID ) && $mailID == 0 )
 {
     $auto_signature = eZPreferences::variable( "eZMail_AutoSignature" );
     $signature = eZPreferences::variable( "eZMail_Signature" );
@@ -209,18 +209,18 @@ $user = eZUser::currentUser();
 $t->set_var( "from_value", $user->email() );
 
 // We are editing an allready existant mail... lets insert it's values 
-if ( isset( $MailID ) && $MailID != 0 && eZMail::isOwner( $user, $MailID ) ) // load values from disk!, check that this is really current users mail
+if ( isset( $mailID ) && $mailID != 0 && eZMail::isOwner( $user, $mailID ) ) // load values from disk!, check that this is really current users mail
 {
-    $t->set_var( "current_mail_id", $MailID );
+    $t->set_var( "current_mail_id", $mailID );
     
-    $mail = new eZMail( $MailID );
+    $mail = new eZMail( $mailID );
     $t->set_var( "to_value", htmlspecialchars( $mail->to() ) );
 
     if ( $mail->from() != "" )
         $t->set_var( "from_value", htmlspecialchars( $mail->from() ) );
     $t->set_var( "subject_value", htmlspecialchars( $mail->subject() ) );
 
-    if( isset( $Signature ) )
+    if( isset( $signature ) )
     {
         $signature = eZPreferences::variable( "eZMail_Signature" );
         $mail_body = $mail->body();
@@ -265,31 +265,31 @@ if ( isset( $MailID ) && $MailID != 0 && eZMail::isOwner( $user, $MailID ) ) // 
         $t->parse( "inserted_attachments", "inserted_attachments_tpl", false );
     }
 }
-else if ( isset( $MailID ) && $MailID == 0 && ( isset( $showcc ) && $showcc || isset( $showbcc) && $showbcc || isset( $Signature ) && $Signature ) ) //mail not saved, but there is data
+else if ( isset( $mailID ) && $mailID == 0 && ( isset( $showcc ) && $showcc || isset( $showbcc) && $showbcc || isset( $signature ) && $signature ) ) //mail not saved, but there is data
 {
-    $t->set_var( "to_value", htmlspecialchars( $To ) );
+    $t->set_var( "to_value", htmlspecialchars( $to ) );
     $t->set_var( "id_value", $IDList );
-    $t->set_var( "company_value", $CompanyList );
-    $t->set_var( "from_value", htmlspecialchars( $From ) );
-    $t->set_var( "cc_value", htmlspecialchars( $Cc ) );
-    $t->set_var( "bcc_value", htmlspecialchars( $Bcc ) );
-    $t->set_var( "subject_value",  htmlspecialchars( $Subject ) );
-    if( $Signature )
+    $t->set_var( "company_value", $companyList );
+    $t->set_var( "from_value", htmlspecialchars( $from ) );
+    $t->set_var( "cc_value", htmlspecialchars( $cc ) );
+    $t->set_var( "bcc_value", htmlspecialchars( $bcc ) );
+    $t->set_var( "subject_value",  htmlspecialchars( $subject ) );
+    if( $signature )
     {
         $signature = eZPreferences::variable( "eZMail_Signature" );
         if( $signature != "" )
         {
-            $comp_sign = "$MailBody\n\n--\n$signature";
+            $comp_sign = "$mailBody\n\n--\n$signature";
             $t->set_var( "mail_body", htmlspecialchars( $comp_sign  ) );
         }
     }
     else
     {
-        $t->set_var( "mail_body", htmlspecialchars( $MailBody ) );
+        $t->set_var( "mail_body", htmlspecialchars( $mailBody ) );
     }
-    if ( $Cc != "" )
+    if ( $cc != "" )
         $showcc = true;
-    if ( $Bcc != "" )
+    if ( $bcc != "" )
         $showbcc = true;
 }
 
@@ -314,26 +314,26 @@ $t->pparse( "output", "mail_edit_page_tpl" );
  */
 function save_mail()
 {
-    global $To, $From, $Cc, $Bcc, $Subject, $MailBody, $MailID; // instead of passing them as arguments..
+    global $to, $from, $cc, $bcc, $subject, $mailBody, $mailID; // instead of passing them as arguments..
 
-    if ( $MailID == 0 )
+    if ( $mailID == 0 )
     {
         $mail = new eZMail();
         $mail->setOwner( eZUser::currentUser() );
     }
     else
     {
-        $mail = new eZMail( $MailID );
+        $mail = new eZMail( $mailID );
     }
-    $mail->setTo( $To );
-    $mail->setFrom( $From  ); // from NAME
-    $mail->setCc( $Cc );
-    $mail->setBcc( $Bcc );
+    $mail->setTo( $to );
+    $mail->setFrom( $from  ); // from NAME
+    $mail->setCc( $cc );
+    $mail->setBcc( $bcc );
     $mail->setStatus( 0, true );
 //    $mail->setReferences( );
 //    $mail->setReplyTo( $ );
-    $mail->setSubject( $Subject );
-    $mail->setBodyText( $MailBody );
+    $mail->setSubject( $subject );
+    $mail->setBodyText( $mailBody );
     $mail->calculateSize();
     
     $mail->store();

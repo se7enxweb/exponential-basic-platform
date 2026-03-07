@@ -36,22 +36,22 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-if( isset( $Cancel ) )
+if( isset( $cancel ) )
 {
-    eZHTTPTool::header( "Location: /form/form/edit/$FormID/" );
+    eZHTTPTool::header( "Location: /form/form/edit/$formID/" );
     exit();
 }
 
-if( isset( $OK ) )
+if( isset( $ok ) )
 {
-    eZHTTPTool::header( "Location: /form/form/edit/$FormID/" );
+    eZHTTPTool::header( "Location: /form/form/edit/$formID/" );
     exit();
 }
 
 
-$ActionValue="preview";
+$actionValue="preview";
 
-$form = new eZForm( $FormID );
+$form = new eZForm( $formID );
 
 $errorMessages = array();
 
@@ -71,7 +71,7 @@ $t->set_block( "form_preview_page_tpl", "mail_preview_tpl", "mail_preview" );
 $t->set_var( "mail_preview", "" );
 $t->set_var( "error", "" );
 
-$t->set_var( "form_id", $FormID );
+$t->set_var( "form_id", $formID );
 $t->set_var( "form_name", $form->name() );
 $t->set_var( "form_completed_page", $form->completedPage() );
 $t->set_var( "form_instruction_page", $form->instructionPage() );
@@ -80,7 +80,7 @@ $renderer = new eZFormRenderer( $form );
 $output = $renderer->renderForm( $form, false, false );
 $t->set_var( "form", $output );
 
-if( isset( $Test ) )
+if( isset( $test ) )
 {
     $output = $renderer->verifyForm();
     $t->set_var( "error", $output );
@@ -104,7 +104,7 @@ if( count( $errorMessages ) > 0 )
     $t->parse( "error_list", "error_list_tpl" );
 }
 
-$t->set_var( "action_value", $ActionValue );
+$t->set_var( "action_value", $actionValue );
 $t->set_var( "site_style", $SiteDesign );
 $t->pparse( "output", "form_preview_page_tpl" );
 

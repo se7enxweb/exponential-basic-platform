@@ -42,24 +42,12 @@ $t->set_file( "cache_admin_tpl", "cacheadmin.tpl" );
 $t->set_block( "cache_admin_tpl", "cache_results_tpl", "cache_results" ); 
 
 $t->set_var( "cache_results", "" );
-if ( isset( $ClearCache ) )
+if ( isset( $clearCache ) )
 {    
-    // save the buffer contents
-    $buffer = ob_get_contents();
-    ob_end_clean();
-
-    // fetch the system printout
-    ob_start();
     if ( isset( $GLOBALS["WINDIR"] ) && trim( $GLOBALS["WINDIR"] ) != "" )
-        system( $siteDir . "./bin/win32/clearcache.bat" );
+        $ret = shell_exec( $siteDir . "./bin/win32/clearcache.bat 2>&1" );
     else
-        system( $siteDir . "./bin/shell/clearcache.sh" );
-    $ret = ob_get_contents();
-    ob_end_clean();
-
-    // fill the buffer with the old values
-    ob_start();
-    print( $buffer );
+        $ret = shell_exec( $siteDir . "./bin/shell/clearcache.sh 2>&1" );
 
     $t->set_var( "cache_return", $ret );
 

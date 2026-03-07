@@ -32,18 +32,37 @@ if( eZPermission::checkPermission( $user, "eZPoll", "ModuleEdit" ) == false )
     eZHTTPTool::header( "Location: /error/403" );
     exit();
 }
-//print $REQUEST_URI;
+//print $_SERVER['REQUEST_URI'];
 
-$url_array = explode( "/", $REQUEST_URI );
+$url_array = explode( "/", $_SERVER['REQUEST_URI'] );
+
+$action         = eZHTTPTool::getVar( 'Action' );
+$addPoll        = eZHTTPTool::getVar( 'AddPoll' );
+$anonymous      = eZHTTPTool::getVar( 'Anonymous' );
+$back           = eZHTTPTool::getVar( 'Back' );
+$choice         = eZHTTPTool::getVar( 'Choice' );
+$deleteChoice   = eZHTTPTool::getVar( 'DeleteChoice' );
+$deletePolls    = eZHTTPTool::getVar( 'DeletePolls' );
+$description    = eZHTTPTool::getVar( 'Description' );
+$isClosed       = eZHTTPTool::getVar( 'IsClosed' );
+$isEnabled      = eZHTTPTool::getVar( 'IsEnabled' );
+$langaugeIni    = eZHTTPTool::getVar( 'LangaugeIni' );
+$name           = eZHTTPTool::getVar( 'Name' );
+$ok             = eZHTTPTool::getVar( 'Ok' );
+$pollArrayID    = eZHTTPTool::getVar( 'PollArrayID' ) ?? [];
+$pollChoiceID   = eZHTTPTool::getVar( 'PollChoiceID' );
+$pollChoiceName = eZHTTPTool::getVar( 'PollChoiceName' );
+$pollID         = eZHTTPTool::getVar( 'PollID' );
+$showResult     = eZHTTPTool::getVar( 'ShowResult' );
 
 switch ( $url_array[2] )
 {
     case "pollist" :
     {
-        if( isset( $DeletePolls ) )
-            $Action = "Delete";
+        if( isset( $deletePolls ) )
+            $action = "Delete";
 
-        if ( isset( $AddPoll ) )
+        if ( isset( $addPoll ) )
         {
             include( "kernel/ezpoll/admin/polledit.php" );
         }
@@ -57,24 +76,24 @@ switch ( $url_array[2] )
     case "polledit" :
         if ( ( $url_array[3] == "new" ) )
         {
-            $Action = "New";
+            $action = "New";
             include( "kernel/ezpoll/admin/polledit.php" );
         }
         else if ( ( $url_array[3] == "insert" ) )
         {
-            $Action = "Insert";
+            $action = "Insert";
             include( "kernel/ezpoll/admin/polledit.php" );
         }
         else if( ( $url_array[3] == "edit" ) )
         {
-            $Action = "Edit";
-            $PollID = $url_array[4];
+            $action = "Edit";
+            $pollID = $url_array[4];
             include( "kernel/ezpoll/admin/polledit.php" );
         }
         else if( ( $url_array[3] == "update" ) )
         {
-            $Action = "Update";
-            $PollID = $url_array[4];
+            $action = "Update";
+            $pollID = $url_array[4];
             include( "kernel/ezpoll/admin/polledit.php" );
         }
         break;

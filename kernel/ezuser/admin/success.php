@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: success.php 6484 2001-08-17 13:36:01Z jhe $
+// $id: success.php 6484 2001-08-17 13:36:01Z jhe $
 //
 // Definition of eZUser class
 //
@@ -30,7 +30,7 @@
 // include_once( "classes/ezhttptool.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZUserMain", "Language" );
+$language = $ini->variable( "eZUserMain", "Language" );
 // $DOC_ROOT = $ini->variable( "eZUserMain", "DocumentRoot" );
 
 // include_once( "ezuser/classes/ezuser.php" );
@@ -42,7 +42,7 @@ $Language = $ini->variable( "eZUserMain", "Language" );
 
 // Template
 $t = new eZTemplate( "kernel/ezuser" . $ini->variable( "eZUserMain", "TemplateDir" ). "/login/",
-                     "kernel/ezuser/admin". "/intl", $Language, "success.php" );
+                     "kernel/ezuser/admin". "/intl", $language, "success.php" );
 $t->setAllStrings();
 
 $t->set_file( array(

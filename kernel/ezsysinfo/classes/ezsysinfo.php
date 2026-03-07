@@ -457,7 +457,7 @@ class eZSysinfo
     */      
     static public function users()
     {
-        $result = trim( `who | wc -l` );
+        $result = trim( shell_exec( 'who | wc -l' ) );
 
         return $result;
     }
@@ -533,7 +533,7 @@ class eZSysinfo
     static public function fsinfo()
     {
         $results = array();
-        $df = `/bin/df -kP`;
+        $df = shell_exec( '/bin/df -kP' );
         $mounts = preg_split( "/(\n)/", $df );
         $fstype = array();
 

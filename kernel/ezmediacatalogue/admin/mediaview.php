@@ -45,7 +45,7 @@ $t->setAllStrings();
 
 $user = eZUser::currentUser();
 
-$media = new eZMedia( $MediaID );
+$media = new eZMedia( $mediaID );
 
 //if ( eZObjectPermission::hasPermission( $media->id(), "mediacatalogue_media", "r", $user ) == false )
 //{
@@ -61,7 +61,7 @@ $t->set_var( "media_description", $media->description() );
 $attString = $media->attributeString();
 
 $t->set_var( "attributes", $attString );
-$t->set_var( "referer_url", $RefererURL );
+$t->set_var( "referer_url", $refererURL );
 
 $t->pparse( "output", "media_view_tpl" );
 

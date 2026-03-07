@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: companystats.php 9529 2002-05-14 11:17:05Z jhe $
+// $id: companystats.php 9529 2002-05-14 11:17:05Z jhe $
 //
 // Created on: <20-Mar-2001 18:21:41 amos>
 //
@@ -26,16 +26,16 @@
 // include_once( "classes/INIFile.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZContactMain", "Language" );
+$language = $ini->variable( "eZContactMain", "Language" );
 
 // include_once( "classes/ezlocale.php" );
-$locale = new eZLocale( $Language );
+$locale = new eZLocale( $language );
 
 // include_once( "classes/eztemplate.php" );
 // include_once( "ezcontact/classes/ezcompany.php" );
 
 $t = new eZTemplate( "kernel/ezcontact/admin/" . $ini->variable( "eZContactMain", "AdminTemplateDir" ),
-                     "kernel/ezcontact/admin/intl/", $Language, "companystats.php" );
+                     "kernel/ezcontact/admin/intl/", $language, "companystats.php" );
 $t->setAllStrings();
 
 $t->set_file( "company_stats_tpl", "companystats.tpl" );
@@ -52,23 +52,23 @@ $t->set_block( "date_nav_tpl", "year_previous_inactive_tpl", "year_previous_inac
 $t->set_block( "date_nav_tpl", "year_next_tpl", "year_next" );
 $t->set_block( "date_nav_tpl", "year_next_inactive_tpl", "year_next_inactive" );
 
-if ( !is_numeric( $Year )  )
+if ( !is_numeric( $year )  )
 {
     $cur_date = new eZDate();
-    $Year = $cur_date->year();
+    $year = $cur_date->year();
 }
-if ( !is_numeric( $Month ) )
+if ( !is_numeric( $month ) )
 {
     $cur_date = new eZDate();
-    $Month = $cur_date->month();
+    $month = $cur_date->month();
 }
-if ( !is_numeric( $Day ) )
+if ( !is_numeric( $day ) )
 {
     $cur_date = new eZDate();
-    $Day = $cur_date->day();
+    $day = $cur_date->day();
 }
 
-$company = new eZCompany( $CompanyID );
+$company = new eZCompany( $companyID );
 $t->set_var( "company_name", $company->name() );
 $t->set_var( "company_id", $company->id() );
 $categories = $company->categories( false, false, 1 );
@@ -76,10 +76,10 @@ $t->set_var( "category_id", "" );
 if ( count( $categories ) > 0 )
     $t->set_var( "category_id", $categories[0] );
 
-$date = new eZDate( $Year, $Month, 1 );
+$date = new eZDate( $year, $month, 1 );
 
 $t->set_var( "month", "" );
-$counts = $company->yearViewCounts( $Year );
+$counts = $company->yearViewCounts( $year );
 if ( count( $counts ) > 0 )
 {
     $maxCount = 0;
@@ -127,7 +127,7 @@ if ( count( $counts ) > 0 )
 
         $t->set_var( "this_month", $month["month"] );
 
-        $next_date = new eZDate( $Year, $month["month"], 1 );
+        $next_date = new eZDate( $year, $month["month"], 1 );
         if ( !$cur_date->isGreater( $next_date ) )
         {
             $t->parse( "month_link", "month_link_tpl" );
@@ -140,17 +140,17 @@ if ( count( $counts ) > 0 )
     $t->set_var( "pages_pr_month", 1 );
 }
 
-$t->set_var( "this_year", $Year );
+$t->set_var( "this_year", $year );
 
-$NextYear = $Year + 1;
-$PrevYear = $Year - 1;
-$t->set_var( "next_year", $NextYear );
-$t->set_var( "previous_year", $PrevYear );
+$nextYear = $year + 1;
+$prevYear = $year - 1;
+$t->set_var( "next_year", $nextYear );
+$t->set_var( "previous_year", $prevYear );
 
-$t->set_var( "next_year", $NextYear );
-$t->set_var( "previous_year", $PrevYear );
-$t->set_var( "next_year", $NextYear );
-$t->set_var( "previous_year", $PrevYear );
+$t->set_var( "next_year", $nextYear );
+$t->set_var( "previous_year", $prevYear );
+$t->set_var( "next_year", $nextYear );
+$t->set_var( "previous_year", $prevYear );
 
 $t->set_var( "year_next_inactive", "" );
 $t->set_var( "year_next", "" );
@@ -158,7 +158,7 @@ $t->set_var( "year_previous", "" );
 $t->set_var( "year_previous_inactive", "" );
 
 $cur_date = new eZDate();
-$next_date = new eZDate( $NextYear, 1, 1 );
+$next_date = new eZDate( $nextYear, 1, 1 );
 
 if ( $cur_date->isGreater( $next_date ) )
     $t->parse( "year_next_inactive", "year_next_inactive_tpl" );

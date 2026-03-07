@@ -106,6 +106,7 @@ CREATE TABLE eZArticle_ArticleSectionDict (
   ImageID int(11) NOT NULL DEFAULT 0,
   Created int(11) NOT NULL DEFAULT 0,
   Placement int(11) NOT NULL DEFAULT 0,
+  SectionID int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`)
 );
 

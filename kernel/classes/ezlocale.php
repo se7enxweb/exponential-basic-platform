@@ -159,7 +159,7 @@ class eZLocale
       If isShort is set to false then the long version of the string is used,
       if it exists.
     */
-    function format( &$obj, $isShort = true )
+    function format( $obj, $isShort = true )
     {
         $returnString = "<b>Locale error</b>: object or type not supported.";
 

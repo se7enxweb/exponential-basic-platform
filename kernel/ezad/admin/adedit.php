@@ -35,46 +35,46 @@
 // include_once( "ezad/classes/ezad.php" );
 // include_once( "ezad/classes/ezadcategory.php" );
 
-if ( isset ( $DeleteAds ) )
+if ( isset ( $deleteAds ) )
 {
-    $Action = "DeleteAds";
+    $action = "DeleteAds";
 }
 
-if ( isset ( $Preview ) )
+if ( isset ( $preview ) )
 {
-    if ( is_numeric ( $AdID ) && ( $AdID != 0 ) )
+    if ( is_numeric ( $adID ) && ( $adID != 0 ) )
     {
-        $Action = "Update";
+        $action = "Update";
     }
     else
     {
-        $Action = "Insert";
+        $action = "Insert";
     }
 }
 
-if( isset( $AdURL ) )
-    $adUrl = trim( $AdURL );
+if( isset( $adURL ) )
+    $adUrl = trim( $adURL );
 
 // Get images from the image browse function.
-if ( ( isset ( $AddImages ) ) and ( is_numeric( $AdID ) ) and ( is_numeric ( $AdID ) ) )
+if ( ( isset ( $addImages ) ) and ( is_numeric( $adID ) ) and ( is_numeric ( $adID ) ) )
 {
     $image = new eZImage( $ImageID );
-    $ad = new eZAd( $AdID );
+    $ad = new eZAd( $adID );
     $ad->setImage( $image );
     $ad->store();
-    $Action = "Edit";
+    $action = "Edit";
 }
 
-if ( $Action == "Insert" )
+if ( $action == "Insert" )
 {
-    $category = new eZAdCategory( $CategoryID );
+    $category = new eZAdCategory( $categoryID );
     
     $ad = new eZAd( );
 
-    $ad->setName( $AdTitle );
-    $ad->setDescription( $AdDescription );
+    $ad->setName( $adTitle );
+    $ad->setDescription( $adDescription );
     
-    if ( $IsActive == "on" )
+    if ( $isActive == "on" )
     {
         $ad->setIsActive( true );
     }
@@ -83,7 +83,7 @@ if ( $Action == "Insert" )
         $ad->setIsActive( false );
     }
     
-    if ( $UseHTML == "on" )
+    if ( $useHTML == "on" )
     {
         $ad->setUseHTML( true );
     }
@@ -92,7 +92,7 @@ if ( $Action == "Insert" )
         $ad->setUseHTML( false );
     }
 
-    $ad->setHTMLBanner( $HTMLBanner );    
+    $ad->setHTMLBanner( $htmlBanner );    
     
 // Why we cant make internal banners without http:// ? -- EP ---
 //    if ( !preg_match( "/^([a-z]+:\/\/)/", $adUrl ) )
@@ -110,16 +110,16 @@ if ( $Action == "Insert" )
     
     $ad->setURL( $real_url );
     
-    $ad->setClickPrice( $ClickPrice );
-    $ad->setViewPrice( $ViewPrice );
+    $ad->setClickPrice( $clickPrice );
+    $ad->setViewPrice( $viewPrice );
 
     $file = new eZPBImageFile();
 
     if ( $file->getUploadedFile( "AdImage" ) )
     { 
         $image = new eZImage();
-        $image->setName( $Name );
-        $image->setCaption( $Caption );
+        $image->setName( $name );
+        $image->setCaption( $caption );
 
         $image->setImage( $file );
         
@@ -127,7 +127,7 @@ if ( $Action == "Insert" )
         
         $ad->setImage( $image );
 
-        eZPBLog::writeNotice( "Picture added to ad: $AdID  from IP: $REMOTE_ADDR" );
+        eZPBLog::writeNotice( "Picture added to ad: $adID  from IP: $REMOTE_ADDR" );
     }
 
 //      $dateTime = new eZDateTime( 2000, 11, 13, 14, 0, 15 );
@@ -137,7 +137,7 @@ if ( $Action == "Insert" )
 
     $category->addAd( $ad );
 
-    if ( isset ( $Browse ) )
+    if ( isset ( $browse ) )
     {
         $adID = $ad->id();
         
@@ -148,31 +148,31 @@ if ( $Action == "Insert" )
         eZHTTPTool::header( "Location: /imagecatalogue/browse/" );
         exit();
     }
-    if ( isset( $Preview ) )
+    if ( isset( $preview ) )
     {
-        $Action = "Edit";
-        $AdID = $ad->id();
+        $action = "Edit";
+        $adID = $ad->id();
     }
     else
     {        
-        eZHTTPTool::header( "Location: /ad/archive/$CategoryID/" );
+        eZHTTPTool::header( "Location: /ad/archive/$categoryID/" );
         exit();
     }
     
 }
 
-if ( $Action == "Update" )
+if ( $action == "Update" )
 {
-    $category = new eZAdCategory( $CategoryID );
+    $category = new eZAdCategory( $categoryID );
     
-    $ad = new eZAd( $AdID );
+    $ad = new eZAd( $adID );
 
-    $ad->setName( $AdTitle );
-    $ad->setDescription( $AdDescription );
+    $ad->setName( $adTitle );
+    $ad->setDescription( $adDescription );
 
 
   
-    if ( $IsActive == "on" )
+    if ( $isActive == "on" )
     {
         $ad->setIsActive( true );
     }
@@ -181,7 +181,7 @@ if ( $Action == "Update" )
         $ad->setIsActive( false );
     }
 
-    if ( $UseHTML == "on" )
+    if ( $useHTML == "on" )
     {
         $ad->setUseHTML( true );
     }
@@ -190,7 +190,7 @@ if ( $Action == "Update" )
         $ad->setUseHTML( false );
     }
 
-    $ad->setHTMLBanner( $HTMLBanner );    
+    $ad->setHTMLBanner( $htmlBanner );    
     
 //    if ( !preg_match( "/^([a-z]+:\/\/)/", $adUrl ) )
 //    {
@@ -208,8 +208,8 @@ if ( $Action == "Update" )
 
     $ad->setURL( $real_url );
 
-    $ad->setClickPrice( $ClickPrice );
-    $ad->setViewPrice( $ViewPrice );
+    $ad->setClickPrice( $clickPrice );
+    $ad->setViewPrice( $viewPrice );
     
 //      $dateTime = new eZDateTime( 2000, 11, 13, 14, 0, 15 );
 //      $ad->setOriginalPublishingDate( $dateTime );
@@ -219,8 +219,8 @@ if ( $Action == "Update" )
     if ( $file->getUploadedFile( "AdImage" ) )
     { 
         $image = new eZImage();
-        $image->setName( $Name );
-        $image->setCaption( $Caption );
+        $image->setName( $name );
+        $image->setCaption( $caption );
 
         $image->setImage( $file );
 
@@ -228,7 +228,7 @@ if ( $Action == "Update" )
 
         $ad->setImage( $image );
 
-        eZPBLog::writeNotice( "Picture added to ad: $AdID  from IP: $REMOTE_ADDR" );
+        eZPBLog::writeNotice( "Picture added to ad: $adID  from IP: $REMOTE_ADDR" );
     }
 
     $ad->store();
@@ -236,7 +236,7 @@ if ( $Action == "Update" )
     $ad->removeFromCategories();
     $category->addAd( $ad );
 
-    if ( isset ( $Browse ) )
+    if ( isset ( $browse ) )
     {
         $adID = $ad->id();
         
@@ -247,40 +247,40 @@ if ( $Action == "Update" )
         eZHTTPTool::header( "Location: /imagecatalogue/browse/" );
         exit();
     }
-    if ( isset( $Preview ) )
+    if ( isset( $preview ) )
     {
-        $Action = "Edit";        
+        $action = "Edit";        
     }
     else
     {        
-        eZHTTPTool::header( "Location: /ad/archive/$CategoryID/" );
+        eZHTTPTool::header( "Location: /ad/archive/$categoryID/" );
         exit();
     }
 }
 
-if ( $Action == "Delete" )
+if ( $action == "Delete" )
 {
-    $ad = new eZAd( $AdID );
+    $ad = new eZAd( $adID );
     $ad->delete();
 
-    eZHTTPTool::header( "Location: /ad/archive/$CategoryID/" );
+    eZHTTPTool::header( "Location: /ad/archive/$categoryID/" );
     exit();    
 }
 
-if ( $Action == "DeleteAds" )
+if ( $action == "DeleteAds" )
 {
-    if ( count ( $AdArrayID ) != 0 )
+    if ( count ( $adArrayID ) != 0 )
     {
-        foreach( $AdArrayID as $AdID )
+        foreach( $adArrayID as $adID )
         {
-            $ad = new eZAd( $AdID );
+            $ad = new eZAd( $adID );
             $cat = $ad->categories();
-            $CategoryID = $cat[0]->id();
+            $categoryID = $cat[0]->id();
             $ad->delete();
         }
     }
 
-    eZHTTPTool::header( "Location: /ad/archive/$CategoryID/" );
+    eZHTTPTool::header( "Location: /ad/archive/$categoryID/" );
     exit();
 }
 
@@ -315,9 +315,9 @@ $t->set_var( "image", "" );
 $t->set_var( "html_banner", "" );
 $t->set_var( "use_html", "" );
 
-if ( $Action == "Edit" )
+if ( $action == "Edit" )
 {
-    $ad = new eZAd( $AdID );
+    $ad = new eZAd( $adID );
 
     $t->set_var( "ad_title_value", $ad->name() );
     $t->set_var( "ad_description_value", $ad->description() );
@@ -379,7 +379,7 @@ $categoryArray = $category->getTree();
 
 foreach ( $categoryArray as $catItem )
 {
-    if ( $Action == "Edit" )
+    if ( $action == "Edit" )
     {
         if ( $defCat->id() == $catItem[0]->id() )
         {

@@ -34,9 +34,9 @@
 // include_once( "classes/ezdatetime.php" );
 
 // This will fetch the news from every source site
-$Action = "ImportNews";
+$action = "ImportNews";
 
-if ( $Action == "ImportNews" )
+if ( $action == "ImportNews" )
 {
     $sourceSite = new eZSourceSite();
     

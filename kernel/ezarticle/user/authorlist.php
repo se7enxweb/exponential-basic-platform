@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: authorlist.php 9564 2002-05-23 09:12:28Z jhe $
+// $id: authorlist.php 9564 2002-05-23 09:12:28Z jhe $
 //
 // Created on: <16-Feb-2001 14:54:04 amos>
 //
@@ -30,25 +30,25 @@
 
 $ini = eZINI::instance( 'site.ini' );
 
-$Language = $ini->variable( "eZArticleMain", "Language" );
-$Limit = $ini->variable( "eZArticleMain", "AuthorLimit" );
+$language = $ini->variable( "eZArticleMain", "Language" );
+$limit = $ini->variable( "eZArticleMain", "AuthorLimit" );
 
 $t = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", $Language, "authorlist.php" );
+                     "kernel/ezarticle/user/intl/", $language, "authorlist.php" );
 
 $t->setAllStrings();
 
 $t->set_file( "author_list_tpl", "authorlist.tpl" );
 $t->set_block( "author_list_tpl", "author_item_tpl", "author_item" );
 
-if ( !isset( $Offset ) )
-    $Offset = 0;
-if ( !isset( $Limit ) or !is_numeric( $Limit ) )
-    $Limit = 5;
-if ( !isset( $SortOrder ) )
-    $SortOrder = "name";
+if ( !isset( $offset ) )
+    $offset = 0;
+if ( !isset( $limit ) or !is_numeric( $limit ) )
+    $limit = 5;
+if ( !isset( $sortOrder ) )
+    $sortOrder = "name";
 
-$authors = eZArticle::authorList( $Offset, $Limit, $SortOrder );
+$authors = eZArticle::authorList( $offset, $limit, $sortOrder );
 $db = eZDB::globalDatabase();
 
 $t->set_var( "author_item", "" );

@@ -1,6 +1,6 @@
 <?php
 // 
-// $Id: medialist.php 6279 2001-07-25 12:32:20Z ce $
+// $id: medialist.php 6279 2001-07-25 12:32:20Z ce $
 //
 // Created on: <25-Jul-2001 11:02:48 ce>
 //
@@ -29,7 +29,7 @@
 // include_once( "classes/ezcurrency.php" );
 
 $ini = eZINI::instance( 'site.ini' );
-$Language = $ini->variable( "eZArticleMain", "Language" );
+$language = $ini->variable( "eZArticleMain", "Language" );
 
 // include_once( "ezarticle/classes/ezarticlecategory.php" );
 // include_once( "ezarticle/classes/ezarticle.php" );
@@ -37,7 +37,7 @@ $Language = $ini->variable( "eZArticleMain", "Language" );
 
 
 $t = new eZTemplate( "kernel/ezarticle/admin/" . $ini->variable( "eZArticleMain", "AdminTemplateDir" ),
-                     "kernel/ezarticle/admin/intl/", $Language, "medialist.php" );
+                     "kernel/ezarticle/admin/intl/", $language, "medialist.php" );
 
 $t->setAllStrings();
 
@@ -49,7 +49,7 @@ $t->set_block( "media_list_page_tpl", "no_media_tpl", "no_media" );
 $t->set_block( "media_list_page_tpl", "media_list_tpl", "media_list" );
 $t->set_block( "media_list_tpl", "media_tpl", "media" );
 
-$article = new eZArticle( $ArticleID );
+$article = new eZArticle( $articleID );
 
 $session = eZSession::globalSession();
 $session->setVariable( "MediaListReturnTo", $_SERVER['REQUEST_URI'] );
@@ -58,13 +58,13 @@ $session->setVariable( "NameInBrowse", $article->name() );
 
 $t->set_var( "article_name", $article->name() );
 
-$t->set_var( "site_style", $SiteDesign );
+$t->set_var( "site_style", $siteDesign );
 
-if ( isset ( $AddMedia ) )
+if ( isset ( $addMedia ) )
 {
-    if ( count ( $MediaArrayID ) > 0 )
+    if ( count ( $mediaArrayID ) > 0 )
     {
-        foreach( $MediaArrayID as $mediaID )
+        foreach( $mediaArrayID as $mediaID )
         {
             $media = new eZMedia( $mediaID );
             $article->addMedia( $media );
@@ -104,7 +104,7 @@ else
         $t->set_var( "media_name", $media->name() );
         $t->set_var( "media_description", $media->description() );
         $t->set_var( "media_id", $media->id() );
-        $t->set_var( "article_id", $ArticleID );
+        $t->set_var( "article_id", $articleID );
 
         $t->set_var( "media_url", $media->mediaPath() );
         $t->parse( "media", "media_tpl", true );
