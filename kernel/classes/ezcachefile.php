@@ -99,7 +99,7 @@ class eZCacheFile
     function exists()
     {
         $file = $this->filename( true );
-        return file_exists( $file );
+        return eZPBFile::file_exists( $file );
     }
 
     /*!

@@ -195,7 +195,7 @@ class eZTemplate
 
             // 7x: Add a setting for this debug output statement to be encouraged durring debugging.
             // Add a setting to enable this statement.
-            if( $this->debugINI->variable( "site", "DebugOutput" ) == "enabled" && $GLOBALS["DEBUG_EZTEMPLATE"] == true )
+            if( $this->debugINI->variable( "site", "DebugOutput" ) == "enabled" && !empty( $GLOBALS["DEBUG_EZTEMPLATE"] ) )
             {
                 echo "<hr>"; echo $this->languageFile; echo "<hr>";
             }

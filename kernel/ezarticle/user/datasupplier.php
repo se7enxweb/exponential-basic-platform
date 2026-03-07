@@ -137,8 +137,6 @@ switch ( $url_array[2] )
         else
             $user = null;
 
-        //$userID = ( $user && is_object( $user ) ) ? $user->id() : null;
-
         if ( $pageCaching == "enabled" )
         {
             //include_once( "classes/ezcachefile.php" );
@@ -147,7 +145,7 @@ switch ( $url_array[2] )
 
             $cachedFile = $file->filename( true );
 
-            if ( $file->exists() && $userID !== null )
+            if ( $file->exists() )
             {
                 include( $cachedFile );
             }

@@ -233,12 +233,7 @@ switch ( $url_array[2] )
                                           "cache", "," );
             if ( $cacheFile->exists() )
             {
-                if ( $cacheFile->filename( true ) != "" )
-                {
-                    $generateStaticPage = "true";
-                    include( $cacheFile->filename( true ) );
-                    // print_r( $cacheFile->filename( true ) );
-                }
+                include( $cacheFile->filename( true ) );
             }
             else
             {

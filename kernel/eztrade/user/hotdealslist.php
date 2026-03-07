@@ -76,7 +76,7 @@ $t->set_block( "hdl_product_list_tpl", "hdl_product_tpl", "hdl_product" );
 $t->set_block( "hdl_product_tpl", "hdl_product_image_tpl", "hdl_product_image" );
 $t->set_block( "hdl_product_tpl", "hdl_price_tpl", "hdl_price" );
 
-$t->set_block( "product_gallary_page_tpl", "add_to_cart_tpl", "add_to_cart" );
+$t->set_block( "hdl_product_list_tpl", "add_to_cart_tpl", "add_to_cart" );
 
 if ( !isset( $moduleName ) )
     $moduleName = "trade";
