@@ -27,6 +27,10 @@
     #RewriteCond %{REQUEST_URI} !^/index_verify.php*
     RewriteCond %{REQUEST_URI} !^/documentation*
     RewriteCond %{REQUEST_URI} !^/design*
+    # Force download/media routes through PHP regardless of file extension
+    RewriteRule ^imagecatalogue/download/ index.php [L]
+    RewriteRule ^mediacatalogue/download/ index.php [L]
+    RewriteRule ^filemanager/download/ index.php [L]
     RewriteRule !\.(ico|png|css|jpg|jpeg|gif|js|jar|swf|rm|rmm|ram|rpm|mp3|mp4|wma|asx|asf|wmv|mov|mpg|mpeg|ogg|wav|au|aiff|midi|mid|pdf)$ index.php
 
     #   By DNS Name (Long) : www.example.org
@@ -40,6 +44,15 @@
 
     #   By DNS Name (Admin Site) :  admin.example.org  or  my.example.org
     #
+    # RewriteCond %{HTTP_HOST} ^admin\.basic\.demo\.exponential\.earth$
+    RewriteCond %{HTTP_HOST} ^admin\.basic\.demo\.exponential\.earth$
+    RewriteRule ^imagecatalogue/download/ index_admin.php [L]
+    RewriteCond %{HTTP_HOST} ^admin\.basic\.demo\.exponential\.earth$
+    RewriteRule ^mediacatalogue/download/ index_admin.php [L]
+    RewriteCond %{HTTP_HOST} ^admin\.basic\.demo\.exponential\.earth$
+    RewriteRule ^filemanager/download/ index_admin.php [L]
+    RewriteCond %{HTTP_HOST} ^admin\.basic\.demo\.exponential\.earth$
+    RewriteRule ^filemanager/download/ index_admin.php [L]
     RewriteCond %{HTTP_HOST} ^admin\.basic\.demo\.exponential\.earth$
     # Exponential Basic Installation Test : The following line allows access test page.
     # RewriteCond %{REQUEST_URI} !^/index_verify.php*
