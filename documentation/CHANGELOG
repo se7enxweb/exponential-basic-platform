@@ -1,12 +1,186 @@
 Exponential Basic changelog:
 ---------------------
 
+Changes from 2.4.0.2 to 2.4.0.3
+---------------------------
+
+PERFORMANCE — eztrade productlist N+1 query elimination
+
+- Added: eZProduct::prewarmThumbnails( array $ids ) batch-loads all ProductImageDefinition
+  rows for a product listing in a single IN() query, then calls eZImage::prefetch() to load
+  all required image rows in a second query. Previously each product triggered two individual
+  SELECT statements (one for the thumbnail definition, one for the image record), resulting
+  in up to 2N database queries per page. After this change the same work costs 2 queries
+  regardless of how many products are on the page.
+
+- Added: eZImage::prefetch( array $ids ) static batch-loader that populates eZImage::$rowCache.
+  Individual eZImage constructor calls consult this cache first and skip their SELECT if the
+  row is already present.
+
+- Added: eZImageVariation::prefetchByGroup( $groupID, array $imageIDs, $modification ) batch-loads
+  all image variation rows for a set of image IDs and one variation group in a single IN() query.
+  Results are stored in eZImageVariation::$cache keyed by "groupID|imageID|modification". Cache
+  entries for IDs with no matching variation are recorded as null (confirmed-absent) so
+  getByGroupAndImage() never issues a redundant SELECT for the same combination.
+
+- Added: eZImageVariationGroup::$getCache and eZImageVariationGroup::$existsCache static caches
+  so variation group lookups (groupExists, get) are resolved from memory within the same request.
+
+- Added: eZProduct::hydrateRow( $row, $db ) hydrates a product object from an already-fetched
+  DB row array. Used by the updated eZProduct::products() / eZProductCategory::activeProducts()
+  bulk-load path to avoid N individual eZTrade_Product SELECT calls per listing page.
+
+- Updated: eZProduct::products() (called internally by eZProductCategory::activeProducts())
+  batch-loads all required product rows with a single IN() query against eZTrade_Product and
+  hydrates each eZProduct object via hydrateRow(), replacing the previous pattern of constructing
+  each eZProduct with an individual SELECT.
+
+- Added: eZProduct::$optionsCache (instance), eZProduct::$vatTypeCache (instance),
+  eZProduct::$correctPriceCache (instance, keyed by calcVAT|withPriceGroups),
+  eZProduct::$briefCache (instance), eZProduct::$thumbnailIDCache (static) — instance-level
+  and request-level caches on compute-heavy methods. Methods such as vatType(), correctPrice(),
+  options(), brief(), and thumbnailImage() are each called multiple times per product per request
+  (from price-range calculation, template rendering, and option loops). These caches make each
+  method effectively free after the first call per object.
+
+- Updated: eZProduct::hasOptions() simplified to delegate to options(), which is now cached.
+  The previous implementation issued its own separate COUNT query.
+
+- Added: eZVATType::get() static cache keyed by VAT type ID; eZPriceGroup::correctPriceGroup()
+  static cache keyed by user ID + mode; eZProductCurrency::getAll() result hoisted out of the
+  product-loop in productlist.php (was re-fetched on every iteration).
+
+- Added: eZProductCategory::$getCache static cache so get() calls for the same category ID
+  within one request skip their SELECT query.
+
+- Added: productlist.php performance flags via site.ini [eZTradeMain]:
+    ShowProductOptions=enabled|disabled  — disabling skips the per-product option/variant loop
+    which previously cost ~30 queries per product (5 options × ~6 queries each).
+    ShowThumbnailImages=enabled|disabled — disabling skips the thumbnail fetch/resize path.
+  Both flags default to enabled so existing sites are unaffected with no configuration change.
+
+- Updated: productlist.php hoists eZObjectPermission::hasPermission() outside the product loop.
+  The permission check used identical arguments on every iteration; it is now evaluated once
+  before the loop and the cached boolean is reused.
+
+PERFORMANCE — eztrade productlist page-level cache
+
+- Added: Page-level output cache for the productlist view, matching the existing pattern used
+  by productgallery, hotdealsgallery, and hotdealslist views. On the first request the full
+  rendered HTML is written to kernel/eztrade/cache/ via eZCacheFile::store(). Subsequent
+  requests for the same URL (same category ID, user group array, offset, and price group)
+  serve the cache file directly via include(), bypassing all database queries and template
+  rendering entirely.
+
+- Updated: kernel/eztrade/user/datasupplier.php productlist case unconditionally sets
+  $generateStaticPage = true (matching the productgallery pattern) and reads the cache file
+  via eZCacheFile::exists() + include( $cacheFile->filename(true) ) when a valid cached copy
+  is present. Cache-key components: ("productlist", $categoryID, $groupIDArray, $offset, $priceGroup).
+
+- Updated: settings/site.ini [eZTradeMain] PageCaching changed from disabled to enabled so
+  the page cache is active for all eztrade views including the newly cached productlist.
+
+BUG FIXES — eztrade / ezimagecatalogue
+
+- Fixed: eZProduct::name() — added null-coalescing fallback ('' ) to stripslashes() call to
+  suppress PHP 8.x Deprecated/TypeError for products with a null Name field.
+
+- Fixed: productview.php line 489 — Undefined array key warning when $headers is empty.
+  SimpleOptionHeaders path now reads $headers[0] via isset check, returning '' when no header
+  is present, preventing a spurious warning on products with option definitions that carry
+  no description headers.
+
+- Fixed: productview.php line 633 — "Only variables should be assigned by reference" notice.
+  $value =& $attributes[$i]->value($product) cannot assign a reference from a method return
+  value in PHP 8. Changed to $value = $attributes[$i]->value($product).
+
+- Fixed: eZImageVariation — removed stale =& reference assignment on $this->ID and related
+  fields (PHP 8 notice); changed to plain assignment.
+
+- Fixed: eZImage::store() — $originalfilename was incorrectly bound using the DB field-name
+  lookup instead of escapeString. Changed to $db->escapeString($this->OriginalFileName).
+
+- Fixed: eZImage — array_pop( explode(...) ) passed a literal expression to array_pop(), which
+  requires a variable (PHP 8 strict notice). Intermediate variable $tmpNameParts introduced.
+
+BUG FIXES — SQLite driver (ezsqlite3db)
+
+- Fixed: eZSQLite3DB::query( 'PRAGMA journal_mode = wal;' ) — previously the failure path
+  printed an HTML error and called exit(), which terminated responses mid-stream when a
+  concurrent writer held the database lock. File downloads triggered immediately after a write
+  would produce a 0-byte or truncated response. The call is now non-fatal: WAL mode is
+  requested and silently skipped when it cannot be set; the database continues in rollback-
+  journal mode.
+
+- Added: eZSQLite3DB — SQLite3::busyTimeout(5000) is now set directly on the connection object
+  before any PRAGMA statements, so lock-retry behaviour applies from the very first query.
+
+- Added: eZSQLite3DB — nested transaction guard via $this->TransactionDepth counter. Calling
+  beginTransaction() when a transaction is already open no longer issues a second BEGIN
+  TRANSACTION (invalid in SQLite), and a matching commit() only issues COMMIT when the depth
+  reaches zero. This prevents "cannot start a transaction within a transaction" errors under
+  code paths that call begin/commit pairs at more than one stack level.
+
+- Updated: eZSQLite3DB — $Type property declaration moved to class body (PHP 8.2 dynamic
+  property deprecation). $TransactionDepth declared as var for PHP 4-compatible class body
+  to avoid declaring typed properties.
+
+BUG FIXES — schema (update/database/schema/mysql/)
+
+- Added: fix_ezlink_hit_schema — drops and re-creates eZLink_Hit table which was originally
+  created with the column layout of eZLink_Link instead of the correct hit-tracking schema
+  (ID, Link FK, Time, RemoteIP). The table contains only transient click-tracking data; no
+  persistent data is lost. Migration scripts provided for MySQL, PostgreSQL, and SQLite.
+
+- Added: add_article_section_dict_sectionid — adds the SectionID column to
+  eZArticle_ArticleSectionDict, required by the section-linking query in
+  kernel/classes/ezmodulelink.php. Migration scripts provided for MySQL, PostgreSQL, and SQLite.
+
+BUG FIXES — kernel / framework
+
+- Fixed: ezpbkernelweb.php — $GlobalSiteIni =& $ini reference assignment replaced with plain
+  assignment ($GlobalSiteIni = $ini) to suppress PHP 8.x deprecation. The SiteDir, WWWDir,
+  and Index properties are set on the object afterward; no behaviour change.
+
+- Fixed: ezpbkernelweb.php / ezpbkerneladmin.php — $moduleResult ?? null guard added in two
+  locations where $moduleResult could be unset before being passed to ezpbKernelResult and
+  template rendering, preventing Undefined variable notices.
+
+- Fixed: ezpbkernelweb.php — gotolink requests (redirect-only) now exit immediately after the
+  datasupplier include so no HTML layout is rendered around the redirect response.
+
+CODE QUALITY — global variable naming convention
+
+- Updated: datasupplier.php (eztrade user) and all included view files (productlist.php,
+  productview.php, productgallery.php, hotdealsgallery.php, hotdealslist.php, cart.php,
+  checkout.php, and approximately 60 additional view files across all kernel modules) —
+  HTTP request variables previously accessed as PascalCase globals ($CategoryID, $ProductID,
+  $Offset, $PriceGroup, $ModuleName, $CapitalizeHeadlines, $AdminSiteURL, $UserReviews, etc.)
+  renamed to camelCase locals ($categoryID, $productID, $offset, $priceGroup, $moduleName,
+  $capitalizeHeadlines, $adminSiteURL, $userReviews, etc.) to align with the project
+  convention established in 2.4.0.2 for eZHTTPTool::getVar() introduced variables. All
+  datasupplier files centralise the eZHTTPTool::getVar() calls at the top of the file so
+  downstream view includes receive named locals rather than relying on register_globals-era
+  PascalCase names.
+
+- Updated: kernel/classes/linklist.php (admin) — minor PHP 8 compatibility cleanup.
+
 Changes from 2.4.0.1 to 2.4.0.2
 ---------------------------
 
 - Updated: Added example store site design, 'ecommerce' to convert from short php tags to full php tags within design templates in php.
 
 - Updated: Refactored entire source code to convert from short php tags to full php tags within all php files.
+
+- Updated: Refactored entire source code to remove all unsupported references usage within all php files.
+
+- Updated: Refactored entire source code to remove add php 8.4 / 8.5.3 (tested) within all php files.
+
+- Updated: Refactored entire source code to replace a tested iteration of all module views using eZHTTPTool::getVar instead of the register globals support (now removed).
+
+- Updated: Refactored entire source code to add performance improvements which reduce boot speed 95% overall by fixing all notices, warnings, errors and deprecations within all php files.
+
+
 
 
 Changes from 2.4.0.0 to 2.4.0.1

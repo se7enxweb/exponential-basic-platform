@@ -13,7 +13,7 @@
 	?>
 
     <?php
-  	$CategoryID = 1;
+     $categoryID = 1;
 //    include( "ezarticle/user/smallarticlelist.php" );
     include( "ezarticle/user/headlines.php" );
     ?>
@@ -43,7 +43,7 @@ if ( $Design == 1 )
 {
     $session->setVariable( "SiteDesign", "intranet" );
     include_once( "classes/ezhttptool.php" );
-    eZHTTPTool::header( "Location: $REQUEST_URI" );
+    eZHTTPTool::header( "Location: $_SERVER['REQUEST_URI']" );
     exit();
 }
 
@@ -53,9 +53,9 @@ if ( $Design == 2 )
     include_once( "classes/ezhttptool.php" );
 
     $redir = "/";
-    if ( isset( $REQUEST_URI ) && ( $REQUEST_URI != "" ) )
+    if ( isset( $_SERVER['REQUEST_URI'] ) && ( $_SERVER['REQUEST_URI'] != "" ) )
     {
-        $redir = $REQUEST_URI;
+        $redir = $_SERVER['REQUEST_URI'];
     }
         
     eZHTTPTool::header( "Location: $redir" );
@@ -68,9 +68,9 @@ if ( $Design == 3 )
     include_once( "classes/ezhttptool.php" );
 
     $redir = "/";
-    if ( isset( $REQUEST_URI ) && ( $REQUEST_URI != "" ) )
+    if ( isset( $_SERVER['REQUEST_URI'] ) && ( $_SERVER['REQUEST_URI'] != "" ) )
     {
-        $redir = $REQUEST_URI;
+        $redir = $_SERVER['REQUEST_URI'];
     }
         
     eZHTTPTool::header( "Location: $redir" );
@@ -81,9 +81,9 @@ if ( $Design == 3 )
     ?>
 	
 	<h2>Alternative sitedesigns:</h2>
-    <a href="<?php print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $REQUEST_URI . "?Design=1"); ?>"><b>Intranet</b></a><br />
-    <a href="<?php print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $REQUEST_URI . "?Design=2"); ?>"><b>Trade</b></a><br />
-    <a href="<?php print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $REQUEST_URI . "?Design=3"); ?>"><b>News</b></a><br />
+    <a href="<?php print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $_SERVER['REQUEST_URI'] . "?Design=1"); ?>"><b>Intranet</b></a><br />
+    <a href="<?php print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $_SERVER['REQUEST_URI'] . "?Design=2"); ?>"><b>Trade</b></a><br />
+    <a href="<?php print( $GlobalSiteIni->WWWDir . $GlobalSiteIni->Index . $_SERVER['REQUEST_URI'] . "?Design=3"); ?>"><b>News</b></a><br />
 
    	<!-- Right menu end -->
 	
@@ -109,7 +109,7 @@ $StoreStats = $ini->variable( "eZStatsMain", "StoreStats" );
 if ( $StoreStats == "enabled" )
 {
     // callback for storing the stats
-    $imgSrc = "/stats/store" . $REQUEST_URI . "1x1.gif";
+    $imgSrc = "/stats/store" . $_SERVER['REQUEST_URI'] . "1x1.gif";
     print( "<img src=\"$imgSrc\" height=\"1\" width=\"1\" border=\"0\" alt=\"\" />" );    
 }
 

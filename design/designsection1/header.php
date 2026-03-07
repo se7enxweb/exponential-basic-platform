@@ -62,7 +62,7 @@
 		<img src="<?php print $GlobalSiteIni->WWWDir; ?>/images/1x1.gif" height="5" width="1" border="0" alt="" />
 
 	     <?php
-          $CategoryID = 1;
+          $categoryID = 1;
           include( "ezarticle/user/menubox.php" );
          ?>    
 

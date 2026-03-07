@@ -130,6 +130,9 @@ INSERT INTO eZArticle_CategoryPermission VALUES(7,6,-1,1,0);
 INSERT INTO eZArticle_CategoryPermission VALUES(8,3,1,0,1);
 INSERT INTO eZArticle_CategoryPermission VALUES(9,7,1,0,1);
 INSERT INTO eZArticle_CategoryPermission VALUES(10,7,-1,1,0);
+
+INSERT INTO eZArticle_LinkSection VALUES (1, 'Related Articles');
+
 INSERT INTO eZArticle_Word VALUES(1,0.72727272727272995744,'this');
 INSERT INTO eZArticle_Word VALUES(2,0.4545454545454499784,'article');
 INSERT INTO eZArticle_Word VALUES(3,0.63636363636364001727,'is');

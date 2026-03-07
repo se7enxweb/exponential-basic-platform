@@ -174,7 +174,7 @@ else
 	<!-- Left menu start -->
 
 	<?php
-    $CategoryID=0;
+    $categoryID=0;
 	include( "kernel/ezarticle/user/menubox.php" );
 	?>
 

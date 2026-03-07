@@ -70,7 +70,7 @@
 			  '{www_dir}/design/admin/images/{site_style}/downloadminimrk.gif',
 			  '{www_dir}/design/admin/images/{site_style}/imagemapminimrk.gif',
 			  '/design/news/images/tab-unmrk-mrk.gif',
-			  'design/news/images/tab-mrk-unmrk.gif',
+			  '/design/news/images/tab-mrk-unmrk.gif',
 			  '/design/trade/images/tab-unmrk-mrk.gif',
 			  '/design/trade/images/tab-mrk-unmrk.gif',
 			  '/design/standard/images/tab-unmrk-mrk.gif',

@@ -176,12 +176,12 @@ else
     <td class="menu-left" width="1%" bgcolor="#f0f0f0">
    <!-- Left menu start -->
    <?php
-    $CategoryID = 0;
+    $categoryID = 0;
    include( "kernel/ezarticle/user/menubox.php" );
    ?>
 
     <?php
-    $CategoryID = 1;
+    $categoryID = 1;
    include( "kernel/ezarticle/user/headlines.php" );
     ?>
 
@@ -191,7 +191,7 @@ else
 
    <?php
     // include the static pages for category 2
-    $CategoryID = 1;
+    $categoryID = 1;
     include( "kernel/ezarticle/user/articlelinks.php" );
    ?>
 
@@ -239,7 +239,7 @@ else
     <?php
     // a short list of articles from the given category
     // shows $Limit number starting from offset $Offset
-    $CategoryID=1;
+    $categoryID=1;
     $Offset=0;
     $Limit=2;
     include( "kernel/ezarticle/user/smallarticlelist.php" );

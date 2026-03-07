@@ -82,7 +82,7 @@
             <div id=\"myStuff\">
 				<form method=\"post\" action=\"".$GlobalSiteIni->WWWDir.$GlobalSiteIni->Index."/user/login/login/\">
             Username:<input type=\"text\" name=\"Username\" value=\"Username\" onfocus=\"clearText(this)\" /><br />Password:<input value=\"Password\" type=\"password\" name=\"Password\" onfocus=\"clearText(this)\" />
-			<input type=\"hidden\" name=\"RedirectURL\" value=\"".$REQUEST_URI."\" />
+			<input type=\"hidden\" name=\"RedirectURL\" value=\"".$_SERVER['REQUEST_URI']."\" />
 			  <input id=\"login\" type=\"submit\" value=\"OK\" />
 			  </form>
             </div>
@@ -150,14 +150,14 @@
            <dd><a href="<?php echo $GlobalSiteIni->WWWDir.$GlobalSiteIni->Index; ?>/article/sitemap">Sitemap:Articles</a></dd>
    */ ?>
            <?php  
-            $CategoryID = 0;
+            $categoryID = 0;
             include( "kernel/eztrade/user/menubox.php" ); 	
             include( "kernel/ezforum/user/menubox.php" );
             /* include( "kernel/ezforum/user/latestmessages.php" ); */
             include( "kernel/ezlink/user/menubox.php" );
 
             // include the static pages for category 5
-            $CategoryID = 5;
+            $categoryID = 5;
             include( "kernel/ezarticle/user/articlelinks.php" );
            ?>
 	  </dl>
@@ -259,7 +259,7 @@ if ( $StoreStats == "enabled" )
     // create a random string to prevent browser caching.
     $seed = md5( microtime() );
     // callback for storing the stats
-    $imgSrc = $GlobalSiteIni->WWWDir . "/stats/store/rx$seed-" . $REQUEST_URI . "/1x1.gif";
+    $imgSrc = $GlobalSiteIni->WWWDir . "/stats/store/rx$seed-" . $_SERVER['REQUEST_URI'] . "/1x1.gif";
     print( "\r<img src=\"$imgSrc\" height=\"1\" width=\"1\" border=\"0\" alt=\"\" />" );
 }
 

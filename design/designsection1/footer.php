@@ -42,7 +42,7 @@ $StoreStats = $ini->variable( "eZStatsMain", "StoreStats" );
 if ( $StoreStats == "enabled" )
 {
     // callback for storing the stats
-    $imgSrc = "$GlobalSiteIni->WWWDir$GlobalSiteIni->Index/stats/store" . $REQUEST_URI . "1x1.gif";
+    $imgSrc = "$GlobalSiteIni->WWWDir$GlobalSiteIni->Index/stats/store" . $_SERVER['REQUEST_URI'] . "1x1.gif";
     print( "<img src=\"$imgSrc\" height=\"0\" width=\"0\" border=\"0\" alt=\"\" />" );    
 }
 

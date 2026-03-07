@@ -14,7 +14,7 @@ if ( !ini_get( "date.timezone" ) )
     date_default_timezone_set( "UTC" );
 }
 
-$displayPerformanceInfoComment = false;
+$displayPerformanceInfoComment = true;
 
 ignore_user_abort( true );
 error_reporting ( E_ALL );
