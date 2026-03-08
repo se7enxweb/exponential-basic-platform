@@ -38,6 +38,7 @@ $url_array = explode( "/", $_SERVER['REQUEST_URI'] );
 // Explicit POST/GET extraction — replaces the kernel register_globals hack for this module.
 $clearCache      = eZHTTPTool::getVar( 'ClearCache' );
 $clearVariations = eZHTTPTool::getVar( 'ClearVariations' );
+$clearOpcache    = eZHTTPTool::getVar( 'ClearOpcache' );
 $parentID        = eZHTTPTool::getVar( 'ParentID' );
 $menuID          = eZHTTPTool::getVar( 'MenuID' );
 $offset          = eZHTTPTool::getVar( 'Offset' );
@@ -134,6 +135,19 @@ switch ( $url_array[2] )
 
         switch ( $url_array[3] )
         {
+            case "preload-site":
+            case "preload":
+            {
+                include( "kernel/ezsitemanager/admin/preload.php" );
+            }
+            break;
+
+            case "opcache":
+            {
+                include( "kernel/ezsitemanager/admin/opcache-clear.php" );
+            }
+            break;
+
             case "variation":
             {
 	          include( "kernel/ezsitemanager/admin/imagevariationadmin.php" );
@@ -151,6 +165,20 @@ switch ( $url_array[2] )
             include( "kernel/ezsitemanager/admin/cacheadmin.php" );
             }
             break;
+        }
+    }
+    break;
+
+    case "preload-site":
+    case "preload":
+    {
+        if ( isset( $url_array[3] ) && $url_array[3] === 'stream' )
+        {
+            include( "kernel/ezsitemanager/admin/preloadstream.php" );
+        }
+        else
+        {
+            include( "kernel/ezsitemanager/admin/preload.php" );
         }
     }
     break;

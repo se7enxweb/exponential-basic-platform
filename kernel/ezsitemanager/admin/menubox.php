@@ -28,6 +28,8 @@
 $menuItems = array(
     array( "/sitemanager/cache/", "{intl-cache_admin}" ),
     array( "/sitemanager/cache/variation", "{intl-variation_admin}" ),
+    array( "/sitemanager/cache/opcache", "{intl-opcache_clear}" ),
+    array( "/sitemanager/preload/", "{intl-preload_site}" ),
     array( "/sitemanager/siteconfig/", "{intl-site_config}" ),
     array( "/sitemanager/csseditor/", "{intl-css_editor}" ),
     array( "/sitemanager/file/list/", "{intl-file_list}" ),
