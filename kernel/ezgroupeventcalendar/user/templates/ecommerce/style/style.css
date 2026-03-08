@@ -908,3 +908,40 @@ div.calendar { position: absolute; }
 @media (max-width: 640px) {
   .gcalEventViewToolbar { justify-content: flex-start; }
 }
+
+/* -- Dayview: readable font sizes -- */
+/* Event title bar (name link) */
+a.gcalDayEventText { font-size: 20px; font-weight: bold; }
+.gcalDayEventText  { font-size: 18px; }
+/* Event header bar taller to fit bigger title */
+.gcalEventInner { height: 24px; }
+.gcalEventName  { height: 24px; line-height: 24px; }
+/* Footer pinned to bottom of event block */
+.gcalEventFooter { font-size: 14px; height: 20px; line-height: 20px; }
+/* Footer when event is active/expanded */
+.gcalEventActive .gcalEventFooter { font-size: 16px; }
+
+/* -- Dayview: time-label sidebar -- */
+.gcalTimeLabels {
+  width: 80px;
+  min-width: 60px;
+  flex-shrink: 0;
+}
+.gcalTimeSlot {
+  background: #1e293b !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  border-right: 3px solid rgba(255,255,255,0.25) !important;
+}
+.gcalTimeSlot a.path {
+  font-size: 16px !important;
+  color: #fff !important;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+}
+.gcalTimeSlot a.path:hover { color: #94d2ff !important; }
+@media (max-width: 640px) {
+  .gcalTimeLabels { width: 48px; min-width: 40px; }
+  .gcalTimeSlot a.path { font-size: 11px !important; letter-spacing: 0; }
+}
