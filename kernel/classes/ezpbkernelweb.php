@@ -799,8 +799,11 @@ try
                 $fp = fopen( $SiteCacheFile, "w+");
 
                 $SiteContents = ob_get_contents();
-                fwrite( $fp, $SiteContents );
-                fclose( $fp );
+		if( $SiteContents !== false && $fp !== false )
+		{
+                    fwrite( $fp, $SiteContents );
+                    fclose( $fp );
+		}
             }
         }
         else
