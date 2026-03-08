@@ -174,11 +174,19 @@ class eZArticleCategory
     */
     function get( $id=-1 )
     {
+        static $rowCache = array();
+
         $db = eZDB::globalDatabase();
         $ret = false;
 
         if ( $id != "" )
         {
+            if ( isset( $rowCache[$id] ) )
+            {
+                $this->fill( $rowCache[$id] );
+                return true;
+            }
+
             $db->array_query( $category_array, "SELECT * FROM eZArticle_Category WHERE ID='$id'" );
             if ( count( $category_array ) > 1 )
             {
@@ -186,21 +194,8 @@ class eZArticleCategory
             }
             else if ( count( $category_array ) == 1 )
             {
+                $rowCache[$id] = $category_array[0];
                 $this->fill( $category_array[0] );
-                /*
-                $this->ID = $category_array[0][$db->fieldName( "ID" )];
-                $this->Name = $category_array[0][$db->fieldName( "Name" )];
-                $this->Description = $category_array[0][$db->fieldName( "Description" )];
-                $this->ParentID = $category_array[0][$db->fieldName( "ParentID" )];
-                $this->ExcludeFromSearch = $category_array[0][$db->fieldName( "ExcludeFromSearch" )];
-                $this->SortMode = $category_array[0][$db->fieldName( "SortMode" )];
-                $this->OwnerID = $category_array[0][$db->fieldName( "OwnerID" )];
-                $this->Placement = $category_array[0][$db->fieldName( "Placement" )];
-                $this->SectionID = $category_array[0][$db->fieldName( "SectionID" )];
-                $this->ImageID = $category_array[0][$db->fieldName( "ImageID" )];
-                $this->EditorGroupID = $category_array[0][$db->fieldName( "EditorGroupID" )];
-                $this->ListLimit = $category_array[0][$db->fieldName( "ListLimit" )];
-                */
                 $ret = true;
             }
         }

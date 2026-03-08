@@ -238,6 +238,22 @@ if ( $adCount > 0 )
 
 $t->set_var( "category_current_id", $categoryID);
 
+// Batch-prewarm product thumbnails and category definitions to eliminate N+1 queries.
+if ( !empty( $productList ) )
+{
+    $productIDs = array_map( function( $p ) { return $p->id(); }, $productList );
+    eZProduct::prewarmThumbnails( $productIDs );
+    eZProduct::prewarmCategoryDefinitions( $productIDs );
+}
+
+// Batch-prewarm article thumbnails, category definitions, and forums to eliminate N+1 queries.
+if ( !empty( $articleList ) )
+{
+    eZArticle::prewarmThumbnails( $articleList );
+    eZArticle::prewarmCategoryDefinitions( $articleList );
+    eZArticle::prewarmForums( $articleList );
+}
+
 $locale = new eZLocale( $language );
 $i=0;
 
@@ -335,7 +351,8 @@ function renderFrontpageArticle( &$t, &$locale, &$article, &$ini = null, $counte
     if ( $categoryID == 0 )
     {
         $category = $article->categoryDefinition();
-        $categoryID = $category->id();
+        if ( $category )
+            $categoryID = $category->id();
     }
 
     $t->set_var( "category_id", $categoryID );
@@ -346,9 +363,11 @@ function renderFrontpageArticle( &$t, &$locale, &$article, &$ini = null, $counte
     $t->set_var( "author_text", $article->authorText() );
 
     $categoryDef = $article->categoryDefinition();
-
-    $t->set_var( "category_def_name", $categoryDef->name() );
-    $t->set_var( "category_def_id", $categoryDef->id() );
+    if ( $categoryDef )
+    {
+        $t->set_var( "category_def_name", $categoryDef->name() );
+        $t->set_var( "category_def_id", $categoryDef->id() );
+    }
 
     // preview image
     $thumbnailImage = $article->thumbnailImage();
@@ -447,7 +466,8 @@ function renderFrontpageArticleDouble( &$t, &$locale, &$article1, &$article2, &$
     if ( $categoryID == 0 )
     {
 	$category = $article1->categoryDefinition();
-	$categoryID = $category->id();
+	if ( $category )
+	    $categoryID = $category->id();
     }
 
     $t->set_var( "category_id", $categoryID );
@@ -457,8 +477,11 @@ function renderFrontpageArticleDouble( &$t, &$locale, &$article1, &$article2, &$
     $t->set_var( "author_text", $article1->authorText() );
 
     $categoryDef = $article1->categoryDefinition();
-    $t->set_var( "category_def_name", $categoryDef->name() );
-    $t->set_var( "category_def_id", $categoryDef->id() );
+    if ( $categoryDef )
+    {
+	$t->set_var( "category_def_name", $categoryDef->name() );
+	$t->set_var( "category_def_id", $categoryDef->id() );
+    }
 
     // preview image
     $thumbnailImage = $article1->thumbnailImage();
@@ -556,8 +579,11 @@ function renderFrontpageArticleDouble( &$t, &$locale, &$article1, &$article2, &$
     $t->set_var( "author_text", $article2->authorText() );
 
     $categoryDef = $article2->categoryDefinition();
-    $t->set_var( "category_def_name", $categoryDef->name() );
-    $t->set_var( "category_def_id", $categoryDef->id() );
+    if ( $categoryDef )
+    {
+        $t->set_var( "category_def_name", $categoryDef->name() );
+        $t->set_var( "category_def_id", $categoryDef->id() );
+    }
 
     // preview image
     $thumbnailImage = $article2->thumbnailImage();
@@ -653,7 +679,8 @@ function renderShortSingleArticle( &$t, &$locale, &$article, &$ini = null, $coun
     if ( $categoryID == 0 )
     {
 	$category = $article->categoryDefinition();
-	$categoryID = $category->id();
+	if ( $category )
+	    $categoryID = $category->id();
     }
 
     $t->set_var( "category_id", $categoryID );
@@ -664,9 +691,11 @@ function renderShortSingleArticle( &$t, &$locale, &$article, &$ini = null, $coun
     $t->set_var( "author_text", $article->authorText() );
 
     $categoryDef = $article->categoryDefinition();
-
-    $t->set_var( "category_def_name", $categoryDef->name() );
-    $t->set_var( "category_def_id", $categoryDef->id() );
+    if ( $categoryDef )
+    {
+	$t->set_var( "category_def_name", $categoryDef->name() );
+	$t->set_var( "category_def_id", $categoryDef->id() );
+    }
 
     $published = $article->published();
 

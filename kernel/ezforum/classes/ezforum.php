@@ -160,6 +160,20 @@ class eZForum
 
         if ( $id != "" )
         {
+            if ( isset( self::$rowCache[$id] ) )
+            {
+                $row               = self::$rowCache[$id];
+                $this->ID          = $row[$db->fieldName( "ID" )];
+                $this->Name        = $row[$db->fieldName( "Name" )];
+                $this->Description = $row[$db->fieldName( "Description" )];
+                $this->IsModerated = $row[$db->fieldName( "IsModerated" )];
+                $this->IsAnonymous = $row[$db->fieldName( "IsAnonymous" )];
+                $this->ModeratorID = $row[$db->fieldName( "ModeratorID" )];
+                $this->GroupID     = $row[$db->fieldName( "GroupID" )];
+                $this->IsPrivate   = $row[$db->fieldName( "IsPrivate" )];
+                return true;
+            }
+
             $db->array_query( $forum_array, "SELECT * FROM eZForum_Forum WHERE ID='$id'" );
             if ( count( $forum_array ) > 1 )
             {
@@ -167,14 +181,15 @@ class eZForum
             }
             else if ( count( $forum_array ) == 1 )
             {
-                $this->ID =& $forum_array[0][$db->fieldName( "ID" )];
-                $this->Name =& $forum_array[0][$db->fieldName( "Name" )];
+                self::$rowCache[$id]  = $forum_array[0];
+                $this->ID          =& $forum_array[0][$db->fieldName( "ID" )];
+                $this->Name        =& $forum_array[0][$db->fieldName( "Name" )];
                 $this->Description =& $forum_array[0][$db->fieldName( "Description" )];
                 $this->IsModerated =& $forum_array[0][$db->fieldName( "IsModerated" )];
                 $this->IsAnonymous =& $forum_array[0][$db->fieldName( "IsAnonymous" )];
                 $this->ModeratorID =& $forum_array[0][$db->fieldName( "ModeratorID" )];
-                $this->GroupID =& $forum_array[0][$db->fieldName( "GroupID" )];
-                $this->IsPrivate =& $forum_array[0][$db->fieldName( "IsPrivate" )];
+                $this->GroupID     =& $forum_array[0][$db->fieldName( "GroupID" )];
+                $this->IsPrivate   =& $forum_array[0][$db->fieldName( "IsPrivate" )];
 
                 $ret = true;
             }
@@ -689,8 +704,50 @@ class eZForum
     /*!
       Returns the number of messages in the forum.
     */
+    /**
+     * Batch-prefetches eZForum rows for a list of IDs into the static row cache.
+     */
+    static function prefetch( array $ids )
+    {
+        if ( empty( $ids ) ) return;
+        $db     = eZDB::globalDatabase();
+        $idList = implode( ',', array_map( 'intval', $ids ) );
+        $rows   = [];
+        $db->array_query( $rows, "SELECT * FROM eZForum_Forum WHERE ID IN ($idList)" );
+        foreach ( $rows as $row )
+            self::$rowCache[ $row[$db->fieldName( 'ID' )] ] = $row;
+    }
+
+    /**
+     * Batch-prefetches message counts for a list of forum IDs.
+     * Populates self::$messageCountCache so that messageCount() skips individual COUNT queries.
+     */
+    static function prefetchMessageCounts( array $forumIDs, $countUnapproved = false, $showReplies = false )
+    {
+        if ( empty( $forumIDs ) ) return;
+        $db      = eZDB::globalDatabase();
+        $idList  = implode( ',', array_map( 'intval', $forumIDs ) );
+        $unapSQL = $countUnapproved ? "" : "AND IsApproved='1'";
+        $depSQL  = $showReplies    ? "" : "AND Depth='0'";
+        $rows    = [];
+        $db->array_query( $rows,
+            "SELECT ForumID, COUNT(ID) AS Cnt FROM eZForum_Message
+             WHERE ForumID IN ($idList) AND IsTemporary='0' $unapSQL $depSQL
+             GROUP BY ForumID" );
+        $map = [];
+        foreach ( $rows as $row )
+            $map[ $row[$db->fieldName( 'ForumID' )] ] = (int)$row[$db->fieldName( 'Cnt' )];
+        $suffix = ':' . (int)$countUnapproved . ':' . (int)$showReplies;
+        foreach ( $forumIDs as $fid )
+            self::$messageCountCache[ $fid . $suffix ] = isset( $map[$fid] ) ? $map[$fid] : 0;
+    }
+
     function messageCount( $countUnapproved = false, $showReplies = false )
     {
+        $cacheKey = $this->ID . ':' . (int)$countUnapproved . ':' . (int)$showReplies;
+        if ( isset( self::$messageCountCache[$cacheKey] ) )
+            return self::$messageCountCache[$cacheKey];
+
         $db = eZDB::globalDatabase();
 
         if ( $countUnapproved == false )
@@ -714,6 +771,7 @@ class eZForum
        }
 
         $ret = count( $message_array );
+        self::$messageCountCache[$cacheKey] = $ret;
 
         return $ret;
     }
@@ -727,6 +785,10 @@ class eZForum
     var $IsPrivate;
     var $ModeratorID;
     var $GroupID;
+    /** Pre-fetched forum rows keyed by forum ID. */
+    static $rowCache = [];
+    /** Pre-fetched message counts keyed by "{forumID}:{unapproved}:{replies}". */
+    static $messageCountCache = [];
 }
 
 ?>

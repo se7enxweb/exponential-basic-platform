@@ -121,7 +121,18 @@
  -->
 		  <button type="submit" name="ClearCache" id="submitBtnClearCachesForm" style="display:none;">Clear Caches</button>
   </form>
-  <a onclick="event.preventDefault();document.getElementById('submitBtnClearCachesForm').click();" href="javascript:event.preventDefault(); document.getEkementById('submitBtnClearCachesForm').click();" id="submitBtnClearCaches" class="clearcache">Clear Caches</a>				</div>				<div class="userinfo">	
+  <a onclick="event.preventDefault();document.getElementById('submitBtnClearCachesForm').click();" href="javascript:event.preventDefault(); document.getEkementById('submitBtnClearCachesForm').click();" id="submitBtnClearCaches" class="clearcache">Clear Caches</a>
+		</div>
+		<div class="userinfo">
+		<form id="clearOpcacheForm" name="clearOpcacheForm" method="POST" action="{admin_site_protocol}://{admin_site_host}/sitemanager/cache/opcache">
+		  <button type="submit" name="ClearOpcache" id="submitBtnClearOpcacheForm" style="display:none;">Clear OPcache</button>
+		</form>
+		<a onclick="event.preventDefault();document.getElementById('submitBtnClearOpcacheForm').click();" href="javascript:void(0);" id="submitBtnClearOpcache" class="clearcache">Clear OPcache</a>
+		</div>
+		<div class="userinfo">
+		<a href="{admin_site_protocol}://{admin_site_host}/sitemanager/preload/" id="btnPreloadSite" class="clearcache">Preload Site</a>
+		</div>
+		<div class="userinfo">	
 			<span class="top">{intl-user_name}:</span><br />
 			<aspan class="topusername"><a class="usereditlink" href="/user/useredit/edit/{user_id}">{first_name}&nbsp;{last_name}</a></span>
 		</div>

@@ -147,7 +147,9 @@ switch ( $url_array[2] )
 
             if ( $file->exists() )
             {
-                include( $cachedFile );
+                // Use @ to suppress the warning if the file disappears between
+                // the exists() check and the include (race condition during ./clr).
+                @include( $cachedFile );
             }
             else
             {

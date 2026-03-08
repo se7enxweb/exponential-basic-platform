@@ -1580,26 +1580,29 @@ class eZArticle
     */
     function thumbnailImage( $as_object = true )
     {
-        $ret = false;
-        $db = eZDB::globalDatabase();
-        $res_array = array();
-
-        $query = "SELECT * FROM eZArticle_ArticleImageDefinition
-                                     WHERE
-                                     ArticleID='$this->ID'";
-
-        $db->array_query( $res_array, $query );
-
-        if ( count( $res_array ) == 1 )
+        if ( !isset( $this->thumbnailLoaded ) )
         {
-            $id = $res_array[0][$db->fieldName("ThumbnailImageID")];
-            if ( $id != "NULL" )
+            $this->thumbnailLoaded  = true;
+            $this->thumbnailObject  = false;
+            $this->thumbnailImageID = false;
+
+            $db = eZDB::globalDatabase();
+            $res_array = array();
+            $db->array_query( $res_array, "SELECT * FROM eZArticle_ArticleImageDefinition WHERE ArticleID='$this->ID'" );
+
+            if ( count( $res_array ) == 1 )
             {
-                $ret = $as_object ? new eZImage( $id ) : $id;
+                $id = $res_array[0][$db->fieldName("ThumbnailImageID")];
+                if ( $id != "NULL" )
+                {
+                    $this->thumbnailImageID = $id;
+                    $this->thumbnailObject  = new eZImage( $id );
+                }
             }
         }
 
-        return $ret;
+        if ( $this->thumbnailObject === false ) return false;
+        return $as_object ? $this->thumbnailObject : $this->thumbnailImageID;
     }
 
     /*!
@@ -2510,24 +2513,24 @@ class eZArticle
     */
     function categoryDefinition( $as_object = true )
     {
-        $db = eZDB::globalDatabase();
-
-        $db->array_query( $res, "SELECT CategoryID FROM
-                                            eZArticle_ArticleCategoryDefinition
-                                            WHERE ArticleID='$this->ID'" );
-
-        $category = false;
-        if ( count( $res ) == 1 )
+        if ( !isset( $this->categoryDefinitionLoaded ) )
         {
-            $id = $res[0][$db->fieldName("CategoryID")];
-            $category = $as_object ? new eZArticleCategory( $id ) : $id;
-        }
-        else
-        {
-            print( "<br><b>Failed to get article category definition for ID $this->ID</b></br>" );
+            $this->categoryDefinitionLoaded = true;
+            $this->categoryDefinitionID     = false;
+
+            $db = eZDB::globalDatabase();
+            $db->array_query( $res, "SELECT CategoryID FROM
+                                                eZArticle_ArticleCategoryDefinition
+                                                WHERE ArticleID='$this->ID'" );
+
+            if ( count( $res ) == 1 )
+                $this->categoryDefinitionID = $res[0][$db->fieldName("CategoryID")];
+            else
+                print( "<br><b>Failed to get article category definition for ID $this->ID</b></br>" );
         }
 
-        return $category;
+        if ( $this->categoryDefinitionID === false ) return false;
+        return $as_object ? new eZArticleCategory( $this->categoryDefinitionID ) : $this->categoryDefinitionID;
     }
 
     /*!
@@ -2606,59 +2609,51 @@ class eZArticle
     */
     function forum( $as_object = true )
     {
-	
-        $db = eZDB::globalDatabase();
-
-        $db->array_query( $res, "SELECT ForumID FROM
-                                            eZArticle_ArticleForumLink
-                                            WHERE ArticleID='$this->ID'" );
-        $forum = false;
-        if ( count( $res ) == 1 )
+        if ( !isset( $this->forumLoaded ) )
         {
-            if ( $as_object )
-                $forum = new eZForum( $res[0][$db->fieldName( "ForumID" )] );
+            $this->forumLoaded  = true;
+            $this->forumObject  = false;
+            $this->forumID      = false;
+
+            $db = eZDB::globalDatabase();
+            $db->array_query( $res, "SELECT ForumID FROM eZArticle_ArticleForumLink WHERE ArticleID='$this->ID'" );
+
+            if ( count( $res ) == 1 )
+            {
+                $this->forumID     = $res[0][$db->fieldName( "ForumID" )];
+                $this->forumObject = new eZForum( $this->forumID );
+            }
             else
-                $forum = $res[0][$db->fieldName( "ForumID" )];
+            {
+                $forum = new eZForum();
+                $forum->setName( $db->escapeString( $this->Name ) );
+
+                $ini = eZINI::instance( 'site.ini' );
+                $RequireUserLogin = $ini->variable( "eZArticleMain", "RequireUserLogin" );
+                if ( $RequireUserLogin == "disabled" )
+                    $forum->setIsAnonymous( 'true' );
+
+                $forum->store();
+
+                $this->forumID = $forum->id();
+
+                $db->begin();
+                $db->lock( "eZArticle_ArticleForumLink" );
+                $nextID = $db->nextID( "eZArticle_ArticleForumLink", "ID" );
+                $insertRes = $db->query( "INSERT INTO eZArticle_ArticleForumLink ( ID, ArticleID, ForumID ) VALUES ( '$nextID', '$this->ID', '$this->forumID' )" );
+                $db->unlock();
+
+                if ( $insertRes == false )
+                    $db->rollback();
+                else
+                    $db->commit();
+
+                $this->forumObject = new eZForum( $this->forumID );
+            }
         }
-        else
-        {
-            $forum = new eZForum();
-            $forum->setName( $db->escapeString( $this->Name ) );
 
-			$ini = eZINI::instance( 'site.ini' );
-        	$RequireUserLogin = $ini->variable( "eZArticleMain", "RequireUserLogin" );
-			if ($RequireUserLogin == "disabled")			
-				$forum->setIsAnonymous('true');			
-			
-            $forum->store();
-
-            $forumID = $forum->id();
-
-            $db->begin( );
-
-            $db->lock( "eZArticle_ArticleForumLink" );
-
-            $nextID = $db->nextID( "eZArticle_ArticleForumLink", "ID" );
-
-            $res = $db->query( "INSERT INTO eZArticle_ArticleForumLink
-                                ( ID, ArticleID, ForumID )
-                                VALUES
-                                ( '$nextID', '$this->ID', '$forumID' )" );
-
-            $db->unlock();
-
-            if ( $res == false )
-                $db->rollback( );
-            else
-                $db->commit();
-
-
-            if ( $as_object )
-                $forum = new eZForum( $forumID );
-            else
-                $forum = $forumID;
-        }
-        return $forum;
+        if ( !$this->forumObject ) return false;
+        return $as_object ? $this->forumObject : $this->forumID;
     }
 
 
@@ -3170,6 +3165,132 @@ eZUser_Author as Author
     // php8
     var $AuthorText;
     var $AuthorEmail;
+    var $categoryDefinitionLoaded;
+    var $categoryDefinitionID;
+    var $thumbnailLoaded;
+    var $thumbnailObject;
+    var $thumbnailImageID;
+    var $forumLoaded;
+    var $forumObject;
+    var $forumID;
+
+    /**
+     * Batch-prewarms thumbnail lazy-loads for an array of eZArticle objects.
+     * Replaces N individual SELECTs on eZArticle_ArticleImageDefinition with one IN query.
+     */
+    static function prewarmThumbnails( array $articles )
+    {
+        if ( empty( $articles ) ) return;
+        $idMap = [];
+        foreach ( $articles as $a )
+            $idMap[ $a->id() ] = $a;
+        $db     = eZDB::globalDatabase();
+        $idList = implode( ',', array_map( 'intval', array_keys( $idMap ) ) );
+        $rows   = [];
+        $db->array_query( $rows, "SELECT ArticleID, ThumbnailImageID FROM eZArticle_ArticleImageDefinition WHERE ArticleID IN ($idList)" );
+        $imageIDs = [];
+        foreach ( $rows as $row )
+        {
+            $artID = $row[$db->fieldName( 'ArticleID' )];
+            $imgID = $row[$db->fieldName( 'ThumbnailImageID' )];
+            if ( isset( $idMap[$artID] ) )
+            {
+                $idMap[$artID]->thumbnailLoaded = true;
+                if ( $imgID !== 'NULL' && $imgID !== null && $imgID !== '' )
+                {
+                    $idMap[$artID]->thumbnailImageID = $imgID;
+                    $idMap[$artID]->thumbnailObject  = false;
+                    $imageIDs[] = (int)$imgID;
+                }
+                else
+                {
+                    $idMap[$artID]->thumbnailImageID = false;
+                    $idMap[$artID]->thumbnailObject  = false;
+                }
+            }
+        }
+        if ( !empty( $imageIDs ) )
+            eZImage::prefetch( $imageIDs );
+        foreach ( $idMap as $artID => $a )
+        {
+            if ( isset( $a->thumbnailLoaded ) && $a->thumbnailImageID !== false )
+                $a->thumbnailObject = new eZImage( $a->thumbnailImageID );
+        }
+    }
+
+    /**
+     * Batch-prewarms category-definition lazy-loads for an array of eZArticle objects.
+     * Replaces N individual SELECTs on eZArticle_ArticleCategoryDefinition with one IN query.
+     */
+    static function prewarmCategoryDefinitions( array $articles )
+    {
+        if ( empty( $articles ) ) return;
+        $idMap = [];
+        foreach ( $articles as $a )
+            $idMap[ $a->id() ] = $a;
+        $db     = eZDB::globalDatabase();
+        $idList = implode( ',', array_map( 'intval', array_keys( $idMap ) ) );
+        $rows   = [];
+        $db->array_query( $rows, "SELECT ArticleID, CategoryID FROM eZArticle_ArticleCategoryDefinition WHERE ArticleID IN ($idList)" );
+        $catIDs = [];
+        foreach ( $rows as $row )
+        {
+            $artID = $row[$db->fieldName( 'ArticleID' )];
+            $catID = $row[$db->fieldName( 'CategoryID' )];
+            if ( isset( $idMap[$artID] ) )
+            {
+                $idMap[$artID]->categoryDefinitionLoaded = true;
+                $idMap[$artID]->categoryDefinitionID     = $catID;
+                $catIDs[] = $catID;
+            }
+        }
+        // Articles not found in the batch are left un-marked so their lazy-load fires naturally.
+        // Warm the eZArticleCategory static row-cache for each unique category ID.
+        foreach ( array_unique( $catIDs ) as $catID )
+            new eZArticleCategory( $catID );
+    }
+
+    /**
+     * Batch-prewarms forum lazy-loads for an array of eZArticle objects.
+     * Replaces N SELECTs on eZArticle_ArticleForumLink, N on eZForum_Forum,
+     * and N COUNTs on eZForum_Message with three batch queries.
+     * Articles with no existing forum link are left untouched so forum() can
+     * still auto-create their forum on first individual access.
+     */
+    static function prewarmForums( array $articles )
+    {
+        if ( empty( $articles ) ) return;
+        $idMap = [];
+        foreach ( $articles as $a )
+            $idMap[ $a->id() ] = $a;
+        $db     = eZDB::globalDatabase();
+        $idList = implode( ',', array_map( 'intval', array_keys( $idMap ) ) );
+        $rows   = [];
+        $db->array_query( $rows, "SELECT ArticleID, ForumID FROM eZArticle_ArticleForumLink WHERE ArticleID IN ($idList)" );
+        $forumIDs    = [];
+        $forumArtMap = [];
+        foreach ( $rows as $row )
+        {
+            $artID = $row[$db->fieldName( 'ArticleID' )];
+            $fid   = $row[$db->fieldName( 'ForumID' )];
+            if ( isset( $idMap[$artID] ) )
+            {
+                $idMap[$artID]->forumLoaded  = true;
+                $idMap[$artID]->forumObject  = false;
+                $idMap[$artID]->forumID      = $fid;
+                $forumArtMap[$artID]         = $fid;
+                $forumIDs[]                  = (int)$fid;
+            }
+        }
+        // Articles not found in the batch are left un-marked so their lazy-load fires naturally.
+        if ( !empty( $forumIDs ) )
+        {
+            eZForum::prefetch( $forumIDs );
+            eZForum::prefetchMessageCounts( $forumIDs, false, true );
+        }
+        foreach ( $forumArtMap as $artID => $fid )
+            $idMap[$artID]->forumObject = new eZForum( $fid );
+    }
 
 }
 

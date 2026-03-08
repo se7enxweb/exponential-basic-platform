@@ -148,89 +148,95 @@ class eZQDomRenderer
     */
     function __construct( &$article, $template=false )
     {
-        $UsedImageList = array();
-        $RollOverCount = 0;
+        static $prototypes = array();
 
         $ini = eZINI::instance( 'site.ini' );
+        $templateDir = "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" );
+        $cacheKey = (string)$template;
 
-        $this->Template = new eZTemplate( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ),
-                     "kernel/ezarticle/user/intl/", "en_GB", "articleview.php" );
-
-        if ( file_exists( "kernel/ezarticle/user/" . $ini->variable( "eZArticleMain", "TemplateDir" ) . "articletags_$template.tpl" ) )
+        if ( !isset( $prototypes[$cacheKey] ) )
         {
-            $this->Template->set_file( "articletags_tpl", "articletags_$template.tpl"  );
+            $proto = new eZTemplate( $templateDir,
+                         "kernel/ezarticle/user/intl/", "en_GB", "articleview.php" );
+
+            if ( file_exists( $templateDir . "articletags_$template.tpl" ) )
+                $proto->set_file( "articletags_tpl", "articletags_$template.tpl" );
+            else
+                $proto->set_file( "articletags_tpl", "articletags.tpl" );
+
+            $proto->set_block( "articletags_tpl", "header_1_tpl", "header_1" );
+            $proto->set_block( "articletags_tpl", "header_2_tpl", "header_2" );
+            $proto->set_block( "articletags_tpl", "header_3_tpl", "header_3" );
+            $proto->set_block( "articletags_tpl", "header_4_tpl", "header_4" );
+            $proto->set_block( "articletags_tpl", "header_5_tpl", "header_5" );
+            $proto->set_block( "articletags_tpl", "header_6_tpl", "header_6" );
+
+            $proto->set_block( "articletags_tpl", "rollover_tpl", "rollover" );
+
+            $proto->set_block( "articletags_tpl", "image_tpl", "image" );
+            $proto->set_block( "articletags_tpl", "media_tpl", "media" );
+            $proto->set_block( "articletags_tpl", "file_tpl", "file" );
+            $proto->set_block( "image_tpl", "image_link_tpl", "image_link" );
+            $proto->set_block( "image_tpl", "ext_link_tpl", "ext_link" );
+            $proto->set_block( "image_tpl", "no_link_tpl", "no_link" );
+
+            $proto->set_block( "image_tpl", "image_text_tpl", "image_text" );
+
+            $proto->set_block( "articletags_tpl", "image_float_tpl", "image_float" );
+            $proto->set_block( "image_float_tpl", "image_link_float_tpl", "image_link_float" );
+            $proto->set_block( "image_float_tpl", "ext_link_float_tpl", "ext_link_float" );
+            $proto->set_block( "image_float_tpl", "no_link_float_tpl", "no_link_float" );
+
+            $proto->set_block( "articletags_tpl", "link_tpl", "link" );
+            $proto->set_block( "articletags_tpl", "popuplink_tpl", "popuplink" );
+
+            $proto->set_block( "articletags_tpl", "hr_tpl", "hr" );
+
+            $proto->set_block( "articletags_tpl", "bold_tpl", "bold" );
+            $proto->set_block( "articletags_tpl", "italic_tpl", "italic" );
+            $proto->set_block( "articletags_tpl", "underline_tpl", "underline" );
+            $proto->set_block( "articletags_tpl", "strong_tpl", "strong" );
+            $proto->set_block( "articletags_tpl", "strike_tpl", "strike" );
+            $proto->set_block( "articletags_tpl", "factbox_tpl", "factbox" );
+            $proto->set_block( "articletags_tpl", "quote_tpl", "quote" );
+            $proto->set_block( "articletags_tpl", "pre_tpl", "pre" );
+            $proto->set_block( "articletags_tpl", "html_tpl", "html" );
+
+            // lists
+            $proto->set_block( "articletags_tpl", "bullet_tpl", "bullet" );
+            $proto->set_block( "bullet_tpl", "bullet_item_tpl", "bullet_item" );
+
+            $proto->set_block( "articletags_tpl", "list_tpl", "list" );
+            $proto->set_block( "list_tpl", "list_item_tpl", "list_item" );
+
+            // table
+            $proto->set_block( "articletags_tpl", "table_tpl", "table" );
+            $proto->set_block( "table_tpl", "tr_tpl", "tr" );
+            $proto->set_block( "tr_tpl", "td_tpl", "td" );
+
+            // user defined tags
+            $customTags = $ini->variable( "eZArticleMain", "CustomTags" );
+            $customTagsArray = explode( ";", $customTags );
+            foreach ( $customTagsArray as $tag )
+                $proto->set_block( "articletags_tpl", $tag . "_tpl", "$tag" );
+
+            $brOverride = $proto->get_user_variable( "articletags_tpl", "br" );
+            if ( $brOverride == "" )
+                $brOverride = true;
+
+            $prototypes[$cacheKey] = array(
+                'template'       => $proto,
+                'customTagsArray'=> $customTagsArray,
+                'brOverride'     => $brOverride,
+            );
         }
-        else
-        {
-            $this->Template->set_file( "articletags_tpl", "articletags.tpl"  );
 
-        }
-
-        $this->Template->set_block( "articletags_tpl", "header_1_tpl", "header_1"  );
-        $this->Template->set_block( "articletags_tpl", "header_2_tpl", "header_2"  );
-        $this->Template->set_block( "articletags_tpl", "header_3_tpl", "header_3"  );
-        $this->Template->set_block( "articletags_tpl", "header_4_tpl", "header_4"  );
-        $this->Template->set_block( "articletags_tpl", "header_5_tpl", "header_5"  );
-        $this->Template->set_block( "articletags_tpl", "header_6_tpl", "header_6"  );
-
-        $this->Template->set_block( "articletags_tpl", "rollover_tpl", "rollover"  );
-
-        $this->Template->set_block( "articletags_tpl", "image_tpl", "image"  );
-        $this->Template->set_block( "articletags_tpl", "media_tpl", "media"  );
-        $this->Template->set_block( "articletags_tpl", "file_tpl", "file"  );
-        $this->Template->set_block( "image_tpl", "image_link_tpl", "image_link"  );
-        $this->Template->set_block( "image_tpl", "ext_link_tpl", "ext_link"  );
-        $this->Template->set_block( "image_tpl", "no_link_tpl", "no_link"  );
-
-        $this->Template->set_block( "image_tpl", "image_text_tpl", "image_text"  );
-
-        $this->Template->set_block( "articletags_tpl", "image_float_tpl", "image_float" );
-        $this->Template->set_block( "image_float_tpl", "image_link_float_tpl", "image_link_float" );
-        $this->Template->set_block( "image_float_tpl", "ext_link_float_tpl", "ext_link_float"  );
-        $this->Template->set_block( "image_float_tpl", "no_link_float_tpl", "no_link_float"  );
-
-        $this->Template->set_block( "articletags_tpl", "link_tpl", "link"  );
-        $this->Template->set_block( "articletags_tpl", "popuplink_tpl", "popuplink"  );
-
-        $this->Template->set_block( "articletags_tpl", "hr_tpl", "hr"  );
-
-        $this->Template->set_block( "articletags_tpl", "bold_tpl", "bold"  );
-        $this->Template->set_block( "articletags_tpl", "italic_tpl", "italic"  );
-        $this->Template->set_block( "articletags_tpl", "underline_tpl", "underline"  );
-        $this->Template->set_block( "articletags_tpl", "strong_tpl", "strong"  );
-        $this->Template->set_block( "articletags_tpl", "strike_tpl", "strike"  );
-        $this->Template->set_block( "articletags_tpl", "factbox_tpl", "factbox"  );
-        $this->Template->set_block( "articletags_tpl", "quote_tpl", "quote"  );
-        $this->Template->set_block( "articletags_tpl", "pre_tpl", "pre"  );
-        $this->Template->set_block( "articletags_tpl", "html_tpl", "html"  );
-
-        // lists
-        $this->Template->set_block( "articletags_tpl", "bullet_tpl", "bullet"  );
-        $this->Template->set_block( "bullet_tpl", "bullet_item_tpl", "bullet_item"  );
-
-        $this->Template->set_block( "articletags_tpl", "list_tpl", "list"  );
-        $this->Template->set_block( "list_tpl", "list_item_tpl", "list_item"  );
-
-        // table
-        $this->Template->set_block( "articletags_tpl", "table_tpl", "table"  );
-        $this->Template->set_block( "table_tpl", "tr_tpl", "tr"  );
-        $this->Template->set_block( "tr_tpl", "td_tpl", "td"  );
-
-        // user defined tags
-        $customTags = $ini->variable( "eZArticleMain", "CustomTags" );
-
-        $this->CustomTagsArray = explode( ";", $customTags );
-
-        foreach ( $this->CustomTagsArray as $tag )
-        {
-            $this->Template->set_block( "articletags_tpl", $tag . "_tpl", "$tag"  );
-        }
-
-        // get custom <br> command, needed for other renderes than html
-        $this->BrOverride = $this->Template->get_user_variable( "articletags_tpl",  "br" );
-        if ( $this->BrOverride=="" ) {
-            $this->BrOverride = true;
-        }
+        // Clone the pre-built prototype — avoids re-reading the .tpl file and
+        // re-running 40+ set_block() regex operations for every article rendered.
+        // The _tpl source blocks are read-only during render so clone is safe.
+        $this->Template = clone $prototypes[$cacheKey]['template'];
+        $this->CustomTagsArray = $prototypes[$cacheKey]['customTagsArray'];
+        $this->BrOverride = $prototypes[$cacheKey]['brOverride'];
 
         $this->Article =& $article;
     }
@@ -897,7 +903,10 @@ class eZQDomRenderer
 
             setType( $mediaID, "integer" );
 
-            $media = $articleMedia[$mediaID-1];
+            if( isset( $articleMedia[$mediaID - 1 ] ) )
+                $media = $articleMedia[$mediaID-1];
+            else
+                $media = false;
 
             // add media if a valid media was found, else report an error in the log.
             if ( is_a( $media, "eZMedia" ) )

@@ -439,6 +439,7 @@ class eZTemplate
 
         if ( !is_dir( $root ) )
         {
+            eZPBLog::writeWarning( "eZTemplate::set_root: template directory does not exist: $root", "eZTemplate" );
             $this->halt( "set_root: $root is not a directory." );
             return false;
         }

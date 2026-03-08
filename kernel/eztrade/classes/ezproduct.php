@@ -70,6 +70,7 @@ class eZProduct
 {
     /** Maps ProductID -> ThumbnailImageID (or false). Populated by prewarmThumbnails(). */
     static $thumbnailIDCache = [];
+    static $catDefIDCache = [];
 
     /** Instance cache for options(): populated once per product object. */
     public $optionsCache = null;
@@ -2345,6 +2346,13 @@ class eZProduct
     */
     function categoryDefinition( $as_object = true )
     {
+        if ( array_key_exists( $this->ID, self::$catDefIDCache ) )
+        {
+            $catID = self::$catDefIDCache[$this->ID];
+            if ( $catID === false ) return false;
+            return $as_object ? new eZProductCategory( $catID ) : $catID;
+        }
+
        $db = eZDB::globalDatabase();
        $res = array();
 
@@ -2357,18 +2365,40 @@ class eZProduct
 
        if ( count( $res ) == 1 )
        {
+           $catID = $res[0][$db->fieldName( "CategoryID" )];
+           self::$catDefIDCache[$this->ID] = $catID;
            if ( $as_object )
-               $category = new eZProductCategory( $res[0][$db->fieldName( "CategoryID" )] );
+               $category = new eZProductCategory( $catID );
            else
-               $category = $res[0][$db->fieldName( "CategoryID" )];
+               $category = $catID;
        }
        else
        {
+           self::$catDefIDCache[$this->ID] = false;
            print( "<br><b>Failed to fetch product category definition for ID $this->ID</b><br>" );
            debug_print_backtrace();
        }
 
        return $category;
+    }
+
+    /*!
+      Batch pre-warms the category definition cache for a list of product IDs.
+      Eliminates N individual SELECT queries from categoryDefinition() calls.
+    */
+    static function prewarmCategoryDefinitions( array $ids )
+    {
+        if ( empty( $ids ) ) return;
+        $db = eZDB::globalDatabase();
+        // Mark all as checked (default: no definition found)
+        foreach ( $ids as $id )
+            if ( !array_key_exists( $id, self::$catDefIDCache ) )
+                self::$catDefIDCache[$id] = false;
+        $idList = implode( ',', array_map( 'intval', $ids ) );
+        $res = [];
+        $db->array_query( $res, "SELECT ProductID, CategoryID FROM eZTrade_ProductCategoryDefinition WHERE ProductID IN ($idList)" );
+        foreach ( $res as $row )
+            self::$catDefIDCache[ $row[$db->fieldName( 'ProductID' )] ] = $row[$db->fieldName( 'CategoryID' )];
     }
 
     /*!

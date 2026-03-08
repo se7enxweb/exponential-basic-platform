@@ -27,24 +27,27 @@
 $ini = eZINI::instance('site.ini');
 
 $Language = $ini->variable( "eZArticleMain", "Language" );
+// Re-read SiteStyle directly: $siteDesign (and its alias $SiteDesign) may have been
+// overwritten to "" by datasupplier.php's eZHTTPTool::getVar('SiteDesign') call.
+$SiteDesign = $ini->variable( "site", "SiteStyle" );
 
 // include_once( "classes/template.inc" );
 
 // $t = new Template( $siteDir . "design/admin/templates/" . $SiteDesign );
-$t = new eZTemplate( "design/admin/templates/" . $SiteDesign,
+$ft = new eZTemplate( "design/admin/templates/" . $SiteDesign,
                      "kernel/ezuser/admin/intl/", $Language, "menubox.php" );
 
-$t->set_file( array(
+$ft->set_file( array(
     "footer_tpl" => "loginfooter.tpl"
     ) );
 
-$t->set_var( "site_style", $SiteDesign );
-$t->set_var( "module_dir", $moduleName );
-$t->set_var( "www_dir", $GlobalSiteIni->WWWDir );
-$t->set_var( "index", $GlobalSiteIni->Index );
+$ft->set_var( "site_style", $SiteDesign );
+$ft->set_var( "module_dir", $moduleName );
+$ft->set_var( "www_dir", $GlobalSiteIni->WWWDir );
+$ft->set_var( "index", $GlobalSiteIni->Index );
 
+//$ft->setAllStrings();
 
-$t->pparse( "output", "footer_tpl" );
-    
+$ft->pparse( "output", "footer_tpl" );
 
 ?>

@@ -43,5 +43,7 @@ $t->set_file( array(
 
 $t->set_var( "site_style", $siteDesign );
 $t->set_var( "module_dir", $moduleName );
+$t->set_var( "www_dir", $GlobalSiteIni->WWWDir );
+$t->set_var( "index", $GlobalSiteIni->Index );
 
 $t->pparse( "output", "footer_tpl" );
