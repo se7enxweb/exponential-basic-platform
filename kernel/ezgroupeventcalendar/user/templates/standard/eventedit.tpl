@@ -122,7 +122,7 @@ onFocus="this.className='gcalTextFocusFrm'"
 <br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input {is_event_alarm_notice} type="checkbox" name="IsEventAlarmNotice" />&nbsp;<span class="check">{intl-event_notification}</span>
 <br /> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="checkbox" name="FileUploadFlag" />&nbsp;<span class="check">{intl-AddFileFlag}</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="checkbox" name="FileUploadFlag" />&nbsp;<span class="check">{intl-add_file_flag}</span>
 </div>
 
 </div>
@@ -202,7 +202,7 @@ onmouseover="this.className='gcalSubmitOverFrm'">
 <input {is_all_day} type="checkbox" name="IsAllDay" onChange="resetTimeSelect();" />&nbsp;<span class="check">{intl-all_day_event}</span>
 
 <!-- BEGIN html_form_datetime_select_tpl -->
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<table class="gcalTimeSelectTable" border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 	<td valign="top">
 	<p class="boxtext">{intl-event_start}:</p>
@@ -501,15 +501,11 @@ return (days);
 }
 function convertTo24(hour, minute, ampm)
 {
-var ret;
-if (hour.substring(0, 1) == 0)
-ret = hour.substring(1,2);
-else
-ret = hour;
-if (ampm[1].checked) ret = ret + 12
-
-ret += minute;
-return parseInt(ret);
+  var h = parseInt(hour, 10);
+  // 12-hour clock: 12am=midnight(0), 12pm=noon(12), 1-11am=1-11, 1-11pm=13-23
+  if (h === 12) h = 0;
+  if (ampm[1].checked) h += 12;
+  return h * 60 + parseInt(minute, 10);
 }
 function addToList(textField, selectField) {
    tex = document.forms.EventEdit.RecurExceptions;
@@ -851,7 +847,9 @@ selectAll();
   }
   var compStart = convertTo24(startHourF.value, startMinuteF.value, startAMPM);
   var compStop = convertTo24(stopHourF.value, stopMinuteF.value, stopAMPM);
-  if (compStart >= compStop)
+  // midnight stop (12:00am = 0 minutes) means end-of-day (1440 minutes)
+  var effectiveStop = (compStop === 0) ? 1440 : compStop;
+  if (compStart >= effectiveStop)
   {
    alert ("The start time must be earlier than the stop time.");
    return false;

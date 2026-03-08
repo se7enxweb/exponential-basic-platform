@@ -25,10 +25,10 @@
 
 // include_once( "classes/ezhttptool.php" );
 
-$url = explode( "/", $_SERVER['REQUEST_URI'] );
+$urlParts = explode( "/", $_SERVER['REQUEST_URI'] );
 
-if( isset( $url[8] ) && is_numeric( $url[8] ) )
-    $masterGroupID = $url[8];
+if( isset( $urlParts[8] ) && is_numeric( $urlParts[8] ) )
+    $masterGroupID = $urlParts[8];
 else
     $masterGroupID = 0;
 
@@ -441,12 +441,15 @@ if ( isset( $action ) && $action == "DeleteEvents" )
 	//initialize the error array
 	$error = array();
 
-	//get the date from the first event to be deleted
-	$tmpAppointment = new eZGroupEvent( $eventArrayID[0]);
+	// fallback datetime in case eventArrayID is empty
+	$datetime = new eZDateTime();
+
+    if ( count( $eventArrayID ) != 0 )
+    {
+	    //get the date from the first event to be deleted
+    	$tmpAppointment = new eZGroupEvent( $eventArrayID[0] );
         $datetime = $tmpAppointment->dateTime();
 
-    if ( count ( $eventArrayID ) != 0 )
-    {
 		foreach( $eventArrayID as $id )
         {
 			array_push( $error, $id );
@@ -457,8 +460,11 @@ if ( isset( $action ) && $action == "DeleteEvents" )
 				if( $event->groupID() == $groups->id() || $event->groupID() == 0  )
 				{
 					$dump = array_pop( $error );
+					$delDt = $event->dateTime();
 					$event->delete();
-					exec("secure_clearcache.sh");
+					if ( $delDt ) {
+						deleteCache( "default", $Language, addZero($delDt->year()), addZero($delDt->month()), addZero($delDt->day()), $event->groupID() );
+					}
 					break;
 				}
 			}
@@ -482,7 +488,7 @@ if ( isset( $action ) && $action == "DeleteEvents" )
 		$year = addZero( $datetime->year() );
 		$month = addZero( $datetime->month() );
 		$day = addZero( $datetime->day() );
-		//deleteCache( "default", $Language, $year, $month, $day, $groupID );
+		deleteCache( "default", $Language, $year, $month, $day, $groupID );
 
 		eZHTTPTool::header( "Location: /groupeventcalendar/dayview/$year/$month/$day/" );
 		exit();
@@ -569,6 +575,7 @@ if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action ==
 
 	// wanted to reserve 0 for events in all group category
 	//	if ( $storeByGroupID != 0 )
+	$groupInsertError = false;
 	if ( $storeByGroupID != "" )
         { 
 	    $group = new eZUserGroup( $storeByGroupID );
@@ -618,6 +625,8 @@ if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action ==
 			$startmin  = $dayStartArray[3];
 			$stophour  = $dayStopArray[2];
 			$stopmin   = $dayStopArray[3];
+			// 24:00 end-of-day → cap to 23:00; all-day detection is formula-based
+			if ( (int)$stophour >= 24 ) { $stophour = 23; $stopmin = 0; }
 
             $startTime->setHour( $starthour );
             $startTime->setMinute( $startmin  );
@@ -653,7 +662,10 @@ if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action ==
 				$hour = convertToTwentyFour( $hour, $Stop_AM_PM );
 				settype( $hour, "integer" );
 
-				if( $hour >= $startHour )
+				// 12:00am (midnight) converts to 00 but means end-of-day (24:00)
+				$stopIsMidnight = ( $hour === 0 && $Stop_AM_PM == "am" );
+
+				if( $stopIsMidnight || $hour >= $startHour )
 				{
 					$stopTime->setHour( $hour );
 
@@ -677,9 +689,6 @@ if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action ==
         $pStopTimeHour = $stopTime->hour();
         $pStopTimeMinute = addZero( $stopTime->minute() );
 
-		var_dump( $year, $month, $day, $startTime->hour(),
-		$startTime->minute(), $startTime->second() );
-        
 		$datetime = new eZDateTime( $year, $month, $day,  
 		$startTime->hour() , $startTime->minute(),
 		 $startTime->second() );
@@ -688,7 +697,9 @@ if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action ==
 
         $event->setDateTime( $datetime );
 		//die();
-        if ( $stopTime->isGreater( $startTime, true ) )
+        // Midnight stop (12:00am = end-of-day) is always valid after any start
+        if ( !isset( $stopIsMidnight ) ) $stopIsMidnight = false;
+        if ( !$stopIsMidnight && $stopTime->isGreater( $startTime, true ) )
         {
             $stopTimeError = true;
         }
@@ -744,8 +755,12 @@ if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action ==
 	// 			  $pStopTimeMinute - $pStartTimeMinute, 0 );
 	// This is working today, sorry for the fishing trips
 
-	$duration = new eZTime( $pStopTimeHour,
-				  $pStopTimeMinute, 0 );
+// For midnight stop, treat as 24:00 so duration is positive
+	$stopHourForDuration = $stopIsMidnight ? 24 : $pStopTimeHour;
+	$durationHour = $stopHourForDuration - $pStartTimeHour;
+	$durationMin  = (int)$pStopTimeMinute - (int)$pStartTimeMinute;
+	if ( $durationMin < 0 ) { $durationHour--; $durationMin += 60; }
+	$duration = new eZTime( $durationHour, $durationMin, 0 );
 
 	$event->setDuration( $duration );
     $adur = $duration->mysqlTime();
@@ -766,7 +781,7 @@ if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action ==
 
     // die("here!");
 
-        if ( !isset( $titleError) || isset( $titleError	) && $titleError == false && $groupInsertError == false && $startTimeError == false && $stopTimeError == false )
+        if ( ( !isset( $titleError ) || $titleError == false ) && $groupInsertError == false && $startTimeError == false && $stopTimeError == false )
         {
             $resultz = $event->store();
             //exec("secure_clearcache.sh");
@@ -864,7 +879,6 @@ if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action ==
        if (is_array($exceptSelect))
        foreach ($exceptSelect as $ex) 
        {
-			echo 'adding<br>';
 			$t->set_var('recur_exception', "<option>$ex</option>");
 			$t->parse( "recur_exceptions", "recur_exceptions_tpl", true );
        }
@@ -956,8 +970,7 @@ if ( ( isset( $action ) && $action == "Insert" || isset( $action ) && $action ==
 			}
 
 			$t->set_var( "is_all_day", "" );
-			if( $startHour = $dayStarthour && $startMinute == $dayStartMin && $stopHour == $dayStopHour && $stopMinute == $dayStopMin )
-			$t->set_var( "is_all_day", "checked" );
+		if( $startHour == $dayStarthour && $startMinute == $dayStartMin && $stopHour == $dayStopHour && $stopMinute == $dayStopMin )
 
 			$minuteInterval = $ini->variable( "eZGroupEventCalendarMain", "MinutesSelectInterval" );
 			$minute_array    = array();
@@ -1178,7 +1191,11 @@ if ( isset( $action ) && $action == "Edit" && $groupError == false )
         $t->set_var( "start_".$event->recurMonthlyType(), 'checked');
       }
       
-      if ($event->repeatTimes()) 
+      if ($event->repeatForever()) 
+      {
+        $t->set_var( "repeat_forever", 'checked' );
+      } 
+      elseif ($event->repeatTimes()) 
       {
         $t->set_var( "repeat_times", 'checked' );
 	$t->set_var( "num_times", $event->repeatTimes());
@@ -1279,14 +1296,11 @@ if ( isset( $action ) && $action == "Edit" && $groupError == false )
 	$startHour   = addZero( $startTime->hour() );
 	$startMinute = ( addZero( $startTime->minute() ) );
 
-	$stopTime    = $event->duration();
+	$stopTime    = $event->stopTime();
 	$stopHour    = ( addZero( $stopTime->hour() ) );
 	$stopMinute  = ( addZero( $stopTime->minute() ) );
 
 	// $stopMinute = $stopMinute +1 ;
-	print ( "Echo DT:" . $startHour ." / ". $startMinute );
-	print ( "<br />Echo DT:" . $stopHour ." / ". $stopMinute );
-	echo "<hr>";
 
 
 
@@ -1311,14 +1325,12 @@ if ( isset( $action ) && $action == "Edit" && $groupError == false )
 	$t->set_var( "stop_ampm_radio", "" );
 	$allDay = false;
 
-	var_dump( $dayStarthour, $dayStartMin, $dayStopHour, $dayStopMin );
-	echo "<hr> Some: ";
-	var_dump( $startHour, $startMinute );
-	echo "<hr>";
-	var_dump(  $stopHour, $stopMinute );
-	echo "<hr>";
-	//die('hitters');
-	if( $startHour == $dayStarthour && $startMinute == $dayStartMin && $stopHour == ($dayStopHour -1) && $stopMinute == $dayStopMin )
+	// 24:00 caps to 23:00 (eZTime max); all-day = start matches DayStart AND stop >= DayStop
+	$dayStopHourEff = ((int)$dayStopHour >= 24) ? 23 : (int)$dayStopHour;
+	$dayStopMinEff  = ((int)$dayStopHour >= 24) ?  0 : (int)$dayStopMin;
+	$stopAtOrPastEnd = ( (int)$stopHour > $dayStopHourEff ||
+	                     ((int)$stopHour == $dayStopHourEff && (int)$stopMinute >= $dayStopMinEff) );
+	if( (int)$startHour == (int)$dayStarthour && (int)$startMinute == (int)$dayStartMin && $stopAtOrPastEnd )
 	{
 		$allDay = true;
 		$t->set_var( "is_all_day", "checked" );
@@ -1359,13 +1371,9 @@ if ( isset( $action ) && $action == "Edit" && $groupError == false )
 			$t->set_var( "stop_am", "checked" );
 		}
 
-		var_dump( $startHour, $stopHour, $allDay, $timeSelect );
-		echo "<hr>";
 		$startHour = convertToTwelve( $startHour );
 		$stopHour = convertToTwelve( $stopHour );
 
-		var_dump( $startHour, $stopHour, $allDay, $timeSelect );
-		//die( "timeSelect is enabled" );
 		$t->parse( "start_ampm_radio", "start_ampm_radio_tpl" );
 		$t->parse( "stop_ampm_radio", "stop_ampm_radio_tpl" ); 
 	}
@@ -1396,7 +1404,6 @@ if ( isset( $action ) && $action == "Edit" && $groupError == false )
 		$t->parse( "stop_hour_item", "stop_hour_item_tpl", true );
 	}
 
-var_dump($startMinute, $stopMinute);
 	foreach( $minute_array as $minute )
 	{
 		if( $allDay == false && $minute == $startMinute )

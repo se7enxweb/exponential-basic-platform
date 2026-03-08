@@ -159,7 +159,7 @@ onmouseout="return nd();">{all_day_name}</a></td>
 	<!-- BEGIN all_day_delete_check_tpl -->
 		<td width="1%" align="right" style="cursor: pointer; background: url('{www_dir}{index}/kernel/ezgroupeventcalendar/user/templates/standard/images/gcalAllDayEvent.png') repeat;">
 		  <a href="{www_dir}{index}/groupeventcalendar/eventedit/edit/{all_day_id}/">
-          <img name="ezcal{event_id}-red" border="0" src="/images/redigermini.gif" width="12" height="12" align="top" alt="Edit" /></a>
+          <img name="ezcal{event_id}-red" border="0" src="{www_dir}{index}/design/base/images/icons/redigermini.gif" width="12" height="12" align="top" alt="Edit" /></a>
 		</td>
 		<td width="1%" align="right" style="cursor: pointer; background: url('{www_dir}{index}/kernel/ezgroupeventcalendar/user/templates/standard/images/gcalAllDayEvent.png') repeat;">
 		  <input type="checkbox" name="eventArrayID[]" value={all_day_id}>
@@ -239,7 +239,7 @@ onmouseout="return nd();">&nbsp;{event_name}&nbsp;</a>
 		<!-- BEGIN delete_check_tpl -->
 		<td width="1%" align="right" class="gcalEventTopBar">
 		  <a href="{www_dir}{index}/groupeventcalendar/eventedit/edit/{event_id}/">
-          <img name="ezcal{event_id}-red" border="0" src="/images/redigermini.gif" width="12" height="12" alt="Edit" /></a>
+          <img name="ezcal{event_id}-red" border="0" src="{www_dir}{index}/design/base/images/icons/redigermini.gif" width="12" height="12" alt="Edit" /></a>
 		</td>
 		<td width="1%" align="right" class="gcalEventTopBar">
 		  <input type="checkbox" name="eventArrayID[]" value={event_id}>

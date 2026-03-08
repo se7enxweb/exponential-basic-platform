@@ -45,13 +45,13 @@ text-decoration: none;
 a.gcalMonthViewNames
 {
  font-weight: bold;
- font-size: 10px;
+ font-size: 14px;
 }
 a.gcalMonthViewNamesRecurring
 {
  font-weight: bold;
  text-decoration: none;
- font-size: 10px;
+ font-size: 14px;
 }
 
 a.gcalAllDay
@@ -182,7 +182,9 @@ margin-bottom: 2px;
 	border: 1px solid #000;
 	margin: 5px;
 	padding: 2px;
-	width: 400px;
+	width: auto;
+	max-width: 100%;
+	box-sizing: border-box;
 }
 /* End Form Stuff */
 
@@ -310,9 +312,19 @@ color: #0000aa;
 border: 1px solid #C23122;
 padding: 5px;
 }
-a.gcalYearViewReg { font-size: 10px; padding: 0px; border: 0px; text-decoration: none;  }
+a.gcalYearViewReg { font-size: 14px; padding: 0px; border: 0px; text-decoration: none;  }
 
-.gcalYearViewCur
+.gcalYearViewHasEvent
+{
+background-color: #C23122;
+color: #fff;
+border: 1px solid #C23122;
+padding: 5px;
+}
+a.gcalYearViewHasEvent { font-size: 14px; padding: 0px; border: 0px; text-decoration: none; color: #fff; }
+
+.gcalYearViewCur, 
+.gcalYearViewCur:visited
 {
 text-align: center;
 background-color: #CC6666;
@@ -347,11 +359,154 @@ a:hover.gcalYearViewMonthName { color: #CC6666; }
 #gcalRecurringYearly       { display: none; }
 
 
-/* IE Height hack */
+/* IE Height hack (legacy) */
 #gcalDayViewEventTimesHeight { height:60px; }
 * html #gcalDayViewEventTimesHeight { height:58px; }
 
-/* Hellstr�m 24.8.2001 */
+/* -------------------------------------------------------
+   Day View – div-based layout (replaces table layout)
+   ------------------------------------------------------- */
+
+/* Sort-by popup body */
+.gcalDayViewSortByBody { text-align: center; padding: 5px; }
+
+/* Mini-calendar popup: already position:absolute via #gcalDayViewMonthTable */
+.gcalMiniCalSubHeader { text-align: center; }
+
+.gcalMiniCalWeek { display: flex; }
+.gcalMiniCalWeek > div { flex: 1; min-width: 0; }
+
+/* Toolbar: right-aligned row of buttons and switch-spans */
+.gcalDayViewToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 5px;
+  gap: 3px;
+}
+
+/* Day nav bar: prev << | day cells | next >> */
+.gcalDayViewNavBar { display: flex; align-items: stretch; }
+.gcalDayViewNavBar > div { flex: 1; }
+.gcalDayViewNavPrev,
+.gcalDayViewNavNext { flex: 0 0 5% !important; }
+
+/* All-day event row */
+.gcalAllDayRow { display: flex; align-items: stretch; }
+.gcalAllDayLabel {
+  flex: 0 0 5%;
+  font-size: 8px;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gcalAllDayEventBody { flex: 1; }
+.gcalAllDayAction {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+}
+
+/* Time grid: time-labels column + events column */
+.gcalTimeGrid { display: flex; }
+.gcalTimeLabels { width: 5%; display: flex; flex-direction: column; }
+.gcalTimeSlot {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Events area: one gcalTimeRow per slot, each row aligns with the left time label */
+.gcalEventsArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+/* Each slot row: 15px = one 15-minute interval, so 4 rows = 60px = one hour label */
+.gcalTimeRow {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  height: 15px;
+  flex-shrink: 0;
+  overflow: visible;
+  position: relative;
+}
+.gcalFifteenEvent,
+.gcalPublicEvent,
+.gcalPrivateEvent {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+/* Raised / active event card */
+.gcalEventActive {
+  z-index: 500 !important;
+  transform: translateY(-3px) scale(1.018);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.55), 0 0 0 2px rgba(255,255,255,0.55) !important;
+  border-radius: 5px !important;
+  border: 2px solid rgba(255,255,255,0.7) !important;
+}
+.gcalEventActive .gcalEventFooter {
+  height: auto;
+  font-size: 10px;
+  padding: 2px 4px;
+  background: rgba(0,0,0,0.5);
+  white-space: normal;
+}
+.gcalEventActive .gcalDayEventText {
+  max-height: 320px;
+  overflow-y: auto !important;
+  background: rgba(0,0,0,0.12);
+  padding: 3px 4px;
+}
+.gcalEventActive .gcalEventInner {
+  height: auto;
+  flex-wrap: wrap;
+}
+.gcalEventActive .gcalEventName {
+  white-space: normal;
+  height: auto;
+}
+.gcalNoEvent { flex: 1; min-width: 0; }
+.gcalFifteenEvent { height: 15px; overflow: hidden; }
+
+/* Event inner header bar */
+.gcalEventInner { display: flex; align-items: flex-start; height: 15px; }
+.gcalEventName  { flex: 1; overflow: hidden; white-space: nowrap; height: 15px; }
+.gcalEventActions { flex: 0 0 auto; }
+
+/* Event footer: name pinned to bottom of the event block */
+.gcalEventFooter {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 14px;
+  line-height: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: rgba(0,0,0,0.25);
+  padding: 0 3px;
+  font-size: 9px;
+  font-weight: bold;
+  color: #fff;
+  pointer-events: none;
+}
+
+/* Hellstr�m 24.8.2001 */
 /* The main calendar widget.  DIV containing a table. */
 
 div.calendar { position: absolute; }
@@ -582,4 +737,174 @@ div.calendar { position: absolute; }
   border-color: #f00;
   background-color: #000;
   color: #0f0;
+}
+
+
+/* ── Weekview div grid layout ────────────────────────────────── */
+.gcalWeekToolbar {
+  text-align: right;
+  padding: 5px;
+}
+
+.weekView {
+  border: 1px solid gray;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.gcalWeekDayHeaders {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.gcalWeekDayHeader {
+  text-align: center;
+  padding: 4px 2px;
+  font-weight: bold;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+.gcalWeekRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.gcalWeekDay {
+  min-height: 100px;
+  border: #cc6666 solid 1px;
+  box-sizing: border-box;
+  padding: 2px;
+  vertical-align: top;
+}
+
+.gcalWeekDayTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.gcalWeekAppt {
+  padding-bottom: 4px;
+  font-size: 11px;
+}
+
+.gcalWeekApptTime {
+  font-size: 10px;
+  color: #555;
+}
+
+/* Sort-by popup: was a positioned table, now a positioned div */
+#gcalDayViewSortBy {
+  background: #fff;
+  min-width: 180px;
+}
+
+@media (max-width: 640px) {
+  .gcalWeekDayHeaders,
+  .gcalWeekRow {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+  .gcalWeekDay {
+    min-height: 60px;
+  }
+  .gcalWeekDayHeader {
+    font-size: 10px;
+    padding: 2px 1px;
+  }
+}
+
+/* -- Weekview div grid layout -- */
+.gcalWeekToolbar { text-align: right; padding: 5px; }
+.weekView { border: 1px solid gray; width: 100%; box-sizing: border-box; }
+.gcalWeekDayHeaders { display: grid; grid-template-columns: repeat(7, 1fr); }
+.gcalWeekDayHeader { text-align: center; padding: 4px 2px; font-weight: bold; border: 1px solid #ddd; box-sizing: border-box; }
+.gcalWeekRow { display: grid; grid-template-columns: repeat(7, 1fr); }
+.gcalWeekDay { min-height: 100px; border: #cc6666 solid 1px; box-sizing: border-box; padding: 2px; }
+.gcalWeekDayTop { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+.gcalWeekAppt { padding-bottom: 4px; font-size: 11px; }
+.gcalWeekApptTime { font-size: 10px; color: #555; }
+@media (max-width: 640px) {
+  .gcalWeekDayHeaders, .gcalWeekRow { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .gcalWeekDay { min-height: 60px; }
+  .gcalWeekDayHeader { font-size: 0; padding: 2px 1px; }
+  .gcalWeekDayHeader::before { content: attr(data-short); font-size: 10px; font-weight: bold; }
+}
+
+/* -- Monthview div grid layout -- */
+.gcalMonthToolbar { text-align: right; padding: 5px; }
+.monthView { border: 1px solid gray; width: 100%; box-sizing: border-box; }
+.gcalMonthDayHeaders { display: grid; grid-template-columns: repeat(7, 1fr); }
+.gcalMonthDayHeader { text-align: center; padding: 4px 2px; font-weight: bold; font-size: 18px; border: 1px solid #ddd; box-sizing: border-box; }
+.gcalMonthWeekRow { display: flex; width: 100%; overflow: hidden; }
+.gcalMonthDay { flex: 0 0 40px; min-height: 100px; border: #cc6666 solid 1px; box-sizing: border-box; padding: 2px; font-size: 14px; overflow: hidden; }
+.gcalMonthDay:has(.gcalMonthAppt) { flex: 1 1 0; min-width: 0; overflow: hidden; }
+.bgdark.gcalMonthDay { flex: 0 0 22px; opacity: 0.6; }
+/* Rows with zero events: equal-width normal calendar layout */
+.gcalMonthWeekRow:not(:has(.gcalMonthAppt)) .gcalMonthDay { flex: 1 1 0; min-width: 0; overflow: hidden; }
+.gcalMonthDayTop { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+.gcalMonthAppt { padding-bottom: 3px; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 640px) {
+  .gcalMonthDayHeaders, .gcalMonthWeekRow { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .gcalMonthDay { min-height: 60px; flex: 0 0 28px; overflow: hidden; }
+  .gcalMonthDay:has(.gcalMonthAppt) { flex: 1 1 0; min-width: 0; overflow: hidden; }
+  .bgdark.gcalMonthDay { flex: 0 0 14px; }
+  .gcalMonthDayHeader { font-size: 0; padding: 2px 1px; }
+  .gcalMonthDayHeader::before { content: attr(data-short); font-size: 10px; font-weight: bold; }
+  .gcalMonthAppt { font-size: 9px; }
+  .gcalTimeSelectTable, .gcalTimeSelectTable tr, .gcalTimeSelectTable td { display: block; width: 100%; box-sizing: border-box; }
+  .gcalTimeSelectTable td:empty { display: none; }
+  .gcalTimeSelectTable td { padding-bottom: 6px; }
+}
+
+/* -- Event edit form: prevent overflow -- */
+.gcalEventEditMain { max-width: 100%; box-sizing: border-box; }
+.gcalWrapFrm { max-width: 100%; box-sizing: border-box; overflow-x: hidden; }
+.gcalTextFrm, textarea.gcalTextFrm { width: 100% !important; max-width: 100%; box-sizing: border-box; }
+.gcalGroupBoxFrm table { max-width: 100%; box-sizing: border-box; }
+.gcalGroupBoxFrm select, .gcalTimeSelectTable select { max-width: 100%; }
+@media (max-width: 640px) {
+  .gcalGroupBoxFrm table { width: 100% !important; }
+  .gcalGroupBoxFrm table td { display: block; width: 100% !important; box-sizing: border-box; }
+  .gcalGroupBoxFrm div[style*="margin-left"] { margin-left: 0 !important; }
+  .gcalCalTextFrm { max-width: calc(100% - 40px); box-sizing: border-box; }
+}
+
+/* -- Yearview div grid layout -- */
+.gcalYearToolbar { text-align: right; padding: 5px; }
+.gcalYearOuter { border: 1px solid gray; width: 100%; box-sizing: border-box; }
+.gcalYearMonthGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; padding: 14px; box-sizing: border-box; }
+.gcalYearMonth { box-sizing: border-box; }
+.gcalYearMiniCal { width: 100%; }
+.gcalYearWeekRow { display: grid; grid-template-columns: repeat(7, 1fr); }
+.gcalYearDayCell { text-align: center; padding: 3px !important; font-size: 18px; box-sizing: border-box; }
+.gcalYearDayCell a { font-size: 18px; display: block; text-align: center; }
+@media (max-width: 640px) {
+  .gcalYearMonthGrid { grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 6px; }
+}
+@media (max-width: 380px) {
+  .gcalYearMonthGrid { grid-template-columns: 1fr; }
+}
+
+/* -- Calendar views: full-width desktop layout -- */
+@media screen and (min-width: 641px) {
+  .menu-left  { width: 0 !important; min-width: 0 !important; overflow: hidden; flex: 0 0 0 !important; }
+  .menu-right { width: 0 !important; min-width: 0 !important; overflow: hidden; flex: 0 0 0 !important; }
+  #content    { flex: 1 1 auto !important; width: 100% !important; float: none !important; min-width: 0; }
+  #calendarWrap { margin: 10px 16px; }
+  .gcalYearMonthGrid { grid-template-columns: repeat(3, 1fr); }
+}
+@media screen and (min-width: 1200px) {
+  .gcalYearMonthGrid { grid-template-columns: repeat(4, 1fr); }
+  .gcalMonthDay { min-height: 120px; }
+  .bgdark.gcalMonthDay { flex: 0 0 28px; }
+  .gcalWeekDay  { min-height: 140px; }
+}
+
+/* -- Eventview toolbar: flex wrap for mobile -- */
+.gcalEventViewToolbar { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; padding: 5px; align-items: center; }
+.gcalEventViewToolbar form { display: inline-flex; gap: 4px; align-items: center; margin: 0; padding: 0; }
+@media (max-width: 640px) {
+  .gcalEventViewToolbar { justify-content: flex-start; }
 }

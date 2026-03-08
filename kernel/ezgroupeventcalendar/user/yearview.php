@@ -123,6 +123,36 @@ if ( $build == true )
     $t->set_var( "prev_year_number", $year - 1 );
     $t->set_var( "next_year_number", $year + 1 );
 
+    // ── Pre-fetch all event days for the year so we can highlight them ──────────
+    // Two queries only, regardless of year size:
+    //  1. Distinct YYYYMMDD stamps for non-recurring events.
+    //  2. Raw rows for recurring events still active in the year;
+    //     filterRecurring() (from ezgroupevent.php) resolves each day in the loop.
+    $_evHelper = new eZGroupEvent();
+    $_evHelper->dbInit();
+    $_db = $_evHelper->Database;
+    $yr = (int) $year;
+
+    $_stampRows = [];
+    $_db->array_query( $_stampRows,
+        "SELECT DISTINCT substr(Date,1,8) as stamp
+         FROM eZGroupEventCalendar_Event
+         WHERE IsPrivate='0' AND IsRecurring='0' AND Date LIKE '{$yr}%'" );
+    $eventDays = [];
+    foreach ( $_stampRows as $_r )
+        $eventDays[$_r['stamp']] = true;
+    unset( $_stampRows, $_evHelper );
+
+    $activeRecurEvents = [];
+    $_db->array_query( $activeRecurEvents,
+        "SELECT ID, IsRecurring, RecurType, RecurFreq, RepeatTimes, RecurDay,
+                RecurFinishDate, RecurMonthlyType, RecurMonthlyTypeInfo, RecurExceptions, Date
+         FROM eZGroupEventCalendar_Event
+         WHERE IsPrivate='0' AND IsRecurring='1'
+           AND Date       <= '{$yr}1231235959'
+           AND RecurFinishDate >= '{$yr}0101000000'" );
+    // ─────────────────────────────────────────────────────────────────────────────
+
     $i=0;
     for ( $month=1; $month<13; $month++ )
     {
@@ -166,7 +196,29 @@ if ( $build == true )
 
                     $t->set_var( "td_class", "gcalYearViewReg" );
                     if ( $date->equals( $today ) )
+                    {
                         $t->set_var( "td_class", "gcalYearViewCur" );
+                    }
+                    else
+                    {
+                        $_stamp = $yr
+                               . eZDateTime::addZero( $month )
+                               . eZDateTime::addZero( $currentDay );
+                        $_hasEvent = isset( $eventDays[$_stamp] );
+                        if ( !$_hasEvent )
+                        {
+                            foreach ( $activeRecurEvents as $_row )
+                            {
+                                if ( filterRecurring( $_row, $date ) )
+                                {
+                                    $_hasEvent = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if ( $_hasEvent )
+                            $t->set_var( "td_class", "gcalYearViewHasEvent" );
+                    }
 
                     $t->set_var( "day_number", $currentDay );
                     $t->parse( "day", "day_tpl", true );

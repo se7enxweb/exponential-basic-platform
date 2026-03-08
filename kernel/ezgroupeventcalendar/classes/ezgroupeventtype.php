@@ -248,7 +248,7 @@ class eZGroupEventType
         {
             array_push( $tree, array( $return_array[] = new eZGroupEventType( $EventType->id() ), $level ) );
 
-            if ( $EventType != 0 )
+            if ( $EventType->id() != 0 )
             {
                 $tree = array_merge( $tree, $this->getTree( $EventType->id(), $level ) );
             }

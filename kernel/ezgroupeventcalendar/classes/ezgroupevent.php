@@ -129,37 +129,37 @@ class eZGroupEvent
 		$Name        = addslashes( $this->Name );
 		$Description = addslashes( $this->Description );
 
+        // RecurExceptions is stored as a colon-delimited string; normalise in
+        // case it arrives as an array (e.g. from a multi-select form field).
+        $recurExceptions = is_array( $this->RecurExceptions )
+            ? implode( ':', $this->RecurExceptions )
+            : (string) ( $this->RecurExceptions ?? '' );
+
         if ( !isset( $this->ID ) )
         {
-            $query = "INSERT INTO eZGroupEventCalendar_Event SET
-                             Name='$Name',
-                             Description='$Description',
-                             Date='$this->Date',
-                             Duration='$this->Duration',
-                             Url='$this->Url',
-                             Status='$this->Status',
-                             Location='$this->Location',
-                             EventAlarmNotice='$this->EventAlarmNotice',
-                             EventCategoryID='$this->EventCategoryID',
-                             IsRecurring='$this->IsRecurring',
-                             RecurExceptions='$this->RecurExceptions',
-                             RecurDay='$this->RecurDay',
-                             RecurMonthlyType='$this->RecurMonthlyType',
-                             RecurMonthlyTypeInfo='$this->RecurMonthlyTypeInfo',
-                             RecurType='$this->RecurType',
-                             RecurFreq='$this->RecurFreq',
-                             RepeatForever='$this->RepeatForever',
-                             RepeatTimes='$this->RepeatTimes',
-                             RepeatUntilDate='$this->RepeatUntilDate',
-                             RecurFinishDate='$this->RecurFinishDate',                            
-                             EMailNotice='$this->EMailNotice',
-                             IsPrivate='$this->IsPrivate',
-                             Priority='$this->Priority',
-                             EventTypeID='$this->EventTypeID',
- 			                       GroupID='$this->GroupID'";
+            // ID is NOT NULL with no AUTOINCREMENT — pre-generate via nextID().
+            $this->ID = $this->Database->nextID( 'eZGroupEventCalendar_Event' );
+
+            // Standard SQL INSERT (SQLite does not support MySQL's INSERT ... SET syntax)
+            $query = "INSERT INTO eZGroupEventCalendar_Event
+                             (ID, Name, Description, Date, Duration, Url, Status, Location,
+                              EventAlarmNotice, EventCategoryID, IsRecurring, RecurExceptions,
+                              RecurDay, RecurMonthlyType, RecurMonthlyTypeInfo, RecurType,
+                              RecurFreq, RepeatForever, RepeatTimes, RepeatUntilDate,
+                              RecurFinishDate, EMailNotice, IsPrivate, Priority, EventTypeID, GroupID)
+                      VALUES
+                             ('$this->ID', '$Name', '$Description', '$this->Date', '$this->Duration',
+                              '$this->Url', '$this->Status', '$this->Location',
+                              '$this->EventAlarmNotice', '$this->EventCategoryID',
+                              '$this->IsRecurring', '$recurExceptions',
+                              '$this->RecurDay', '$this->RecurMonthlyType',
+                              '$this->RecurMonthlyTypeInfo', '$this->RecurType',
+                              '$this->RecurFreq', '$this->RepeatForever', '$this->RepeatTimes',
+                              '$this->RepeatUntilDate', '$this->RecurFinishDate',
+                              '$this->EMailNotice', '$this->IsPrivate', '$this->Priority',
+                              '$this->EventTypeID', '$this->GroupID')";
 
 	          $this->Database->query( $query );
-            $this->ID = $this->Database->insertID();
         }
         else
         {
@@ -174,7 +174,7 @@ class eZGroupEvent
                              EventAlarmNotice='$this->EventAlarmNotice',
                              EventCategoryID='$this->EventCategoryID',
                              IsRecurring='$this->IsRecurring',
-                             RecurExceptions='$this->RecurExceptions',
+                             RecurExceptions='$recurExceptions',
                              RecurDay='$this->RecurDay',
                              RecurMonthlyType='$this->RecurMonthlyType',
                              RecurMonthlyTypeInfo='$this->RecurMonthlyTypeInfo',
@@ -351,13 +351,19 @@ class eZGroupEvent
 				$i = 0;
 				$groupTree = $group->getTree( $groupID );
 
-				$selectGroups = "GroupId='$groupID'";
+        if( $groupID !== null )
+    			$selectGroups = "GroupId='$groupID'";
+        else
+          $selectGroups = "";
 
 				foreach( $groupTree as $tree )
 				{
 					$i++;
-					$groupID = $tree[0]->id();
-					$selectGroups .= " OR GroupID='$groupID'";
+          if( !$tree[0] )
+          {
+    					$groupID = $tree[0]->id();
+		    			$selectGroups .= " OR GroupID='$groupID'";
+          }
 				}
 
 				$selectGroups = "( $selectGroups )";
@@ -365,8 +371,8 @@ class eZGroupEvent
 			else
 			{
 			        // Add Support for Events in All Groups
-			        $selectGroups = "GroupID='$groupID'";
-			        // $selectGroups = "GroupID='$groupID' OR GroupID=0";
+			        // $selectGroups = "GroupID='$groupID'";
+			        $selectGroups = "GroupID='$groupID' OR GroupID=0";
 			}
 
 			if ( $showPrivate == false )
@@ -383,7 +389,7 @@ class eZGroupEvent
 				WHERE ( Date LIKE '$stamp%' AND $selectGroups )
                 OR ( IsRecurring='1' AND RecurFinishDate>='$longstamp' AND Date<='$longstamp' AND $selectGroups)
                 ORDER BY Date ASC";
-                echo $query;
+                // echo $query;
 				$this->Database->array_query( $event_array,
 				$query );
 			}
@@ -863,13 +869,12 @@ class eZGroupEvent
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
 
+       // Date is stored as YYYYMMDDHHMMSS — use setMySQLTimeStamp, not setMySQLDateTime.
        $date = new eZDateTime();
-       $date->setMySQLDateTime( date("Y-m-d H:i:s", $this->Date ) );
+       $date->setMySQLTimeStamp( $this->Date );
 
        $time = new eZTime();
-       $time->setHour( $date->hour() );
-       $time->setMinute( $date->minute() );
-       $time->setSecond( $date->second() );
+       $time->setSecondsElapsedHMS( $date->hour(), $date->minute(), $date->second() );
 
        return $time;
     }
@@ -882,14 +887,18 @@ class eZGroupEvent
         if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
 
-        $date = new eZDateTime();
+        // Parse start from YYYYMMDDHHMMSS, add duration seconds to get stop time.
+        $startDate = new eZDateTime();
+        $startDate->setMySQLTimeStamp( $this->Date );
+
+        $startSeconds    = ( $startDate->hour() * 3600 ) + ( $startDate->minute() * 60 ) + $startDate->second();
+        $durationSeconds = $this->duration()->secondsElapsed();
+        // % 86400 normalises midnight (86400) → 0, preventing infinite loop
+        // in dayview's add() which also wraps via % 86400
+        $stopSeconds     = ( $startSeconds + $durationSeconds ) % 86400;
+
         $time = new eZTime();
-
-        $date->setMySQLDateTime( date("Y-m-d H:i:s", $this->Date ) );
-
-        $time->setHour( $this->duration()->secondsElapsed() / 3600 );
-        $time->setMinute( $date->minute() );
-        $time->setSecond( $this->duration()->secondsElapsed() );
+        $time->setSecondsElapsed( $stopSeconds );
 
         return $time;
     }
@@ -1802,8 +1811,11 @@ class eZGroupEvent
        if ( $this->State_ == "Dirty" )
             $this->get( $this->ID );
        // straight property set
-       $this->RepeatForever = true;
+       $this->RepeatForever = 1;
        $this->RecurFinishDate = $stamp;
+       // clear any stale conflicting fields
+       $this->RepeatTimes = 0;
+       $this->RepeatUntilDate = '00000000000000';
     }
     /*!
       Calculates the finish date based on the number of times, recurrance frequency,
@@ -1927,6 +1939,9 @@ class eZGroupEvent
        }
        $this->RepeatTimes = $not;
        $this->RecurFinishDate = $stamp;
+       // clear conflicting fields
+       $this->RepeatForever = 0;
+       $this->RepeatUntilDate = '00000000000000';
     }
     /*!
      Returns a bool toggle to add in filtering events.
@@ -1956,8 +1971,11 @@ class eZGroupEvent
        // a timestamp
        $stamp = str_replace('-', '', $UntilDate);
        $stamp .= '235959';
-       $this->RepeatUntilDate = $stamp; //not necessary?
+       $this->RepeatUntilDate = $stamp;
        $this->RecurFinishDate = $stamp;
+       // clear conflicting fields
+       $this->RepeatForever = 0;
+       $this->RepeatTimes = 0;
     }
     
     /*!
@@ -2033,6 +2051,10 @@ class eZGroupEvent
 }
 function filterRecurring($event_array, &$date)
 {
+// Non-recurring events always pass through the filter.
+if ( !$event_array["IsRecurring"] )
+    return true;
+
 if ($event_array["IsRecurring"])
 {
                    /*
@@ -2091,6 +2113,9 @@ if ($event_array["IsRecurring"])
 				  // first we do a check to see if recurFreq is more than one, because if
 				  // it is, we will need to run the dateDiff function which will help decide
 				  // if we need to do further checks or just remove the key from the array
+				  // Initialize $arrDiff so it is always defined; the freq checks inside each
+				  // case are guarded by "if ($arrDiff[...])" so zero values are safe.
+				  $arrDiff = array('days' => 0, 'weeks' => 0, 'months' => 0, 'years' => 0);
 				    if ($rFreq > 1) {
 				     // so let's create a couple arrays that the dateDiff function can read
 				     $firstDate = array('year' => $rDate->year(), 'month' => $rDate->month(), 'day' => $rDate->day());

@@ -1,4 +1,5 @@
 <?php
+
 //
 // $Id: dayview.php,v 1.38 2001/03/12 13:55:47 fh Exp $
 //
@@ -357,11 +358,12 @@ if (
     )
 ) {
     $hour = $stopArray[2];
+    $min  = $stopArray[3];
+    // 24:00 configured end-of-day: cap to 23:00 (eZTime max);
+    // all-day events are stored with Duration=23:00:00 and match via formula
+    if ( (int)$hour >= 24 ) { $hour = 23; $min = 0; }
     $stopTime->setHour($hour);
-
-    $min = $stopArray[3];
     $stopTime->setMinute($min);
-
     $stopTime->setSecond(0);
 }
 
@@ -439,12 +441,14 @@ for ($i = 0; $i < sizeof($events); $i++) {
         $startTime = $startTime->subtract($interval);
     }
 
-    if ($lastInterval->isGreater($appStopTime)) {
+    // midnight stop (secondsElapsed=0 after % 86400 normalisation) means end-of-day;
+    // extend grid to 23:59 directly — do NOT run add() loop which wraps and never exits
+    if ($appStopTime->secondsElapsed() == 0 || $lastInterval->isGreater($appStopTime)) {
         $stopTime = new eZTime(23, 59);
-    }
-
-    while ($stopTime->isGreater($appStopTime)) {
-        $stopTime = $stopTime->add($interval);
+    } else {
+        while ($stopTime->isGreater($appStopTime)) {
+            $stopTime = $stopTime->add($interval);
+        }
     }
 }
 
@@ -738,25 +742,14 @@ while ($tmpTime->isGreater($stopTime, false) == true) {
                 $eventDivHeight = getEventHeight($event);
                 $t->set_var("event_div_height", $eventDivHeight);
                 $permission = new eZGroupEditor();
-                // This should not be but was needed to display the date correctly in the overlib ui.
-                $evStop = $event->duration();
-                $evStart = $event->dateTime();
-                $evStartTime =
-                    $evStart->hour() . ":" . addZero($evStart->minute());
-                $evStopTime =
-                    $evStop->hour() . ":" . addZero($evStop->minute());
+                $evStart = $event->startTime();
+                $evStop  = $event->stopTime();
+                $evStartTime = addZero($evStart->hour()) . ":" . addZero($evStart->minute());
+                $evStopTime  = addZero($evStop->hour())  . ":" . addZero($evStop->minute());
                 $t->set_var("event_start", $evStartTime);
                 $t->set_var("event_stop", $evStopTime);
-                $evStopStr = $evStop->hour() . addZero($evStop->minute());
-                $evStartStr = $evStart->hour() . addZero($evStart->minute());
-                // fix for 15 min stop times that end on another hour
-                if (substr($evStopStr, 1, 2) == "00") {
-                    $evStopStr = substr($evStopStr, 0, 1) - 1 . "60";
-                }
-                settype($evStopStr, "integer");
-                settype($evStartStr, "integer");
-                $res = $evStopStr - $evStartStr;
-                if ($evStopStr - $evStartStr == 15) {
+                $durMinutes = $event->duration()->secondsElapsed() / 60;
+                if ($durMinutes == 15) {
                     $t->set_var("public_event", "");
 
                     if ($event_editor == true) {
@@ -823,11 +816,14 @@ while ($tmpTime->isGreater($stopTime, false) == true) {
         $t->set_var("td_class", "bgdark");
     }
     $i++;
-    if ($i > 600) {
-        die('Error: The application has halted to prevent a server crash due to the complexity of the events on this day. 
-    Contact the site administrator for more details.');
-    }
     $t->parse("time_table", "time_table_tpl", true);
+
+    // Advance time; stop if we wrap past midnight to avoid infinite loop
+    $prevSec = $tmpTime->secondsElapsed();
+    $tmpTime = $tmpTime->add($interval);
+    if ($tmpTime->secondsElapsed() < $prevSec) {
+        break; // wrapped around midnight — end of renderable day
+    }
 }
 
 // group list
@@ -990,11 +986,9 @@ $t->storeCache("output", "day_view_page_tpl", true);
 // returns the number of rows an event covers.
 function eventRowSpan(&$event)
 {
-    //  &$startTime, &$interval )
-    $ret = 0;
     $dur = $event->duration();
     $min = $dur->secondsElapsed() / 60;
-    $ret = $min / 15;
+    $ret = max(1, (int)($min / 15));
     return $ret;
     /*    $ret = 0;
     $tmpTime = new eZTime();

@@ -7,7 +7,7 @@
 ?>
    <style type="text/css">
     /* Add this line for eZ Group Event Calendar : Module Style CSS */
-    @import url(/kernel/ezgroupeventcalendar/user/templates/standard/style/style.css);
+    @import url(/kernel/ezgroupeventcalendar/user/templates/ecommerce/style/style.css);
    </style>
    <script type="text/javascript" src="/kernel/ezgroupeventcalendar/user/templates/standard/js/dom-drag.js"></script>
    <script type="text/javascript" src="/kernel/ezgroupeventcalendar/user/templates/standard/overlib/overlib.js"></script>

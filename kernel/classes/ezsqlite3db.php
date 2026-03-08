@@ -150,7 +150,7 @@ class eZSQLite3DB
             // Set busy timeout on the connection object directly — this takes effect
             // immediately, before any PRAGMA statements, so journal_mode=wal and
             // other PRAGMAs won't fail with SQLITE_BUSY under concurrent load.
-            $connection->busyTimeout( 5000 );
+            $connection->busyTimeout( 30000 );
             $connection->createFunction( 'md5', array( $this, 'md5UDF' ) );
             $this->IsConnected = true;
         }
@@ -180,30 +180,21 @@ class eZSQLite3DB
         $GLOBALS['_db_query_count'] = ( $GLOBALS['_db_query_count'] ?? 0 ) + 1;
         $_t = hrtime( true );
 
-        if ( $debug == true )
-        {
-            /*
-            echo "Executing SQL: $sql<hr>";
-            
-            // include_once( "kernel/classes/ezbenchmark.php" );
-            
-            $bench = new eZBenchmark();
-            $bench->start();
-            */
-            $result = $this->Database->exec( $sql );
-            /*
-            $bench->stop();
-            if ( $bench->elapsed() > 0.01 )
-            {
-                $GLOBALS["DDD"] .= $sql . "<br>";
-                $GLOBALS["DDD"] .= $bench->printResults( true ) . "<br>";
-            }
-            */
-        }
-        else
-        {
-            $result = $this->Database->exec( $sql );
-        }
+        // Use @ to suppress E_WARNING from SQLite3::exec() when the database is
+        // locked — the extension emits the warning before returning false, which
+        // would print raw text into the HTML response.  We handle the error below.
+        // For SQLITE_BUSY (5) / SQLITE_LOCKED (6) we also do a short PHP-level
+        // retry loop as a safety net beyond busyTimeout().
+        $maxRetries = 5;
+        $attempt    = 0;
+        do {
+            $result   = @$this->Database->exec( $sql );
+            $errCode  = $result === false ? $this->Database->lastErrorCode() : 0;
+            $isBusy   = ( $errCode === 5 || $errCode === 6 );  // SQLITE_BUSY / SQLITE_LOCKED
+            if ( $isBusy && $attempt < $maxRetries )
+                usleep( 100000 * ( $attempt + 1 ) );  // 100 ms, 200 ms, 300 ms …
+            $attempt++;
+        } while ( $isBusy && $attempt <= $maxRetries );
 
         $GLOBALS['_db_query_ms'] = ( $GLOBALS['_db_query_ms'] ?? 0.0 ) + ( hrtime( true ) - $_t ) / 1e6;
 
@@ -459,6 +450,11 @@ class eZSQLite3DB
 
       Remeber to lock the table before using this function and inserting the value.
     */
+    function insertID()
+    {
+        return $this->Database->lastInsertRowID();
+    }
+
     function nextID( $table, $field="ID" )
     {
         $results = array();

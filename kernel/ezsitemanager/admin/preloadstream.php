@@ -28,8 +28,8 @@ while ( ob_get_level() > 0 )
 if ( function_exists( 'ob_implicit_flush' ) )
     ob_implicit_flush( true );
 
-set_time_limit( 300 );
-ignore_user_abort( false );
+set_time_limit( 0 );           // spider can take a while
+ignore_user_abort( true );     // keep running if browser disconnects mid-stream
 
 // ── 3. SSE response headers ───────────────────────────────────────────────────
 header( 'Content-Type: text/event-stream; charset=utf-8' );
@@ -136,12 +136,26 @@ if ( $handle === false )
 }
 
 // ── 8. Stream output line-by-line ────────────────────────────────────────────
+// A 5-second read timeout means fgets() returns every 5 s even when grok is
+// silently blocked waiting for curl.  We check timed_out and emit a keep-alive
+// SSE comment so the browser's EventSource never drops the connection.
+stream_set_timeout( $handle, 5 );
+
 $lineCount = 0;
-$lastFlush = microtime( true );
 
 while ( !feof( $handle ) )
 {
-    $raw = fgets( $handle, 8192 );
+    $raw  = fgets( $handle, 8192 );
+    $info = stream_get_meta_data( $handle );
+
+    if ( $info['timed_out'] )
+    {
+        // grok is busy (e.g. curl waiting for a slow page) — keep SSE alive
+        echo ": heartbeat " . date( 'H:i:s' ) . "\n\n";
+        flush();
+        continue;
+    }
+
     if ( $raw === false )
         break;
 
@@ -151,15 +165,6 @@ while ( !feof( $handle ) )
 
     sse( $line );
     $lineCount++;
-
-    // Heartbeat every 5s if grok is slow/silent (keeps connection alive)
-    $now = microtime( true );
-    if ( $now - $lastFlush > 5.0 )
-    {
-        echo ": heartbeat " . date( 'H:i:s' ) . "\n\n";
-        flush();
-        $lastFlush = $now;
-    }
 }
 
 $exitCode = pclose( $handle );
@@ -175,90 +180,3 @@ eZExecution::setCleanExit();
 exit();
 
 
-// ── 1. Extra permission guard (defense-in-depth) ─────────────────────────────
-if ( !isset( $user ) || eZPermission::checkPermission( $user, "eZSiteManager", "ModuleEdit" ) == false )
-{
-    while ( ob_get_level() > 0 ) ob_end_clean();
-    http_response_code( 403 );
-    header( 'Content-Type: text/event-stream; charset=utf-8' );
-    echo "data: [403] Forbidden\n\ndata: __DONE__\n\n";
-    flush();
-    eZExecution::setCleanExit();
-    exit();
-}
-
-// ── 2. Kill every buffering layer (the admin kernel already buffered the    ───
-//       header/menuboxes above us — discard all of it, we own this response). ─
-while ( ob_get_level() > 0 )
-    ob_end_clean();
-ob_implicit_flush( true );
-set_time_limit( 0 );           // spider can take a while
-ignore_user_abort( false );    // stop streaming if client disconnects
-
-// ── 3. SSE headers ───────────────────────────────────────────────────────────
-header( 'Content-Type: text/event-stream; charset=utf-8' );
-header( 'Cache-Control: no-cache, no-store, must-revalidate' );
-header( 'Pragma: no-cache' );
-header( 'Expires: 0' );
-header( 'X-Accel-Buffering: no' );   // nginx: disable proxy buffering
-header( 'Connection: keep-alive' );
-
-// ── 4. Locate grok.php ───────────────────────────────────────────────────────
-// __DIR__ inside an included file == directory of *this* file:
-//   kernel/ezsitemanager/admin  →  3 dirname() calls up == site root
-$siteRoot = dirname( dirname( dirname( __DIR__ ) ) );
-$grok     = $siteRoot . '/bin/php/grok.php';
-
-if ( !file_exists( $grok ) )
-{
-    echo "data: [ERROR] grok.php not found: {$grok}\n\n";
-    echo "data: __DONE__\n\n";
-    flush();
-    eZExecution::setCleanExit();
-    exit();
-}
-
-// ── 5. Padding flush — fills Apache/fcgid send-buffer so first bytes arrive ──
-//       before the whole output is produced (avoids blank page while waiting).
-echo ': padding ' . str_repeat( ' ', 2048 ) . "\n\n";
-flush();
-
-// ── 6. Spawn grok preload and stream its stdout/stderr ───────────────────────
-$cmd    = PHP_BINARY . ' ' . escapeshellarg( $grok ) . ' preload 2>&1';
-$handle = popen( $cmd, 'r' );
-
-if ( $handle === false )
-{
-    echo "data: [ERROR] popen() failed — could not start grok preload\n\n";
-    echo "data: __DONE__\n\n";
-    flush();
-    eZExecution::setCleanExit();
-    exit();
-}
-
-while ( !feof( $handle ) )
-{
-    $line = fgets( $handle, 4096 );
-    if ( $line === false )
-        break;
-
-    // rtrim strips \r\n — SSE data fields must not contain bare newlines
-    $line = rtrim( $line, "\r\n" );
-    if ( $line === '' )
-        continue;
-
-    echo 'data: ' . $line . "\n\n";
-    flush();
-}
-
-$exitCode = pclose( $handle );
-
-echo "data: \n\n";
-echo "data: \xe2\x94\x80\xe2\x94\x80 Finished (exit: {$exitCode}) \xe2\x94\x80\xe2\x94\x80\n\n";
-echo "data: __DONE__\n\n";
-flush();
-
-eZExecution::setCleanExit();
-exit();
-
-?>
