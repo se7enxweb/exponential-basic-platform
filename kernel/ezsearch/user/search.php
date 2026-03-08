@@ -71,6 +71,9 @@ foreach ( $moduleArray as $module )
     {
         include( "kernel/$module/user/searchsupplier.php" );
 
+        if ( !isset( $searchResult ) )
+            $searchResult = [];
+
         $t->set_var( "search_item", "" );
         $t->set_var( "module_name", $moduleName );
         $i = 0;

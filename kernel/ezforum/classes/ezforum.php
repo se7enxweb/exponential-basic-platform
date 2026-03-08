@@ -321,7 +321,7 @@ class eZForum
                             AND
                             ( eZForum_Message.ID=eZForum_MessageWordLink.MessageID
                             AND eZForum_MessageWordLink.WordID=eZForum_Word.ID )
-                            eZForum_Message.ForumID=eZForum_Forum.ID AND
+                            AND eZForum_Message.ForumID=eZForum_Forum.ID AND
                             ($groupString)
                             ORDER BY eZForum_MessageWordLink.Frequency";
 

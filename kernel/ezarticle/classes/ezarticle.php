@@ -2064,6 +2064,10 @@ class eZArticle
         else
             $excludeFromSearchSQL = " AND Category.ExcludeFromSearch = '0' ";
 
+        // Table fragments for non-MySQL (SQLite) path
+        $catDefTable = "eZArticle_ArticleCategoryDefinition,";
+        $catTable    = "eZArticle_Category AS Category,";
+
         // special search for MySQL, mimic subselects ;)
         if ( $db->isA() == "mysql" )
         {
@@ -2148,7 +2152,8 @@ class eZArticle
                       $catTable
                       $typeTables
                       $photoTables
-                      eZArticle_ArticlePermission
+                      eZArticle_ArticlePermission AS Permission,
+                      eZArticle_CategoryPermission AS CategoryPermission
                  WHERE
                        $searchSQL
                        $dateSQL
@@ -2159,14 +2164,15 @@ class eZArticle
                        AND
                        ( eZArticle_Article.ID=eZArticle_ArticleWordLink.ArticleID
                          AND eZArticle_ArticleCategoryDefinition.ArticleID=eZArticle_Article.ID
-                         AND eZArticle_ArticleCategoryDefinition.CategoryID=eZArticle_Category.ID
+                         AND eZArticle_ArticleCategoryDefinition.CategoryID=Category.ID
                          $excludeFromSearchSQL
                          AND eZArticle_ArticleWordLink.WordID=eZArticle_Word.ID
-                         AND eZArticle_ArticlePermission.ObjectID=eZArticle_Article.ID
+                         AND Permission.ObjectID=eZArticle_Article.ID
+                         AND CategoryPermission.ObjectID=eZArticle_ArticleCategoryDefinition.CategoryID
                          $fetchText
                          AND eZArticle_ArticleCategoryLink.ArticleID=eZArticle_Article.ID AND
-                          ( $loggedInSQL ($groupSQL eZArticle_ArticlePermission.GroupID='-1')
-                            AND eZArticle_ArticlePermission.ReadPermission='1'
+                          ( $loggedInSQL ($groupSQL Permission.GroupID='-1')
+                            AND Permission.ReadPermission='1'
                           )
                         )
                        ORDER BY $OrderBy";
@@ -2177,6 +2183,7 @@ class eZArticle
             $article_array = array_slice( $article_array, $offset, $limit );
         }
 
+        $return_array = [];
         for ( $i = 0; $i < count($article_array); $i++ )
         {
             $return_array[$i] = new eZArticle( $article_array[$i][$db->fieldName( "ArticleID" )], false );
